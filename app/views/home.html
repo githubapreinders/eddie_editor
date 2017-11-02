@@ -5,5 +5,8 @@
 <input type="text" ng-model="vm.userInput">
     <button type="submit">Submit</button>
 </form>
-    <pre>{{vm.distortedText}}</pre>
+    <div ng-repeat = "item in vm.myTags">
+    	<span contenteditable='true' >{{item.toString()}}</span>
+
+    </div>
 </div>
