@@ -12,7 +12,7 @@
 
             vm.myTags = [];
 
-            vm.message = "Angular Controller is working fine...";
+            vm.message = "Angular Controller is working allright...";
 
             
 

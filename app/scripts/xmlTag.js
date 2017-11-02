@@ -25,7 +25,7 @@ angular.module('confab')
                     }); 
                     this.tagProperties = tagProperties;                   
                 }
-
+                //native functions of the xmlTag that can access the instance properties
                 xmlTag.prototype = 
                 {
                     getTagType : function()
@@ -44,7 +44,7 @@ angular.module('confab')
                         }
 
                     },
-                    
+                    //converts its contents to a readable xml-tag, dependent on its type
                     toString : function()
                     {
                         var returnstring = "";  
@@ -96,29 +96,39 @@ angular.module('confab')
                     getPropertyValue :function (key)
                     {
                         return this.tagProperties[key];
-                    },
+                    }
 
 
 
 
                 };
-
-               
+               /*static functions that have no access to this:
+                xmlTag.computeTabdistance = function(tag)
+                {
+                    return tabdistance
+                }
+               */
             
             return (xmlTag);
 
             
 
-        });
+        })
+
+    .factory('tagContainer', function()
+    {
+        function tagContainer()
+        {
+            this.tagContainer = [];
+
+        }
 
 
+        tagContainer.proptype = function()
+        {
 
+        }
 
-
-   
-    
-    
-
-
+    });
 
 })();
