@@ -1,11 +1,11 @@
 
 <div >
-<h1>Message {{vm.message}}</h1>
+<h1>{{vm.message}}</h1>
 <form ng-submit="vm.submitForm()">
 <input type="text" ng-model="vm.userInput">
     <button type="submit">Submit</button>
 </form>
-    <div ng-repeat = "item in vm.myTags">
+    <div class="editorContainer" ng-repeat = "item in vm.myTags">
     	<span contenteditable='true' >{{item.toString()}}</span>
 
     </div>

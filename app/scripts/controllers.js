@@ -3,16 +3,16 @@
     'use strict';
 
     angular.module('confab')
-        .controller('IndexController', function (xmlTag)
+        .controller('IndexController', function (xmlTag, staticDataFactory)
         {
 
             console.log('IndexController...');
             var vm = this;
             vm.submitForm = submitForm;
 
-            vm.myTags = [];
-
             vm.message = "Angular Controller is working allright...";
+            vm.myTags = staticDataFactory.getData();
+            console.log("mytags",vm.myTags);
 
             
 
