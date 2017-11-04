@@ -14,6 +14,13 @@
             vm.myTags = staticDataFactory.getData();
             console.log("mytags",vm.myTags);
 
+
+            vm.editorOptions = {
+                    lineWrapping : true,
+                    lineNumbers: true,
+                    readOnly: 'nocursor',
+                    mode: 'xml',
+                    };
             
 
 

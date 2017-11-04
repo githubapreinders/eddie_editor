@@ -57,8 +57,6 @@ gulp.task('copy_css',['compile_sass'], function()
      .pipe(gulp.dest('build'))
 });
 
-
-
 gulp.task('watch',['browser_Sync', 'compile_sass','js_dev'], function()
 {
     gulp.watch('app/scss/**/*.scss', ['compile_sass']);
