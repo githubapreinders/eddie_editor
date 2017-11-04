@@ -124,7 +124,7 @@ angular.module('confab')
         }
 
 
-        tagContainer.proptype = function()
+        tagContainer.prototype = function() 
         {
 
         }
