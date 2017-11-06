@@ -44,6 +44,35 @@ angular.module('confab')
                         }
 
                     },
+                    toCompleteTag : function()
+                    {
+                        var returnstring = "";  
+                        var itsproperties = ""; 
+                        
+                        angular.forEach(this.tagProperties, function(value, key)
+                        {
+                            if (value == "")
+                            {
+                                itsproperties += " " + key + "=\"\" " + " ";
+                            }
+                            else
+                            {
+                                itsproperties += " " + key + "=" + value + " ";   
+                            }
+
+                        });
+                     returnstring =                     "<" + 
+                                                this.tagTitle + 
+                                                itsproperties + 
+                                                "></" +
+                                                this.tagTitle + 
+                                                ">" ;
+                                                   
+
+                     return returnstring;                           
+
+
+                    },
                     //converts its contents to a readable xml-tag, dependent on its type
                     toString : function()
                     {
@@ -52,7 +81,7 @@ angular.module('confab')
                         
                         angular.forEach(this.tagProperties, function(value, key)
                         {
-                            if (value == "")
+                            if (value === "")
                             {
                                 itsproperties += " " + key + "=\"\" " + " ";
                             }

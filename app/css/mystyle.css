@@ -1,7 +1,5 @@
-h1 {
-  color: red; }
+.CodeMirror {
+  font-size: 20px; }
 
-.editorContainer {
-  background: rgba(40, 100, 50, 0.3);
-  text-align: left;
-  border: 1px solid fuchsia; }
+h6 {
+  color: red; }
