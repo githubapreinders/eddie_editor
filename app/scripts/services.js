@@ -17,12 +17,6 @@ angular.module('confab')
         children: []
       };
 
-        
-      
-
-
-
-
         var thedata = {
         "!top": ["module"],
         "!attrs": {
@@ -244,6 +238,6 @@ angular.module('confab')
         }
 
 
-    })
+    });
 
 })();   
