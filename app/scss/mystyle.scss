@@ -35,6 +35,8 @@ h6
 		flex-grow:1;
 		background:lightcyan;
 		cursor : pointer;
+		overflow:scroll;
+
 		.classItem
 		{
 			color:black;
@@ -50,11 +52,15 @@ h6
 	{
 		height:25%;
 		background:mistyrose;
+		overflow:scroll;
+
 	}
 	.propertyArea
 	{
 		height:40%;
 		background:whitesmoke;
+		overflow:scroll;
+
 	}
 }
 

@@ -35,7 +35,8 @@ h6 {
         -ms-flex-positive: 1;
             flex-grow: 1;
     background: lightcyan;
-    cursor: pointer; }
+    cursor: pointer;
+    overflow: scroll; }
     .navigatorWindow .classArea .classItem {
       color: black; }
     .navigatorWindow .classArea .selectedItem {
@@ -44,10 +45,12 @@ h6 {
       background: black; }
   .navigatorWindow .descriptionArea {
     height: 25%;
-    background: mistyrose; }
+    background: mistyrose;
+    overflow: scroll; }
   .navigatorWindow .propertyArea {
     height: 40%;
-    background: whitesmoke; }
+    background: whitesmoke;
+    overflow: scroll; }
 
 .editorWindow {
   width: 65%;

@@ -18,10 +18,12 @@
             vm.datasource = staticDataFactory.getDataSource();
             vm.navigatorModel = null;
             vm.selectedItem = null;
+            vm.showPropertyDescription = false;
 
             staticDataFactory.getJson().then(function success(response)
             {
                 vm.navigatorModel = response.data;
+                toggle_datasource('pipes');
                 console.log("data:", vm.navigatorModel);
             },function error(response)
             {
@@ -31,8 +33,9 @@
 
             var editor = null;
             var doc = null;    
-
             var tags =  staticDataFactory.getData();
+
+
 
             function setSelectedClass(item)
             {
@@ -45,6 +48,7 @@
                 
                 staticDataFactory.setDataSource(string);
                 vm.datasource = staticDataFactory.getDataSource();
+                vm.showPropertyDescription = false;
                 
                 for (var i=0 ; i < vm.navigatorModel.length; i++)    
                 {
