@@ -3,7 +3,7 @@
     'use strict';
 
     angular.module('confab')
-        .controller('IndexController', function (xmlTag, staticDataFactory)
+        .controller('IndexController', function (xmlTag, attributeObject, staticDataFactory)
         {
 
             console.log('IndexController...');
@@ -35,10 +35,6 @@
                           "Ctrl-Space": "autocomplete"
                                 };
                 _editor.setOption('extraKeys', extraKeys);
-
-
-
-
                  _doc.setValue("<?xml version='1.0' encoding='UTF-8'?>\n");
                  _doc.setCursor(_doc.lastLine());
 
@@ -49,16 +45,8 @@
                         var position = _doc.getCursor();
                         //var range = doc.getRange({'from' : position, 'to':{position.line, positon.ch+10}
                         //console.log("range:", range);
-
-
                     }};
                 _editor.addKeyMap(map);    
-
-
-
-
-
-
                 editor = _editor;
                 doc = _doc;
                 console.log("editor loaded;");
@@ -101,30 +89,37 @@
             function submitForm(string)
 
             {
-             var insertion = null;   
-            	if (vm.userInput !== "")
-            	{
-            		var values = vm.userInput.split(/\s+/);
-            		console.log("values from splitter:", values);
-            		var tagtitle = values.shift();
-            		var tagproperties = [];
-            		if (values.length > 0)
-            		{
-            			values.forEach(function(val)
-            			{
-            				tagproperties.push(val);
-            			});
-            		}
-                var snippet = new xmlTag("module",[]).toString() +"\n"+ new xmlTag("adapter",[]).toString()
+                var values = vm.userInput.split(/\s+/);
+                console.log("values from splitter:", values);
+                var myattrs = new attributeObject('color', ['red','green','blue']);
+                console.log("attributeObject:",myattrs);
+                var newtag = new xmlTag("appel", [new attributeObject("color",["green", "red", "pink"])]);
+                console.log("tag:", JSON.stringify(newtag.toObject()));
+                //tags = staticDataFactory.setData()
 
 
-
-                 doc.replaceSelection(snippet);
-            	}
-
-
+             // var insertion = null;   
+            	// if (vm.userInput !== "")
+            	// {
+            	// 	var values = vm.userInput.split(/\s+/);
+            	// 	console.log("values from splitter:", values);
+            	// 	var tagtitle = values.shift();
+            	// 	var tagproperties = [];
+            	// 	if (values.length > 0)
+            	// 	{
+            	// 		values.forEach(function(val)
+            	// 		{
+            	// 			tagproperties.push(val);
+            	// 		});
+            	// 	}
+             //        insertion =  new xmlTag(tagtitle, tagproperties).toCompleteTag();
+             //    }
+             //    else
+             //    {
+             //        insertion = new xmlTag("module",[]).toString() +"\n"+ new xmlTag("adapter",[]).toString()
+             //    }
+             //     doc.replaceSelection(insertion);
             }
-
         });
 })();
 
