@@ -1,13 +1,36 @@
 
+<<<<<<< HEAD
 <div id="myscope">
+=======
+<div class="mainContainer">
+
+
+
+
+<div class="navigatorWindow"> 
+
+<div class="dataSourceArea" ng-include="'./views/dataSourceArea.html'"></div>
+<div class="classArea" ng-include="'./views/classArea.html'"></div>
+<div class="descriptionArea" ng-include="'./views/descriptionArea.html'"></div>
+<div class="propertyArea" ng-include="'./views/propertyArea.html'"></div>
+
+	
+</div>
+
+
+<div class="editorWindow">
+	<div style="display:flex;">
+>>>>>>> 12aa68002d98ceec51656074eab980f7d3b3cdad
 	<h6>{{vm.message}}</h6>
+	<div style="flex-grow: 1"></div>
 	<form ng-submit="vm.submitForm()">
 		<input type="text" ng-model="vm.userInput">
 	    <button type="submit">Submit</button>
 	</form>
-	
+	</div>
 	<br><br><br>
 
 	<div ui-codemirror="{ onLoad : vm.codemirrorLoaded }" ></div>
 
+</div>
 </div>
