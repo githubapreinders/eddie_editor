@@ -203,20 +203,16 @@ angular.module('confab')
 
         return{
             getData : getData,
-<<<<<<< HEAD
-            setData : setData
-        }
+            setData : setData,
+            getJson : getJson,
+            setDataSource: setDataSource,
+            getDataSource: getDataSource
+        };
 
         function setData(anobject)
         {
           thedata = anobject;
         }
-        
-=======
-            getJson : getJson,
-            setDataSource: setDataSource,
-            getDataSource: getDataSource
-        };
 
         function setDataSource(string)
         {
@@ -235,9 +231,7 @@ angular.module('confab')
             {
               return data;
             });
-          
         }  
->>>>>>> 12aa68002d98ceec51656074eab980f7d3b3cdad
         
         function getData()
         {
