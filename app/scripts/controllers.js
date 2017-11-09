@@ -11,12 +11,51 @@
             
             vm.submitForm = submitForm;
             vm.codemirrorLoaded = codemirrorLoaded;
+            vm.setSelectedClass = setSelectedClass
+            vm.toggle_datasource = toggle_datasource;
             vm.message = "Angular Controller is working allright...";
             vm.userInput = "";
+            vm.datasource = staticDataFactory.getDataSource();
+            vm.navigatorModel = null;
+            vm.selectedItem = null;
+
+            staticDataFactory.getJson().then(function success(response)
+            {
+                vm.navigatorModel = response.data;
+                console.log("data:", vm.navigatorModel);
+            },function error(response)
+            {
+
+            });
+
+
             var editor = null;
             var doc = null;    
 
             var tags =  staticDataFactory.getData();
+
+            function setSelectedClass(item)
+            {
+                vm.selectedItem = item;
+            }
+
+
+            function toggle_datasource(string)
+            {
+                
+                staticDataFactory.setDataSource(string);
+                vm.datasource = staticDataFactory.getDataSource();
+                
+                for (var i=0 ; i < vm.navigatorModel.length; i++)    
+                {
+                    if(vm.navigatorModel[i].type === string)
+                    {
+                        vm.selectedItem = vm.navigatorModel[i];
+                        break;
+                    }
+                }
+                console.log("vm.datasource", vm.datasource);
+            }
 
             function codemirrorLoaded(_editor)
             {
@@ -125,7 +164,22 @@
 
             }
 
-        });
+        })
+    .filter('datasourceFilter', function(staticDataFactory)
+    {
+        return function(items)
+        {
+            var filtered = [];
+            angular.forEach(items, function(item)
+            {
+                if (item.type === staticDataFactory.getDataSource())
+                {
+                    filtered.push(item);
+                }
+            });
+            return filtered;
+        };
+    });
 })();
 
 

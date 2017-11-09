@@ -2,11 +2,65 @@
 .CodeMirror 
 {
 	font-size:20px;	
+	height: 1000px;
 }
-
 
 h6
 {
-	color:red;
+	color:blue;
 }
 
+.mainContainer
+{
+	width:100%;
+	height:100%;
+	display:flex;
+
+}
+
+
+.navigatorWindow
+{	width: 35%;
+	height: 100%;
+	background: LightSlateGrey;
+	display:flex;
+	flex-direction:column;
+	.dataSourceArea
+	{
+		height:15%;
+		background:lavenderblush;
+	}
+	.classArea
+	{
+		flex-grow:1;
+		background:lightcyan;
+		cursor : pointer;
+		.classItem
+		{
+			color:black;
+		}
+		.selectedItem
+		{
+			display:block;
+			color:white;
+			background:black;
+		}
+	}
+	.descriptionArea
+	{
+		height:25%;
+		background:mistyrose;
+	}
+	.propertyArea
+	{
+		height:40%;
+		background:whitesmoke;
+	}
+}
+
+.editorWindow
+{
+	width: 65%;
+	height:100%;
+	background:snow;
+}

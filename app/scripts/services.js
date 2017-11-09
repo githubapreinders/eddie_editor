@@ -4,8 +4,10 @@
 
 angular.module('confab')
 
-    .service('staticDataFactory', function(xmlTag) 
+    .service('staticDataFactory', function(xmlTag, $http) 
     {
+
+        var datasource = 'pipes';
         var dummy = {
         attrs: {
           color: ["red", "green", "blue", "purple", "white", "black", "yellow"],
@@ -48,10 +50,31 @@ angular.module('confab')
       };
 
         return{
-            getData : getData
+            getData : getData,
+            getJson : getJson,
+            setDataSource: setDataSource,
+            getDataSource: getDataSource
+        };
+
+        function setDataSource(string)
+        {
+          datasource = string;
         }
 
-        
+        function getDataSource()
+        {
+          return datasource;
+        }
+
+
+        function getJson()
+        {
+          return $http.get('./media/javadoc_data.json').then(function(data)
+            {
+              return data;
+            });
+          
+        }  
         
         function getData()
         {
