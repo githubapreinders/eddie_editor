@@ -19,10 +19,17 @@
             vm.navigatorModel = null;
             vm.selectedItem = null;
             vm.showPropertyDescription = false;
+            vm.selectedProperties = {};
+
+            var editor = null;
+            var doc = null;    
+            // var tags =  staticDataFactory.getData();
+
 
             staticDataFactory.getJson().then(function success(response)
             {
                 vm.navigatorModel = response.data;
+                editor.setOption('hintOptions', {schemaInfo: vm.navigatorModel});
                 toggle_datasource('pipes');
                 console.log("data:", vm.navigatorModel);
             },function error(response)
@@ -31,15 +38,13 @@
             });
 
 
-            var editor = null;
-            var doc = null;    
-            var tags =  staticDataFactory.getData();
-
+            
 
 
             function setSelectedClass(item)
             {
                 vm.selectedItem = item;
+                vm.selectedProperties = {};
             }
 
 
@@ -50,14 +55,26 @@
                 vm.datasource = staticDataFactory.getDataSource();
                 vm.showPropertyDescription = false;
                 
-                for (var i=0 ; i < vm.navigatorModel.length; i++)    
+                // for (var i=0 ; i < vm.navigatorModel.length; i++)    
+                // {
+                //     if(vm.navigatorModel[i].type === string)
+                //     {
+                //         vm.selectedItem = vm.navigatorModel[i];
+                //         break;
+                //     }
+                // }
+                var done = false;
+                Object.keys(vm.navigatorModel).forEach(function(key)
                 {
-                    if(vm.navigatorModel[i].type === string)
+                    if (!done && vm.navigatorModel[key].type === string )
                     {
-                        vm.selectedItem = vm.navigatorModel[i];
-                        break;
+                        vm.selectedItem = vm.navigatorModel[key];
+                        vm.selectedProperties = {}
+                        done = true;
                     }
-                }
+                });
+
+
                 console.log("vm.datasource", vm.datasource);
             }
 
@@ -69,7 +86,7 @@
                 _editor.setOption('lineWrapping', true);
                 _editor.setOption('mode', 'xml');
                 _editor.setOption('theme', 'twilight');
-                _editor.setOption('hintOptions', {schemaInfo: tags});
+                // _editor.setOption('hintOptions', {schemaInfo: vm.navigatorModel});
                 var extraKeys =  {
                           "'<'": completeAfter,
                           "'/'": completeIfAfterLt,
@@ -129,15 +146,35 @@
             
 
 
-            function submitForm(string)
+            function submitForm()
 
             {
-                var values = vm.userInput.split(/\s+/);
-                console.log("values from splitter:", values);
-                var myattrs = new attributeObject('color', ['red','green','blue']);
-                console.log("attributeObject:",myattrs);
-                var newtag = new xmlTag("appel", [new attributeObject("color",["green", "red", "pink"])]);
-                console.log("tag:", JSON.stringify(newtag.toObject()));
+                if (vm.selectedItem === null)
+                {
+                    return;
+                }
+                var theproperties = [];    
+                console.log("props:", vm.selectedProperties);
+                if (Object.keys(vm.selectedProperties).length > 0 )
+                {
+                    Object.keys(vm.selectedProperties).forEach(function(thekey)
+                    {
+                        
+                        theproperties.push(vm.selectedProperties[thekey]);
+                    }); 
+                }
+                console.log("here", theproperties);
+               var newtag = new xmlTag(vm.selectedItem.classname, theproperties);
+               console.log("taga:", newtag.toString());
+                doc.replaceSelection(newtag.toCompleteTag());
+
+
+                // var values = vm.userInput.split(/\s+/);
+                // console.log("values from splitter:", values);
+                // var myattrs = new attributeObject('color', ['red','green','blue']);
+                // console.log("attributeObject:",myattrs);
+                // var newtag = new xmlTag("appel", [new attributeObject("color",["green", "red", "pink"])]);
+                // console.log("tag:", JSON.stringify(newtag.toObject()));
                 //tags = staticDataFactory.setData()
 
 
@@ -173,7 +210,8 @@
             var filtered = [];
             angular.forEach(items, function(item)
             {
-                if (item.type === staticDataFactory.getDataSource())
+               // console.log("item:", item);
+               if (item.type === staticDataFactory.getDataSource())
                 {
                     filtered.push(item);
                 }

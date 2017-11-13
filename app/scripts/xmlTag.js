@@ -54,7 +54,7 @@ angular.module('confab')
                             }
                             else
                             {
-                                itsproperties += " " + key + "=" + value + " ";   
+                                itsproperties += " " + key + "=\"" + value + '\"';   
                             }
 
                         });
@@ -161,7 +161,7 @@ angular.module('confab')
 
             toString : function()
             {
-                return this.name + '\nAllowed values:' + this.values.join();
+                return this.name + 'Allowed values:' + this.values.join();
             }
         }   
 
