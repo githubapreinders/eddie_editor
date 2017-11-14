@@ -1,6 +1,6 @@
 .CodeMirror {
-  font-size: 20px;
-  height: 1000px; }
+  font-size: 14px;
+  height: 8000px; }
 
 h6 {
   color: blue; }
@@ -14,7 +14,7 @@ h6 {
   display: flex; }
 
 .navigatorWindow {
-  width: 35%;
+  width: 25%;
   height: 100%;
   background: LightSlateGrey;
   display: -webkit-box;
@@ -53,6 +53,6 @@ h6 {
     overflow: scroll; }
 
 .editorWindow {
-  width: 65%;
+  width: 75%;
   height: 100%;
   background: snow; }

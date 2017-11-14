@@ -8,7 +8,7 @@
 
             console.log('IndexController...');
             var vm = this;
-            
+        
             vm.submitForm = submitForm;
             vm.codemirrorLoaded = codemirrorLoaded;
             vm.setSelectedClass = setSelectedClass
@@ -19,10 +19,17 @@
             vm.navigatorModel = null;
             vm.selectedItem = null;
             vm.showPropertyDescription = false;
+            vm.selectedProperties = {};
+
+            var editor = null;
+            var doc = null;    
+            // var tags =  staticDataFactory.getData();
+
 
             staticDataFactory.getJson().then(function success(response)
             {
                 vm.navigatorModel = response.data;
+                editor.setOption('hintOptions', {schemaInfo: vm.navigatorModel});
                 toggle_datasource('pipes');
                 console.log("data:", vm.navigatorModel);
             },function error(response)
@@ -31,15 +38,13 @@
             });
 
 
-            var editor = null;
-            var doc = null;    
-            var tags =  staticDataFactory.getData();
-
+            
 
 
             function setSelectedClass(item)
             {
                 vm.selectedItem = item;
+                vm.selectedProperties = {};
             }
 
 
@@ -50,14 +55,26 @@
                 vm.datasource = staticDataFactory.getDataSource();
                 vm.showPropertyDescription = false;
                 
-                for (var i=0 ; i < vm.navigatorModel.length; i++)    
+                // for (var i=0 ; i < vm.navigatorModel.length; i++)    
+                // {
+                //     if(vm.navigatorModel[i].type === string)
+                //     {
+                //         vm.selectedItem = vm.navigatorModel[i];
+                //         break;
+                //     }
+                // }
+                var done = false;
+                Object.keys(vm.navigatorModel).forEach(function(key)
                 {
-                    if(vm.navigatorModel[i].type === string)
+                    if (!done && vm.navigatorModel[key].type === string )
                     {
-                        vm.selectedItem = vm.navigatorModel[i];
-                        break;
+                        vm.selectedItem = vm.navigatorModel[key];
+                        vm.selectedProperties = {}
+                        done = true;
                     }
-                }
+                });
+
+
                 console.log("vm.datasource", vm.datasource);
             }
 
@@ -68,8 +85,11 @@
                 _editor.setOption('lineNumbers', true);
                 _editor.setOption('lineWrapping', true);
                 _editor.setOption('mode', 'xml');
+                _editor.setOption('beautify', 'true');
                 _editor.setOption('theme', 'twilight');
-                _editor.setOption('hintOptions', {schemaInfo: tags});
+                _editor.setOption('hintOptions', {schemaInfo: vm.navigatorModel});
+                _editor.setOption('matchTags', {bothTags: true});
+
                 var extraKeys =  {
                           "'<'": completeAfter,
                           "'/'": completeIfAfterLt,
@@ -93,6 +113,58 @@
                 editor = _editor;
                 doc = _doc;
                 console.log("editor loaded;");
+
+
+                CodeMirror.defineExtension("autoFormatRange", function (from, to) {
+                var cm = this;
+                var outer = cm.getMode(), text = cm.getRange(from, to).split("\n");
+                var state = CodeMirror.copyState(outer, cm.getTokenAt(from).state);
+                var tabSize = cm.getOption("tabSize");
+
+                var out = "", lines = 0, atSol = from.ch == 0;
+                function newline() {
+                    out += "\n";
+                    atSol = true;
+                    ++lines;
+                }
+
+                for (var i = 0; i < text.length; ++i) {
+                    var stream = new CodeMirror.StringStream(text[i], tabSize);
+                    while (!stream.eol()) {
+                        var inner = CodeMirror.innerMode(outer, state);
+                        var style = outer.token(stream, state), cur = stream.current();
+                        stream.start = stream.pos;
+                        if (!atSol || /\S/.test(cur)) {
+                            out += cur;
+                            atSol = false;
+                        }
+                        if (!atSol && inner.mode.newlineAfterToken &&
+                            inner.mode.newlineAfterToken(style, cur, stream.string.slice(stream.pos) || text[i+1] || "", inner.state))
+                            newline();
+                    }
+                    if (!stream.pos && outer.blankLine) outer.blankLine(state);
+                    if (!atSol) newline();
+                }
+
+                cm.operation(function () {
+                    cm.replaceRange(out, from, to);
+                    for (var cur = from.line + 1, end = from.line + lines; cur <= end; ++cur)
+                        cm.indentLine(cur, "smart");
+                });
+            });
+
+// Applies automatic mode-aware indentation to the specified range
+CodeMirror.defineExtension("autoIndentRange", function (from, to) {
+    var cmInstance = this;
+    this.operation(function () {
+        for (var i = from.line; i <= to.line; i++) {
+            cmInstance.indentLine(i, "smart");
+        }
+    });
+});
+
+
+
 
                 function completeAfter(cm, pred) 
                 {
@@ -129,15 +201,37 @@
             
 
 
-            function submitForm(string)
+            function submitForm()
 
             {
-                var values = vm.userInput.split(/\s+/);
-                console.log("values from splitter:", values);
-                var myattrs = new attributeObject('color', ['red','green','blue']);
-                console.log("attributeObject:",myattrs);
-                var newtag = new xmlTag("appel", [new attributeObject("color",["green", "red", "pink"])]);
-                console.log("tag:", JSON.stringify(newtag.toObject()));
+               //  if (vm.selectedItem === null)
+               //  {
+               //      return;
+               //  }
+               //  var theproperties = [];    
+               //  console.log("props:", vm.selectedProperties);
+               //  if (Object.keys(vm.selectedProperties).length > 0 )
+               //  {
+               //      Object.keys(vm.selectedProperties).forEach(function(thekey)
+               //      {
+                        
+               //          theproperties.push(vm.selectedProperties[thekey]);
+               //      }); 
+               //  }
+               //  console.log("here", theproperties);
+               // var newtag = new xmlTag(vm.selectedItem.classname, theproperties);
+               // console.log("taga:", newtag.toString());
+               //  doc.replaceSelection(newtag.toCompleteTag());
+
+
+                js_beautify(doc.getValue());
+
+                // var values = vm.userInput.split(/\s+/);
+                // console.log("values from splitter:", values);
+                // var myattrs = new attributeObject('color', ['red','green','blue']);
+                // console.log("attributeObject:",myattrs);
+                // var newtag = new xmlTag("appel", [new attributeObject("color",["green", "red", "pink"])]);
+                // console.log("tag:", JSON.stringify(newtag.toObject()));
                 //tags = staticDataFactory.setData()
 
 
@@ -173,7 +267,8 @@
             var filtered = [];
             angular.forEach(items, function(item)
             {
-                if (item.type === staticDataFactory.getDataSource())
+               // console.log("item:", item);
+               if (item.type === staticDataFactory.getDataSource())
                 {
                     filtered.push(item);
                 }

@@ -221,10 +221,11 @@ angular.module('confab')
 
         function getJson()
         {
-          return $http.get('./media/javadoc_data.json').then(function(data)
+          return $http.get('./media/javadoc_data1.json').then(function(data)
             {
               return data;
             });
+          
         }  
         
         function getData()
