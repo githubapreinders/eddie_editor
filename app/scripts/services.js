@@ -8,6 +8,26 @@ angular.module('confab')
     {
 
         var datasource = 'pipes';
+
+        var formattingSettings = {
+                "indent_size": 4,
+                "xml": {
+                    "end_with_newline": true,
+                    "js": {
+                        "indent_size": 2
+                    },
+                    "css": {
+                        "indent_size": 2
+                    }
+                },
+                "css": {
+                    "indent_size": 1
+                },
+                "js": {
+                 "preserve-newlines": true
+                }
+                }
+
         
 
         return{
@@ -16,8 +36,15 @@ angular.module('confab')
             getJson : getJson,
             setDataSource: setDataSource,
             getDataSource: getDataSource,
-            makeSnippet: makeSnippet
+            makeSnippet: makeSnippet,
+            getFormattingSettings: getFormattingSettings
         };
+
+
+        function getFormattingSettings()
+        {
+          return formattingSettings;
+        }
 
         function setData(anobject)
         {
@@ -60,7 +87,7 @@ angular.module('confab')
           var tag1 = new xmlTag("tag1", new Array(new attributeObject("prop1",['val1']))).toCompleteTag();
           var tag2 = new xmlTag("tag2", new Array(new attributeObject("prop2",['val2']))).toCompleteTag();
           var tag3 = new xmlTag("tag3", new Array(new attributeObject("prop3",['val3']))).toCompleteTag();
-          return header + tag1 + tag2 + tag3; 
+          return tag1 + tag2 + tag3; 
         }
     });
 
