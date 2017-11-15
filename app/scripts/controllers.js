@@ -100,7 +100,7 @@
                           "Ctrl-Space": "autocomplete"
                                 };
                 _editor.setOption('extraKeys', extraKeys);
-                 _doc.setValue("<?xml version='1.0' encoding='UTF-8'?>\n");
+                 _doc.setValue(staticDataFactory.makeSnippet());
                  _doc.setCursor(_doc.lastLine());
 
                 
@@ -206,7 +206,7 @@ CodeMirror.defineExtension("autoIndentRange", function (from, to) {
             function submitForm()
 
             {
-<<<<<<< HEAD
+
                //  if (vm.selectedItem === null)
                //  {
                //      return;
@@ -239,7 +239,6 @@ CodeMirror.defineExtension("autoIndentRange", function (from, to) {
                 {
                     Object.keys(vm.selectedProperties).forEach(function(thekey)
                     {
-                        
                         theproperties.push(vm.selectedProperties[thekey]);
                     }); 
                 }
