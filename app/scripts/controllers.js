@@ -90,6 +90,8 @@
                 _editor.setOption('hintOptions', {schemaInfo: vm.navigatorModel});
                 _editor.setOption('matchTags', {bothTags: true});
 
+                // _editor.setOption('hintOptions', {schemaInfo: vm.navigatorModel});
+
                 var extraKeys =  {
                           "'<'": completeAfter,
                           "'/'": completeIfAfterLt,
@@ -204,6 +206,7 @@ CodeMirror.defineExtension("autoIndentRange", function (from, to) {
             function submitForm()
 
             {
+<<<<<<< HEAD
                //  if (vm.selectedItem === null)
                //  {
                //      return;
@@ -225,6 +228,26 @@ CodeMirror.defineExtension("autoIndentRange", function (from, to) {
 
 
                 js_beautify(doc.getValue());
+
+                if (vm.selectedItem === null)
+                {
+                    return;
+                }
+                var theproperties = [];    
+                console.log("props:", vm.selectedProperties);
+                if (Object.keys(vm.selectedProperties).length > 0 )
+                {
+                    Object.keys(vm.selectedProperties).forEach(function(thekey)
+                    {
+                        
+                        theproperties.push(vm.selectedProperties[thekey]);
+                    }); 
+                }
+                console.log("here", theproperties);
+               var newtag = new xmlTag(vm.selectedItem.classname, theproperties);
+               console.log("taga:", newtag.toString());
+                doc.replaceSelection(newtag.toCompleteTag());
+
 
                 // var values = vm.userInput.split(/\s+/);
                 // console.log("values from splitter:", values);
