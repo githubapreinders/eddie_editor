@@ -85,9 +85,9 @@ angular.module('confab')
         {
           var header = "<?xml version='1.0' encoding='UTF-8'?>\n";
           var tag1 = new xmlTag("tag1", new Array(new attributeObject("prop1",['val1']))).toCompleteTag();
-          var tag2 = new xmlTag("tag2", new Array(new attributeObject("prop2",['val2']))).toCompleteTag();
-          var tag3 = new xmlTag("tag3", new Array(new attributeObject("prop3",['val3']))).toCompleteTag();
-          return tag1 + tag2 + tag3; 
+          var tag2 = new xmlTag("tag1", new Array(new attributeObject("prop1",['val1']))).toCompleteTag();
+          var tag3 = new xmlTag("tag1", new Array(new attributeObject("prop1",['val1']))).toCompleteTag();
+          return "<tag1 prop1=\"val1\"><tag1 prop1=\"val1\"><tag1 prop1=\"val1\"></tag1></tag1></tag1>";
         }
     });
 

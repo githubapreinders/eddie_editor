@@ -23,7 +23,7 @@
             vm.selectedProperties = {};
 
             var editor = null;
-            var doc = null;    
+            var thedocument = null;    
             // var tags =  staticDataFactory.getData();
 
 
@@ -114,7 +114,7 @@
                     }};
                 _editor.addKeyMap(map);    
                 editor = _editor;
-                doc = _doc;
+                thedocument = _doc;
                 console.log("editor loaded;");
 
 
@@ -152,9 +152,77 @@
 
             function styleEditorContent()
             {
-                console.log("styling");
+                //get the currunt cursor position of the editor; check between which values that is and look that up
+                // after reformatting the text to replace the cursor.
+                var pos = thedocument.getCursor();
+                var before = thedocument.getRange({line:pos.line,ch:0},pos);
+                //regex to find tag segment left of the cursor : <[\w\/\s=\'\"]+$|<[\w\/\s=\'\"]+>$
+                var beforesegment = before.match(/<[\w\/\s=\'\"]+$|<[\w\/\s=\'\"]+>[\w\s]*$/);
+                if (beforesegment !== null)
+                {
+                    before = beforesegment[0];
+                }
+                var after = thedocument.getRange(pos,{line:pos.line,ch:null});
+                //regex to find tag segment to the right of cursor : ^[\w\/\s=\'\"]+>|^<[\w\/\s=\'\"]+> 
+                var aftersegment = after.match(/^[\w\/\s=\'\"]+>|^<[\w\/\s=\'\"]+>/);
+                if (aftersegment !== null)
+                {
+                    after = aftersegment[0];
+                }
+
+                //search the correct position of the cursor, possibly many similar tags : the index of the search results
+                //array is stored
+                var cursor = editor.getSearchCursor(before);
+                var counter =0 ;
+                var original = {line:10000,ch:10000};
+                var myindex = -1;
+                while (cursor.find() === true)
+                {   
+                    var newval = cursor.to();
+                    if (isTheBetter(pos, newval, original))
+                    {
+                        original = newval;
+                        myindex = counter;
+                    }
+                    counter++;
+                }
+                //now that we know we can find the new cursor position we will format the complete text
                 var settings = staticDataFactory.getFormattingSettings();
-                editor.setValue(html_beautify(doc.getValue(),settings));
+                thedocument.setValue(html_beautify(thedocument.getValue(),settings));
+
+                //put the cursor back in place
+                cursor = editor.getSearchCursor(before);
+                for(var i=0 ; i < myindex+1 ;i++)
+                {
+                    cursor.find();
+                }
+                if(cursor.to())
+                {
+                    thedocument.setCursor(cursor.to());
+                }
+                editor.focus();
+
+
+                function isTheBetter(newpos, oldpos, standard)
+                {
+                    var linedifference1 = Math.abs(standard.line - oldpos.line);
+                    var linedifference2 = Math.abs(standard.line - newpos.line);
+                    if (linedifference1 > linedifference2)
+                    {
+                        return false;
+                    }
+                    if(linedifference2 > linedifference1)
+                    {
+                        return true;
+                    }
+                    var chardifference1 = Math.abs(standard.ch - oldpos.ch);
+                    var chardifference2 = Math.abs(standard.ch - newpos.ch);
+                    if (chardifference1 > chardifference2)
+                    {
+                        return false;
+                    }
+                    return true;
+                }
             }
 
 
