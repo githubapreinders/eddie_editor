@@ -14,6 +14,8 @@
             vm.setSelectedClass = setSelectedClass;
             vm.toggle_datasource = toggle_datasource;
             vm.styleEditorContent = styleEditorContent;
+            vm.clearEditor = clearEditor;
+            vm.loadXml = loadXml;
             vm.message = "Angular Controller is working allright...";
             vm.userInput = "";
             vm.datasource = staticDataFactory.getDataSource();
@@ -37,6 +39,15 @@
             {
 
             });
+
+
+            function loadXml()
+            {
+                staticDataFactory.loadXml('').then(function succes(response)
+                {
+                    thedocument.setValue(response.data);
+                });
+            }
 
 
             
@@ -150,6 +161,13 @@
               }
             }
 
+            function clearEditor()
+            {
+                thedocument.setValue("<?xml version='1.0' encoding='UTF-8'?>\n");
+                thedocument.setCursor({line:thedocument.lastLine(),ch:0});
+                editor.focus();
+            }
+
             function styleEditorContent()
             {
                 //get the currunt cursor position of the editor; check between which values that is and look that up
@@ -247,7 +265,7 @@
                 console.log("here", theproperties);
                var newtag = new xmlTag(vm.selectedItem.classname, theproperties);
                console.log("taga:", newtag.toString());
-                doc.replaceSelection(newtag.toCompleteTag());
+                thedocument.replaceSelection(newtag.toCompleteTag());
 
                 
 

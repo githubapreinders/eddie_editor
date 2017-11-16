@@ -31,9 +31,8 @@ angular.module('confab')
         
 
         return{
-            getData : getData,
-            setData : setData,
             getJson : getJson,
+            loadXml : loadXml,
             setDataSource: setDataSource,
             getDataSource: getDataSource,
             makeSnippet: makeSnippet,
@@ -46,10 +45,6 @@ angular.module('confab')
           return formattingSettings;
         }
 
-        function setData(anobject)
-        {
-          thedata = anobject;
-        }
 
         function setDataSource(string)
         {
@@ -70,10 +65,14 @@ angular.module('confab')
             });
           
         }  
-        
-        function getData()
+
+        function loadXml(which)
         {
-            return thedata;
+          which = 'configurationHelloWorlds.xml';
+          return $http.get('./media/'+ which ).then(function(data)
+            {
+              return data;
+            });
         }
 
         function randomDigit()
@@ -87,7 +86,7 @@ angular.module('confab')
           var tag1 = new xmlTag("tag1", new Array(new attributeObject("prop1",['val1']))).toCompleteTag();
           var tag2 = new xmlTag("tag1", new Array(new attributeObject("prop1",['val1']))).toCompleteTag();
           var tag3 = new xmlTag("tag1", new Array(new attributeObject("prop1",['val1']))).toCompleteTag();
-          return "<tag1 prop1=\"val1\"><tag1 prop1=\"val1\"><tag1 prop1=\"val1\"></tag1></tag1></tag1>";
+          return "<?xml version='1.0' encoding='UTF-8'?>\n<tag1 prop1=\"val1\"><tag1 prop1=\"val1\"><tag1 prop1=\"val1\"></tag1></tag1></tag1>";
         }
     });
 
