@@ -5,54 +5,110 @@
 h6 {
   color: blue; }
 
+.navBar {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  background: whitesmoke;
+  height: 6%; }
+
+.leftPanel {
+  width: 25%;
+  background: fuchsia;
+  -webkit-transition: width 0.4s;
+  transition: width 0.4s;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: row;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  height: 100%; }
+  .leftPanel .configWindow {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    background: blue;
+    -webkit-transition: width 0.4s;
+    transition: width 0.4s; }
+  .leftPanel .navigatorWindow {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-transition: width 0.4s;
+    transition: width 0.4s;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -webkit-flex-direction: column;
+        -ms-flex-direction: column;
+            flex-direction: column; }
+    .leftPanel .navigatorWindow .dataSourceArea {
+      height: 15%;
+      background: lavenderblush;
+      padding: 15px; }
+    .leftPanel .navigatorWindow .classArea {
+      -webkit-box-flex: 1;
+      -webkit-flex-grow: 1;
+          -ms-flex-positive: 1;
+              flex-grow: 1;
+      background: lightcyan;
+      cursor: pointer;
+      overflow: scroll;
+      padding: 15px; }
+      .leftPanel .navigatorWindow .classArea .classItem {
+        color: black; }
+      .leftPanel .navigatorWindow .classArea .selectedItem {
+        display: block;
+        color: white;
+        background: black; }
+    .leftPanel .navigatorWindow .descriptionArea {
+      height: 25%;
+      background: mistyrose;
+      overflow: scroll;
+      padding: 15px; }
+    .leftPanel .navigatorWindow .propertyArea {
+      height: 40%;
+      background: whitesmoke;
+      overflow: scroll;
+      padding: 15px; }
+
+.leftPanelLeft {
+  left: -100px;
+  -webkit-transition: left 0.5px;
+  transition: left 0.5px; }
+
+leftPanelRight {
+  left: 0px;
+  -webkit-transition: left 0.5px;
+  transition: left 0.5px; }
+
 .mainContainer {
   width: 100%;
-  height: 100%;
+  height: 94%;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex; }
 
-.navigatorWindow {
-  width: 25%;
-  height: 100%;
-  background: LightSlateGrey;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-  -webkit-flex-direction: column;
-      -ms-flex-direction: column;
-          flex-direction: column; }
-  .navigatorWindow .dataSourceArea {
-    height: 15%;
-    background: lavenderblush; }
-  .navigatorWindow .classArea {
-    -webkit-box-flex: 1;
-    -webkit-flex-grow: 1;
-        -ms-flex-positive: 1;
-            flex-grow: 1;
-    background: lightcyan;
-    cursor: pointer;
-    overflow: scroll; }
-    .navigatorWindow .classArea .classItem {
-      color: black; }
-    .navigatorWindow .classArea .selectedItem {
-      display: block;
-      color: white;
-      background: black; }
-  .navigatorWindow .descriptionArea {
-    height: 25%;
-    background: mistyrose;
-    overflow: scroll; }
-  .navigatorWindow .propertyArea {
-    height: 40%;
-    background: whitesmoke;
-    overflow: scroll; }
-
-.editorWindow {
+.rightPanel {
   width: 75%;
+  -webkit-transition: width 0.4s;
+  transition: width 0.4s;
   height: 100%;
   background: snow; }
+
+.rightPanelFull {
+  width: 100%;
+  -webkit-transition: width 0.4s;
+  transition: width 0.4s; }
+
+/*rotates an icon in the navbar*/
+.fa-rotate-45 {
+  -webkit-transform: rotate(45deg);
+          transform: rotate(45deg); }

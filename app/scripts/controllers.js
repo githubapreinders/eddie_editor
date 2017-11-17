@@ -24,6 +24,7 @@
             vm.showPropertyDescription = false;
             vm.selectedProperties = {};
 
+            vm.showFullEditor = false;
             var editor = null;
             var thedocument = null;    
             // var tags =  staticDataFactory.getData();
@@ -40,6 +41,8 @@
 
             });
 
+
+            
 
             function loadXml()
             {
@@ -128,6 +131,13 @@
                 thedocument = _doc;
                 console.log("editor loaded;");
 
+
+
+                var windowheight = window.innerHeight;
+                var navbarheight = document.getElementById('mynavbar').offsetHeight;
+                var ed = document.querySelector('.CodeMirror');
+                ed.style.height = (windowheight - navbarheight) + 'px'; 
+                console.log("window, navbar, editor:", windowheight, navbarheight, ed.style.height);
 
                 function completeAfter(cm, pred) 
                 {

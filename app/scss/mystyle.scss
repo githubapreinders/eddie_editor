@@ -10,63 +10,116 @@ h6
 	color:blue;
 }
 
+.navBar
+{
+	display: flex;
+	background:whitesmoke;
+	height : 6%;
+}
+
+.leftPanel
+{
+	width : 25%;
+	background : fuchsia;
+	transition: width 0.4s;
+	display:flex;
+	flex-direction:row; 
+	height : 100%;
+		.configWindow
+		{	
+
+			display:flex;
+			background: blue;
+			transition: width 0.4s;
+		}
+		.navigatorWindow
+		{	
+			
+			display:flex;
+			transition: width 0.4s;
+			flex-direction:column;
+				.dataSourceArea
+				{
+					height:15%;
+					background:lavenderblush;
+					padding: 15px;
+				}
+				.classArea
+				{
+					flex-grow:1;
+					background:lightcyan;
+					cursor : pointer;
+					overflow:scroll;
+					padding: 15px;
+
+					.classItem
+					{
+						color:black;
+					}
+					.selectedItem
+					{
+						display:block;
+						color:white;
+						background:black;
+					}
+				}
+				.descriptionArea
+				{
+					height:25%;
+					background:mistyrose;
+					overflow:scroll;
+					padding: 15px;
+				}
+				.propertyArea
+				{
+					height:40%;
+					background:whitesmoke;
+					overflow:scroll;
+					padding: 15px;
+				}
+		}
+}
+.leftPanelLeft
+{
+	left: -100px;
+	transition: left 0.5px;
+}
+
+
+leftPanelRight
+{
+	left: 0px;
+	transition: left 0.5px;
+}
+
+
+
 .mainContainer
 {
 	width:100%;
-	height:100%;
+	height:94%;
 	display:flex;
-
 }
 
-
-.navigatorWindow
-{	width: 25%;
-	height: 100%;
-	background: LightSlateGrey;
-	display:flex;
-	flex-direction:column;
-	.dataSourceArea
-	{
-		height:15%;
-		background:lavenderblush;
-	}
-	.classArea
-	{
-		flex-grow:1;
-		background:lightcyan;
-		cursor : pointer;
-		overflow:scroll;
-
-		.classItem
-		{
-			color:black;
-		}
-		.selectedItem
-		{
-			display:block;
-			color:white;
-			background:black;
-		}
-	}
-	.descriptionArea
-	{
-		height:25%;
-		background:mistyrose;
-		overflow:scroll;
-
-	}
-	.propertyArea
-	{
-		height:40%;
-		background:whitesmoke;
-		overflow:scroll;
-
-	}
-}
-
-.editorWindow
+.rightPanel
 {
 	width: 75%;
+	transition: width 0.4s;
 	height:100%;
 	background:snow;
 }
+
+.rightPanelFull
+{
+	width : 100%;
+	transition: width 0.4s;
+}
+
+/*rotates an icon in the navbar*/
+.fa-rotate-45 
+{
+    transform: rotate(45deg);
+}
+
+
+
