@@ -1,35 +1,58 @@
 
+        <div class = "navBar" id = "mynavbar">
+
+        	<div style="width :500px;"></div>
+            <span ng-click="vm.showMenu = !vm.showMenu;" class="fa-stack fa-2x ">
+                <i class="fa fa-square-o fa-stack-2x"></i>
+                <i class="fa fa-close  fa-stack-1x " ng-show = "vm.showMenu"></i>
+                <i class="fa fa-cog  fa-stack-1x " ng-show = "!vm.showMenu"></i>
+            </span>
+
+            <span ng-click="vm.showFullEditor = !vm.showFullEditor;" class="fa-stack fa-2x ">
+                <i class="fa fa-square-o fa-stack-2x"></i>
+                <i class="fa fa-toggle-left  fa-stack-1x "></i>
+            </span>
+            <span ng-click="vm.submitForm()" class="fa-stack fa-2x ">
+                <i class="fa fa-square-o fa-stack-2x"></i>
+                <i class="fa fa-rotate-45 fa-arrow-circle-right fa-stack-1x "></i>
+            </span>
+            <div style="flex-grow:1;"></div>
+            
+            <span ng-click="vm.loadXml()" class="fa-stack fa-2x ">
+                <i class="fa fa-square-o fa-stack-2x"></i>
+                <i class="fa fa-stack-1x">xml</i>
+            </span>
+
+            <span ng-click="vm.clearEditor()" class="fa-stack fa-2x ">
+                <i class="fa fa-square-o fa-stack-2x"></i>
+                <i class="fa  fa-undo  fa-stack-1x "></i>
+            </span>
+
+            <span ng-click="vm.styleEditorContent()" class="fa-stack fa-2x ">
+                <i class="fa fa-square-o fa-stack-2x"></i>
+                <i class="fa fa-reorder fa-stack-1x "></i>
+            </span>
+
+            
+
+            <span ng-click="angular.noop()" class="fa-stack fa-2x ">
+                <i class="fa fa-square-o fa-stack-2x"></i>
+                <i class="fa fa-send-o fa-stack-1x "></i>
+            </span>
+
+        </div>
+
+
+
 <div class="mainContainer">
-
-
-
-
-<div class="navigatorWindow"> 
-
-<div class="dataSourceArea" ng-include="'./views/dataSourceArea.html'"></div>
-<div class="classArea" ng-include="'./views/classArea.html'"></div>
-<div class="descriptionArea" ng-include="'./views/descriptionArea.html'"></div>
-<div class="propertyArea" ng-include="'./views/propertyArea.html'"></div>
-
-	
-</div>
-
-
-<div class="editorWindow">
-	<div style="display:flex;">
-	<h6>{{vm.message}}</h6>
-	<div style="flex-grow: 1"></div>
-	<button ng-click = "vm.loadXml()">Load Xml</button>
-	<button ng-click = "vm.clearEditor()">Clear</button>
-	<button ng-click = "vm.styleEditorContent()">Format XML</button>
-	<form ng-submit="vm.submitForm()">
-		<input type="text" ng-model="vm.userInput">
-	    <button type="submit">Add Tag</button>
-	</form>
+    <div class="leftPanel" ng-class="{leftPanel:!vm.showFullEditor, leftPanelCollapsed:vm.showFullEditor}">
+	    
+	    <div  class = "navigatorWindow" >
+        </div>
 	</div>
-	<br><br><br>
-
-	<div ui-codemirror="{ onLoad : vm.codemirrorLoaded }" ></div>
-
-</div>
+    
+    <div class="rightPanel" ng-class="{rightPanel:!vm.showFullEditor, rightPanelFull:vm.showFullEditor}">
+       
+        <div ui-codemirror="{ onLoad : vm.codemirrorLoaded }"></div>
+    </div>
 </div>
