@@ -3,7 +3,6 @@
     
 /*
     Defines an xmlTag object that will be used as the main data carrier in the editor;
-    Its main feature is that it is a tag with a possible string of text after it - the suffix
 */
 angular.module('confab')
 
@@ -13,17 +12,16 @@ angular.module('confab')
             tagTypes are "STARTTAG", "COMBITAG", and "ENDTAG"
             */
     
-                function xmlTag(tagtitle, proparray) 
+                function xmlTag(elementname, proparray) 
                 {
-                    this.suffix = "";
                     this.tagType = "STARTTAG";
-                    this.tagTitle = tagtitle;
+                    this.elementName = elementname;
                     tagProperties = {};
                     proparray.forEach(function(prop)
                     {
-                        tagProperties[prop] = "";
+                        tagProperties[prop.getAttributeName()] = prop.getAttributeValues();
                     }); 
-                    this.tagProperties = tagProperties;                   
+                    this.tagProperties = tagProperties; 
                 }
                 //native functions of the xmlTag that can access the instance properties
                 xmlTag.prototype = 
@@ -42,10 +40,8 @@ angular.module('confab')
                             default :{console.log("tagType is set to default..",astring," is unknown type.");
                                         this.tagType = "STARTTAG";}
                         }
-
                     },
-                    //converts its contents to a readable xml-tag, dependent on its type
-                    toString : function()
+                    toCompleteTag : function()
                     {
                         var returnstring = "";  
                         var itsproperties = ""; 
@@ -62,32 +58,25 @@ angular.module('confab')
                             }
 
                         });
-
-
-                        switch (this.tagType)
-                        {
-                            
-                            case "STARTTAG":
-                            {
-                                returnstring =           "< " + 
-                                                this.tagTitle + 
+                     returnstring =                     "<" + 
+                                                this.elementName + 
                                                 itsproperties + 
-                                                " >"; 
-                                                break;
+                                                "></" +
+                                                this.elementName + 
+                                                ">" ;
+                                                   
 
-                            }
-                            case "COMBITAG":
-                            {
-                                returnstring =           "< " + 
-                                                this.tagTitle +
-                                                itsproperties + 
-                                                " />";
-                                                break;
-                            }
-                            case "ENDTAG":{returnstring = "</ " + this.tagTitle + " >";break;}
-                        }
+                     return returnstring;                           
 
-                        return returnstring;
+
+                    },
+                    //converts its contents to a readable xml-tag, dependent on its type
+                    toObject : function()
+                    {
+                        var theobject = {} 
+                        theobject[this.elementName] = this.tagProperties;
+                        console.log("myobj", theobject);
+                        return theobject;
                     },
                     setProperty :function (key, value)
                     {
@@ -98,9 +87,6 @@ angular.module('confab')
                         return this.tagProperties[key];
                     }
 
-
-
-
                 };
                /*static functions that have no access to this:
                 xmlTag.computeTabdistance = function(tag)
@@ -108,26 +94,85 @@ angular.module('confab')
                     return tabdistance
                 }
                */
-            
             return (xmlTag);
-
-            
-
         })
 
-    .factory('tagContainer', function()
+    .factory('attributeObject', function()
     {
-        function tagContainer()
+        function attributeObject(attributename, values, hasDefault)
         {
-            this.tagContainer = [];
-
+            this.name = attributename;
+            
+            if(values !== undefined)
+            {
+                this.values = values;
+            }
+            else
+            {
+                this.values = [];
+            }
+            if (hasDefault !== undefined)
+            {
+                this.hasDefault = hasDefault;
+            }
+            else 
+            {
+                this.hasDefault = false;
+            }
         }
 
-
-        tagContainer.prototype = function() 
+        attributeObject.prototype = 
         {
+            setAttributeValue : function(value)
+            {
+                if (this.hasDefault)
+                {
+                    this.values.unShift(value)
+                }
+                else 
+                {
+                    this.values.push(value);
+                }
+            }
 
-        }
+            ,
+
+            //insert a whole array
+            insertValues : function(array)
+            {
+               this.values = array; 
+            },
+
+            getAttributeName : function()
+            {
+                return this.name;
+            },
+
+            //returns an array of possible values 
+            getAttributeValues : function()
+            {
+                return this.values;
+            },
+            
+            setDefaultValue : function(bool)
+            {
+                this.hasDefault = bool ;
+            },
+
+            toString : function()
+            {
+                return this.name + '\nAllowed values:' + this.values.join();
+            }
+        }   
+
+
+        return(attributeObject)
+
+        
+
+
+
+
 
     });
 

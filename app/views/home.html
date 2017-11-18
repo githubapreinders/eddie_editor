@@ -1,12 +1,32 @@
 
-<div >
-<h1>{{vm.message}}</h1>
-<form ng-submit="vm.submitForm()">
-<input type="text" ng-model="vm.userInput">
-    <button type="submit">Submit</button>
-</form>
-    <div class="editorContainer" ng-repeat = "item in vm.myTags">
-    	<span contenteditable='true' >{{item.toString()}}</span>
+<div class="mainContainer">
 
-    </div>
+
+
+
+<div class="navigatorWindow"> 
+
+<div class="dataSourceArea" ng-include="'./views/dataSourceArea.html'"></div>
+<div class="classArea" ng-include="'./views/classArea.html'"></div>
+<div class="descriptionArea" ng-include="'./views/descriptionArea.html'"></div>
+<div class="propertyArea" ng-include="'./views/propertyArea.html'"></div>
+
+	
+</div>
+
+
+<div class="editorWindow">
+	<div style="display:flex;">
+	<h6>{{vm.message}}</h6>
+	<div style="flex-grow: 1"></div>
+	<form ng-submit="vm.submitForm()">
+		<input type="text" ng-model="vm.userInput">
+	    <button type="submit">Submit</button>
+	</form>
+	</div>
+	<br><br><br>
+
+	<div ui-codemirror="{ onLoad : vm.codemirrorLoaded }" ></div>
+
+</div>
 </div>

@@ -57,13 +57,11 @@ gulp.task('copy_css',['compile_sass'], function()
      .pipe(gulp.dest('build'))
 });
 
-
-
-gulp.task('watch',['browser_Sync', 'compile_sass','js_dev'], function()
+gulp.task('watch',['browser_Sync', 'compile_sass','checkJs'], function()
 {
     gulp.watch('app/scss/**/*.scss', ['compile_sass']);
     gulp.watch('app/**/*.html', browserSync.reload);
-    gulp.watch('app/scripts/*.js', ['js_dev']);
+    gulp.watch('app/scripts/*.js', ['checkJs']);
 });
 
 gulp.task('checkJs',function()

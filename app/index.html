@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" ng-app="confab">
+<html lang="en" ng-app="confab" style="width:100%; height:100%;">
 
 <head>
     <meta charset="utf-8">
@@ -14,9 +14,11 @@
     <link href="bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="bower_components/bootstrap/dist/css/bootstrap-theme.min.css" rel="stylesheet">
     <link href="bower_components/font-awesome/css/font-awesome.min.css" rel="stylesheet">
-    <link href="styles/bootstrap-social.css" rel="stylesheet">
-    <link href="styles/mystyles.css" rel="stylesheet">
+    <link href="bower_components/codemirror/lib/codemirror.css" rel="stylesheet" type="text/css" >
     <link href="css/mystyle.css" rel="stylesheet">
+    <link href="codemirror/monokai.css" rel="stylesheet">
+    <link href="codemirror/twilight.css" rel="stylesheet">
+    <link href="codemirror/show-hint.css" rel="stylesheet">
     <!-- endbuild -->
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
@@ -27,21 +29,32 @@
     <![endif]-->
 </head>
 
-<body>
+<body style="width:100%; height:100%;">
 
 
 <div ui-view="header"></div>
-<div ui-view="content"></div>
+<div ui-view="content" style="width:100%; height:100%;"></div>
 <div ui-view="footer"></div>
 
 <!-- build:js scripts/main.js -->
 <script src="bower_components/angular/angular.js"></script>
 <script src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>
+<script src="bower_components/codemirror/lib/codemirror.js"  ></script>
+<script src="bower_components/angular-ui-codemirror/ui-codemirror.js" ></script>
 
 <script src="scripts/application.js"></script>
 <script src="scripts/controllers.js"></script>
 <script src="scripts/services.js"></script>
+<script src="scripts/directives.js"></script>
 <script src="scripts/xmlTag.js"></script>
+<script src="codemirror/xml.js"></script>
+
+<script src="codemirror/show-hint.js"></script>
+<script src="codemirror/xml-hint.js"></script>
+
+
+
+
 <!-- endbuild -->
 
 </body>

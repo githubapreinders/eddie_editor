@@ -1,0 +1,4 @@
+<h2>classArea</h2>
+<div ng-repeat="item in filteredList = vm.navigatorModel | datasourceFilter ;">
+	<span class="classItem" ng-class = "{selectedItem : item == vm.selectedItem} " ng-click="vm.setSelectedClass(item);vm.showPropertyDescription = false">{{item.classname}}</span>
+</div>

@@ -1,0 +1,8 @@
+<h2>propertyArea</h2>
+<div ng-repeat = "property in vm.selectedItem.properties">
+
+
+<div class="checkbox"><label><input id="checkbox{{$index}}" type="checkbox"/><span id = "property{{$index}}" ng-click = "vm.showPropertyDescription = true" property-listener > {{property[0]}}</span></label></div>
+
+
+</div>
