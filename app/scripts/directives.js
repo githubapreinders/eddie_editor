@@ -3,7 +3,7 @@
 	'use strict';
 
 angular.module('confab')
-.directive('propertyListener', function()
+.directive('propertyListener', function(attributeObject)
 {
 	
 	return{
@@ -19,7 +19,27 @@ angular.module('confab')
 				heading.innerHTML = data[0];
 				text.innerHTML = data[1];
 
+				var elemt = document.getElementById('checkbox' + itemnumber);
+				var input = document.getElementById('propertyvalue' + itemnumber);
+				var item = scope.vm.selectedItem;
 
+				console.log("items:", elemt, input, item);
+
+				switch (elemt.checked)
+				{
+					case true :
+					{
+						scope.vm.selectedProperties[data[0]] = new attributeObject(data[0], new Array(input.value));
+						break;
+					}
+
+					case false : 
+					{
+						delete scope.vm.selectedProperties[data[0]];
+						break;
+					}
+				}
+				console.info("selected properties",scope.vm.selectedProperties);
 			});
 		}
 
