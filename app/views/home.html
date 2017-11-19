@@ -20,7 +20,7 @@
 
             <span ng-click="vm.clearEditor()" class="fa-stack fa-2x ">
                 <i class="fa fa-square-o fa-stack-2x"></i>
-                <i class="fa  fa-undo  fa-stack-1x "></i>
+                <i class="fa  fa-eraser  fa-stack-1x "></i>
             </span>
 
             <span ng-click="vm.styleEditorContent()" class="fa-stack fa-2x ">
@@ -28,11 +28,14 @@
                 <i class="fa fa-reorder fa-stack-1x "></i>
             </span>
 
-            
-
-            <span ng-click="angular.noop()" class="fa-stack fa-2x ">
+            <span ng-click="vm.retrieveData()" class="fa-stack fa-2x ">
                 <i class="fa fa-square-o fa-stack-2x"></i>
-                <i class="fa fa-send-o fa-stack-1x "></i>
+                <i class="fa fa-upload fa-stack-1x"></i>
+            </span>
+
+            <span ng-click="vm.storeData()" class="fa-stack fa-2x ">
+                <i class="fa fa-square-o fa-stack-2x"></i>
+                <i class="fa fa-floppy-o fa-stack-1x "></i>
             </span>
 
         </div>

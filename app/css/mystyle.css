@@ -10,7 +10,7 @@ h6 {
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  background: whitesmoke;
+  background: url("../media/concrete_seamless.png");
   height: 6%; }
 
 html, body {
@@ -44,7 +44,6 @@ html, body {
   left: 25%;
   width: 75%;
   height: 100%;
-  border: 1px solid red;
   background: blue;
   position: absolute;
   -webkit-transition: width 0.4s, left 0.4s;
@@ -55,7 +54,8 @@ html, body {
   position: absolute;
   width: 25%;
   height: 100%;
-  z-index: 3; }
+  z-index: 3;
+  background: url("../media/concrete_seamless.png"); }
   #configcontainer .configArea {
     overflow: scroll; }
 
@@ -63,20 +63,20 @@ html, body {
   position: absolute;
   width: 25%;
   height: 100%;
-  background: green;
+  background: url("../media/concrete_seamless.png");
   z-index: 4;
   -webkit-transition: left 0.4s;
   transition: left 0.4s; }
   #navigatorcontainer .dataSourceArea {
     height: 15%;
-    background: lavenderblush;
+    background: url("../media/concrete_seamless.png");
     padding: 0px 0px 15px 15px; }
   #navigatorcontainer .classArea {
     -webkit-box-flex: 1;
     -webkit-flex-grow: 1;
         -ms-flex-positive: 1;
             flex-grow: 1;
-    background: lightcyan;
+    background: url("../media/concrete_seamless.png");
     cursor: pointer;
     overflow: scroll;
     padding: 15px;
@@ -89,7 +89,7 @@ html, body {
       background: black; }
   #navigatorcontainer .descriptionArea {
     height: 25%;
-    background: mistyrose;
+    background: url("../media/concrete_seamless.png");
     overflow: scroll;
     padding: 15px; }
   #navigatorcontainer .propertyArea {
@@ -98,7 +98,7 @@ html, body {
         -ms-flex-positive: 1;
             flex-grow: 1;
     height: 40%;
-    background: whitesmoke;
+    background: url("../media/concrete_seamless.png");
     overflow: scroll;
     padding: 15px; }
 

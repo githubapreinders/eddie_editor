@@ -4,7 +4,7 @@
 
 angular.module('confab')
 
-    .service('staticDataFactory', function(xmlTag, $http, attributeObject) 
+    .service('staticDataFactory', function(xmlTag, $http, attributeObject,storage) 
     {
 
         var datasource = 'pipes';
@@ -88,6 +88,98 @@ angular.module('confab')
           var tag3 = new xmlTag("tag1", new Array(new attributeObject("prop1",['val1']))).toCompleteTag();
           return "<?xml version='1.0' encoding='UTF-8'?>\n<tag1 prop1=\"val1\"><tag1 prop1=\"val1\"><tag1 prop1=\"val1\"></tag1></tag1></tag1>";
         }
-    });
+    })
+    /*
+    facilitates local storage; we can store and retrieve values: storing : StorageFactory.getSetter(key)(value)
+    retrieving : StorageFactory.getGetter(key)() ; removing a key : StorageFactory.getSetter(key)()
+    */
+    .factory('StorageFactory',['storage', '$log', function(storage, $log)
+    {
+      var api = {};
+      return {
+        getSetter : getSetter,
+        getGetter : getGetter,
+        verifyKey : verifyKey,
+        createAPIForKey : createAPIForKey,
+        createSetter : createSetter,
+        createGetter : createGetter,
+      };
+
+      function getSetter(key)
+      {
+        verifyKey(key);
+        return api[key].setter;
+      }
+      function getGetter(key)
+      {
+        verifyKey(key);
+        return api[key].getter;
+      }
+
+      function verifyKey(key)
+      {
+        if(!key || angular.isUndefined(key))
+        {
+          throw new Error("Key[ " + key + " ] is invalid");
+        }
+
+        if(!api.hasOwnProperty(key))
+        {
+          createAPIForKey(key);
+        }
+
+
+      }
+
+      function createAPIForKey(key)
+      {
+        var setter = createSetter(key);
+        var getter = createGetter(key);
+        api[key] = 
+        {
+          setter : setter,
+          getter : getter
+        };
+      }
+
+      function createSetter(key)
+      {
+        return function(value)
+        {
+          if(angular.isDefined(value))
+          {
+            try
+            {
+              storage.set(key, value);
+            }
+            catch(error)
+            {
+              $log.info('[StorageFactory]' + error.message);
+            }
+          }
+          else
+          {
+            storage.remove(key);
+          }
+        };
+      }
+
+      function createGetter(key)
+      {
+        return function()
+        {
+          var value = storage.get(key);
+          if(value === null)
+          {
+            value = undefined;
+            var setter = api[key].setter;
+            setter(value);
+          }
+          return value;
+        };
+      }
+
+
+    }]);
 
 })();   

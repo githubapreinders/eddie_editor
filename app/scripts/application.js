@@ -1,6 +1,6 @@
 (function()
 {
-    var app = angular.module('confab',['ui.router', 'ui.codemirror']);
+    var app = angular.module('confab',['ui.router', 'ui.codemirror','ngCookies','angularLocalStorage']);
 
 
 app.config(function ($stateProvider, $urlRouterProvider)

@@ -3,7 +3,7 @@
     'use strict';
 
     angular.module('confab')
-        .controller('IndexController', function ($scope,xmlTag, attributeObject, staticDataFactory)
+        .controller('IndexController', function ($scope,xmlTag, attributeObject, staticDataFactory, StorageFactory)
         {
 
             console.log('IndexController...');
@@ -18,6 +18,8 @@
             vm.showNav = showNav;
             vm.showConf = showConf;
             vm.loadXml = loadXml;
+            vm.storeData = storeData;
+            vm.retrieveData = retrieveData;
             vm.message = "Angular Controller is working allright...";
             vm.userInput = "";
             vm.datasource = staticDataFactory.getDataSource();
@@ -33,6 +35,7 @@
             var thedocument = null;    
             // var tags =  staticDataFactory.getData();
 
+            var mykey = "thekey";
 
             staticDataFactory.getJson().then(function success(response)
             {
@@ -46,13 +49,28 @@
             });
 
 
+            
+
+            function storeData()
+            {
+                console.log("storing data");
+                var myvalue = thedocument.getValue();
+                StorageFactory.getSetter(mykey)(myvalue);
+            }
+
+            function retrieveData()
+            {
+                console.log("retrieving data");
+                thedocument.setValue(StorageFactory.getGetter(mykey)());
+            }
+
             function showConf()
             {
                 var navigator = document.getElementById('navigatorcontainer');
                  
                 if(vm.showConfig)
                 {
-                  navigator.style.left = "0%"
+                  navigator.style.left = "0%";
                 }
                 else
                 {
