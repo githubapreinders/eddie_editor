@@ -18,10 +18,13 @@
 <div class="editorWindow">
 	<div style="display:flex;">
 	<h6>{{vm.message}}</h6>
-	<div style="flex-grow: 1"></div>
+	
 	<button ng-click = "vm.loadXml()">Load Xml</button>
+	<div style="flex-grow: 1"></div>
 	<button ng-click = "vm.clearEditor()">Clear</button>
+	<div style="flex-grow: 1"></div>
 	<button ng-click = "vm.styleEditorContent()">Format XML</button>
+	<div style="flex-grow: 1"></div>
 	<form ng-submit="vm.submitForm()">
 		<input type="text" ng-model="vm.userInput">
 	    <button type="submit">Add Tag</button>

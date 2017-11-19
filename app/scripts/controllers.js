@@ -266,7 +266,7 @@
                var newtag = new xmlTag(vm.selectedItem.classname, theproperties);
                console.log("taga:", newtag.toString());
                 thedocument.replaceSelection(newtag.toCompleteTag());
-
+                editor.focus();
                 
 
                //  if (vm.selectedItem === null)
