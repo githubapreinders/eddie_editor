@@ -13,6 +13,10 @@ h6 {
   background: whitesmoke;
   height: 6%; }
 
+html, body {
+  width: 100%;
+  height: 100%; }
+
 .leftPanel {
   width: 25%;
   background: fuchsia;
@@ -91,22 +95,66 @@ leftPanelRight {
 .mainContainer {
   width: 100%;
   height: 94%;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex; }
+  position: relative;
+  border: 1px solid grey; }
 
-.rightPanel {
+#editorcontainer {
+  left: 25%;
   width: 75%;
-  -webkit-transition: width 0.4s;
-  transition: width 0.4s;
   height: 100%;
-  background: snow; }
+  border: 1px solid red;
+  background: blue;
+  position: absolute;
+  -webkit-transition: width 0.4s, left 0.4s;
+  transition: width 0.4s, left 0.4s;
+  z-index: 5; }
 
-.rightPanelFull {
-  width: 100%;
-  -webkit-transition: width 0.4s;
-  transition: width 0.4s; }
+#configcontainer {
+  position: absolute;
+  width: 25%;
+  height: 100%;
+  overflow: scroll;
+  z-index: 3; }
+
+#navigatorcontainer {
+  position: absolute;
+  width: 25%;
+  height: 100%;
+  background: green;
+  z-index: 4;
+  -webkit-transition: left 0.4s;
+  transition: left 0.4s;
+  overflow: scroll; }
+  #navigatorcontainer .dataSourceArea {
+    height: 15%;
+    background: lavenderblush;
+    padding: 15px; }
+  #navigatorcontainer .classArea {
+    -webkit-box-flex: 1;
+    -webkit-flex-grow: 1;
+        -ms-flex-positive: 1;
+            flex-grow: 1;
+    background: lightcyan;
+    cursor: pointer;
+    overflow: scroll;
+    padding: 15px;
+    height: 20%; }
+    #navigatorcontainer .classArea .classItem {
+      color: black; }
+    #navigatorcontainer .classArea .selectedItem {
+      display: block;
+      color: white;
+      background: black; }
+  #navigatorcontainer .descriptionArea {
+    height: 25%;
+    background: mistyrose;
+    overflow: scroll;
+    padding: 15px; }
+  #navigatorcontainer .propertyArea {
+    height: 40%;
+    background: whitesmoke;
+    overflow: scroll;
+    padding: 15px; }
 
 /*rotates an icon in the navbar*/
 .fa-rotate-45 {

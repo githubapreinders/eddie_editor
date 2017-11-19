@@ -1,14 +1,13 @@
 
         <div class = "navBar" id = "mynavbar">
-
         	<div style="width :500px;"></div>
-            <span ng-click="vm.showMenu = !vm.showMenu;" class="fa-stack fa-2x ">
+            <span ng-click="vm.showConf()" class="fa-stack fa-2x ">
                 <i class="fa fa-square-o fa-stack-2x"></i>
                 <i class="fa fa-close  fa-stack-1x " ng-show = "vm.showMenu"></i>
                 <i class="fa fa-cog  fa-stack-1x " ng-show = "!vm.showMenu"></i>
             </span>
 
-            <span ng-click="vm.showFullEditor = !vm.showFullEditor;" class="fa-stack fa-2x ">
+            <span ng-click="vm.showNav()" class="fa-stack fa-2x ">
                 <i class="fa fa-square-o fa-stack-2x"></i>
                 <i class="fa fa-toggle-left  fa-stack-1x "></i>
             </span>
@@ -45,14 +44,20 @@
 
 
 <div class="mainContainer">
-    <div class="leftPanel" ng-class="{leftPanel:!vm.showFullEditor, leftPanelCollapsed:vm.showFullEditor}">
-	    
-	    <div  class = "navigatorWindow" >
-        </div>
-	</div>
+    <div id="navigatorcontainer">
+         <div class="dataSourceArea" ng-include="'./views/dataSourceArea.html'"></div>
+         <div class="classArea" ng-include="'./views/classArea.html'"></div>
+         <div class="descriptionArea" ng-include="'./views/descriptionArea.html'"></div>
+         <div class="propertyArea" ng-include="'./views/propertyArea.html'"></div>
+    </div>
     
-    <div class="rightPanel" ng-class="{rightPanel:!vm.showFullEditor, rightPanelFull:vm.showFullEditor}">
+    <div id="configcontainer">
+        <div class="configArea" ng-include="'./views/configArea.html'"></div>
+    </div>
+
+
+    <div id = "editorcontainer">
        
-        <div ui-codemirror="{ onLoad : vm.codemirrorLoaded }"></div>
+        <div class = "editorArea" ui-codemirror="{ onLoad : vm.codemirrorLoaded }"></div>
     </div>
 </div>
