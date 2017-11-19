@@ -3,7 +3,7 @@
     'use strict';
 
     angular.module('confab')
-        .controller('IndexController', function (xmlTag, attributeObject, staticDataFactory)
+        .controller('IndexController', function ($scope,xmlTag, attributeObject, staticDataFactory)
         {
 
             console.log('IndexController...');
@@ -15,6 +15,8 @@
             vm.toggle_datasource = toggle_datasource;
             vm.styleEditorContent = styleEditorContent;
             vm.clearEditor = clearEditor;
+            vm.showNav = showNav;
+            vm.showConf = showConf;
             vm.loadXml = loadXml;
             vm.message = "Angular Controller is working allright...";
             vm.userInput = "";
@@ -23,7 +25,10 @@
             vm.selectedItem = null;
             vm.showPropertyDescription = false;
             vm.selectedProperties = {};
+            vm.showConfig = false;
+            vm.showNavigator = true;
 
+            vm.showFullEditor = false;
             var editor = null;
             var thedocument = null;    
             // var tags =  staticDataFactory.getData();
@@ -40,6 +45,43 @@
 
             });
 
+
+            function showConf()
+            {
+                var navigator = document.getElementById('navigatorcontainer');
+                 
+                if(vm.showConfig)
+                {
+                  navigator.style.left = "0%"
+                }
+                else
+                {
+                  navigator.style.left = '25%';
+                }
+                vm.showConfig = !vm.showConfig;
+              }
+                
+
+
+              function showNav()
+              {
+                var editor = document.getElementById('editorcontainer');
+                
+                
+                if(vm.showNavigator)
+                {
+                  editor.style.width = '75%';
+                  editor.style.left = '25%';
+                }
+                else
+                {
+                  editor.style.width = '100%';
+                  editor.style.left = '0%';
+                }
+                vm.showNavigator = !vm.showNavigator;
+              }
+
+            
 
             function loadXml()
             {
@@ -126,8 +168,17 @@
                 _editor.addKeyMap(map);    
                 editor = _editor;
                 thedocument = _doc;
+                showNav(); 
+
                 console.log("editor loaded;");
 
+
+
+                var windowheight = window.innerHeight;
+                var navbarheight = document.getElementById('mynavbar').offsetHeight;
+                var ed = document.querySelector('.CodeMirror');
+                ed.style.height = (windowheight - navbarheight) + 'px'; 
+                console.log("window, navbar, editor:", windowheight, navbarheight, ed.style.height);
 
                 function completeAfter(cm, pred) 
                 {

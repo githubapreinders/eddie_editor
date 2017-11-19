@@ -5,54 +5,104 @@
 h6 {
   color: blue; }
 
-.mainContainer {
-  width: 100%;
-  height: 100%;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex; }
-
-.navigatorWindow {
-  width: 25%;
-  height: 100%;
-  background: LightSlateGrey;
+.navBar {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-  -webkit-flex-direction: column;
-      -ms-flex-direction: column;
-          flex-direction: column; }
-  .navigatorWindow .dataSourceArea {
+  background: whitesmoke;
+  height: 6%; }
+
+html, body {
+  width: 100%;
+  height: 100%; }
+
+.configTop, .navigatorTop {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex; }
+  .configTop span, .navigatorTop span {
+    padding: 2px;
+    border: 1px solid grey;
+    border-top: 0px; }
+  .configTop i, .navigatorTop i {
+    display: inline; }
+  .configTop div, .navigatorTop div {
+    -webkit-box-flex: 1;
+    -webkit-flex-grow: 1;
+        -ms-flex-positive: 1;
+            flex-grow: 1; }
+
+.mainContainer {
+  width: 100%;
+  height: 94%;
+  position: relative;
+  border: 1px solid grey; }
+
+#editorcontainer {
+  left: 25%;
+  width: 75%;
+  height: 100%;
+  border: 1px solid red;
+  background: blue;
+  position: absolute;
+  -webkit-transition: width 0.4s, left 0.4s;
+  transition: width 0.4s, left 0.4s;
+  z-index: 5; }
+
+#configcontainer {
+  position: absolute;
+  width: 25%;
+  height: 100%;
+  z-index: 3; }
+  #configcontainer .configArea {
+    overflow: scroll; }
+
+#navigatorcontainer {
+  position: absolute;
+  width: 25%;
+  height: 100%;
+  background: green;
+  z-index: 4;
+  -webkit-transition: left 0.4s;
+  transition: left 0.4s; }
+  #navigatorcontainer .dataSourceArea {
     height: 15%;
-    background: lavenderblush; }
-  .navigatorWindow .classArea {
+    background: lavenderblush;
+    padding: 0px 0px 15px 15px; }
+  #navigatorcontainer .classArea {
     -webkit-box-flex: 1;
     -webkit-flex-grow: 1;
         -ms-flex-positive: 1;
             flex-grow: 1;
     background: lightcyan;
     cursor: pointer;
-    overflow: scroll; }
-    .navigatorWindow .classArea .classItem {
+    overflow: scroll;
+    padding: 15px;
+    height: 20%; }
+    #navigatorcontainer .classArea .classItem {
       color: black; }
-    .navigatorWindow .classArea .selectedItem {
+    #navigatorcontainer .classArea .selectedItem {
       display: block;
       color: white;
       background: black; }
-  .navigatorWindow .descriptionArea {
+  #navigatorcontainer .descriptionArea {
     height: 25%;
     background: mistyrose;
-    overflow: scroll; }
-  .navigatorWindow .propertyArea {
+    overflow: scroll;
+    padding: 15px; }
+  #navigatorcontainer .propertyArea {
+    -webkit-box-flex: 1;
+    -webkit-flex-grow: 1;
+        -ms-flex-positive: 1;
+            flex-grow: 1;
     height: 40%;
     background: whitesmoke;
-    overflow: scroll; }
+    overflow: scroll;
+    padding: 15px; }
 
-.editorWindow {
-  width: 75%;
-  height: 100%;
-  background: snow; }
+/*rotates an icon in the navbar*/
+.fa-rotate-45 {
+  -webkit-transform: rotate(45deg);
+          transform: rotate(45deg); }

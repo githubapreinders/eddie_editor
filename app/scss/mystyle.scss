@@ -10,63 +10,136 @@ h6
 	color:blue;
 }
 
-.mainContainer
+.navBar
+{
+	display: flex;
+	background:whitesmoke;
+	height : 6%;
+}
+
+
+html, body
 {
 	width:100%;
 	height:100%;
-	display:flex;
-
 }
 
-
-.navigatorWindow
-{	width: 25%;
-	height: 100%;
-	background: LightSlateGrey;
-	display:flex;
-	flex-direction:column;
-	.dataSourceArea
-	{
-		height:15%;
-		background:lavenderblush;
-	}
-	.classArea
-	{
-		flex-grow:1;
-		background:lightcyan;
-		cursor : pointer;
-		overflow:scroll;
-
-		.classItem
-		{
-			color:black;
-		}
-		.selectedItem
-		{
-			display:block;
-			color:white;
-			background:black;
-		}
-	}
-	.descriptionArea
-	{
-		height:25%;
-		background:mistyrose;
-		overflow:scroll;
-
-	}
-	.propertyArea
-	{
-		height:40%;
-		background:whitesmoke;
-		overflow:scroll;
-
-	}
-}
-
-.editorWindow
+.configTop, .navigatorTop
 {
-	width: 75%;
-	height:100%;
-	background:snow;
+	display:flex;
+	span
+	{
+		padding:2px;
+		border:1px solid grey;
+		border-top:0px;
+	}
+	i
+	{
+		display:inline;
+	}
+	div
+	{
+		flex-grow: 1;
+	}
 }
+
+
+.mainContainer
+{
+	width:100%;
+  	height:94%;
+  	position:relative;
+  	border: 1px solid grey;
+}
+
+#editorcontainer
+{
+  	left:25%;
+  	width:75%;
+  	height:100%;
+  	border:1px solid red;
+  	background:blue;
+  	position:absolute;
+  	transition: width 0.4s, left 0.4s;
+  	z-index:5;
+  	.editorArea
+  	{
+  		
+  	}
+
+}
+
+#configcontainer
+{
+  position:absolute;
+  width:25%;
+  height:100%;
+  z-index: 3;
+  .configArea
+  {
+  	  overflow:scroll;
+  }
+
+}
+
+#navigatorcontainer
+{
+  position:absolute;
+  width:25%;
+  height:100%;
+  background:green;
+  z-index: 4;
+  transition: left 0.4s;
+  
+  				.dataSourceArea
+				{
+					height:15%;
+					background:lavenderblush;
+					padding:  0px 0px 15px 15px;
+				}
+				.classArea
+				{
+					flex-grow:1;
+					background:lightcyan;
+					cursor : pointer;
+					overflow:scroll;
+					padding: 15px;
+					height:20%;
+					.classItem
+					{
+						color:black;
+					}
+					.selectedItem
+					{
+						display:block;
+						color:white;
+						background:black;
+					}
+				}
+				.descriptionArea
+				{
+					height:25%;
+					background:mistyrose;
+					overflow:scroll;
+					padding: 15px;
+				}
+				.propertyArea
+				{
+					flex-grow:1;
+					height:40%;
+					background:whitesmoke;
+					overflow:scroll;
+					padding: 15px;
+				}
+}
+
+
+
+/*rotates an icon in the navbar*/
+.fa-rotate-45 
+{
+    transform: rotate(45deg);
+}
+
+
+
