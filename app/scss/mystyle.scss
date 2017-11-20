@@ -84,10 +84,34 @@ html, body
   background : url($background0);
   .configArea
   {
-  	  overflow:scroll;
+  	overflow:scroll;
+  	
   }
 
 }
+
+.slotContainer
+  	{
+	  	display:flex;
+	  	padding: 3px;
+
+
+		span
+		{
+			padding:2px;
+		}
+		i
+		{
+			display:inline;
+		}
+
+		div
+		{
+			display:inline;
+			flex-grow:1;
+		}
+
+  	}
 
 #navigatorcontainer
 {

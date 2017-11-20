@@ -59,6 +59,23 @@ html, body {
   #configcontainer .configArea {
     overflow: scroll; }
 
+.slotContainer {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  padding: 3px; }
+  .slotContainer span {
+    padding: 2px; }
+  .slotContainer i {
+    display: inline; }
+  .slotContainer div {
+    display: inline;
+    -webkit-box-flex: 1;
+    -webkit-flex-grow: 1;
+        -ms-flex-positive: 1;
+            flex-grow: 1; }
+
 #navigatorcontainer {
   position: absolute;
   width: 25%;

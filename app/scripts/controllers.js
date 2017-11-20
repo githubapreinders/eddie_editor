@@ -3,12 +3,13 @@
     'use strict';
 
     angular.module('confab')
-        .controller('IndexController', function ($scope,xmlTag, attributeObject, staticDataFactory, StorageFactory)
+        .controller('IndexController', function ($scope,$interval,$timeout, xmlTag, attributeObject, staticDataFactory, StorageFactory)
         {
 
             console.log('IndexController...');
             var vm = this;
         
+            //Functions
             vm.submitForm = submitForm;
             vm.codemirrorLoaded = codemirrorLoaded;
             vm.setSelectedClass = setSelectedClass;
@@ -20,6 +21,9 @@
             vm.loadXml = loadXml;
             vm.storeData = storeData;
             vm.retrieveData = retrieveData;
+            vm.toggleSlot = toggleSlot;
+
+            //Static values
             vm.message = "Angular Controller is working allright...";
             vm.userInput = "";
             vm.datasource = staticDataFactory.getDataSource();
@@ -29,14 +33,20 @@
             vm.selectedProperties = {};
             vm.showConfig = false;
             vm.showNavigator = true;
-
             vm.showFullEditor = false;
             var editor = null;
             var thedocument = null;    
-            // var tags =  staticDataFactory.getData();
+            vm.intervalID=null;
 
-            var mykey = "thekey";
+            
+            vm.theslots = [];
+            $interval(myfunc(), 1000);
 
+            function myfunc()
+            {
+                console.log(new Date().toString());
+            }
+            //initialisation
             staticDataFactory.getJson().then(function success(response)
             {
                 vm.navigatorModel = response.data;
@@ -49,20 +59,63 @@
             });
 
 
-            
+            console.log("retrieved keys",StorageFactory.getKeys());
+
+
+            function toggleSlot(slot)
+            {
+                console.log("incoming slot:", slot);
+                if(vm.currentSlot === slot)
+                {
+                    vm.currentSlot = vm.theslots[0];
+                    StorageFactory.setCurrentKey(vm.currentSlot);
+                }
+                else
+                {
+                    vm.currentSlot = slot;
+                    StorageFactory.setCurrentKey(vm.currentSlot);
+                    retrieveData(slot);
+                }
+                storeData();
+                console.log("theslots:",vm.theslots, vm.currentSlot);
+
+            }
 
             function storeData()
             {
                 console.log("storing data");
+                var mykey = StorageFactory.getCurrentKey();
                 var myvalue = thedocument.getValue();
                 StorageFactory.getSetter(mykey)(myvalue);
             }
 
-            function retrieveData()
+            function retrieveData(key)
             {
                 console.log("retrieving data");
-                thedocument.setValue(StorageFactory.getGetter(mykey)());
+                
+                if(key === undefined)
+                {
+                    //StorageFactory.getCurrentKey()
+                    console.log("key undefined setting default slot");
+                    thedocument.setValue(StorageFactory.getGetter('slot1')());
+                    vm.theslots = StorageFactory.getKeys();
+                    vm.currentSlot = vm.theslots[0];
+                    
+                }
+                else
+                {
+                    console.log("getting value for slot ", key);
+                    thedocument.setValue(StorageFactory.getGetter(key)());
+                    
+                    console.log("slots",vm.theslots);
+                }
+                console.log("setting timer");
+
             }
+
+
+
+
 
             function showConf()
             {
@@ -186,8 +239,13 @@
                 _editor.addKeyMap(map);    
                 editor = _editor;
                 thedocument = _doc;
+                
+                //initialising left panel.
                 showNav(); 
-
+                
+                //initialising the cache and loading it in the editor;
+                var avalue = StorageFactory.init()();
+                retrieveData();
                 console.log("editor loaded;");
 
 

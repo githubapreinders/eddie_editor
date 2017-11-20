@@ -96,6 +96,9 @@ angular.module('confab')
     .factory('StorageFactory',['storage', '$log', function(storage, $log)
     {
       var api = {};
+      var thekeys = ["slot1","slot2","slot3"];
+      var currentKey;
+      
       return {
         getSetter : getSetter,
         getGetter : getGetter,
@@ -103,7 +106,45 @@ angular.module('confab')
         createAPIForKey : createAPIForKey,
         createSetter : createSetter,
         createGetter : createGetter,
+        getKeys : getKeys,
+        setCurrentKey : setCurrentKey,
+        getCurrentKey : getCurrentKey,
+        init : init
       };
+
+      function init()
+      {
+        if(storage.getKeys() === undefined || storage.getKeys().length === 0)
+        {
+          console.log("finding empty storage");
+          thekeys.forEach(function(akey)
+          {
+            getSetter(akey)('');
+          });
+          console.log("api", api);
+          
+        }
+        currentKey = thekeys[0];
+        console.log("keys:",currentKey);
+      return getGetter(currentKey);
+      }
+
+      
+      function setCurrentKey(key)
+      {
+        currentKey = key;
+      }
+
+      function getCurrentKey(key)
+      {
+        return currentKey;
+      }      
+
+
+      function getKeys()
+      {
+        return storage.getKeys();
+      }
 
       function getSetter(key)
       {

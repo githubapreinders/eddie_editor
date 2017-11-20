@@ -36,3 +36,12 @@
 	}
 
 }
+
+<div class="dataSourceArea" ng-include="'./views/dataSourceArea.html'" ></div>
+            <div class="classArea" ng-include="'./views/classArea.html'" ></div>
+            <div class="descriptionArea" ng-include="'./views/descriptionArea.html'" ></div>
+            <div class="propertyArea" ng-include="'./views/propertyArea.html'" ></div>
+
+            <div style="width:100%;height:100%;background:red;"></div>
+
+            ng-class="{leftPanel:!vm.showFullEditor, leftPanelCollapsed:vm.showFullEditor}"
