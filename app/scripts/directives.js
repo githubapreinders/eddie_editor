@@ -25,6 +25,8 @@ angular.module('confab')
 
 				console.log("items:", elemt, input, item);
 
+				/* a checked checkbox will be written onto vm.selectedProperties,
+				when it is unchecked we will want to remove it from there. */
 				switch (elemt.checked)
 				{
 					case true :

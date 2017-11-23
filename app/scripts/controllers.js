@@ -22,6 +22,7 @@
             vm.storeData = storeData;
             vm.retrieveData = retrieveData;
             vm.toggleSlot = toggleSlot;
+            vm.modifyAlias = modifyAlias;
 
             //Static values
             vm.message = "Angular Controller is working allright...";
@@ -37,15 +38,54 @@
             var editor = null;
             var thedocument = null;    
             vm.intervalID=null;
+            vm.tagExample = null;
+            vm.modifyTagExample = modifyTagExample;
 
             
-            vm.theslots = [];
-            $interval(myfunc(), 1000);
 
-            function myfunc()
+
+            vm.theslots = [];
+            $interval(function()
             {
-                console.log(new Date().toString());
+                StorageFactory.getSetter(StorageFactory.getCurrentKey())(thedocument.getValue());
+            }, 5000);
+
+            $scope.$watch('vm.selectedItem', function(newval, oldval)
+            {
+                    modifyTagExample();
+            });
+
+            function watchCheckbox()
+            {
+                modifyTagExample();
             }
+
+            function modifyTagExample()
+            {
+                if(vm.selectedItem === null)return;
+                    var theproperties = [];    
+                    console.log("props:", vm.selectedProperties);
+                    if (Object.keys(vm.selectedProperties).length > 0 )
+                    {
+                        Object.keys(vm.selectedProperties).forEach(function(thekey)
+                        {
+                            
+                            theproperties.push(vm.selectedProperties[thekey]);
+                        }); 
+                    }
+                   vm.tagExample = new xmlTag(vm.selectedItem.classname, theproperties).toCompleteTag();
+            }    
+
+
+
+
+            function modifyAlias(slotn, newname)
+            {
+                console.log("modify ",slotn, newname);
+                StorageFactory.getSetter(slotn)(newname);
+            }
+
+
             //initialisation
             staticDataFactory.getJson().then(function success(response)
             {
@@ -64,28 +104,28 @@
 
             function toggleSlot(slot)
             {
-                console.log("incoming slot:", slot);
+                //a keypress on an open folder, in other words, closing a folder
                 if(vm.currentSlot === slot)
                 {
                     vm.currentSlot = vm.theslots[0];
                     StorageFactory.setCurrentKey(vm.currentSlot);
                 }
+                //opening a slot
                 else
                 {
                     vm.currentSlot = slot;
                     StorageFactory.setCurrentKey(vm.currentSlot);
                     retrieveData(slot);
                 }
-                storeData();
-                console.log("theslots:",vm.theslots, vm.currentSlot);
 
+                console.log("theslots:",vm.theslots, vm.currentSlot);
             }
 
             function storeData()
             {
-                console.log("storing data");
                 var mykey = StorageFactory.getCurrentKey();
                 var myvalue = thedocument.getValue();
+                console.log("storing data", mykey, myvalue);
                 StorageFactory.getSetter(mykey)(myvalue);
             }
 
@@ -95,22 +135,21 @@
                 
                 if(key === undefined)
                 {
-                    //StorageFactory.getCurrentKey()
-                    console.log("key undefined setting default slot");
-                    thedocument.setValue(StorageFactory.getGetter('slot1')());
+                    var ks = StorageFactory.getCurrentKey();
+                    thedocument.setValue(StorageFactory.getGetter(ks)());
                     vm.theslots = StorageFactory.getKeys();
+                    vm.thealiases = StorageFactory.getAliases();
                     vm.currentSlot = vm.theslots[0];
-                    
+                    console.log("slots after initialisation:",vm.thealiases);
                 }
                 else
                 {
                     console.log("getting value for slot ", key);
                     thedocument.setValue(StorageFactory.getGetter(key)());
                     
-                    console.log("slots",vm.theslots);
                 }
-                console.log("setting timer");
-
+            
+            console.log("slots",vm.theslots);
             }
 
 
@@ -137,17 +176,27 @@
               function showNav()
               {
                 var editor = document.getElementById('editorcontainer');
+                var navItem = document.getElementById('navItem');
+                var picture = document.getElementById('picture');
                 
-                
+                if(!picture || !navItem || !editor){return;}
+
+
                 if(vm.showNavigator)
                 {
                   editor.style.width = '75%';
                   editor.style.left = '25%';
+                  navItem.style.left = '90%';
+                  picture.classList.add('fa-toggle-left');
+                  picture.classList.remove('fa-toggle-right');
                 }
                 else
                 {
                   editor.style.width = '100%';
                   editor.style.left = '0%';
+                  navItem.style.left = '0%';
+                  picture.classList.remove('fa-toggle-left');
+                  picture.classList.add('fa-toggle-right');
                 }
                 vm.showNavigator = !vm.showNavigator;
               }
@@ -156,9 +205,9 @@
 
             function loadXml()
             {
-                staticDataFactory.loadXml('').then(function succes(response)
+                staticDataFactory.loadXml(vm.selectedItem.file).then(function succes(response)
                 {
-                    thedocument.setValue(response.data);
+                    thedocument.replaceSelection(response.data);
                 });
             }
 
@@ -180,21 +229,13 @@
                 vm.datasource = staticDataFactory.getDataSource();
                 vm.showPropertyDescription = false;
                 
-                // for (var i=0 ; i < vm.navigatorModel.length; i++)    
-                // {
-                //     if(vm.navigatorModel[i].type === string)
-                //     {
-                //         vm.selectedItem = vm.navigatorModel[i];
-                //         break;
-                //     }
-                // }
                 var done = false;
                 Object.keys(vm.navigatorModel).forEach(function(key)
                 {
                     if (!done && vm.navigatorModel[key].type === string )
                     {
                         vm.selectedItem = vm.navigatorModel[key];
-                        vm.selectedProperties = {}
+                        vm.selectedProperties = {};
                         done = true;
                     }
                 });
@@ -214,9 +255,6 @@
                 _editor.setOption('theme', 'twilight');
                 _editor.setOption('hintOptions', {schemaInfo: vm.navigatorModel});
                 _editor.setOption('matchTags', {bothTags: true});
-
-                // _editor.setOption('hintOptions', {schemaInfo: vm.navigatorModel});
-
                 var extraKeys =  {
                           "'<'": completeAfter,
                           "'/'": completeIfAfterLt,
@@ -225,9 +263,6 @@
                           "Ctrl-Space": "autocomplete"
                                 };
                 _editor.setOption('extraKeys', extraKeys);
-                 _doc.setValue(staticDataFactory.makeSnippet());
-                 _doc.setCursor(_doc.lastLine());
-
                 
                 var map = {"Ctrl-A" : function(cm)
                     {
@@ -242,9 +277,11 @@
                 
                 //initialising left panel.
                 showNav(); 
+                showConf();
+                showConf();
                 
                 //initialising the cache and loading it in the editor;
-                var avalue = StorageFactory.init()();
+                var avalue = StorageFactory.initialise();
                 retrieveData();
                 console.log("editor loaded;");
 
@@ -379,75 +416,28 @@
                 {
                     return;
                 }
-                var theproperties = [];    
-                console.log("props:", vm.selectedProperties);
-                if (Object.keys(vm.selectedProperties).length > 0 )
+                if(vm.selectedItem.type === 'snippets')
                 {
-                    Object.keys(vm.selectedProperties).forEach(function(thekey)
-                    {
-                        
-                        theproperties.push(vm.selectedProperties[thekey]);
-                    }); 
+                    console.log("selectedItem:",vm.selectedItem);
+                    loadXml(vm.selectedItem.file);
                 }
-                console.log("here", theproperties);
-               var newtag = new xmlTag(vm.selectedItem.classname, theproperties);
-               console.log("taga:", newtag.toString());
-                thedocument.replaceSelection(newtag.toCompleteTag());
-                editor.focus();
-                
-
-               //  if (vm.selectedItem === null)
-               //  {
-               //      return;
-               //  }
-               //  var theproperties = [];    
-               //  console.log("props:", vm.selectedProperties);
-               //  if (Object.keys(vm.selectedProperties).length > 0 )
-               //  {
-               //      Object.keys(vm.selectedProperties).forEach(function(thekey)
-               //      {
-               //          theproperties.push(vm.selectedProperties[thekey]);
-               //      }); 
-               //  }
-               //  console.log("here", theproperties);
-               // var newtag = new xmlTag(vm.selectedItem.classname, theproperties);
-               // console.log("taga:", newtag.toString());
-               //  doc.replaceSelection(newtag.toCompleteTag());
-
-
-                // var values = vm.userInput.split(/\s+/);
-                // console.log("values from splitter:", values);
-                // var myattrs = new attributeObject('color', ['red','green','blue']);
-                // console.log("attributeObject:",myattrs);
-                // var newtag = new xmlTag("appel", [new attributeObject("color",["green", "red", "pink"])]);
-                // console.log("tag:", JSON.stringify(newtag.toObject()));
-                //tags = staticDataFactory.setData()
-
-
-             // var insertion = null;   
-            	// if (vm.userInput !== "")
-            	// {
-            	// 	var values = vm.userInput.split(/\s+/);
-            	// 	console.log("values from splitter:", values);
-            	// 	var tagtitle = values.shift();
-            	// 	var tagproperties = [];
-            	// 	if (values.length > 0)
-            	// 	{
-            	// 		values.forEach(function(val)
-            	// 		{
-            	// 			tagproperties.push(val);
-            	// 		});
-            	// 	}
-             //        insertion =  new xmlTag(tagtitle, tagproperties).toCompleteTag();
-             //    }
-             //    else
-             //    {
-             //        insertion = new xmlTag("module",[]).toString() +"\n"+ new xmlTag("adapter",[]).toString()
-             //    }
-             //     doc.replaceSelection(insertion);
+                else
+                {
+                    var theproperties = [];    
+                    console.log("props:", vm.selectedProperties);
+                    if (Object.keys(vm.selectedProperties).length > 0 )
+                    {
+                        Object.keys(vm.selectedProperties).forEach(function(thekey)
+                        {
+                            
+                            theproperties.push(vm.selectedProperties[thekey]);
+                        }); 
+                    }
+                   var newtag = new xmlTag(vm.selectedItem.classname, theproperties);
+                    thedocument.replaceSelection(newtag.toCompleteTag());
+                    editor.focus();
+                }
             }
-
-
         })
     .filter('datasourceFilter', function(staticDataFactory)
     {

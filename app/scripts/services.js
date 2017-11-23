@@ -68,7 +68,8 @@ angular.module('confab')
 
         function loadXml(which)
         {
-          which = 'configurationHelloWorlds.xml';
+          //which = 'configurationHelloWorlds.xml';
+          console.log("which:", which);
           return $http.get('./media/'+ which ).then(function(data)
             {
               return data;
@@ -97,7 +98,11 @@ angular.module('confab')
     {
       var api = {};
       var thekeys = ["slot1","slot2","slot3"];
+      var thealiases = ["aliasslot1","aliasslot2","aliasslot3"];
+      var template = ["slot1","slot2","slot3","aliasslot1","aliasslot2","aliasslot3"];
       var currentKey;
+      var mykeys;
+      var myaliases;
       
       return {
         getSetter : getSetter,
@@ -107,29 +112,47 @@ angular.module('confab')
         createSetter : createSetter,
         createGetter : createGetter,
         getKeys : getKeys,
+        getAliases : getAliases,
         setCurrentKey : setCurrentKey,
         getCurrentKey : getCurrentKey,
-        init : init
+        initialise : initialise
       };
 
-      function init()
+
+      function initialise()
       {
-        if(storage.getKeys() === undefined || storage.getKeys().length === 0)
+        template.forEach(function(templateitem)
         {
-          console.log("finding empty storage");
-          thekeys.forEach(function(akey)
+          if(!(storage.getKeys().includes(templateitem)))
           {
-            getSetter(akey)('');
-          });
-          console.log("api", api);
-          
-        }
+            if(templateitem.substring(0,5) === 'alias')
+            {
+              getSetter(templateitem)(templateitem.substring(5,10));
+            }
+            else
+            {
+              getSetter(templateitem)(templateitem.substring(5,10)); 
+            }
+          }
+        });
         currentKey = thekeys[0];
-        console.log("keys:",currentKey);
-      return getGetter(currentKey);
       }
 
-      
+
+      function getAliases()
+      {
+        var output = [];
+
+        thealiases.forEach(function(value)
+        {
+          output.push(getGetter(value)());
+        });
+
+      return output;  
+      }
+
+
+
       function setCurrentKey(key)
       {
         currentKey = key;
@@ -143,7 +166,16 @@ angular.module('confab')
 
       function getKeys()
       {
-        return storage.getKeys();
+        var thekeys = storage.getKeys();
+        var result = [];
+        thekeys.forEach(function(val)
+        {
+          if(val.substring(0,4) === 'slot')
+          {
+            result.push(val);
+          }
+        });
+        return result;
       }
 
       function getSetter(key)

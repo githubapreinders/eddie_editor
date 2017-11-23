@@ -2,7 +2,7 @@
 
 <div class="slotContainer">
 	<span>1.</span>	
-	<input type="text" id="slot1" ng-model = "vm.theslots[0]">
+	<input type="text" id="slot1" ng-model = "vm.thealiases[0]" ng-change="vm.modifyAlias('aliasslot1',vm.thealiases[0])">
 	
 	<span  ng-click="vm.toggleSlot(vm.theslots[0])" >
 	         <i  class="fa" ng-class="{'fa-folder-open':vm.currentSlot === vm.theslots[0], 'fa-folder' : vm.currentSlot !== vm.theslots[0]}"></i>
@@ -15,7 +15,7 @@
 
 <div class="slotContainer">
 	<span>2.</span>	
-	<input type="text" id="slot2" ng-model = "vm.theslots[1]">
+	<input type="text" id="slot2" ng-model = "vm.thealiases[1]" ng-change="vm.modifyAlias('aliasslot2',vm.thealiases[1])">
 	
 	<span  ng-click="vm.toggleSlot(vm.theslots[1])" >
 	         <i  class="fa" ng-class="{'fa-folder-open':vm.currentSlot === vm.theslots[1], 'fa-folder' : vm.currentSlot !== vm.theslots[1]}"></i>
@@ -28,7 +28,7 @@
 
 <div class="slotContainer">
 	<span>3.</span>	
-	<input type="text" id="slot3" ng-model = "vm.theslots[2]">
+	<input type="text" id="slot3" ng-model = "vm.thealiases[2]" ng-change="vm.modifyAlias('aliasslot3',vm.thealiases[2])">
 	
 	<span  ng-click="vm.toggleSlot(vm.theslots[2])" >
 	         <i  class="fa" ng-class="{'fa-folder-open':vm.currentSlot === vm.theslots[2], 'fa-folder' : vm.currentSlot !== vm.theslots[2]}"></i>

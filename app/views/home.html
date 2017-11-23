@@ -1,44 +1,36 @@
 
-        <div class = "navBar" id = "mynavbar">
-        	<div style="width :25%;"></div>
-          
+        
+        	<div  id="mynavbar">
+                <div class="navBarLeft">
+                    
+                  
+                    <div id = "navItem" class="navItem" >
+                        <div></div>
+                        <span  id = "rightspan" ng-click="vm.showNav()" >
+                        <i  id="picture" class="fa fa-toggle-left fa-toggle-right"></i>
+                        </span>
+                    </div>
+                </div>
 
-            <span ng-click="vm.showNav()" class="fa-stack fa-2x ">
-                <i class="fa fa-square-o fa-stack-2x"></i>
-                <i class="fa fa-toggle-left  fa-stack-1x "></i>
-            </span>
-            <span ng-click="vm.submitForm()" class="fa-stack fa-2x ">
-                <i class="fa fa-square-o fa-stack-2x"></i>
-                <i class="fa fa-rotate-45 fa-arrow-circle-right fa-stack-1x "></i>
-            </span>
-            <div style="flex-grow:1;"></div>
-            
-            <span ng-click="vm.loadXml()" class="fa-stack fa-2x ">
-                <i class="fa fa-square-o fa-stack-2x"></i>
-                <i class="fa fa-stack-1x">xml</i>
-            </span>
+                <div class = "navBarRight" >
+                    <span  ng-click="vm.submitForm()" class="fa-stack fa-2x myspan">
+                        <i class="fa fa-square-o fa-stack-2x outer"></i>
+                        <i class="fa fa-rotate-45 fa-arrow-circle-right fa-stack-1x inner "></i>
+                    </span>
 
-            <span ng-click="vm.clearEditor()" class="fa-stack fa-2x ">
-                <i class="fa fa-square-o fa-stack-2x"></i>
-                <i class="fa  fa-eraser  fa-stack-1x "></i>
-            </span>
+                    <div ></div>
 
-            <span ng-click="vm.styleEditorContent()" class="fa-stack fa-2x ">
-                <i class="fa fa-square-o fa-stack-2x"></i>
-                <i class="fa fa-reorder fa-stack-1x "></i>
-            </span>
+                    <span ng-click="vm.clearEditor()" class="fa-stack fa-2x ">
+                        <i class="fa fa-square-o fa-stack-2x"></i>
+                        <i class="fa  fa-eraser  fa-stack-1x "></i>
+                    </span>
 
-            <span ng-click="vm.retrieveData()" class="fa-stack fa-2x ">
-                <i class="fa fa-square-o fa-stack-2x"></i>
-                <i class="fa fa-upload fa-stack-1x"></i>
-            </span>
-
-            <span ng-click="vm.storeData()" class="fa-stack fa-2x ">
-                <i class="fa fa-square-o fa-stack-2x"></i>
-                <i class="fa fa-floppy-o fa-stack-1x "></i>
-            </span>
-
-        </div>
+                    <span ng-click="vm.styleEditorContent()" class="fa-stack fa-2x ">
+                        <i class="fa fa-square-o fa-stack-2x"></i>
+                        <i class="fa fa-align-left fa-stack-1x "></i>
+                    </span>
+                </div>
+            </div>
 
 
 

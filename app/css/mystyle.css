@@ -5,13 +5,50 @@
 h6 {
   color: blue; }
 
-.navBar {
+#mynavbar {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
   background: url("../media/concrete_seamless.png");
   height: 6%; }
+  #mynavbar .navBarLeft {
+    position: relative;
+    width: 39%; }
+    #mynavbar .navBarLeft .navItem {
+      position: absolute;
+      left: 90%;
+      top: 60%;
+      display: -webkit-box;
+      display: -webkit-flex;
+      display: -ms-flexbox;
+      display: flex;
+      -webkit-box-orient: vertical;
+      -webkit-box-direction: normal;
+      -webkit-flex-direction: column;
+          -ms-flex-direction: column;
+              flex-direction: column;
+      -webkit-transition: left 0.4s;
+      transition: left 0.4s; }
+      #mynavbar .navBarLeft .navItem span {
+        width: 30px;
+        padding: 2px;
+        padding-left: 7px;
+        border: 1px solid grey;
+        border-bottom: 0px; }
+      #mynavbar .navBarLeft .navItem i {
+        display: inline; }
+  #mynavbar .navBarRight {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    width: 100%; }
+    #mynavbar .navBarRight div {
+      -webkit-box-flex: 1;
+      -webkit-flex-grow: 1;
+          -ms-flex-positive: 1;
+              flex-grow: 1; }
 
 html, body {
   width: 100%;
@@ -59,23 +96,6 @@ html, body {
   #configcontainer .configArea {
     overflow: scroll; }
 
-.slotContainer {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  padding: 3px; }
-  .slotContainer span {
-    padding: 2px; }
-  .slotContainer i {
-    display: inline; }
-  .slotContainer div {
-    display: inline;
-    -webkit-box-flex: 1;
-    -webkit-flex-grow: 1;
-        -ms-flex-positive: 1;
-            flex-grow: 1; }
-
 #navigatorcontainer {
   position: absolute;
   width: 25%;
@@ -118,6 +138,24 @@ html, body {
     background: url("../media/concrete_seamless.png");
     overflow: scroll;
     padding: 15px; }
+
+/* manages the slots for local storage on the config page */
+.slotContainer {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  padding: 3px; }
+  .slotContainer span {
+    padding: 2px; }
+  .slotContainer i {
+    display: inline; }
+  .slotContainer div {
+    display: inline;
+    -webkit-box-flex: 1;
+    -webkit-flex-grow: 1;
+        -ms-flex-positive: 1;
+            flex-grow: 1; }
 
 /*rotates an icon in the navbar*/
 .fa-rotate-45 {
