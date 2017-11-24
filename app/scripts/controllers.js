@@ -439,6 +439,7 @@
                 }
             }
         })
+    /*determines which classes are shown in the navigator, based on the JSON item type (pipes, receivers, general or snippets)*/
     .filter('datasourceFilter', function(staticDataFactory)
     {
         return function(items)
@@ -454,8 +455,23 @@
             });
             return filtered;
         };
+    })
+    .filter('cleanupFilter', function()
+    {
+        return function(item)
+        {
+            console.log("item:", item);
+            // var filtererd = [];
+            // items.forEach(function(item, index, value)
+            // {
+                var newstring = item.replace(/&lt;/g,'<');
+                var newerstring = newstring.replace(/&gt;/g,'>');
+                // filtered.push(newerstring);
+            // });
+            // return filtered;
+            return newerstring;
+        }
     });
-
 })();
 
 
