@@ -3,7 +3,7 @@
     'use strict';
 
     angular.module('confab')
-        .controller('IndexController', function ($scope,$interval,$timeout, xmlTag, attributeObject, staticDataFactory, StorageFactory)
+        .controller('IndexController', function ($scope,$interval,$timeout, xmlTag, attributeObject, staticDataFactory, StorageFactory, EditorFactory)
         {
 
             console.log('IndexController...');
@@ -11,7 +11,8 @@
         
             //Functions
             vm.submitForm = submitForm;
-            vm.codemirrorLoaded = codemirrorLoaded;
+            //vm.codemirrorLoaded = codemirrorLoaded;
+            vm.codemirrorLoaded = getEditor;
             vm.setSelectedClass = setSelectedClass;
             vm.toggle_datasource = toggle_datasource;
             vm.styleEditorContent = styleEditorContent;
@@ -55,6 +56,30 @@
                     modifyTagExample();
             });
 
+            
+            function getEditor(_editor)
+            {
+                editor = EditorFactory.editorLoaded(_editor);
+                thedocument = editor.getDoc();
+                staticDataFactory.getJson().then(function success(response)
+                {
+                    vm.navigatorModel = response.data;
+                    editor.setOption('hintOptions', {schemaInfo: vm.navigatorModel});
+                    toggle_datasource('pipes');
+                    console.log("data:", vm.navigatorModel);
+                    showNav(); 
+                    showConf();
+                    showConf();
+                
+                //initialising the cache and loading it in the editor;
+                var avalue = StorageFactory.initialise();
+                retrieveData();
+                },function error(response)
+                {
+
+                });
+            }
+
             function watchCheckbox()
             {
                 modifyTagExample();
@@ -76,31 +101,13 @@
                    vm.tagExample = new xmlTag(vm.selectedItem.classname, theproperties).toCompleteTag();
             }    
 
-
-
-
             function modifyAlias(slotn, newname)
             {
                 console.log("modify ",slotn, newname);
                 StorageFactory.getSetter(slotn)(newname);
             }
 
-
-            //initialisation
-            staticDataFactory.getJson().then(function success(response)
-            {
-                vm.navigatorModel = response.data;
-                editor.setOption('hintOptions', {schemaInfo: vm.navigatorModel});
-                toggle_datasource('pipes');
-                console.log("data:", vm.navigatorModel);
-            },function error(response)
-            {
-
-            });
-
-
             console.log("retrieved keys",StorageFactory.getKeys());
-
 
             function toggleSlot(slot)
             {
@@ -152,10 +159,6 @@
             console.log("slots",vm.theslots);
             }
 
-
-
-
-
             function showConf()
             {
                 var navigator = document.getElementById('navigatorcontainer');
@@ -202,7 +205,7 @@
               }
 
             
-
+            //inserts an xml snippet at the cursor position;
             function loadXml()
             {
                 staticDataFactory.loadXml(vm.selectedItem.file).then(function succes(response)
@@ -215,6 +218,7 @@
             
 
 
+            //responds to the selection of an item in the class Area;
             function setSelectedClass(item)
             {
                 vm.selectedItem = item;
@@ -222,9 +226,10 @@
             }
 
 
+            //responds to the radiobuttons in the dataSource area and switches to pipe, receiver, snippet or general; the first item of 
+            //the chosen type is selected.
             function toggle_datasource(string)
             {
-                
                 staticDataFactory.setDataSource(string);
                 vm.datasource = staticDataFactory.getDataSource();
                 vm.showPropertyDescription = false;
@@ -244,7 +249,8 @@
                 console.log("vm.datasource", vm.datasource);
             }
 
-            function codemirrorLoaded(_editor)
+           //editor initialisation
+           function codemirrorLoaded(_editor)
             {
                 var _doc = _editor.getDoc();
                 _editor.focus();
@@ -268,8 +274,6 @@
                     {
                         console.log("pushing ctrl-A");
                         var position = _doc.getCursor();
-                        //var range = doc.getRange({'from' : position, 'to':{position.line, positon.ch+10}
-                        //console.log("range:", range);
                     }};
                 _editor.addKeyMap(map);    
                 editor = _editor;
@@ -407,7 +411,8 @@
                 }
             }
 
-
+/*Responds to the arrow button in the navBar. The current selected item and the current selected properties are converted
+to a string and inserted in the editor;*/
             function submitForm()
 
             {
@@ -456,19 +461,13 @@
             return filtered;
         };
     })
+    //replaces escaped tag signs with the proper symbols, used in the description area where sometimes strange symbols appear.
     .filter('cleanupFilter', function()
     {
         return function(item)
         {
-            console.log("item:", item);
-            // var filtererd = [];
-            // items.forEach(function(item, index, value)
-            // {
-                var newstring = item.replace(/&lt;/g,'<');
-                var newerstring = newstring.replace(/&gt;/g,'>');
-                // filtered.push(newerstring);
-            // });
-            // return filtered;
+            var newstring = item.replace(/&lt;/g,'<');
+            var newerstring = newstring.replace(/&gt;/g,'>');
             return newerstring;
         }
     });

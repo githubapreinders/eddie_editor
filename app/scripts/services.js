@@ -253,6 +253,96 @@ angular.module('confab')
       }
 
 
-    }]);
+    }])
+    .factory('EditorFactory', function()
+    {
+    var editor = null;  
+      
+      return {
+        editorLoaded : editorLoaded
+      }
+
+      function editorLoaded(_editor)
+      {
+                var _doc = _editor.getDoc();
+                _editor.focus();
+                _editor.setOption('lineNumbers', true);
+                _editor.setOption('lineWrapping', true);
+                _editor.setOption('mode', 'xml');
+                _editor.setOption('beautify', 'true');
+                _editor.setOption('theme', 'twilight');
+                //_editor.setOption('hintOptions', {schemaInfo: vm.navigatorModel});
+                _editor.setOption('matchTags', {bothTags: true});
+                var extraKeys =  {
+                          "'<'": completeAfter,
+                          "'/'": completeIfAfterLt,
+                          "' '": completeIfInTag,
+                          "'='": completeIfInTag,
+                          "Ctrl-Space": "autocomplete"
+                                };
+                _editor.setOption('extraKeys', extraKeys);
+                
+                var map = {"Ctrl-A" : function(cm)
+                    {
+                        console.log("pushing ctrl-A");
+                        var position = _doc.getCursor();
+                    }};
+                _editor.addKeyMap(map);    
+               //editor = _editor;
+                //thedocument = _doc;
+                
+                //initialising left panel.
+                //showNav(); 
+                //showConf();
+                //showConf();
+                
+                //initialising the cache and loading it in the editor;
+                //var avalue = StorageFactory.initialise();
+                //retrieveData();
+                console.log("editor loaded;");
+
+
+
+                var windowheight = window.innerHeight;
+                var navbarheight = document.getElementById('mynavbar').offsetHeight;
+                var ed = document.querySelector('.CodeMirror');
+                ed.style.height = (windowheight - navbarheight) + 'px'; 
+                console.log("window, navbar, editor:", windowheight, navbarheight, ed.style.height);
+
+                function completeAfter(cm, pred) 
+                {
+                    var cur = cm.getCursor();
+                    if (!pred || pred()) setTimeout(function() 
+                    {
+                        if (!cm.state.completionActive)
+                        cm.showHint({completeSingle: false});
+                    }, 100);
+                    return CodeMirror.Pass;
+                }
+
+                function completeIfAfterLt(cm) 
+                {
+                    return completeAfter(cm, function() 
+                    {
+                        var cur = cm.getCursor();
+                        return cm.getRange(CodeMirror.Pos(cur.line, cur.ch - 1), cur) == "<";
+                    });
+                }
+
+                function completeIfInTag(cm) 
+                {
+                return completeAfter(cm, function() 
+                {
+                    var tok = cm.getTokenAt(cm.getCursor());
+                    if (tok.type == "string" && (!/['"]/.test(tok.string.charAt(tok.string.length - 1)) || tok.string.length == 1)) return false;
+                    var inner = CodeMirror.innerMode(cm.getMode(), tok.state).state;
+                    return inner.tagName;
+                });
+
+              }
+              return _editor;
+            }
+
+    });
 
 })();   
