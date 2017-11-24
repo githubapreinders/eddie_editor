@@ -167,7 +167,8 @@ html, body
 					flex-grow:1;
 					background:url($background0);
 					cursor : pointer;
-					overflow:scroll;
+					overflow-y:scroll;
+					overflow-x:hidden;
 					padding: 15px;
 					height:20%;
 					.classItem
@@ -185,7 +186,8 @@ html, body
 				{
 					height:25%;
 					background:url($background0);
-					overflow:scroll;
+					overflow-y:scroll;
+					overflow-x:hidden;
 					padding: 15px;
 				}
 				.propertyArea

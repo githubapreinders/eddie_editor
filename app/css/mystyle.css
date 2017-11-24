@@ -115,7 +115,8 @@ html, body {
             flex-grow: 1;
     background: url("../media/concrete_seamless.png");
     cursor: pointer;
-    overflow: scroll;
+    overflow-y: scroll;
+    overflow-x: hidden;
     padding: 15px;
     height: 20%; }
     #navigatorcontainer .classArea .classItem {
@@ -127,7 +128,8 @@ html, body {
   #navigatorcontainer .descriptionArea {
     height: 25%;
     background: url("../media/concrete_seamless.png");
-    overflow: scroll;
+    overflow-y: scroll;
+    overflow-x: hidden;
     padding: 15px; }
   #navigatorcontainer .propertyArea {
     -webkit-box-flex: 1;
