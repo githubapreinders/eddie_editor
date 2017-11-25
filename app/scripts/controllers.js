@@ -160,7 +160,7 @@
                 }
                 else
                 {
-                  navigator.style.left = '25%';
+                  navigator.style.left = '-25%';
                 }
                 vm.showConfig = !vm.showConfig;
               }
