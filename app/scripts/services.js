@@ -9,6 +9,9 @@ angular.module('confab')
 
         var datasource = 'pipes';
 
+        var themes = ["twilight", "monokai", "neat"];
+        var fontSizes = [12,13,14,15,16,17,18,19,20];
+
         var formattingSettings = {
                 "indent_size": 4,
                 "xml": {
@@ -36,9 +39,20 @@ angular.module('confab')
             setDataSource: setDataSource,
             getDataSource: getDataSource,
             makeSnippet: makeSnippet,
-            getFormattingSettings: getFormattingSettings
+            getFormattingSettings: getFormattingSettings,
+            getThemes: getThemes,
+            getFontSizes: getFontSizes
         };
 
+        function getThemes()
+        {
+          return themes;
+        }
+
+        function getFontSizes()
+        {
+          return fontSizes;
+        }
 
         function getFormattingSettings()
         {

@@ -23,6 +23,9 @@
             vm.retrieveData = retrieveData;
             vm.toggleSlot = toggleSlot;
             vm.modifyAlias = modifyAlias;
+            vm.checkDefaults = checkDefaults;
+            vm.changeTheme = changeTheme;
+            vm.changeFontSize = changeFontSize;
 
             //Static values
             vm.message = "Angular Controller is working allright...";
@@ -38,9 +41,12 @@
             var editor = null;
             var thedocument = null;    
             vm.intervalID=null;
-            vm.tagExample = null;
-            vm.modifyTagExample = modifyTagExample;
-
+            
+            //Editor Styling
+            vm.themes = staticDataFactory.getThemes();
+            vm.selectedTheme = "twilight";
+            vm.selectedFontSize = 14;
+            vm.fontSizes = staticDataFactory.getFontSizes();
             
 
 
@@ -50,32 +56,20 @@
                 StorageFactory.getSetter(StorageFactory.getCurrentKey())(thedocument.getValue());
             }, 5000);
 
-            $scope.$watch('vm.selectedItem', function(newval, oldval)
-            {
-                    modifyTagExample();
-            });
 
-            function watchCheckbox()
-            {
-                modifyTagExample();
+            
+            function changeFontSize()
+            {   
+                var ed = document.getElementsByClassName('CodeMirror')[0];
+                ed.style.fontSize = vm.selectedFontSize.toString() + 'px';
+
             }
+              
 
-            function modifyTagExample()
+            function changeTheme()
             {
-                if(vm.selectedItem === null)return;
-                    var theproperties = [];    
-                    console.log("props:", vm.selectedProperties);
-                    if (Object.keys(vm.selectedProperties).length > 0 )
-                    {
-                        Object.keys(vm.selectedProperties).forEach(function(thekey)
-                        {
-                            
-                            theproperties.push(vm.selectedProperties[thekey]);
-                        }); 
-                    }
-                   vm.tagExample = new xmlTag(vm.selectedItem.classname, theproperties).toCompleteTag();
-            }    
-
+                editor.setOption('theme', vm.selectedTheme);
+            }
 
 
 
@@ -219,9 +213,26 @@
             {
                 vm.selectedItem = item;
                 vm.selectedProperties = {};
+                
+                for(var i=0 ; i<item.properties.length; i++)
+                {
+                    if(item.properties[i][0]=='classname' || item.properties[i][0]=='className')
+                    {
+                        
+
+                        var checkbox = document.getElementById('checkbox' + i);
+                        if(checkbox === null)
+                        {
+                            break;
+                        }
+                        checkbox.click();
+                        break;
+                    }
+                }
             }
 
 
+            //Selecting the first item in the list when changing the datasource
             function toggle_datasource(string)
             {
                 
@@ -234,8 +245,10 @@
                 {
                     if (!done && vm.navigatorModel[key].type === string )
                     {
-                        vm.selectedItem = vm.navigatorModel[key];
-                        vm.selectedProperties = {};
+                        //vm.selectedItem = vm.navigatorModel[key];
+                        //vm.selectedProperties = {};
+                        setSelectedClass(vm.navigatorModel[key]);
+
                         done = true;
                     }
                 });
@@ -252,7 +265,7 @@
                 _editor.setOption('lineWrapping', true);
                 _editor.setOption('mode', 'xml');
                 _editor.setOption('beautify', 'true');
-                _editor.setOption('theme', 'twilight');
+                _editor.setOption('theme', vm.selectedTheme);
                 _editor.setOption('hintOptions', {schemaInfo: vm.navigatorModel});
                 _editor.setOption('matchTags', {bothTags: true});
                 var extraKeys =  {
@@ -403,6 +416,17 @@
                     {
                         return false;
                     }
+                    return true;
+                }
+            }
+
+
+            function checkDefaults(property)
+            {
+                console.log(property);
+                if(property[0] === 'classname')
+                {
+                    vm.selectedProperties[property[0]] = new attributeObject(property[0], new Array(property[2]))
                     return true;
                 }
             }

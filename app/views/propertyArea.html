@@ -1,10 +1,15 @@
-<!-- <h2>propertyArea</h2> -->
+
 <div ng-repeat = "property in vm.selectedItem.properties">
-
-<div style="display:flex;">
-
-<div class="checkbox" ><label><input id="checkbox{{$index}}" type="checkbox" property-listener  /><span id = "property{{$index}}" ng-click = "vm.showPropertyDescription = true"  > {{property[0]}}</span></label><div style="flex-grow: 1"></div><input id= "propertyvalue{{$index}}" type="text" ng-value = "vm.selectedItem.properties[$index][2]" ng-model = "vm.selectedProperties[property[0]].values[0]"/></div>
-
-</div>
-
+	<div style="display:flex;">
+		<div class="checkbox" >
+			<label>
+				<input id="checkbox{{$index}}" type="checkbox" property-listener ng-checked="vm.selectedProperties.hasOwnProperty('{{property[0]}}')" "/>
+				<span id = "property{{$index}}" ng-click = "vm.showPropertyDescription = true"  > {{property[0]}}
+				</span>
+			</label>
+			<div style="flex-grow: 1">		
+		</div>
+			<input id= "propertyvalue{{$index}}" type="text" ng-value = "vm.selectedItem.properties[$index][2]" ng-model = "vm.selectedProperties[property[0]].values[0]"/>
+		</div>
+	</div>
 </div>
