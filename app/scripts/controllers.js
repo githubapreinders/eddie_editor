@@ -57,6 +57,7 @@
             });
 
             
+            //initialisation of editor(triggered by attribute in home.html), datamodel, and cache
             function getEditor(_editor)
             {
                 editor = EditorFactory.editorLoaded(_editor);
@@ -76,7 +77,7 @@
                 retrieveData();
                 },function error(response)
                 {
-
+                    console.log("error initialising:", response.data);
                 });
             }
 
