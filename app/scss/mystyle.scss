@@ -36,6 +36,7 @@ h6
 		.navItem
 			{
 				position:absolute;
+				cursor:pointer;
 				left : 90%;
 				top :60%;
 				display: flex;
@@ -69,6 +70,10 @@ h6
 				{
 					flex-grow:1;
 				}
+				span
+				{
+					cursor:pointer;
+				}
 				
 			}
 
@@ -89,6 +94,7 @@ html, body
 .configTop, .navigatorTop
 {
 	display:flex;
+	cursor:pointer;
 	span
 	{
 		padding:2px;
@@ -160,7 +166,11 @@ html, body
 				{
 					height:15%;
 					background:url($background0);
-					padding:  0px 0px 15px 15px;
+					padding:  0px 0px 15px 0px;
+					.btn-group
+					{
+						padding: 5px;
+					}
 				}
 				.classArea
 				{

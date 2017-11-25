@@ -3,7 +3,7 @@
 	<div style="display:flex;">
 		<div class="checkbox" >
 			<label>
-				<input id="checkbox{{$index}}" type="checkbox" property-listener ng-checked="vm.selectedProperties.hasOwnProperty('{{property[0]}}')" "/>
+				<input id="checkbox{{$index}}" type="checkbox" property-listener ng-checked="vm.checkDefaults(property)" "/>
 				<span id = "property{{$index}}" ng-click = "vm.showPropertyDescription = true"  > {{property[0]}}
 				</span>
 			</label>

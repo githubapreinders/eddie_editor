@@ -1,9 +1,8 @@
-(function ()
-{
+(function (){
     'use strict';
 
     angular.module('confab')
-        .controller('IndexController', function ($scope,$interval,$timeout, xmlTag, attributeObject, staticDataFactory, StorageFactory)
+        .controller('IndexController', function ($scope,$interval,$timeout, xmlTag, attributeObject, staticDataFactory, StorageFactory, EditorFactory)
         {
 
             console.log('IndexController...');
@@ -11,7 +10,8 @@
         
             //Functions
             vm.submitForm = submitForm;
-            vm.codemirrorLoaded = codemirrorLoaded;
+            //vm.codemirrorLoaded = codemirrorLoaded;
+            vm.codemirrorLoaded = getEditor;
             vm.setSelectedClass = setSelectedClass;
             vm.toggle_datasource = toggle_datasource;
             vm.styleEditorContent = styleEditorContent;
@@ -41,7 +41,7 @@
             var editor = null;
             var thedocument = null;    
             vm.intervalID=null;
-            
+
             //Editor Styling
             vm.themes = staticDataFactory.getThemes();
             vm.selectedTheme = "twilight";
@@ -56,22 +56,53 @@
                 StorageFactory.getSetter(StorageFactory.getCurrentKey())(thedocument.getValue());
             }, 5000);
 
+            
 
             
+
             function changeFontSize()
             {   
                 var ed = document.getElementsByClassName('CodeMirror')[0];
                 ed.style.fontSize = vm.selectedFontSize.toString() + 'px';
-
             }
+
+            //initialisation of editor(triggered by attribute in home.html), datamodel, and cache
+            function getEditor(_editor)
+            {
+                editor = EditorFactory.editorLoaded(_editor);
+                thedocument = editor.getDoc();
+                staticDataFactory.getJson().then(function success(response)
+                {
+                    vm.navigatorModel = response.data;
+                    editor.setOption('hintOptions', {schemaInfo: vm.navigatorModel});
+                    editor.foldCode(CodeMirror.Pos(0,0));
+                    editor.foldCode(CodeMirror.Pos(thedocument.lineCount(),0));
+                    toggle_datasource('pipes');
+                    showNav(); 
+                    showConf();
+                    showConf();
+                
+                    //initialising the cache and loading it in the editor;
+                    var avalue = StorageFactory.initialise();
+                    retrieveData();
+                    console.log("data:", vm.navigatorModel);
+                },function error(response)
+                {
+                    console.log("error initialising:", response.data);
+                });
+            }
+
               
 
             function changeTheme()
             {
+
                 editor.setOption('theme', vm.selectedTheme);
             }
 
 
+
+                
 
             function modifyAlias(slotn, newname)
             {
@@ -79,22 +110,7 @@
                 StorageFactory.getSetter(slotn)(newname);
             }
 
-
-            //initialisation
-            staticDataFactory.getJson().then(function success(response)
-            {
-                vm.navigatorModel = response.data;
-                editor.setOption('hintOptions', {schemaInfo: vm.navigatorModel});
-                toggle_datasource('pipes');
-                console.log("data:", vm.navigatorModel);
-            },function error(response)
-            {
-
-            });
-
-
             console.log("retrieved keys",StorageFactory.getKeys());
-
 
             function toggleSlot(slot)
             {
@@ -146,10 +162,6 @@
             console.log("slots",vm.theslots);
             }
 
-
-
-
-
             function showConf()
             {
                 var navigator = document.getElementById('navigatorcontainer');
@@ -196,7 +208,7 @@
               }
 
             
-
+            //inserts an xml snippet at the cursor position;
             function loadXml()
             {
                 staticDataFactory.loadXml(vm.selectedItem.file).then(function succes(response)
@@ -209,6 +221,7 @@
             
 
 
+            //responds to the selection of an item in the class Area;
             function setSelectedClass(item)
             {
                 vm.selectedItem = item;
@@ -232,10 +245,11 @@
             }
 
 
-            //Selecting the first item in the list when changing the datasource
+
+            //responds to the radiobuttons in the dataSource area and switches to pipe, receiver, snippet or general; the first item of 
+            //the chosen type is selected.
             function toggle_datasource(string)
             {
-                
                 staticDataFactory.setDataSource(string);
                 vm.datasource = staticDataFactory.getDataSource();
                 vm.showPropertyDescription = false;
@@ -257,7 +271,8 @@
                 console.log("vm.datasource", vm.datasource);
             }
 
-            function codemirrorLoaded(_editor)
+           //editor initialisation
+           function codemirrorLoaded(_editor)
             {
                 var _doc = _editor.getDoc();
                 _editor.focus();
@@ -281,8 +296,6 @@
                     {
                         console.log("pushing ctrl-A");
                         var position = _doc.getCursor();
-                        //var range = doc.getRange({'from' : position, 'to':{position.line, positon.ch+10}
-                        //console.log("range:", range);
                     }};
                 _editor.addKeyMap(map);    
                 editor = _editor;
@@ -421,16 +434,21 @@
             }
 
 
+            //determines to check a value in the property area because they are obligatory;
             function checkDefaults(property)
             {
                 console.log(property);
-                if(property[0] === 'classname')
+                if(property[0] === 'classname' || property[0] === 'className')
                 {
-                    vm.selectedProperties[property[0]] = new attributeObject(property[0], new Array(property[2]))
+                    vm.selectedProperties[property[0]] = new attributeObject('className', new Array(property[2]));
                     return true;
                 }
+                return false;
             }
 
+
+/*Responds to the arrow button in the navBar. The current selected item and the current selected properties are converted
+to a string and inserted in the editor;*/
 
             function submitForm()
 
@@ -463,7 +481,8 @@
                 }
             }
         })
-    .filter('datasourceFilter', function(staticDataFactory)
+    /*determines which classes are shown in the navigator, based on the JSON item type (pipes, receivers, general or snippets)*/
+.filter('datasourceFilter', function(staticDataFactory)
     {
         return function(items)
         {
@@ -478,8 +497,15 @@
             });
             return filtered;
         };
+    })
+    //replaces escaped tag signs with the proper symbols, used in the description area where sometimes strange symbols appear.
+    .filter('cleanupFilter', function()
+    {
+        return function(item)
+        {
+            var newstring = item.replace(/&lt;/g,'<');
+            var newerstring = newstring.replace(/&gt;/g,'>');
+            return newerstring;
+        };
     });
-
 })();
-
-
