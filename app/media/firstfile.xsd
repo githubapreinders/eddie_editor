@@ -1,0 +1,46 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+<xs:element name="to" type="xs:string"/>
+<xs:element name="heading" type="xs:string"/>
+<xs:element name="body" type="xs:string"/>
+<xs:attribute name="recipient" type="xs:string"/>
+
+<xs:element  name="from" >
+	<xs:complexType>
+		<xs:simpleContent>
+			<xs:extension base="xs:integer">
+				<xs:attribute ref="recipient"/>		
+			</xs:extension>
+		</xs:simpleContent>	
+	</xs:complexType>
+</xs:element>
+
+<xs:element name="note">
+	<xs:complexType >
+		<xs:sequence>
+			<xs:element ref="to"/>
+			<xs:element ref="from"/>
+			<xs:element ref="heading"/>
+			<xs:element ref="body"/>
+		</xs:sequence>
+	</xs:complexType>
+</xs:element>
+
+</xs:schema>
+
+
+
+<!-- <xs:element name="note">
+  <xs:complexType>
+    <xs:sequence>
+      <xs:complexType>
+      	<xs:element name="to" type="xs:string"/>
+      		<xs:attribute name="recipient" type="string"/>
+  	  </xs:complexType>
+      <xs:element name="from" type="xs:string"/>
+      <xs:element name="heading" type="xs:string"/>
+      <xs:element name="body" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+</xs:element> -->
