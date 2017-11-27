@@ -67,6 +67,9 @@ html, body {
     padding: 2px;
     border: 1px solid grey;
     border-top: 0px; }
+  .configTop .indescriptionarea, .navigatorTop .indescriptionarea {
+    border: 1px solid grey;
+    border-right: 0px; }
   .configTop i, .navigatorTop i {
     display: inline; }
   .configTop div, .navigatorTop div {
@@ -134,9 +137,10 @@ html, body {
   #navigatorcontainer .descriptionArea {
     height: 25%;
     background: url("../media/concrete_seamless.png");
-    overflow-y: scroll;
+    overflow-y: auto;
     overflow-x: hidden;
-    padding: 15px; }
+    padding: 15px;
+    padding-right: 0px; }
   #navigatorcontainer .propertyArea {
     -webkit-box-flex: 1;
     -webkit-flex-grow: 1;

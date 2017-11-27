@@ -2,7 +2,7 @@
     'use strict';
 
     angular.module('confab')
-        .controller('IndexController', function ($scope,$interval,$timeout, xmlTag, attributeObject, staticDataFactory, StorageFactory, EditorFactory)
+        .controller('IndexController', function ($scope,$interval,$timeout, xmlTag, attributeObject, StaticDataFactory, StorageFactory, EditorFactory, ValidationFactory)
         {
 
             console.log('IndexController...');
@@ -26,11 +26,12 @@
             vm.checkDefaults = checkDefaults;
             vm.changeTheme = changeTheme;
             vm.changeFontSize = changeFontSize;
+            vm.validateXml = validateXml;
 
             //Static values
             vm.message = "Angular Controller is working allright...";
             vm.userInput = "";
-            vm.datasource = staticDataFactory.getDataSource();
+            vm.datasource = StaticDataFactory.getDataSource();
             vm.navigatorModel = null;
             vm.selectedItem = null;
             vm.showPropertyDescription = false;
@@ -40,16 +41,18 @@
             vm.showFullEditor = false;
             var editor = null;
             var thedocument = null;    
-            vm.intervalID=null;
+            vm.intervalID = null;
+            vm.showValidationMessage = false;
+            vm.validationMessage = null;
 
             //Editor Styling
-            vm.themes = staticDataFactory.getThemes();
+            vm.themes = StaticDataFactory.getThemes();
             vm.selectedTheme = "twilight";
             vm.selectedFontSize = 14;
-            vm.fontSizes = staticDataFactory.getFontSizes();
+            vm.fontSizes = StaticDataFactory.getFontSizes();
             
 
-
+            vm.currentSlotNumber = 0;
             vm.theslots = [];
             $interval(function()
             {
@@ -58,7 +61,11 @@
 
             
 
-            
+            function validateXml()
+            {
+                vm.validationMessage = ValidationFactory.validateXml(vm.currentSlot, vm.theslots[3]);
+                console.log("validating....", vm.validationMessage);
+            }
 
             function changeFontSize()
             {   
@@ -71,7 +78,7 @@
             {
                 editor = EditorFactory.editorLoaded(_editor);
                 thedocument = editor.getDoc();
-                staticDataFactory.getJson().then(function success(response)
+                StaticDataFactory.getJson().then(function success(response)
                 {
                     vm.navigatorModel = response.data;
                     editor.setOption('hintOptions', {schemaInfo: vm.navigatorModel});
@@ -114,21 +121,39 @@
 
             function toggleSlot(slot)
             {
+                
+                console.log("slot: ", slot );
+                if(slot.length === 1)
+                {
+                    var slotnumber = Number(slot) + 1;
+                    if (slotnumber === 5)
+                    {
+                        slotnumber = 1 ;
+                    }
+                vm.currentSlot = "slot" + slotnumber.toString();
+                console.log("current slot: ", vm.currentSlot);
+                vm.currentSlotNumber = slotnumber;
+                StorageFactory.setCurrentKey(vm.currentSlot);
+                retrieveData(vm.currentSlot);
+                }   
+
                 //a keypress on an open folder, in other words, closing a folder
-                if(vm.currentSlot === slot)
+                else if(vm.currentSlot === slot)
                 {
                     vm.currentSlot = vm.theslots[0];
+                    vm.currentSlotNumber = slot.subString(4,5);
                     StorageFactory.setCurrentKey(vm.currentSlot);
                 }
                 //opening a slot
                 else
                 {
                     vm.currentSlot = slot;
+                    vm.currentSlotNumber = slot.subString(4,5);
                     StorageFactory.setCurrentKey(vm.currentSlot);
                     retrieveData(slot);
                 }
 
-                console.log("theslots:",vm.theslots, vm.currentSlot);
+                // console.log("theslots:",vm.theslots, vm.currentSlot);
             }
 
             function storeData()
@@ -150,16 +175,16 @@
                     vm.theslots = StorageFactory.getKeys();
                     vm.thealiases = StorageFactory.getAliases();
                     vm.currentSlot = vm.theslots[0];
-                    console.log("slots after initialisation:",vm.thealiases);
+                    // console.log("slots after initialisation:",vm.thealiases);
                 }
                 else
                 {
-                    console.log("getting value for slot ", key);
+                    // console.log("getting value for slot ", key);
                     thedocument.setValue(StorageFactory.getGetter(key)());
-                    
+                   
                 }
             
-            console.log("slots",vm.theslots);
+            // console.log("slots",vm.theslots);
             }
 
             function showConf()
@@ -211,7 +236,7 @@
             //inserts an xml snippet at the cursor position;
             function loadXml()
             {
-                staticDataFactory.loadXml(vm.selectedItem.file).then(function succes(response)
+                StaticDataFactory.loadXml(vm.selectedItem.file).then(function succes(response)
                 {
                     thedocument.replaceSelection(response.data);
                 });
@@ -250,8 +275,8 @@
             //the chosen type is selected.
             function toggle_datasource(string)
             {
-                staticDataFactory.setDataSource(string);
-                vm.datasource = staticDataFactory.getDataSource();
+                StaticDataFactory.setDataSource(string);
+                vm.datasource = StaticDataFactory.getDataSource();
                 vm.showPropertyDescription = false;
                 
                 var done = false;
@@ -398,7 +423,7 @@
                     counter++;
                 }
                 //now that we know we can find the new cursor position we will format the complete text
-                var settings = staticDataFactory.getFormattingSettings();
+                var settings = StaticDataFactory.getFormattingSettings();
                 thedocument.setValue(html_beautify(thedocument.getValue(),settings));
 
                 //put the cursor back in place
@@ -440,7 +465,6 @@
             //determines to check a value in the property area because they are obligatory;
             function checkDefaults(property)
             {
-                console.log(property);
                 if(property[0] === 'classname' || property[0] === 'className')
                 {
                     vm.selectedProperties[property[0]] = new attributeObject('className', new Array(property[2]));
@@ -485,7 +509,7 @@ to a string and inserted in the editor;*/
             }
         })
     /*determines which classes are shown in the navigator, based on the JSON item type (pipes, receivers, general or snippets)*/
-.filter('datasourceFilter', function(staticDataFactory)
+.filter('datasourceFilter', function(StaticDataFactory)
     {
         return function(items)
         {
@@ -493,7 +517,7 @@ to a string and inserted in the editor;*/
             angular.forEach(items, function(item)
             {
                // console.log("item:", item);
-               if (item.type === staticDataFactory.getDataSource())
+               if (item.type === StaticDataFactory.getDataSource())
                 {
                     filtered.push(item);
                 }

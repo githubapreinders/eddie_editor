@@ -4,7 +4,7 @@
 
 angular.module('confab')
 
-    .service('staticDataFactory', function(xmlTag, $http, attributeObject,storage) 
+    .service('StaticDataFactory', function(xmlTag, $http, attributeObject,storage) 
     {
 
         var datasource = 'pipes';
@@ -111,7 +111,7 @@ angular.module('confab')
       var api = {};
       var thekeys = ["slot1","slot2","slot3"];
       var thealiases = ["aliasslot1","aliasslot2","aliasslot3"];
-      var template = ["slot1","slot2","slot3","aliasslot1","aliasslot2","aliasslot3"];
+      var template = ["slot1","slot2","slot3","slot4","aliasslot1","aliasslot2","aliasslot3"];
       var currentKey;
       var mykeys;
       var myaliases;
@@ -143,7 +143,7 @@ angular.module('confab')
             }
             else
             {
-              getSetter(templateitem)(templateitem.substring(5,10)); 
+              getSetter(templateitem)(templateitem.substring(0,5)); 
             }
           }
         });
@@ -337,6 +337,21 @@ angular.module('confab')
               return _editor;
             }
 
+    })
+    .factory('ValidationFactory', function(StorageFactory)
+    {
+      return {
+        validateXml : validateXml
+      }
+
+      function validateXml(xmlslot, schemaslot)
+      {
+        var schema = StorageFactory.getGetter(schemaslot)();
+        var thexml = StorageFactory.getGetter(xmlslot)();
+        var message = validateXML(thexml, schema);
+        console.log("message:", message);
+        return message;
+      }
     });
 
 })();   

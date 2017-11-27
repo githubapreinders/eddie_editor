@@ -38,3 +38,16 @@
 	         <i  class="fa fa-close "></i>
 	</span>
 </div>
+
+<div class="slotContainer">
+	<span>4.</span>	
+	<input type="text" id="slot4" readonly="true" ng-value = "vm.theslots[3]">
+	
+	<span  ng-click="vm.toggleSlot(vm.theslots[3])" >
+	         <i  class="fa" ng-class="{'fa-folder-open':vm.currentSlot === vm.theslots[3], 'fa-folder' : vm.currentSlot !== vm.theslots[3]}"></i>
+	</span>
+	<div></div>
+	<span  ng-click="angular.noop()" >
+	         <i  class="fa fa-close "></i>
+	</span>
+</div>
