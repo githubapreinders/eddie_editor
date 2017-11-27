@@ -1,9 +1,8 @@
-(function ()
-{
+(function (){
     'use strict';
 
     angular.module('confab')
-        .controller('IndexController', function ($scope,$interval,$timeout, xmlTag, attributeObject, staticDataFactory, StorageFactory)
+        .controller('IndexController', function ($scope,$interval,$timeout, xmlTag, attributeObject, staticDataFactory, StorageFactory, EditorFactory)
         {
 
             console.log('IndexController...');
@@ -11,7 +10,8 @@
         
             //Functions
             vm.submitForm = submitForm;
-            vm.codemirrorLoaded = codemirrorLoaded;
+            //vm.codemirrorLoaded = codemirrorLoaded;
+            vm.codemirrorLoaded = getEditor;
             vm.setSelectedClass = setSelectedClass;
             vm.toggle_datasource = toggle_datasource;
             vm.styleEditorContent = styleEditorContent;
@@ -23,6 +23,9 @@
             vm.retrieveData = retrieveData;
             vm.toggleSlot = toggleSlot;
             vm.modifyAlias = modifyAlias;
+            vm.checkDefaults = checkDefaults;
+            vm.changeTheme = changeTheme;
+            vm.changeFontSize = changeFontSize;
 
             //Static values
             vm.message = "Angular Controller is working allright...";
@@ -38,9 +41,12 @@
             var editor = null;
             var thedocument = null;    
             vm.intervalID=null;
-            vm.tagExample = null;
-            vm.modifyTagExample = modifyTagExample;
 
+            //Editor Styling
+            vm.themes = staticDataFactory.getThemes();
+            vm.selectedTheme = "twilight";
+            vm.selectedFontSize = 14;
+            vm.fontSizes = staticDataFactory.getFontSizes();
             
 
 
@@ -50,34 +56,53 @@
                 StorageFactory.getSetter(StorageFactory.getCurrentKey())(thedocument.getValue());
             }, 5000);
 
-            $scope.$watch('vm.selectedItem', function(newval, oldval)
-            {
-                    modifyTagExample();
-            });
+            
 
-            function watchCheckbox()
-            {
-                modifyTagExample();
+            
+
+            function changeFontSize()
+            {   
+                var ed = document.getElementsByClassName('CodeMirror')[0];
+                ed.style.fontSize = vm.selectedFontSize.toString() + 'px';
             }
 
-            function modifyTagExample()
+            //initialisation of editor(triggered by attribute in home.html), datamodel, and cache
+            function getEditor(_editor)
             {
-                if(vm.selectedItem === null)return;
-                    var theproperties = [];    
-                    console.log("props:", vm.selectedProperties);
-                    if (Object.keys(vm.selectedProperties).length > 0 )
-                    {
-                        Object.keys(vm.selectedProperties).forEach(function(thekey)
-                        {
-                            
-                            theproperties.push(vm.selectedProperties[thekey]);
-                        }); 
-                    }
-                   vm.tagExample = new xmlTag(vm.selectedItem.classname, theproperties).toCompleteTag();
-            }    
+                editor = EditorFactory.editorLoaded(_editor);
+                thedocument = editor.getDoc();
+                staticDataFactory.getJson().then(function success(response)
+                {
+                    vm.navigatorModel = response.data;
+                    editor.setOption('hintOptions', {schemaInfo: vm.navigatorModel});
+                    editor.foldCode(CodeMirror.Pos(0,0));
+                    editor.foldCode(CodeMirror.Pos(thedocument.lineCount(),0));
+                    toggle_datasource('pipes');
+                    showNav(); 
+                    showConf();
+                    showConf();
+                
+                    //initialising the cache and loading it in the editor;
+                    var avalue = StorageFactory.initialise();
+                    retrieveData();
+                    console.log("data:", vm.navigatorModel);
+                },function error(response)
+                {
+                    console.log("error initialising:", response.data);
+                });
+            }
+
+              
+
+            function changeTheme()
+            {
+
+                editor.setOption('theme', vm.selectedTheme);
+            }
 
 
 
+                
 
             function modifyAlias(slotn, newname)
             {
@@ -85,22 +110,7 @@
                 StorageFactory.getSetter(slotn)(newname);
             }
 
-
-            //initialisation
-            staticDataFactory.getJson().then(function success(response)
-            {
-                vm.navigatorModel = response.data;
-                editor.setOption('hintOptions', {schemaInfo: vm.navigatorModel});
-                toggle_datasource('pipes');
-                console.log("data:", vm.navigatorModel);
-            },function error(response)
-            {
-
-            });
-
-
             console.log("retrieved keys",StorageFactory.getKeys());
-
 
             function toggleSlot(slot)
             {
@@ -152,10 +162,6 @@
             console.log("slots",vm.theslots);
             }
 
-
-
-
-
             function showConf()
             {
                 var navigator = document.getElementById('navigatorcontainer');
@@ -202,7 +208,7 @@
               }
 
             
-
+            //inserts an xml snippet at the cursor position;
             function loadXml()
             {
                 staticDataFactory.loadXml(vm.selectedItem.file).then(function succes(response)
@@ -215,16 +221,35 @@
             
 
 
+            //responds to the selection of an item in the class Area;
             function setSelectedClass(item)
             {
                 vm.selectedItem = item;
                 vm.selectedProperties = {};
+                
+                for(var i=0 ; i<item.properties.length; i++)
+                {
+                    if(item.properties[i][0]=='classname' || item.properties[i][0]=='className')
+                    {
+                        
+
+                        var checkbox = document.getElementById('checkbox' + i);
+                        if(checkbox === null)
+                        {
+                            break;
+                        }
+                        checkbox.click();
+                        break;
+                    }
+                }
             }
 
 
+
+            //responds to the radiobuttons in the dataSource area and switches to pipe, receiver, snippet or general; the first item of 
+            //the chosen type is selected.
             function toggle_datasource(string)
             {
-                
                 staticDataFactory.setDataSource(string);
                 vm.datasource = staticDataFactory.getDataSource();
                 vm.showPropertyDescription = false;
@@ -234,8 +259,10 @@
                 {
                     if (!done && vm.navigatorModel[key].type === string )
                     {
-                        vm.selectedItem = vm.navigatorModel[key];
-                        vm.selectedProperties = {};
+                        //vm.selectedItem = vm.navigatorModel[key];
+                        //vm.selectedProperties = {};
+                        setSelectedClass(vm.navigatorModel[key]);
+
                         done = true;
                     }
                 });
@@ -243,6 +270,7 @@
 
                 console.log("vm.datasource", vm.datasource);
             }
+
 
             // function codemirrorLoaded(_editor)
             // {
@@ -274,6 +302,7 @@
             //     _editor.addKeyMap(map);    
             //     editor = _editor;
             //     thedocument = _doc;
+
                 
             //     //initialising left panel.
             //     showNav(); 
@@ -408,6 +437,22 @@
             }
 
 
+            //determines to check a value in the property area because they are obligatory;
+            function checkDefaults(property)
+            {
+                console.log(property);
+                if(property[0] === 'classname' || property[0] === 'className')
+                {
+                    vm.selectedProperties[property[0]] = new attributeObject('className', new Array(property[2]));
+                    return true;
+                }
+                return false;
+            }
+
+
+/*Responds to the arrow button in the navBar. The current selected item and the current selected properties are converted
+to a string and inserted in the editor;*/
+
             function submitForm()
 
             {
@@ -439,7 +484,8 @@
                 }
             }
         })
-    .filter('datasourceFilter', function(staticDataFactory)
+    /*determines which classes are shown in the navigator, based on the JSON item type (pipes, receivers, general or snippets)*/
+.filter('datasourceFilter', function(staticDataFactory)
     {
         return function(items)
         {
@@ -454,8 +500,15 @@
             });
             return filtered;
         };
+    })
+    //replaces escaped tag signs with the proper symbols, used in the description area where sometimes strange symbols appear.
+    .filter('cleanupFilter', function()
+    {
+        return function(item)
+        {
+            var newstring = item.replace(/&lt;/g,'<');
+            var newerstring = newstring.replace(/&gt;/g,'>');
+            return newerstring;
+        };
     });
-
 })();
-
-

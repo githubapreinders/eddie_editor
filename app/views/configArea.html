@@ -15,3 +15,10 @@
 	</ul>
 </div>
 <div ng-include ="'./views/storageSlot.html'"></div>
+<br>
+
+<label>Editor theme : <select ng-model="vm.selectedTheme" ng-options="theme for theme in vm.themes" ng-change="vm.changeTheme()"></select></label>
+
+<br>
+
+<label>Font Size : <select ng-model="vm.selectedFontSize" ng-options="fontsize for fontsize in vm.fontSizes" ng-change="vm.changeFontSize()"></select></label>

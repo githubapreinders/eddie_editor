@@ -17,6 +17,7 @@ h6 {
     width: 39%; }
     #mynavbar .navBarLeft .navItem {
       position: absolute;
+      cursor: pointer;
       left: 90%;
       top: 60%;
       display: -webkit-box;
@@ -49,6 +50,8 @@ h6 {
       -webkit-flex-grow: 1;
           -ms-flex-positive: 1;
               flex-grow: 1; }
+    #mynavbar .navBarRight span {
+      cursor: pointer; }
 
 html, body {
   width: 100%;
@@ -58,7 +61,8 @@ html, body {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
-  display: flex; }
+  display: flex;
+  cursor: pointer; }
   .configTop span, .navigatorTop span {
     padding: 2px;
     border: 1px solid grey;
@@ -107,7 +111,9 @@ html, body {
   #navigatorcontainer .dataSourceArea {
     height: 15%;
     background: url("../media/concrete_seamless.png");
-    padding: 0px 0px 15px 15px; }
+    padding: 0px 0px 15px 0px; }
+    #navigatorcontainer .dataSourceArea .btn-group {
+      padding: 5px; }
   #navigatorcontainer .classArea {
     -webkit-box-flex: 1;
     -webkit-flex-grow: 1;
