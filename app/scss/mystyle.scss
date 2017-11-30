@@ -183,6 +183,8 @@ html, body
 				}
 				.classArea
 				{
+					display:flex;
+					flex-direction: column;
 					flex-grow:1;
 					background:url($background0);
 					cursor : pointer;
@@ -190,6 +192,10 @@ html, body
 					overflow-x:hidden;
 					padding: 15px;
 					height:20%;
+					.filler
+					{
+						flex-grow : 1;
+					}
 					.classItem
 					{
 						color:black;
@@ -203,12 +209,18 @@ html, body
 				}
 				.descriptionArea
 				{
+					display:flex;
+					flex-direction: column;
 					height:25%;
 					background:url($background0);
 					overflow-y:auto;
 					overflow-x:hidden;
 					padding: 15px;
 					padding-right: 0px;
+					.filler
+					{
+						flex-grow: 1 ;
+					}
 				}
 				.propertyArea
 				{
@@ -244,7 +256,18 @@ html, body
 
   	}
 
+.divider
+{
+	height:2px;
+	width:80%;
+	margin-top:25px;
+	margin-bottom:25px;
+	padding-left:14px;
+	padding-right:14px;
+	background: linear-gradient(135deg, rgba(255,255,255,1) 0%, rgba(176,166,176,1) 50%, rgba(255,255,255,1) 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#ffffff', GradientType=1 );
 
+}
 
 /*rotates an icon in the navbar*/
 .fa-rotate-45 

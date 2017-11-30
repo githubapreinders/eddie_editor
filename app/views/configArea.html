@@ -4,21 +4,26 @@
          <i  class="fa fa-minus "></i>
     </span>
 </div>
-<div class="configArea">
 
-	<ul>
-		<li>Local Storage Slots</li>
-		<li>IAF url</li>
-		<li>font size</li>
-		<li>colors</li>
-		<li>default property values</li>
-	</ul>
-</div>
+<div class="divider"></div>
 <div ng-include ="'./views/storageSlot.html'"></div>
-<br>
 
+<div class="divider"></div>
+
+<div class="navigatorTop">
+    <span  style="position:absolute;border: 0px;">
+                    <i class="fa fa-edit"></i>
+    </span>
+    <div></div><strong>Editor</strong><div></div>    
+    
+ </div>  
+ <br>
 <label>Editor theme : <select ng-model="vm.selectedTheme" ng-options="theme for theme in vm.themes" ng-change="vm.changeTheme()"></select></label>
 
 <br>
 
 <label>Font Size : <select ng-model="vm.selectedFontSize" ng-options="fontsize for fontsize in vm.fontSizes" ng-change="vm.changeFontSize()"></select></label>
+
+<div class="divider"></div>
+<div ng-include="'./views/authentication.html'"></div>
+

@@ -1,0 +1,236 @@
+{
+    "elements": [
+        {
+            "type": "element",
+            "name": "module",
+            "elements": [
+                {
+                    "type": "element",
+                    "name": "adapter",
+                    "attributes": {
+                        "name": "HelloWorlds",
+                        "active": "${HelloWorlds.active}"
+                    },
+                    "elements": [
+                        {
+                            "type": "element",
+                            "name": "receiver",
+                            "attributes": {
+                                "name": "HelloWorlds",
+                                "className": "nl.nn.adapterframework.receivers.GenericReceiver"
+                            },
+                            "elements": [
+                                {
+                                    "type": "element",
+                                    "name": "listener",
+                                    "attributes": {
+                                        "name": "HelloWorlds",
+                                        "className": "nl.nn.adapterframework.receivers.JavaListener"
+                                    }
+                                }
+                            ]
+                        },
+                        {
+                            "type": "element",
+                            "name": "pipeline",
+                            "attributes": {
+                                "firstPipe": "CheckInputIsXml"
+                            },
+                            "elements": [
+                                {
+                                    "type": "element",
+                                    "name": "exits",
+                                    "elements": [
+                                        {
+                                            "type": "element",
+                                            "name": "exit",
+                                            "attributes": {
+                                                "path": "EXIT",
+                                                "state": "success"
+                                            }
+                                        }
+                                    ]
+                                },
+                                {
+                                    "type": "element",
+                                    "name": "pipe",
+                                    "attributes": {
+                                        "name": "CheckInputIsXml",
+                                        "className": "nl.nn.adapterframework.pipes.XmlWellFormedChecker"
+                                    },
+                                    "elements": [
+                                        {
+                                            "type": "element",
+                                            "name": "forward",
+                                            "attributes": {
+                                                "name": "success",
+                                                "path": "HelloWorlds"
+                                            }
+                                        },
+                                        {
+                                            "type": "element",
+                                            "name": "forward",
+                                            "attributes": {
+                                                "name": "failure",
+                                                "path": "Text2Xml"
+                                            }
+                                        }
+                                    ]
+                                },
+                                {
+                                    "type": "element",
+                                    "name": "pipe",
+                                    "attributes": {
+                                        "name": "Text2Xml",
+                                        "className": "nl.nn.adapterframework.pipes.Text2XmlPipe",
+                                        "includeXmlDeclaration": "false",
+                                        "xmlTag": "tests",
+                                        "splitLines": "true"
+                                    },
+                                    "elements": [
+                                        {
+                                            "type": "element",
+                                            "name": "forward",
+                                            "attributes": {
+                                                "name": "success",
+                                                "path": "RenameElementLineToTest"
+                                            }
+                                        }
+                                    ]
+                                },
+                                {
+                                    "type": "element",
+                                    "name": "pipe",
+                                    "attributes": {
+                                        "name": "RenameElementLineToTest",
+                                        "className": "nl.nn.adapterframework.pipes.XsltPipe",
+                                        "styleSheetName": "HelloWorlds/xsl/RenameElementLineToTest.xsl"
+                                    },
+                                    "elements": [
+                                        {
+                                            "type": "element",
+                                            "name": "forward",
+                                            "attributes": {
+                                                "name": "success",
+                                                "path": "CheckEmptyMessage"
+                                            }
+                                        }
+                                    ]
+                                },
+                                {
+                                    "type": "element",
+                                    "name": "pipe",
+                                    "attributes": {
+                                        "name": "CheckEmptyMessage",
+                                        "className": "nl.nn.adapterframework.pipes.CompareStringPipe"
+                                    },
+                                    "elements": [
+                                        {
+                                            "type": "element",
+                                            "name": "param",
+                                            "attributes": {
+                                                "name": "operand1",
+                                                "value": "<tests/>"
+                                            }
+                                        },
+                                        {
+                                            "type": "element",
+                                            "name": "forward",
+                                            "attributes": {
+                                                "name": "equals",
+                                                "path": "CreateNewMessage"
+                                            }
+                                        },
+                                        {
+                                            "type": "element",
+                                            "name": "forward",
+                                            "attributes": {
+                                                "name": "lessthan",
+                                                "path": "HelloWorlds"
+                                            }
+                                        },
+                                        {
+                                            "type": "element",
+                                            "name": "forward",
+                                            "attributes": {
+                                                "name": "greaterthan",
+                                                "path": "HelloWorlds"
+                                            }
+                                        }
+                                    ]
+                                },
+                                {
+                                    "type": "element",
+                                    "name": "pipe",
+                                    "attributes": {
+                                        "name": "CreateNewMessage",
+                                        "className": "nl.nn.adapterframework.pipes.FixedResult",
+                                        "returnString": "<tests><test>1</test></tests>"
+                                    },
+                                    "elements": [
+                                        {
+                                            "type": "element",
+                                            "name": "forward",
+                                            "attributes": {
+                                                "name": "success",
+                                                "path": "HelloWorlds"
+                                            }
+                                        }
+                                    ]
+                                },
+                                {
+                                    "type": "element",
+                                    "name": "pipe",
+                                    "attributes": {
+                                        "name": "HelloWorlds",
+                                        "className": "nl.nn.adapterframework.pipes.ForEachChildElementPipe",
+                                        "blockSize": "3",
+                                        "blockPrefix": "<batch>",
+                                        "blockSuffix": "</batch>",
+                                        "elementXPathExpression": "/tests/test"
+                                    },
+                                    "elements": [
+                                        {
+                                            "type": "element",
+                                            "name": "sender",
+                                            "attributes": {
+                                                "className": "nl.nn.adapterframework.senders.IbisLocalSender",
+                                                "javaListener": "HelloWorld"
+                                            }
+                                        },
+                                        {
+                                            "type": "element",
+                                            "name": "forward",
+                                            "attributes": {
+                                                "name": "success",
+                                                "path": "EXIT"
+                                            }
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "type": "element",
+                    "name": "scheduler",
+                    "elements": [
+                        {
+                            "type": "element",
+                            "name": "job",
+                            "attributes": {
+                                "name": "HelloWorlds",
+                                "adapterName": "HelloWorlds",
+                                "receiverName": "HelloWorlds",
+                                "cronExpression": "0 55 2 * * ?",
+                                "function": "sendMessage",
+                                "active": "${HelloWorlds.active}"
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

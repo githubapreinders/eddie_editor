@@ -1,0 +1,11 @@
+{
+	"pipeline":
+	{
+		"classname":"pipeline",
+		"type":"general",
+		"description":"generic pipeline object; the construction of a pipeline shoul be as follows:......",
+		"children":["pipe","job","scheduler"],
+		"attrs":{"firstPipe":[""]},
+		"properties":[["firstPipe","The name of your first pipe should be filled in here.",""]]
+	}
+}

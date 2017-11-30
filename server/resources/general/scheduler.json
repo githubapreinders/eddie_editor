@@ -1,0 +1,10 @@
+{
+	"scheduler":
+	{
+		"classname":"scheduler",
+		"type":"general",
+		"description":"Container object to schedule the execution of the pipeline.",
+		"attrs":{},
+		"properties":[]
+	}
+}

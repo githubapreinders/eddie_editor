@@ -1,0 +1,10 @@
+{
+	"module":
+	{
+		"classname":"module",
+		"type":"general",
+		"description":"generic module object which is the top level object of an IBIS adapter. ",
+		"attrs":{},
+		"properties":[]
+	}
+}

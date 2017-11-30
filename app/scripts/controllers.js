@@ -2,7 +2,7 @@
     'use strict';
 
     angular.module('confab')
-        .controller('IndexController', function ($scope,$interval,$timeout, xmlTag, attributeObject, StaticDataFactory, StorageFactory, EditorFactory, ValidationFactory)
+        .controller('IndexController', function ($scope,$interval,$timeout, xmlTag, attributeObject, StaticDataFactory, StorageFactory, EditorFactory, ValidationFactory, IafFactory)
         {
 
             console.log('IndexController...');
@@ -27,6 +27,8 @@
             vm.changeTheme = changeTheme;
             vm.changeFontSize = changeFontSize;
             vm.validateXml = validateXml;
+            vm.sendToIaf = sendToIaf;
+            vm.setCredentials = setCredentials;
 
             //Static values
             vm.message = "Angular Controller is working allright...";
@@ -59,6 +61,26 @@
                 StorageFactory.getSetter(StorageFactory.getCurrentKey())(thedocument.getValue());
             }, 5000);
 
+            function sendToIaf()
+            {   
+                var message = "dummymessage";
+                IafFactory.postZip(message).then(function succes(response)
+                    {
+                        console.log("getting response", response);
+                    },
+                    function failure(response)
+                    {
+                        console.log("getting failure...", response);
+                    });
+            }
+
+            function setCredentials()
+            {
+                console.log("ddddddddddfffffff");
+                var resp = IafFactory.setCredentials(vm.server, vm.username, vm.password);
+                console.log("credentials:", resp);
+            }
+
             
 
             function validateXml()
@@ -80,7 +102,7 @@
                 thedocument = editor.getDoc();
                 StaticDataFactory.getJson().then(function success(response)
                 {
-                    vm.navigatorModel = response.data;
+                    vm.navigatorModel = response.data.json;
                     editor.setOption('hintOptions', {schemaInfo: vm.navigatorModel});
                     editor.foldCode(CodeMirror.Pos(0,0));
                     editor.foldCode(CodeMirror.Pos(thedocument.lineCount(),0));
@@ -122,9 +144,10 @@
             function toggleSlot(slot)
             {
                 
-                console.log("slot: ", slot );
-                if(slot.length === 1)
+                console.log("slot: ", typeof (slot) );
+                if(typeof slot === 'number')
                 {
+                    console.log("pushed key icon", typeof (slot));
                     var slotnumber = Number(slot) + 1;
                     if (slotnumber === 5)
                     {
@@ -141,14 +164,14 @@
                 else if(vm.currentSlot === slot)
                 {
                     vm.currentSlot = vm.theslots[0];
-                    vm.currentSlotNumber = slot.subString(4,5);
+                    vm.currentSlotNumber = parseInt(slot.substring(4,5));
                     StorageFactory.setCurrentKey(vm.currentSlot);
                 }
                 //opening a slot
                 else
                 {
                     vm.currentSlot = slot;
-                    vm.currentSlotNumber = slot.subString(4,5);
+                    vm.currentSlotNumber = parseInt(slot.substring(4,5));
                     StorageFactory.setCurrentKey(vm.currentSlot);
                     retrieveData(slot);
                 }
@@ -175,18 +198,17 @@
                     vm.theslots = StorageFactory.getKeys();
                     vm.thealiases = StorageFactory.getAliases();
                     vm.currentSlot = vm.theslots[0];
+                    vm.currentSlotNumber = 1;
                     // console.log("slots after initialisation:",vm.thealiases);
                 }
                 else
                 {
                     // console.log("getting value for slot ", key);
                     thedocument.setValue(StorageFactory.getGetter(key)());
-                   
                 }
-            
-            // console.log("slots",vm.theslots);
             }
 
+            //toggles the configuration menu in the left area;
             function showConf()
             {
                 var navigator = document.getElementById('navigatorcontainer');
@@ -200,10 +222,10 @@
                   navigator.style.left = '-25%';
                 }
                 vm.showConfig = !vm.showConfig;
-              }
+            }
                 
 
-
+              //toggles the editor area to 75 or 100%
               function showNav()
               {
                 var editor = document.getElementById('editorcontainer');
@@ -296,89 +318,7 @@
                 console.log("vm.datasource", vm.datasource);
             }
 
-
-            // function codemirrorLoaded(_editor)
-            // {
-            //     var _doc = _editor.getDoc();
-            //     _editor.focus();
-            //     _editor.setOption('lineNumbers', true);
-            //     _editor.setOption('lineWrapping', true);
-            //     _editor.setOption('mode', 'xml');
-            //     _editor.setOption('beautify', 'true');
-            //     _editor.setOption('theme', 'twilight');
-            //     _editor.setOption('hintOptions', {schemaInfo: vm.navigatorModel});
-            //     _editor.setOption('matchTags', {bothTags: true});
-            //     var extraKeys =  {
-            //               "'<'": completeAfter,
-            //               "'/'": completeIfAfterLt,
-            //               "' '": completeIfInTag,
-            //               "'='": completeIfInTag,
-            //               "Ctrl-Space": "autocomplete"
-            //                     };
-            //     _editor.setOption('extraKeys', extraKeys);
-                
-            //     var map = {"Ctrl-A" : function(cm)
-            //         {
-            //             console.log("pushing ctrl-A");
-            //             var position = _doc.getCursor();
-            //             //var range = doc.getRange({'from' : position, 'to':{position.line, positon.ch+10}
-            //             //console.log("range:", range);
-            //         }};
-            //     _editor.addKeyMap(map);    
-            //     editor = _editor;
-            //     thedocument = _doc;
-
-                
-            //     //initialising left panel.
-            //     showNav(); 
-            //     showConf();
-            //     showConf();
-                
-            //     //initialising the cache and loading it in the editor;
-            //     var avalue = StorageFactory.initialise();
-            //     retrieveData();
-            //     console.log("editor loaded;");
-
-
-
-            //     var windowheight = window.innerHeight;
-            //     var navbarheight = document.getElementById('mynavbar').offsetHeight;
-            //     var ed = document.querySelector('.CodeMirror');
-            //     ed.style.height = (windowheight - navbarheight) + 'px'; 
-            //     console.log("window, navbar, editor:", windowheight, navbarheight, ed.style.height);
-
-            //     function completeAfter(cm, pred) 
-            //     {
-            //         var cur = cm.getCursor();
-            //         if (!pred || pred()) setTimeout(function() 
-            //         {
-            //             if (!cm.state.completionActive)
-            //             cm.showHint({completeSingle: false});
-            //         }, 100);
-            //         return CodeMirror.Pass;
-            //     }
-
-            //     function completeIfAfterLt(cm) 
-            //     {
-            //         return completeAfter(cm, function() 
-            //         {
-            //             var cur = cm.getCursor();
-            //             return cm.getRange(CodeMirror.Pos(cur.line, cur.ch - 1), cur) == "<";
-            //         });
-            //     }
-
-            //     function completeIfInTag(cm) 
-            //     {
-            //     return completeAfter(cm, function() 
-            //     {
-            //         var tok = cm.getTokenAt(cm.getCursor());
-            //         if (tok.type == "string" && (!/['"]/.test(tok.string.charAt(tok.string.length - 1)) || tok.string.length == 1)) return false;
-            //         var inner = CodeMirror.innerMode(cm.getMode(), tok.state).state;
-            //         return inner.tagName;
-            //     });
-            //   }
-            // }
-
+            //empties the editor
             function clearEditor()
             {
                 thedocument.setValue("<?xml version='1.0' encoding='UTF-8'?>\n");
@@ -386,6 +326,7 @@
                 editor.focus();
             }
 
+            //Responding to the style button in the navbar
             function styleEditorContent()
             {
                 //get the currunt cursor position of the editor; check between which values that is and look that up

@@ -1,0 +1,10 @@
+{
+	"exits":
+	{
+		"classname":"exits",
+		"type":"general",
+		"description":"generic exits object as part of a pipeline. ",
+		"attrs":{},
+		"properties":[]
+	}
+}

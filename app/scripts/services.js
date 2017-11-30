@@ -8,7 +8,7 @@ angular.module('confab')
     {
 
         var datasource = 'pipes';
-
+        var API_URL =  'http://localhost:3000';  
         var themes = ["twilight", "monokai", "neat"];
         var fontSizes = [12,13,14,15,16,17,18,19,20];
 
@@ -69,21 +69,26 @@ angular.module('confab')
         }
 
 
+        /* data is available via data.json, url is static
+        */
         function getJson()
         {
-          return $http.get('./media/javadoc_data1.json').then(function(data)
+          return $http.get(API_URL + '/json').then(function(data)
             {
+              console.log("getjson");
               return data;
+            },function (error)
+            {
+              console.log("server error :", error.error );
             });
-          
         }  
 
         function loadXml(which)
         {
-          //which = 'configurationHelloWorlds.xml';
-          console.log("which:", which);
-          return $http.get('./media/'+ which ).then(function(data)
+          console.log("file to catch:", which);
+          return $http.get(API_URL + '/snippets?resource=' + which ).then(function(data)
             {
+              console.log("thedata:", data);
               return data;
             });
         }
@@ -352,6 +357,55 @@ angular.module('confab')
         console.log("message:", message);
         return message;
       }
+    })
+    .factory('IafFactory', function($http)
+    {
+    var uname = null;
+    var pw = null;
+    var API_URL = 'http://localhost:3000';  
+      return{
+        postZip : postZip,
+        setCredentials : setCredentials
+      };
+
+      function postZip(zipfile)
+      {
+        return $http.post(API_URL + '/',{zipfile: zipfile
+            }).then(function succes(response)
+            {
+                console.info("returning from backend",response);
+                return response;
+            }, function failure(response)
+            {
+                console.info("returning error from backend",response);
+                return response;
+            });
+      }
+
+      function setCredentials(server, uname, pw)
+      {
+        console.log("server",server, uname, pw);
+        if(!pw || !uname)
+        {
+          return;
+        }
+        if (server)
+        {
+          API_URL = server;
+        }
+        uname = uname;
+        pw = pw;
+
+        return{
+          apiurl:API_URL,
+          uname : uname,
+          pw : pw
+        };
+
+
+      }
+
+
     });
 
 })();   

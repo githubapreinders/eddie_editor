@@ -1,0 +1,10 @@
+{
+	"job":
+	{
+		"classname":"job",
+		"type":"general",
+		"description":"",
+		"attrs":{"name":[""],"adapterName":[""],"receiverName":[""],"cronExpression":[""],"function":[""],"active":[""]},
+		"properties":[["name","",""], ["adapterName","",""], ["receiverName","",""], ["cronExpression","",""], ["function","",""], ["active","",""]]
+	}
+}

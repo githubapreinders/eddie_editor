@@ -1,6 +1,6 @@
 <div class="navigatorTop">
-    <span ng-click="vm.toggleSlot(vm.currentSlot.substring(4,5))" >
-                    <i class="fa fa-key  "></i><span ng-model = "vm.currentSlot">{{vm.currentSlot.substring(4,5)}}</span>
+    <span ng-click="vm.toggleSlot(vm.currentSlotNumber)" >
+                    <i class="fa fa-key  "></i>{{vm.currentSlotNumber}}
     </span>
     <div></div><strong>Navigator</strong><div></div>    
     <span ng-click="vm.showConf()" >
@@ -25,3 +25,4 @@
             <input type="radio" name="myRadio4" id="myRadio4" value="general" ng-checked = "vm.datasource == 'general'" ng-click="vm.toggle_datasource('general')">
         General </label>
     </div>
+    <div class="divider"></div>
