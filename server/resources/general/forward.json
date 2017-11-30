@@ -1,0 +1,10 @@
+{
+	"forward":
+	{
+		"classname":"forward",
+		"type":"general",
+		"description":"generic forward object as part of a pipe. ",
+		"attrs":{"name":["success","failure"],"path":[""]},
+		"properties":[["className","",""], ["name","",""]]
+	}
+}

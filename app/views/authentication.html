@@ -1,0 +1,33 @@
+<div class="navigatorTop">
+    <span  style="position:absolute;border: 0px;">
+                    <i class="fa fa-drivers-license-o"></i>
+    </span>
+    <div></div><strong>Authentication</strong><div></div>    
+    
+ </div>  
+<br>
+
+
+<div class="slotContainer">
+	<span>Server</span>	
+	<div></div>
+	<input type="text" ng-model="vm.server">
+	
+	
+</div>
+
+<div class="slotContainer">
+	<span>Username</span>
+	<div></div>	
+	<input type="text" ng-model="vm.username">
+	
+	
+</div>
+
+<div class="slotContainer">
+	<span>Password</span>
+	<div></div>	
+	<input type="Password" ng-model="vm.password" >
+</div>
+<button class="btn btn-info" ng-click = "vm.setCredentials()">Submit</button>
+

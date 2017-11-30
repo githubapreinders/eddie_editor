@@ -118,6 +118,15 @@ html, body {
     #navigatorcontainer .dataSourceArea .btn-group {
       padding: 5px; }
   #navigatorcontainer .classArea {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -webkit-flex-direction: column;
+        -ms-flex-direction: column;
+            flex-direction: column;
     -webkit-box-flex: 1;
     -webkit-flex-grow: 1;
         -ms-flex-positive: 1;
@@ -128,6 +137,11 @@ html, body {
     overflow-x: hidden;
     padding: 15px;
     height: 20%; }
+    #navigatorcontainer .classArea .filler {
+      -webkit-box-flex: 1;
+      -webkit-flex-grow: 1;
+          -ms-flex-positive: 1;
+              flex-grow: 1; }
     #navigatorcontainer .classArea .classItem {
       color: black; }
     #navigatorcontainer .classArea .selectedItem {
@@ -135,12 +149,26 @@ html, body {
       color: white;
       background: black; }
   #navigatorcontainer .descriptionArea {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -webkit-flex-direction: column;
+        -ms-flex-direction: column;
+            flex-direction: column;
     height: 25%;
     background: url("../media/concrete_seamless.png");
     overflow-y: auto;
     overflow-x: hidden;
     padding: 15px;
     padding-right: 0px; }
+    #navigatorcontainer .descriptionArea .filler {
+      -webkit-box-flex: 1;
+      -webkit-flex-grow: 1;
+          -ms-flex-positive: 1;
+              flex-grow: 1; }
   #navigatorcontainer .propertyArea {
     -webkit-box-flex: 1;
     -webkit-flex-grow: 1;
@@ -168,6 +196,17 @@ html, body {
     -webkit-flex-grow: 1;
         -ms-flex-positive: 1;
             flex-grow: 1; }
+
+.divider {
+  height: 2px;
+  width: 80%;
+  margin-top: 25px;
+  margin-bottom: 25px;
+  padding-left: 14px;
+  padding-right: 14px;
+  background: -webkit-linear-gradient(315deg, white 0%, #b0a6b0 50%, white 100%);
+  background: linear-gradient(135deg, white 0%, #b0a6b0 50%, white 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#ffffff', GradientType=1 ); }
 
 /*rotates an icon in the navbar*/
 .fa-rotate-45 {
