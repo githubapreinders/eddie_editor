@@ -43,7 +43,7 @@ gulp.task('js', function () {
 gulp.task('compile_sass',function()
 {
 return gulp.src('app/scss/**/*.scss')
-    .pipe(sass())
+    .pipe(sass().on('error',sass.logError))
     .pipe(prefixer({browsers:['last 2 versions', 'ios_saf >=5', 'safari >=7']}))
     .pipe(gulp.dest('app/css/'))
     .pipe(browserSync.stream());

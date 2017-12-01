@@ -4,6 +4,7 @@ var app;
 var Iaftag;
 var JsonMonster;
 var Snippet;
+var _;
 init();
 initDb();
 
@@ -15,6 +16,7 @@ function init()
 	var bodyParser = require('body-parser');
 	var fs = require('fs');
 	var path = require('path');
+	_ = require('underscore-node');
 
 	app = express();
 	app.use(cors());
@@ -79,17 +81,21 @@ function readFile()
 	app.get('/json', function (req, res)
 	{
 		console.log("\ngetting json.........\n");
-		JsonMonster.findOne({}, function(err, data)
+		Iaftag.find({}, function(err, data)
 		{
 			if(err)
 			{
 				console.log("error", err);
-				res.status(500).send({error: err});
 			}
-			else
-			{
-				// console.log("the data",data.json);
-				res.status(200).send({json:data.json});
+			else			{
+				var myjson = {}
+
+				_.each(data,function(item, index)
+				{
+					myjson[item.classname] = item;
+				});
+				res.set('Content-type', 'application/json');
+				res.status(200).send(myjson);
 			}
 		});
 	});
@@ -115,16 +121,10 @@ function readFile()
 				var convert = require('xml-js');
 
 				res.set('Content-Type', 'text/xml');
-				res.status(200).send({xml : convert.json2xml(data[0].xml)});
+				res.status(200).send(convert.json2xml(data[0].xml));
 			}
 		});
-
 	});
-
-
-
-
-
 }());
 
 

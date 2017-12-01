@@ -51,16 +51,25 @@
             vm.themes = StaticDataFactory.getThemes();
             vm.selectedTheme = "twilight";
             vm.selectedFontSize = 14;
-            vm.fontSizes = StaticDataFactory.getFontSizes();
+            vm.fontSize = StaticDataFactory.getFontSizes();
             
 
             vm.currentSlotNumber = 0;
             vm.theslots = [];
-            $interval(function()
-            {
-                StorageFactory.getSetter(StorageFactory.getCurrentKey())(thedocument.getValue());
-            }, 5000);
+            
+            // $interval(function()
+            // {
+            //     console.log("saving ", StorageFactory.getCurrentKey());
+            //     StorageFactory.getSetter(StorageFactory.getCurrentKey())(thedocument.getValue());
+            // }, 5000);
 
+
+            function saveInSlot()
+            {
+                console.log("saving ", thedocument.getValue());
+                StorageFactory.getSetter(StorageFactory.getCurrentKey())(thedocument.getValue());
+            }
+            
             function sendToIaf()
             {   
                 var message = "dummymessage";
@@ -85,8 +94,9 @@
 
             function validateXml()
             {
-                vm.validationMessage = ValidationFactory.validateXml(vm.currentSlot, vm.theslots[3]);
-                console.log("validating....", vm.validationMessage);
+               // vm.validationMessage = ValidationFactory.validateXml(vm.currentSlot, vm.theslots[3]);
+                //console.log("validating....", vm.validationMessage);
+                saveInSlot();
             }
 
             function changeFontSize()
@@ -102,7 +112,8 @@
                 thedocument = editor.getDoc();
                 StaticDataFactory.getJson().then(function success(response)
                 {
-                    vm.navigatorModel = response.data.json;
+                    console.log("response: ", response.data);
+                    vm.navigatorModel = response.data;
                     editor.setOption('hintOptions', {schemaInfo: vm.navigatorModel});
                     editor.foldCode(CodeMirror.Pos(0,0));
                     editor.foldCode(CodeMirror.Pos(thedocument.lineCount(),0));
@@ -141,9 +152,9 @@
 
             console.log("retrieved keys",StorageFactory.getKeys());
 
+            
             function toggleSlot(slot)
             {
-                
                 console.log("slot: ", typeof (slot) );
                 if(typeof slot === 'number')
                 {
@@ -153,11 +164,11 @@
                     {
                         slotnumber = 1 ;
                     }
-                vm.currentSlot = "slot" + slotnumber.toString();
-                console.log("current slot: ", vm.currentSlot);
-                vm.currentSlotNumber = slotnumber;
-                StorageFactory.setCurrentKey(vm.currentSlot);
-                retrieveData(vm.currentSlot);
+                    vm.currentSlot = "slot" + slotnumber.toString();
+                    console.log("current slot: ", vm.currentSlot);
+                    vm.currentSlotNumber = slotnumber;
+                    StorageFactory.setCurrentKey(vm.currentSlot);
+                    retrieveData(vm.currentSlot);
                 }   
 
                 //a keypress on an open folder, in other words, closing a folder
@@ -176,7 +187,7 @@
                     retrieveData(slot);
                 }
 
-                // console.log("theslots:",vm.theslots, vm.currentSlot);
+                console.log("Current slotnumber and slot:",vm.currentSlotNumber, vm.currentSlot);
             }
 
             function storeData()
@@ -261,6 +272,7 @@
                 StaticDataFactory.loadXml(vm.selectedItem.file).then(function succes(response)
                 {
                     thedocument.replaceSelection(response.data);
+                    styleEditorContent();
                 });
             }
 
@@ -471,9 +483,14 @@ to a string and inserted in the editor;*/
     {
         return function(item)
         {
-            var newstring = item.replace(/&lt;/g,'<');
-            var newerstring = newstring.replace(/&gt;/g,'>');
-            return newerstring;
+
+            if(item !== undefined)
+            {
+                console.log("item:", typeof item, JSON.stringify(item));
+                var newstring = item.replace(/&lt;/g,'<');
+                var newerstring = newstring.replace(/&gt;/g,'>');
+                return newerstring;
+            }
         };
     });
 })();

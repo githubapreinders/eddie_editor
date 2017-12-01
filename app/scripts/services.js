@@ -88,7 +88,6 @@ angular.module('confab')
           console.log("file to catch:", which);
           return $http.get(API_URL + '/snippets?resource=' + which ).then(function(data)
             {
-              console.log("thedata:", data);
               return data;
             });
         }
@@ -114,7 +113,7 @@ angular.module('confab')
     .factory('StorageFactory',['storage', '$log', function(storage, $log)
     {
       var api = {};
-      var thekeys = ["slot1","slot2","slot3"];
+      var thekeys = ["slot1","slot2","slot3","slot4"];
       var thealiases = ["aliasslot1","aliasslot2","aliasslot3"];
       var template = ["slot1","slot2","slot3","slot4","aliasslot1","aliasslot2","aliasslot3"];
       var currentKey;
@@ -170,7 +169,7 @@ angular.module('confab')
 
 
 
-      function setCurrentKey(key)
+       function setCurrentKey(key)
       {
         currentKey = key;
       }
@@ -266,10 +265,8 @@ angular.module('confab')
             setter(value);
           }
           return value;
-        };
+        }
       }
-
-
     }])
     .factory('EditorFactory', function()
     {
