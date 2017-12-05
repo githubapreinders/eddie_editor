@@ -51,7 +51,7 @@
             vm.themes = StaticDataFactory.getThemes();
             vm.selectedTheme = "twilight";
             vm.selectedFontSize = 14;
-            vm.fontSize = StaticDataFactory.getFontSizes();
+            vm.fontSizes = StaticDataFactory.getFontSizes();
             
 
             vm.currentSlotNumber = 0;
@@ -94,9 +94,26 @@
 
             function validateXml()
             {
-               // vm.validationMessage = ValidationFactory.validateXml(vm.currentSlot, vm.theslots[3]);
-                //console.log("validating....", vm.validationMessage);
-                saveInSlot();
+                // ValidationFactory.validateXml(vm.currentSlot).then
+                // (
+                //     function success(res)
+                //     {
+                //         vm.validationMessage = res;
+                //         console.log("validating....", vm.validationMessage);
+                //     }, 
+                //     function failure(err)
+                //     {
+                        
+                //     }
+                // );
+                StaticDataFactory.postSnippet(vm.currentSlot).then(function (res)
+                {
+                    console.log("response", res);
+                },
+                function (err)
+                {
+                    console.log("response", err);
+                });
             }
 
             function changeFontSize()
@@ -269,7 +286,7 @@
             //inserts an xml snippet at the cursor position;
             function loadXml()
             {
-                StaticDataFactory.loadXml(vm.selectedItem.file).then(function succes(response)
+                StaticDataFactory.loadXml(vm.selectedItem.classname).then(function succes(response)
                 {
                     thedocument.replaceSelection(response.data);
                     styleEditorContent();

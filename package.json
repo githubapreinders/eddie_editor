@@ -5,6 +5,7 @@
   "main": "index.html",
   "dependencies": {
     "body-parser": "^1.18.2",
+    "body-parser-xml": "^1.1.0",
     "browser-sync": "^2.11.1",
     "cors": "^2.8.4",
     "del": "^2.2.0",
@@ -26,7 +27,8 @@
     "jshint-stylish": "^2.1.0",
     "mongoose": "^4.13.5",
     "underscore-node": "^0.1.2",
-    "xml-js": "^1.5.2"
+    "xml-js": "^1.5.2",
+    "xmllint": "^0.1.1"
   },
   "devDependencies": {
     "gulp-autoprefixer": "^3.1.1",

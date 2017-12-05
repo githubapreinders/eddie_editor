@@ -38,7 +38,7 @@ h6
 				position:absolute;
 				cursor:pointer;
 				left : 90%;
-				top :60%;
+				top :75%;
 				display: flex;
 				flex-direction: column;
 				transition: left 0.4s;
@@ -49,6 +49,7 @@ h6
 					padding:2px;
 					padding-left: 7px;
 					border:1px solid grey;
+					border-radius: 3px;
 					border-bottom:0px;
 				}
 					
@@ -102,6 +103,7 @@ html, body
 		padding:2px;
 		border:1px solid grey;
 		border-top:0px;
+		border-radius: 0px 0px 0px 3px;
 
 	}
 	.indescriptionarea
@@ -109,6 +111,11 @@ html, body
 			border:1px solid grey;
 			border-right: 0px;
 		}
+
+	.rounded
+	{
+		border-radius: 0px 0px 3px 0px;
+	}	
 	i
 	{
 		display:inline;
@@ -188,9 +195,10 @@ html, body
 					flex-grow:1;
 					background:url($background0);
 					cursor : pointer;
-					overflow-y:scroll;
+					overflow-y:hidden;
 					overflow-x:hidden;
-					padding: 15px;
+					text-indent:10px;
+					padding: 0px;
 					height:20%;
 					.filler
 					{
@@ -204,7 +212,7 @@ html, body
 					{
 						display:block;
 						color:white;
-						background:black;
+						background:#222;
 					}
 				}
 				.descriptionArea

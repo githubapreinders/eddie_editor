@@ -1,14 +1,13 @@
 (function(){
 
 'use strict';
-
-angular.module('confab')
-
-    .service('StaticDataFactory', function(xmlTag, $http, attributeObject,storage) 
+    var app = angular.module('confab');
+    app.constant('API_URL', "http://localhost:3000");
+    app.factory('StaticDataFactory', function(xmlTag, $http, StorageFactory,API_URL) 
     {
 
         var datasource = 'pipes';
-        var API_URL =  'http://localhost:3000';  
+        var JSONDATA = "jsondata";
         var themes = ["twilight", "monokai", "neat"];
         var fontSizes = [12,13,14,15,16,17,18,19,20];
 
@@ -34,9 +33,9 @@ angular.module('confab')
         return{
             getJson : getJson,
             loadXml : loadXml,
+            postSnippet: postSnippet,
             setDataSource: setDataSource,
             getDataSource: getDataSource,
-            makeSnippet: makeSnippet,
             getFormattingSettings: getFormattingSettings,
             getThemes: getThemes,
             getFontSizes: getFontSizes
@@ -69,17 +68,34 @@ angular.module('confab')
         }
 
 
-        /* data is available via data.json, url is static
+        /* data is available directly in the response
         */
         function getJson()
         {
+          var myjson;
+          try
+          {
+            myjson = JSON.parse(StorageFactory.getGetter(JSONDATA)()) ;
+            if(myjson === undefined)
+            {
+              myjson =  {etag:"initial",json:{}};
+            }
+            
+          }  catch(err)
+          {
+            myjson =  {etag:"initial",json:{}};
+          }
+
+
           return $http.get(API_URL + '/json').then(function(data)
             {
-              console.log("getjson");
-              return data;
+              console.info("returning json from server with status ",data.status);
+              
+                return data;
+                
             },function (error)
             {
-              console.log("server error :", error.error );
+              console.log("server error :", error );
             });
         }  
 
@@ -89,28 +105,55 @@ angular.module('confab')
           return $http.get(API_URL + '/snippets?resource=' + which ).then(function(data)
             {
               return data;
+            },function(error)
+            {
+              console.log("error loading xml", error);
             });
         }
 
-        function randomDigit()
+        function convertXml(slot)
         {
-            return Math.ceil(Math.random()*100);
+          // console.log("slot to convert to json:", StorageFactory.getGetter(slot)());
+          return $http({method:"POST",url:'http://localhost:3000/convertXml',data:StorageFactory.getGetter(slot)(),headers:{"Content-Type":'application/xml'} }).then(function(data)
+            {
+              return data;
+            },function(error)
+            {
+              console.log("error loading xml", error);
+            });
         }
 
-        function makeSnippet()
+
+        function postSnippet(name, description)
         {
-          var header = "<?xml version='1.0' encoding='UTF-8'?>\n";
-          var tag1 = new xmlTag("tag1", new Array(new attributeObject("prop1",['val1']))).toCompleteTag();
-          var tag2 = new xmlTag("tag1", new Array(new attributeObject("prop1",['val1']))).toCompleteTag();
-          var tag3 = new xmlTag("tag1", new Array(new attributeObject("prop1",['val1']))).toCompleteTag();
-          return "<?xml version='1.0' encoding='UTF-8'?>\n<tag1 prop1=\"val1\"><tag1 prop1=\"val1\"><tag1 prop1=\"val1\"></tag1></tag1></tag1>";
+          return convertXml(StorageFactory.getCurrentKey()).then(function (res)
+          {
+            var obj = 
+            {
+              classname : "a wonderful world",
+              type : "snippet",
+              description : "the interesting description of this thing",
+              xml : res.data
+            };
+             $http.post(API_URL+'/savesnippet', obj).then(function success(resp)
+              {
+                console.log("saving result", resp.status);
+              },
+              function failure(err)
+              {
+                console.log("failed result", err.status);
+              });
+
+          });
         }
-    })
+
+
+    });
     /*
     facilitates local storage; we can store and retrieve values: storing : StorageFactory.getSetter(key)(value)
     retrieving : StorageFactory.getGetter(key)() ; removing a key : StorageFactory.getSetter(key)()
     */
-    .factory('StorageFactory',['storage', '$log', function(storage, $log)
+    app.factory('StorageFactory',['storage', '$log', function(storage, $log)
     {
       var api = {};
       var thekeys = ["slot1","slot2","slot3","slot4"];
@@ -267,8 +310,8 @@ angular.module('confab')
           return value;
         }
       }
-    }])
-    .factory('EditorFactory', function()
+    }]);
+    app.factory('EditorFactory', function()
     {
     var editor = null;  
       
@@ -339,23 +382,31 @@ angular.module('confab')
               return _editor;
             }
 
-    })
-    .factory('ValidationFactory', function(StorageFactory)
+    });
+    app.factory('ValidationFactory', function(StorageFactory, $http, API_URL)
     {
       return {
         validateXml : validateXml
-      }
+      };
 
       function validateXml(xmlslot, schemaslot)
       {
-        var schema = StorageFactory.getGetter(schemaslot)();
-        var thexml = StorageFactory.getGetter(xmlslot)();
-        var message = validateXML(thexml, schema);
-        console.log("message:", message);
-        return message;
+        return $http.get(API_URL + '/validate').then(function succes(res)
+          {
+            var thexml = StorageFactory.getGetter(xmlslot)();
+            console.log("xsd:\n",  res);
+            console.log("xml:\n", typeof thexml);
+            var message = validateXML(thexml, res.data);
+            return message;
+          },
+          function fail(err)
+          {
+            console.log("failure....", err);
+            return err;
+          });  
       }
-    })
-    .factory('IafFactory', function($http)
+    });
+    app.factory('IafFactory', function($http)
     {
     var uname = null;
     var pw = null;

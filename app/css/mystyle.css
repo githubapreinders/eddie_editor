@@ -19,7 +19,7 @@ h6 {
       position: absolute;
       cursor: pointer;
       left: 90%;
-      top: 60%;
+      top: 75%;
       display: -webkit-box;
       display: -webkit-flex;
       display: -ms-flexbox;
@@ -36,6 +36,7 @@ h6 {
         padding: 2px;
         padding-left: 7px;
         border: 1px solid grey;
+        border-radius: 3px;
         border-bottom: 0px; }
       #mynavbar .navBarLeft .navItem i {
         display: inline; }
@@ -66,10 +67,13 @@ html, body {
   .configTop span, .navigatorTop span {
     padding: 2px;
     border: 1px solid grey;
-    border-top: 0px; }
+    border-top: 0px;
+    border-radius: 0px 0px 0px 3px; }
   .configTop .indescriptionarea, .navigatorTop .indescriptionarea {
     border: 1px solid grey;
     border-right: 0px; }
+  .configTop .rounded, .navigatorTop .rounded {
+    border-radius: 0px 0px 3px 0px; }
   .configTop i, .navigatorTop i {
     display: inline; }
   .configTop div, .navigatorTop div {
@@ -133,9 +137,10 @@ html, body {
             flex-grow: 1;
     background: url("../media/concrete_seamless.png");
     cursor: pointer;
-    overflow-y: scroll;
+    overflow-y: hidden;
     overflow-x: hidden;
-    padding: 15px;
+    text-indent: 10px;
+    padding: 0px;
     height: 20%; }
     #navigatorcontainer .classArea .filler {
       -webkit-box-flex: 1;
@@ -147,7 +152,7 @@ html, body {
     #navigatorcontainer .classArea .selectedItem {
       display: block;
       color: white;
-      background: black; }
+      background: #222; }
   #navigatorcontainer .descriptionArea {
     display: -webkit-box;
     display: -webkit-flex;
