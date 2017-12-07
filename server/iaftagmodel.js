@@ -3,13 +3,12 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var iaftagSchema = new Schema({
-    type: {type:String,default:""},
-    classname: String,
+    type: {type:String,required:true},
+    classname: {type:String, required:true},
     description:{type:String, default:""},
     children : {type:Array, default:[]},
     properties: {type:Array,default:[]},
-    attrs:{},
-    file : {type:String,default:""},
+    attrs:{type: Schema.Types.Mixed,default:{}},
     xml : {type:Schema.Types.Mixed, default:{}}
     });
 

@@ -72,19 +72,7 @@
         */
         function getJson()
         {
-          var myjson;
-          try
-          {
-            myjson = JSON.parse(StorageFactory.getGetter(JSONDATA)()) ;
-            if(myjson === undefined)
-            {
-              myjson =  {etag:"initial",json:{}};
-            }
-            
-          }  catch(err)
-          {
-            myjson =  {etag:"initial",json:{}};
-          }
+          
 
 
           return $http.get(API_URL + '/json').then(function(data)
@@ -130,7 +118,7 @@
           {
             var obj = 
             {
-              classname : "a wonderful world",
+              classname : "a Wonderful World",
               type : "snippet",
               description : "the interesting description of this thing",
               xml : res.data
@@ -389,11 +377,21 @@
         validateXml : validateXml
       };
 
-      function validateXml(xmlslot, schemaslot)
+      function validateXml()
       {
-        return $http.get(API_URL + '/validate').then(function succes(res)
+        // return $http({method:"POST", data:StorageFactory.getGetter(StorageFactory.getCurrentKey())(), url:API_URL + '/validate', headers:{"Content-type":"application/xml"}}).then( function(response)
+        // {
+        //   console.log("response:", response);
+        //   return response.message; 
+        // }, function failure(err)
+        // {
+        //   console.log("error",err);
+        //   return err;
+        // });
+
+          return $http.get(API_URL + '/validate').then(function succes(res)
           {
-            var thexml = StorageFactory.getGetter(xmlslot)();
+            var thexml = StorageFactory.getGetter(StorageFactory.getCurrentKey())();
             console.log("xsd:\n",  res);
             console.log("xml:\n", typeof thexml);
             var message = validateXML(thexml, res.data);

@@ -27,7 +27,7 @@ function init()
 	var express = require('express'); // basic API builder
 	var cors = require('cors');// anticipate cross browser origin requests
 	var bodyParser = require('body-parser');//easy post request handling
-	require('body-parser-xml')(bodyParser);
+	//require('body-parser-xml')(bodyParser);
 	fs = require('fs');
 	path = require('path');
 	
@@ -37,7 +37,7 @@ function init()
 	app.use(cors());
 	app.set('port', process.env.PORT || 3000);
 	app.use(bodyParser.json());
-	app.use(bodyParser.xml());
+	//app.use(bodyParser.xml());
 	app.listen(app.get('port'), function ()
 	{
 	    console.log('\nApp listening on port\n ' + app.get('port'));
@@ -62,51 +62,226 @@ function initDb()
 }
 
 /**********************  API URLS **********************************/
-	app.get('/', function (req, res)
+app.get('/', function (req, res)
+{
+	var filepath = path.join(__dirname,'./resources/landingpage.html');
+	fs.readFile(filepath, {encoding :'utf-8'}, function read(err, data)
 	{
-		var filepath = path.join(__dirname,'./resources//landingpage.html');
-		fs.readFile(filepath, {encoding :'utf-8'}, function read(err, data)
-		{
-			res.send(data);
-		});
+		res.send(data);
 	});
+});
 
 /*
 Retrieving the saved json file;
 */
-	app.get('/json', function (req, res)
+app.get('/json', function (req, res)
+{
+	var filepath = path.join(__dirname,'./resources//datamonster.json');
+	
+	fs.readFile(filepath,{encoding:'utf-8'}, function read(err, data)
 	{
-		var filepath = path.join(__dirname,'./resources//datamonster.json');
-		
-						fs.readFile(filepath,{encoding:'utf-8'}, function read(err, data)
-						{
-							if(err)
-							{
-								res.status(500).send(err);
-							}
-							else
-							{
-								res.set('Content-type','application/json');
-								res.status(200).send(data);
-							}
-						});
+		if(err)
+		{
+			res.status(500).send(err);
+		}
+		else
+		{
+			res.set('Content-type','application/json');
+			res.status(200).send(data);
+		}
 	});
+});
+
+app.post('/postIaftag', function(req, res)
+{
+	console.log("req",req.body, '\n');
+	var tag = new Iaftag(req.body);
+	Iaftag.update({classname: tag.classname},
+		{classname:tag.classname,
+		type:tag.type,
+		description: tag.description,
+		attrs: tag.attrs,
+		properties : tag.properties,
+		xml : tag.xml
+		}, {upsert : true},
+		function (err, result)
+		{
+			console.log("result:", result);
+			if(err)
+			{
+				throw err;
+			}
+			else
+			{
+				res.status(200).send(result);
+			}
+		});
+
+
+	// tag.save(function(err, result)
+	// {
+	// 	if(err)
+	// 	{
+	// 		res.status(400).send(err);
+	// 	}
+	// 	else
+	// 	{
+	// 		res.status(200).send(result);
+	// 		saveJson();
+	// 	}
+	// });
+});
+
+app.post('/postJsonBulk', function(req, res)
+{
+	var iaftags = [];
+	_.each(req.body, function(item, index)
+	{
+		iaftags.push(new Iaftag(
+		{
+			classname:item.classname,
+			type: item.type,
+			description: item.description,
+			attrs: item.attrs,
+			properties: item.properties,
+			xml: item.xml
+		}));
+	});
+	Iaftag.insertMany(iaftags, function(err, docs)
+	{
+		if(err){console.log("error",err);}
+		else
+		console.log("inserted ", docs.length, " objects.");
+	});
+
+});
+
+
+
+
+
+
+
+
+//converts a client xml file to json with the xml-js library;
+app.post('/convertXml',function (req, res)
+{
+		var thebody = '';
+		req.on('data' , function(chunk)
+		{
+			thebody += chunk;
+		}).on('end', function()
+		{
+			var convert = require('xml-js');
+			var result = convert.xml2json(thebody,{compact:true, spaces: 4});
+		 	res.status(200).send(result);
+		});
+});
+
+
+//saves a json snippet in the db and an the appropriate snippet in the document tree. 		 
+app.post('/savesnippet', function(req, res)
+{
+	var filepath = path.join(__dirname,'./resources/snippets/' + req.body.classname + '.xml');
+	var item = new Iaftag(req.body);
+	item.save(function(err, result)
+	{
+		if(err)
+		{
+			res.status(500).send(err);
+		}
+		else
+		{
+			var convert = require('xml-js');
+			var contents = convert.json2xml(req.body.xml,{compact:true, spaces: 4});
+			console.log("thexml", contents);
+			fs.writeFile(filepath , contents, function(result)
+			{
+				console.log('write result',result);
+			});
+			res.status(200).send('successfully saved snippet.');
+		}
+	});
+});
+
+
+/* Posts an xsd schemafile */
+app.post('/postSchema', function(req,res)
+{
+	var filepath = path.join(__dirname,'./resources/schema.xsd');
+	var thebody = "";
+	req.on('data' , function(chunk)
+	{
+		thebody += chunk;
+	}).on('end', function()
+	{
+		fs.writeFile(filepath, thebody, {encoding:'utf-8'}, function (err)
+		{
+			if(err) throw err;
+	 		res.status(200).send("Schema successfully saved.\n");
+		});
+	});
+});
 
 
 /*returning the applicable schema document to validate against on the client side.*/
-	app.get('/validate', function (req, res)
+app.get('/validate', function (req, res, next)
+{
+	//xmllint validates but crashes afterwards: the code works in the node shell but
+	//not in express environment...
+	// var xml = fs.readFileSync('./server/test.xml').toString();
+	// var  schema = fs.readFileSync('./server/test.xsd').toString();
+	// var xmllint =  require('xmllint');
+	// xmllint.validateXML({xml:xml, schema:schema});
+
+	var filepath = path.join(__dirname,'./resources/schema.xsd');
+	fs.readFile(filepath,{encoding:'utf-8'} , function read(err, myxsd)
 	{
-		var filepath = path.join(__dirname,'./resources/schema.xsd');
-		fs.readFile(filepath,{encoding:'utf-8'} , function read(err, data)
+		if(err)
 		{
-			if(err)
-			{
-				res.status(500).send();
-			}
-			res.set('Content-type', 'application/xml');
-			res.send(data);
-		});
+			res.status(500).send();
+		}
+	res.set('Content-type', 'application/xml');
+	res.send(myxsd);
+	});		
+});
+
+
+/*
+The content of an xml snippet  is retrieved ; 
+An example request looks like "http://localhost:3000/snippets?resource=HelloWorld";
+*/
+app.get('/snippets', function(req, res)
+{
+	var param = req.query.resource;
+	var filepath = path.join(__dirname,'./resources/snippets/' + param + '.xml');
+	console.log("param: ", param);
+	fs.readFile(filepath,{encoding:'utf-8'}, function(err, doc)
+	{
+		if(err)
+		{
+			res.status(404).send(err).end();
+		}
+		else
+		{
+			res.set('Content-type','application/xml');
+			res.status(200).send(doc);
+		}
 	});
+});
+
+function hashCode (str)
+{
+    var hash = 0;
+    if (str.length == 0) return hash;
+    for (i = 0; i < str.length; i++) 
+    {
+        char = str.charCodeAt(i);
+        hash = ((hash<<5)-hash)+char;
+        hash = hash & hash; // Convert to 32bit integer
+    }
+	return hash;
+}
 
 
 /*
@@ -130,131 +305,14 @@ function saveJson()
 				{
 					myjson[item.classname] = item;
 				});
-			fs.writeFile(filepath , myjson, function(result)
+			console.log("json:\n", myjson);	
+			fs.writeFile(filepath , JSON.stringify(myjson), function(result)
 			{
 				console.log("file write result ", result);
 			});
 			}
 		});
 }
-
-
-
-
-function saveXml(snippetname)
-{
-	var filepath = path.join(__dirname,'./resources/snippets/' + snippetname + '.xml');
-	Iaftag.find({classname : snippetname}, function(err, data)
-		{
-			if(err)
-			{
-				console.log("error", err);
-			}
-			else			
-			{
-				var convert = require('xml-js');
-				var contents = convert.json2xml(data[0].xml);
-
-				fs.writeFile(filepath , contents, function(result)
-				{
-					console.log('write result',result);
-				});
-			}
-		});
-}
-
-app.post('/convertXml',function (req, res)
-{
-	console.log("header", req.header('Content-type'), req.body);
-	if(req.header('Content-type')=='application/xml')
-	{
-		console.log("alsdfkjfal");
-		var thebody = [];
-		req.on('data' , function(chunk)
-		{
-			thebody.push(chunk);
-		}).on('end', function()
-		{
-			thebody = Buffer.concat(thebody).toString();
-			console.log("body:", thebody);
-		});
-
-
-		//res.set('Content-type','application/json');
-		//res.status(200).send(req.body);
-	}
-	else
-	{
-		console.log("convert xml fails....");
-	}
-});
-
-
-app.post('/savesnippet', function(req, res)
-{
-	//console.log("savesnip", JSON.stringify(req.body.xml));
-	var item = new Iaftag(req.body);
-	item.save(function(err, result)
-	{
-		if(err)
-		{
-			console.log("server", err);
-			res.status(500).send(err);
-		}
-		else
-		{
-			res.status(200).send('successfully saved snippet.');
-			saveXml(req.body.classname);
-		}
-	});
-});
-
-
-
-/*
-The content of a snippet is retrieved and converted to plain xml ; 
-An example request looks like "http://localhost:3000/snippets?resource=HelloWorld";
-This functionality can also be performed on the client side without a server call,
-but then we will need the xml-js library there.
-*/
-	app.get('/snippets', function(req, res)
-	{
-		var param = req.query.resource;
-		console.log("param: ", param);
-		Iaftag.find({classname : param}, function (err, data)
-		{
-
-			if(err)
-			{
-				console.log("error", err);
-				res.status(500).send({error: err});
-			}
-			else
-			{
-				if(data.length < 1 )
-				{
-					res.status(404).send();
-					return;
-				}
-				var convert = require('xml-js');
-				res.set('Content-Type', 'text/xml');
-				res.status(200).send(convert.json2xml(data[0].xml));
-			}
-		});
-	});
-
-	function hashCode (str)
-	{
-	    var hash = 0;
-	    if (str.length == 0) return hash;
-	    for (i = 0; i < str.length; i++) 
-	    {
-	        char = str.charCodeAt(i);
-	        hash = ((hash<<5)-hash)+char;
-	        hash = hash & hash; // Convert to 32bit integer
-	    }
-    	return hash;
-	}
 
 }());
 

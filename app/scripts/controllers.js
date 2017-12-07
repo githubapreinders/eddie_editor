@@ -57,17 +57,18 @@
             vm.currentSlotNumber = 0;
             vm.theslots = [];
             
-            // $interval(function()
-            // {
-            //     console.log("saving ", StorageFactory.getCurrentKey());
-            //     StorageFactory.getSetter(StorageFactory.getCurrentKey())(thedocument.getValue());
-            // }, 5000);
+            
+
+
 
 
             function saveInSlot()
             {
-                console.log("saving ", thedocument.getValue());
-                StorageFactory.getSetter(StorageFactory.getCurrentKey())(thedocument.getValue());
+                $interval(function()
+                {
+                    console.log("saving ", StorageFactory.getCurrentKey());
+                    StorageFactory.getSetter(StorageFactory.getCurrentKey())(thedocument.getValue());
+                }, 5000);
             }
             
             function sendToIaf()
@@ -90,22 +91,8 @@
                 console.log("credentials:", resp);
             }
 
-            
-
-            function validateXml()
+            function postSnippet()
             {
-                // ValidationFactory.validateXml(vm.currentSlot).then
-                // (
-                //     function success(res)
-                //     {
-                //         vm.validationMessage = res;
-                //         console.log("validating....", vm.validationMessage);
-                //     }, 
-                //     function failure(err)
-                //     {
-                        
-                //     }
-                // );
                 StaticDataFactory.postSnippet(vm.currentSlot).then(function (res)
                 {
                     console.log("response", res);
@@ -114,6 +101,27 @@
                 {
                     console.log("response", err);
                 });
+            }
+
+
+
+
+
+            function validateXml()
+            {
+                ValidationFactory.validateXml(vm.currentSlot).then
+                (
+                    function success(res)
+                    {
+                        vm.validationMessage = res;
+                        console.log("validating....", vm.validationMessage);
+                    }, 
+                    function failure(err)
+                    {
+                        
+                    }
+                );
+                
             }
 
             function changeFontSize()
@@ -142,6 +150,7 @@
                     //initialising the cache and loading it in the editor;
                     var avalue = StorageFactory.initialise();
                     retrieveData();
+                    saveInSlot();
                     console.log("data:", vm.navigatorModel);
                 },function error(response)
                 {
