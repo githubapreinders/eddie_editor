@@ -1,19 +1,18 @@
-<?xml version="1.0" encoding="UTF-8"?>
 <module>
-    <adapter name="HelloWorld" active="${HelloWorld.active}">
-        <receiver name="HelloWorld" className="nl.nn.adapterframework.receivers.GenericReceiver">
-            <listener name="HelloWorld" className="nl.nn.adapterframework.receivers.JavaListener"/>
-        </receiver>
-        <pipeline firstPipe="HelloWorld">
-            <exits>
-                <exit path="EXIT" state="success"/>
-            </exits>
-            <pipe name="HelloWorld" className="nl.nn.adapterframework.pipes.FixedResult" returnString="Hello MY Precious World">
-                <forward name="success" path="EXIT"/>
-            </pipe>
-        </pipeline>
-    </adapter>
     <scheduler>
-        <job name="HelloWorld" adapterName="HelloWorld" receiverName="HelloWorld" interval="0" function="sendMessage" active="${HelloWorld.active}"/>
+        <job active="${HelloWorld.active}" function="sendMessage" interval="0" receiverName="HelloWorld" adapterName="HelloWorld" name="HelloWorld"/>
     </scheduler>
-</module>
+    <adapter active="${HelloWorld.active}" name="HelloWorld">
+        <pipeline firstPipe="HelloWorld">
+            <pipe returnString="Hello MY Precious World" className="nl.nn.adapterframework.pipes.FixedResult" name="HelloWorld">
+                <forward path="EXIT" name="success"/>
+            </pipe>
+            <exits>
+                <exit state="success" path="EXIT"/>
+            </exits>
+        </pipeline>
+        <receiver className="nl.nn.adapterframework.receivers.GenericReceiver" name="HelloWorld">
+            <listener className="nl.nn.adapterframework.receivers.JavaListener" name="HelloWorld"/>
+        </receiver>
+    </adapter>
+</module><?xml encoding="UTF-8" version="1.0"?>

@@ -2,7 +2,9 @@
 
 'use strict';
     var app = angular.module('confab');
+
     app.constant('API_URL', "http://localhost:3000");
+    app.constant('API_URL2', "http://localhost:8080/Ibis4Education/api/configurations/Ibis4Student/" + Math.round(+new Date()/1000));
     app.factory('StaticDataFactory', function(xmlTag, $http, StorageFactory,API_URL) 
     {
 
@@ -404,11 +406,11 @@
           });  
       }
     });
-    app.factory('IafFactory', function($http)
+    app.factory('IafFactory', function($http, API_URL2)
     {
     var uname = null;
     var pw = null;
-    var API_URL = 'http://localhost:3000';  
+    // var API_URL = 'http://localhost:3000';  
       return{
         postZip : postZip,
         setCredentials : setCredentials
@@ -416,8 +418,8 @@
 
       function postZip(zipfile)
       {
-        return $http.post(API_URL + '/',{zipfile: zipfile
-            }).then(function succes(response)
+        return $http({method: 'POST',url:API_URL2 , data:zipfile , headers:{'Content-type':'application/xml'}}
+            ).then(function succes(response)
             {
                 console.info("returning from backend",response);
                 return response;

@@ -97,13 +97,15 @@ app.post('/postIaftag', function(req, res)
 	console.log("req",req.body, '\n');
 	var tag = new Iaftag(req.body);
 	Iaftag.update({classname: tag.classname},
-		{classname:tag.classname,
-		type:tag.type,
-		description: tag.description,
-		attrs: tag.attrs,
-		properties : tag.properties,
-		xml : tag.xml
-		}, {upsert : true},
+		{
+			classname:tag.classname,
+			type:tag.type,
+			description: tag.description,
+			attrs: tag.attrs,
+			properties : tag.properties,
+			xml : tag.xml
+		}, 
+		{upsert : true},
 		function (err, result)
 		{
 			console.log("result:", result);
@@ -117,19 +119,6 @@ app.post('/postIaftag', function(req, res)
 			}
 		});
 
-
-	// tag.save(function(err, result)
-	// {
-	// 	if(err)
-	// 	{
-	// 		res.status(400).send(err);
-	// 	}
-	// 	else
-	// 	{
-	// 		res.status(200).send(result);
-	// 		saveJson();
-	// 	}
-	// });
 });
 
 app.post('/postJsonBulk', function(req, res)
@@ -184,28 +173,39 @@ app.post('/savesnippet', function(req, res)
 {
 	var filepath = path.join(__dirname,'./resources/snippets/' + req.body.classname + '.xml');
 	var item = new Iaftag(req.body);
-	item.save(function(err, result)
-	{
-		if(err)
+	console.log("item:", item);
+	Iaftag.update({classname: item.classname},
 		{
-			res.status(500).send(err);
-		}
-		else
+			
+			type: item.type,
+			description: item.description,
+			attrs: item.attrs,
+			properties : item.properties,
+			xml : item.xml
+		},
+		{upsert:true},
+		function(err, result)
 		{
-			var convert = require('xml-js');
-			var contents = convert.json2xml(req.body.xml,{compact:true, spaces: 4});
-			console.log("thexml", contents);
-			fs.writeFile(filepath , contents, function(result)
+			if(err)
 			{
-				console.log('write result',result);
-			});
-			res.status(200).send('successfully saved snippet.');
-		}
+				res.status(500).send(err);
+			}
+			else
+			{
+				console.log("result", result);
+				var convert = require('xml-js');
+				var contents = convert.json2xml(item.xml,{compact:true, spaces: 4});
+				fs.writeFile(filepath , contents, function(result)
+				{
+					console.log('write result',result);
+				});
+				res.status(200).send('successfully saved snippet.');
+			}
 	});
 });
 
 
-/* Posts an xsd schemafile */
+/* Posts an xsd schemafile, stores it only in the file system*/
 app.post('/postSchema', function(req,res)
 {
 	var filepath = path.join(__dirname,'./resources/schema.xsd');
@@ -255,16 +255,34 @@ app.get('/snippets', function(req, res)
 {
 	var param = req.query.resource;
 	var filepath = path.join(__dirname,'./resources/snippets/' + param + '.xml');
-	console.log("param: ", param);
+	console.log("Getting an xml snippet called ", param);
+	res.set('Content-type','application/xml');
 	fs.readFile(filepath,{encoding:'utf-8'}, function(err, doc)
 	{
 		if(err)
 		{
-			res.status(404).send(err).end();
+			Iaftag.find({classname:param},{xml:1}, function(err, result)
+			{
+
+				console.log("responst",err, result[0]);
+				var convert = require('xml-js');
+				try
+				{
+					var myres = convert.json2xml(JSON.stringify(result[0].xml),{compact:true, spaces: 4});
+					fs.writeFile(filepath , myres, function(result)
+					{
+						console.log('written ' + filepath );
+						res.status(200).send(myres);
+					});
+				}
+				catch (err)
+				{
+					res.status(400).send(err);
+				}
+			});
 		}
 		else
 		{
-			res.set('Content-type','application/xml');
 			res.status(200).send(doc);
 		}
 	});

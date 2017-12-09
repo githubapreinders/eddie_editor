@@ -74,7 +74,7 @@
             function sendToIaf()
             {   
                 var message = "dummymessage";
-                IafFactory.postZip(message).then(function succes(response)
+                IafFactory.postZip(StorageFactory.getGetter(StorageFactory.getCurrentKey())()).then(function succes(response)
                     {
                         console.log("getting response", response);
                     },
