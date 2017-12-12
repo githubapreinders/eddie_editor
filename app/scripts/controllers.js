@@ -43,7 +43,7 @@
             vm.showFullEditor = false;
             var editor = null;
             var thedocument = null;    
-            vm.intervalID = null;
+            vm.timerId = null;
             vm.showValidationMessage = false;
             vm.validationMessage = null;
 
@@ -64,17 +64,18 @@
 
             function saveInSlot()
             {
-                $interval(function()
+                vm.timerId = $interval(function()
                 {
                     console.log("saving ", StorageFactory.getCurrentKey());
                     StorageFactory.getSetter(StorageFactory.getCurrentKey())(thedocument.getValue());
                 }, 5000);
+                StaticDataFactory.setTimerId(vm.timerId);
             }
             
             function sendToIaf()
             {   
                 var message = "dummymessage";
-                IafFactory.postZip(StorageFactory.getGetter(StorageFactory.getCurrentKey())()).then(function succes(response)
+                IafFactory.postConfig(StorageFactory.getGetter(StorageFactory.getCurrentKey())()).then(function succes(response)
                     {
                         console.log("getting response", response);
                     },
@@ -86,7 +87,6 @@
 
             function setCredentials()
             {
-                console.log("ddddddddddfffffff");
                 var resp = IafFactory.setCredentials(vm.server, vm.username, vm.password);
                 console.log("credentials:", resp);
             }

@@ -1,0 +1,50 @@
+    <div >
+        <label class="radio-inline" for="myRadio1">Pipes </label>
+            <input type="radio"  name = "types" id="myRadio1" ng-checked = "vm.selectedItem.type == 'pipes'" value="pipes" ng-disabled ="vm.selectedItem.type !== 'pipes' && vm.addingItem === false " ng-model = "vm.selectedItem.type" >
+        
+        <label class="radio-inline" for="myRadio2">Receivers </label>
+            <input type="radio" name = "types"  id="myRadio2" value="receivers" ng-checked = "vm.selectedItem.type == 'receivers'"  ng-disabled ="vm.selectedItem.type !== 'receivers' && vm.addingItem === false " ng-model = "vm.selectedItem.type">
+        
+        <label class="radio-inline" for="myRadio3">Snippets </label>
+            <input type="radio" name = "types" id="myRadio3" value="snippets" ng-checked = "vm.selectedItem.type == 'snippets'"  ng-disabled ="vm.selectedItem.type !== 'snippets' && vm.addingItem ===  false " ng-model = "vm.selectedItem.type">
+        
+        <label class="radio-inline" for="myRadio4">General </label>
+            <input type="radio" name = "types" id="myRadio4" value="general" ng-checked = "vm.selectedItem.type == 'general'"  ng-disabled ="vm.selectedItem.type !== 'general' && vm.addingItem ===  false " ng-model = "vm.selectedItem.type">
+        
+    </div>
+
+
+
+
+    <div ng-show="vm.selectedItem.type !== 'snippets' ">
+        <div class="divider"></div>
+        <div ng-include="'./views/addProperty.html'"></div>
+        <div class="divider"></div>
+        <div style="padding-bottom:10px;" ng-repeat = "property in vm.selectedItem.properties">
+                    <div>
+                        <label  contenteditable ng-model = "vm.selectedItem.properties[$index][0]" ng-click= "vm.selectedProperty === $index? vm.showPropertyDescription = !vm.showPropertyDescription:vm.selectedProperty = $index" ng-change = "vm.changeAttrName($index)">
+                            <span id = "property{{$index}}"   > {{property[0]}}
+                            </span>
+                        </label>
+                        </div> 
+                        <div style="display:flex;">
+                        <input style="width:75%" id= "propertyvalue{{$index}}" type="text" ng-value = "vm.selectedItem.properties[$index][2]" ng-model = "vm.selectedItem.properties[$index][2]" ng-change="vm.changeAttr($index)"/>
+                        <div style="flex-grow:1"></div>
+                        <span ng-click="vm.deleteProperty($index)" >
+                                <i class="fa fa-close  "></i>
+                        </span>
+                    </div>
+        </div>
+    </div>
+    <div ng-show = "vm.selectedItem.type === 'snippets' ">
+        <div class="divider"></div>  
+        <div class="navigatorTop">
+            <span ng-click="vm.otherSlot()"   class="rounded">
+                            <i   class="fa fa-key  "></i>{{vm.currentSlotNumber}}
+            </span>
+            <div></div>
+            <strong>XML Contents</strong>
+            <div></div>    
+    </div>  
+    <pre>{{vm.selectedItem.xml}}</pre>
+    </div>

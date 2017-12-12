@@ -4,14 +4,15 @@
     var app = angular.module('confab');
 
     app.constant('API_URL', "http://localhost:3000");
-    app.constant('API_URL2', "http://localhost:8080/Ibis4Education/api/configurations/Ibis4Student/" + Math.round(+new Date()/1000));
-    app.factory('StaticDataFactory', function(xmlTag, $http, StorageFactory,API_URL) 
+    app.constant('IAF_URL', "http://localhost:8080/Ibis4Education/api/configurations/Ibis4Student/" + Math.round(+new Date()/1000));
+    app.factory('StaticDataFactory', function(xmlTag, $http, StorageFactory,API_URL, $interval) 
     {
 
         var datasource = 'pipes';
-        var JSONDATA = "jsondata";
+        var timerId = 0 ;
         var themes = ["twilight", "monokai", "neat"];
         var fontSizes = [12,13,14,15,16,17,18,19,20];
+        var thejson = null;
 
         var formattingSettings = {
                 "indent_size": 4,
@@ -34,14 +35,29 @@
 
         return{
             getJson : getJson,
+            getStaticJson : getStaticJson,
             loadXml : loadXml,
             postSnippet: postSnippet,
             setDataSource: setDataSource,
             getDataSource: getDataSource,
             getFormattingSettings: getFormattingSettings,
             getThemes: getThemes,
-            getFontSizes: getFontSizes
+            getFontSizes: getFontSizes,
+            setTimerId : setTimerId,
+            stopTimer : stopTimer
+
         };
+
+        function setTimerId(timerid)
+        {
+          timerId = timerid;
+        }
+
+
+        function stopTimer()
+        {
+          $interval.cancel(timerId);
+        }
 
         function getThemes()
         {
@@ -74,13 +90,10 @@
         */
         function getJson()
         {
-          
-
-
           return $http.get(API_URL + '/json').then(function(data)
             {
               console.info("returning json from server with status ",data.status);
-              
+                thejson = data.data;
                 return data;
                 
             },function (error)
@@ -88,6 +101,12 @@
               console.log("server error :", error );
             });
         }  
+
+        //returns the datamodel for other controllers
+        function getStaticJson()
+        {
+          return thejson;
+        }
 
         function loadXml(which)
         {
@@ -149,7 +168,7 @@
       var thekeys = ["slot1","slot2","slot3","slot4"];
       var thealiases = ["aliasslot1","aliasslot2","aliasslot3"];
       var template = ["slot1","slot2","slot3","slot4","aliasslot1","aliasslot2","aliasslot3"];
-      var currentKey;
+      var currentKey = "slot1";
       var mykeys;
       var myaliases;
       
@@ -207,7 +226,7 @@
         currentKey = key;
       }
 
-      function getCurrentKey(key)
+      function getCurrentKey()
       {
         return currentKey;
       }      
@@ -406,19 +425,18 @@
           });  
       }
     });
-    app.factory('IafFactory', function($http, API_URL2)
+    app.factory('IafFactory', function($http, IAF_URL)
     {
     var uname = null;
     var pw = null;
-    // var API_URL = 'http://localhost:3000';  
       return{
-        postZip : postZip,
+        postConfig : postConfig,
         setCredentials : setCredentials
       };
 
-      function postZip(zipfile)
+      function postConfig(zipfile)
       {
-        return $http({method: 'POST',url:API_URL2 , data:zipfile , headers:{'Content-type':'application/xml'}}
+        return $http({method: 'POST',url:IAF_URL , data:zipfile , headers:{'Content-type':'application/xml'}}
             ).then(function succes(response)
             {
                 console.info("returning from backend",response);

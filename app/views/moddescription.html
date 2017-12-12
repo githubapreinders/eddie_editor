@@ -1,0 +1,22 @@
+
+<div ng-show = "!vm.showPropertyDescription" style="height:100%;"> 
+	<h4  id="newclassname" contenteditable ng-model = "vm.selectedItem.classname">{{vm.selectedItem.classname}}</h4>
+
+	<textarea  style="white-space: pre;"  ng-model = "vm.selectedItem.description" class="moderatordescription">{{vm.selectedItem.description }}</textarea>
+</div>
+
+<div ng-show = "vm.showPropertyDescription && vm.newProperty === null" style="height:100%;">
+	
+	<h4 id="propertyheader">{{vm.selectedItem.properties[vm.selectedProperty][0] }}</h4>
+
+	<textarea ng-model = "vm.selectedItem.properties[vm.selectedProperty][1]" class="moderatordescription">{{vm.selectedItem.properties[vm.selectedProperty][1]}}</textarea>
+
+</div>
+
+<div ng-show = "vm.showPropertyDescription && vm.newProperty !== null" style="height:100%;">
+	
+	<h4 id="newpropertyheader">{{vm.newProperty.propname }}</h4>
+
+	<textarea ng-model = "vm.newProperty.propdes " class="moderatordescription">{{vm.newProperty.propdes }}</textarea>
+
+</div>

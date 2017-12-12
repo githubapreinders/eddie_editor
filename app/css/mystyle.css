@@ -5,6 +5,45 @@
 h6 {
   color: blue; }
 
+.mainmodcontainer {
+  width: 100%;
+  height: 92%;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  background: url("../media/concrete_seamless.png"); }
+  .mainmodcontainer .leftmodcontainer {
+    width: 35%;
+    height: 100%;
+    padding-left: 10px;
+    padding-right: 10px;
+    overflow-x: scroll; }
+  .mainmodcontainer .rightmodcontainer {
+    border: 1px solid grey;
+    width: 65%;
+    height: 100%; }
+    .mainmodcontainer .rightmodcontainer textarea {
+      color: red;
+      width: 100%;
+      height: 100%; }
+    .mainmodcontainer .rightmodcontainer h4 {
+      text-align: center; }
+
+.mymodal .modal-dialog {
+  width: 90%;
+  height: 500px;
+  padding: 0px; }
+
+.modal-backdrop {
+  display: none; }
+
+.modal-content {
+  border: 0px; }
+
+.modal-body {
+  overflow-x: scroll; }
+
 #mynavbar {
   display: -webkit-box;
   display: -webkit-flex;
@@ -12,6 +51,8 @@ h6 {
   display: flex;
   background: url("../media/concrete_seamless.png");
   height: 8%; }
+  #mynavbar label {
+    text-align: center; }
   #mynavbar .navBarLeft {
     position: relative;
     width: 39%; }

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Moderator</title>
+</head>
+<body>
+
+<div  id="mynavbar">
+                <div class="navBarLeft" style="display:flex;">
+                  <a ui-sref="app">  
+                  <span   class="fa-stack fa-2x myspan">
+                        <i class="fa fa-square-o fa-stack-2x outer"></i>
+                        <i class="fa  fa-arrow-circle-left fa-stack-1x inner "></i>
+                    </span>
+                    </a>
+<label>Selected Item : <select id = 'myselect' ng-model="vm.selectedItem" ng-options="value.classname for (key,value) in vm.dataModel"  " ></select></label>
+                </div>
+
+
+
+                <div class = "navBarRight" >
+                    
+
+                    <div ></div>
+
+                    
+
+                    
+
+                    
+
+                    <span ng-click="vm.showModel()" class="fa-stack fa-2x ">
+                        <i class="fa fa-square-o fa-stack-2x"></i>
+                        <i class="fa fa-save fa-stack-1x "></i>
+                    </span>
+
+                    <span ng-click="vm.addNewClass()" class="fa-stack fa-2x ">
+                        <i class="fa fa-square-o fa-stack-2x"></i>
+                        <i class="fa fa-plus fa-stack-1x "></i>
+                    </span>
+
+                </div>
+            </div>
+
+<div class="mainmodcontainer">
+    <div class="leftmodcontainer" ng-include="'./views/leftmodcontainer.html'"></div>
+
+    <div class = "rightmodcontainer" ng-include="'./views/moddescription.html'">
+    </div>
+</div>
+
+
+
+</html>

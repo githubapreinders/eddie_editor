@@ -20,9 +20,16 @@
 
                     <div ></div>
 
+                    <a ui-sref="app.moderator">
+                    <span ng-click="angular.noop()" class="fa-stack fa-2x ">
+                        <i class="fa fa-square-o fa-stack-2x"></i>
+                        <i class="fa  fa-stack-1x " style="font-size: 16px;">mod</i>
+                    </span>
+                    </a>
+
                     <span ng-click="vm.validateXml() ; vm.showValidationMessage = true;" class="fa-stack fa-2x ">
                         <i class="fa fa-square-o fa-stack-2x"></i>
-                        <i class="fa  fa-stack-1x ">val</i>
+                        <i class="fa  fa-stack-1x " style="font-size: 16px;">val</i>
                     </span>
 
                     <span ng-click="vm.postSnippet() ;" class="fa-stack fa-2x ">

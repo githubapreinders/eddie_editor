@@ -1,0 +1,27 @@
+			
+<h6  style="text-align: center;">new property</h6>
+	<div style="width:100%; display:flex;">
+		<div ng-show = "vm.addingProperty" style="display:flex; flex-direction: column;width:75%">
+                <label contenteditable id="newproperty" ng-model = "vm.newProperty.propname"  >
+                    placeholder
+                </label>
+                <input ng-model = "vm.newProperty.propdef"/>
+         </div>
+
+        <div style="flex-grow:1"></div>
+
+        <div style="display:flex; flex-direction: column;">
+        	
+        	<span ng-show = "vm.addingProperty" ng-click="vm.addingProperty=false;vm.showPropertyDescription = false;vm.addProperty('confirm');" >
+            	<i class="fa fa-check-circle  "></i>
+        	</span>
+        	<span ng-show = "!vm.addingProperty" ng-click="vm.addingProperty=true;vm.showPropertyDescription = true;vm.addProperty('add'); " >
+            	<i class="fa fa-plus-circle  "></i>
+        	</span>
+        	<span ng-show = "vm.addingProperty" ng-click="vm.addingProperty=false; vm.showPropertyDescription = false;vm.addProperty('cancel');" >
+           		 <i class="fa fa-minus-circle  "></i>
+        	</span>
+        	
+        </div>
+
+    </div>
