@@ -116,11 +116,13 @@ app.post('/postIaftag', function(req, res)
 			else
 			{
 				res.status(200).send(result);
+				saveJson();
 			}
 		});
 
 });
 
+/*Posts a complete json body of the type {"mytag1":{"classname":"name1", ......},"mytag2":{"classname":"name2", ......}}*/
 app.post('/postJsonBulk', function(req, res)
 {
 	var iaftags = [];
@@ -136,21 +138,22 @@ app.post('/postJsonBulk', function(req, res)
 			xml: item.xml
 		}));
 	});
-	Iaftag.insertMany(iaftags, function(err, docs)
+	Iaftag.insertMany(iaftags, function(err, resp)
 	{
-		if(err){console.log("error",err);}
+		if(err)
+			{
+				console.log("error",err);
+				res.status(500).send(err);
+			}
 		else
-		console.log("inserted ", docs.length, " objects.");
+		{
+			res.status(200).send(resp);
+			console.log("inserted ", docs.length, " objects.");
+			saveJson();
+		}
 	});
 
 });
-
-
-
-
-
-
-
 
 //converts a client xml file to json with the xml-js library;
 app.post('/convertXml',function (req, res)
@@ -167,8 +170,7 @@ app.post('/convertXml',function (req, res)
 		});
 });
 
-
-//saves a json snippet in the db and an the appropriate snippet in the document tree. 		 
+//saves a json snippet in the db and an the appropriate snippet in the file system. 		 
 app.post('/savesnippet', function(req, res)
 {
 	var filepath = path.join(__dirname,'./resources/snippets/' + req.body.classname + '.xml');
@@ -192,6 +194,7 @@ app.post('/savesnippet', function(req, res)
 			}
 			else
 			{
+				saveJson();
 				console.log("result", result);
 				var convert = require('xml-js');
 				var contents = convert.json2xml(item.xml,{compact:true, spaces: 4});
@@ -204,6 +207,26 @@ app.post('/savesnippet', function(req, res)
 	});
 });
 
+/* the delete request looks like: "http://localhost:3000/deleteItem?resource=HelloWorld"; */
+app.get('/deleteItem', function (req, res)
+{
+	var param = req.query.resource;
+	console.log("requesting to delete ", param);
+	Iaftag.remove({classname : param}, function (err, result)
+	{
+		if (err)
+		{
+			console.log("deletion failed...", err);
+			res.status(500).send(err);
+		}
+		else
+		{
+			res.status(200).send(result);
+			saveJson();
+		}
+	});
+
+});
 
 /* Posts an xsd schemafile, stores it only in the file system*/
 app.post('/postSchema', function(req,res)
@@ -228,7 +251,7 @@ app.post('/postSchema', function(req,res)
 app.get('/validate', function (req, res, next)
 {
 	//xmllint validates but crashes afterwards: the code works in the node shell but
-	//not in express environment...
+	//not in express environment...TODO : solve this issue
 	// var xml = fs.readFileSync('./server/test.xml').toString();
 	// var  schema = fs.readFileSync('./server/test.xsd').toString();
 	// var xmllint =  require('xmllint');
@@ -250,6 +273,7 @@ app.get('/validate', function (req, res, next)
 /*
 The content of an xml snippet  is retrieved ; 
 An example request looks like "http://localhost:3000/snippets?resource=HelloWorld";
+In case the file is not found the system will try to recover it from the db.
 */
 app.get('/snippets', function(req, res)
 {
@@ -263,8 +287,6 @@ app.get('/snippets', function(req, res)
 		{
 			Iaftag.find({classname:param},{xml:1}, function(err, result)
 			{
-
-				console.log("responst",err, result[0]);
 				var convert = require('xml-js');
 				try
 				{
@@ -288,24 +310,13 @@ app.get('/snippets', function(req, res)
 	});
 });
 
-function hashCode (str)
-{
-    var hash = 0;
-    if (str.length == 0) return hash;
-    for (i = 0; i < str.length; i++) 
-    {
-        char = str.charCodeAt(i);
-        hash = ((hash<<5)-hash)+char;
-        hash = hash & hash; // Convert to 32bit integer
-    }
-	return hash;
-}
+
 
 
 /*
 Retrieves the whole Iaftag collection from the db; a new object is created here
 that contains them all. To easily iterate over a JSON object the underscore _.each method
-is used. 
+is used. The result is written in datamonster.json
 */
 function saveJson()
 {
@@ -384,4 +395,17 @@ function saveJson()
 // 			}
 // 		}
 // 	}
+// }
+
+// function hashCode (str)
+// {
+//     var hash = 0;
+//     if (str.length == 0) return hash;
+//     for (i = 0; i < str.length; i++) 
+//     {
+//         char = str.charCodeAt(i);
+//         hash = ((hash<<5)-hash)+char;
+//         hash = hash & hash; // Convert to 32bit integer
+//     }
+// 	return hash;
 // }

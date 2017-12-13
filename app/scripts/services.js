@@ -37,7 +37,6 @@
             getJson : getJson,
             getStaticJson : getStaticJson,
             loadXml : loadXml,
-            postSnippet: postSnippet,
             setDataSource: setDataSource,
             getDataSource: getDataSource,
             getFormattingSettings: getFormattingSettings,
@@ -120,41 +119,10 @@
             });
         }
 
-        function convertXml(slot)
-        {
-          // console.log("slot to convert to json:", StorageFactory.getGetter(slot)());
-          return $http({method:"POST",url:'http://localhost:3000/convertXml',data:StorageFactory.getGetter(slot)(),headers:{"Content-Type":'application/xml'} }).then(function(data)
-            {
-              return data;
-            },function(error)
-            {
-              console.log("error loading xml", error);
-            });
-        }
+        
 
 
-        function postSnippet(name, description)
-        {
-          return convertXml(StorageFactory.getCurrentKey()).then(function (res)
-          {
-            var obj = 
-            {
-              classname : "a Wonderful World",
-              type : "snippet",
-              description : "the interesting description of this thing",
-              xml : res.data
-            };
-             $http.post(API_URL+'/savesnippet', obj).then(function success(resp)
-              {
-                console.log("saving result", resp.status);
-              },
-              function failure(err)
-              {
-                console.log("failed result", err.status);
-              });
-
-          });
-        }
+        
 
 
     });
@@ -436,6 +404,7 @@
 
       function postConfig(zipfile)
       {
+        console.log("posting to iaf");
         return $http({method: 'POST',url:IAF_URL , data:zipfile , headers:{'Content-type':'application/xml'}}
             ).then(function succes(response)
             {

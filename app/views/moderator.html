@@ -13,7 +13,7 @@
                         <i class="fa  fa-arrow-circle-left fa-stack-1x inner "></i>
                     </span>
                     </a>
-<label>Selected Item : <select id = 'myselect' ng-model="vm.selectedItem" ng-options="value.classname for (key,value) in vm.dataModel"  " ></select></label>
+<label>Selected Item : <select id = 'myselect' ng-model="vm.selectedItem" ng-options="value.classname for (key,value) in vm.dataModel"    ></select></label>
                 </div>
 
 
@@ -23,13 +23,22 @@
 
                     <div ></div>
 
-                    
+                    <span ng-click="vm.deleteItem()" class="fa-stack fa-2x ">
+                        <i class="fa fa-square-o fa-stack-2x"></i>
+                        <i class="fa  fa-plus fa-rotate-45 fa-stack-1x " style="color:red;"></i>
+                    </span>
 
-                    
-
-                    
+                    <span ng-click="angular.noop()" class="fa-stack fa-2x ">
+                        <i class="fa fa-square-o fa-stack-2x"></i>
+                        <i class="fa  fa-stack-1x " style="font-size: 14px;">BULK</i>
+                    </span>
 
                     <span ng-click="vm.showModel()" class="fa-stack fa-2x ">
+                        <i class="fa fa-square-o fa-stack-2x"></i>
+                        <i class="fa fa-search-plus fa-stack-1x " ></i>
+                    </span>
+
+                    <span ng-click="vm.postTag()" class="fa-stack fa-2x ">
                         <i class="fa fa-square-o fa-stack-2x"></i>
                         <i class="fa fa-save fa-stack-1x "></i>
                     </span>

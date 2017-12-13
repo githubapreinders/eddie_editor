@@ -20,15 +20,27 @@ h6 {
     padding-right: 10px;
     overflow-x: scroll; }
   .mainmodcontainer .rightmodcontainer {
-    border: 1px solid grey;
+    background: url("../media/spirationdark.png");
+    border-left: 1px solid grey;
+    border-top: 1px solid grey;
+    border-radius: 10px 0px 0px 0px;
+    padding: 5px;
     width: 65%;
     height: 100%; }
     .mainmodcontainer .rightmodcontainer textarea {
-      color: red;
+      color: white;
       width: 100%;
       height: 100%; }
-    .mainmodcontainer .rightmodcontainer h4 {
-      text-align: center; }
+    .mainmodcontainer .rightmodcontainer h1, .mainmodcontainer .rightmodcontainer h2, .mainmodcontainer .rightmodcontainer h3, .mainmodcontainer .rightmodcontainer h4 {
+      text-align: center;
+      color: #EEEEEE; }
+    .mainmodcontainer .rightmodcontainer p[contenteditable] {
+      background: url("../media/whitewall.png");
+      color: black;
+      font-size: 20px;
+      outline: none;
+      height: 94%;
+      padding: 5px; }
 
 .mymodal .modal-dialog {
   width: 90%;
@@ -50,6 +62,7 @@ h6 {
   display: -ms-flexbox;
   display: flex;
   background: url("../media/concrete_seamless.png");
+  padding: 5px;
   height: 8%; }
   #mynavbar label {
     text-align: center; }
@@ -114,7 +127,17 @@ html, body {
     border: 1px solid grey;
     border-right: 0px; }
   .configTop .rounded, .navigatorTop .rounded {
-    border-radius: 0px 0px 3px 0px; }
+    border-radius: 0px 3px 3px 0px;
+    border-top: 1px solid grey;
+    border-right: 1px solid grey;
+    border-bottom: 1px solid grey;
+    border-left: 0px; }
+  .configTop .rounded2, .navigatorTop .rounded2 {
+    border-radius: 3px 0px 0px 3px;
+    border-top: 1px solid grey;
+    border-left: 1px solid grey;
+    border-bottom: 1px solid grey;
+    border-right: 0px; }
   .configTop i, .navigatorTop i {
     display: inline; }
   .configTop div, .navigatorTop div {
@@ -178,7 +201,7 @@ html, body {
             flex-grow: 1;
     background: url("../media/concrete_seamless.png");
     cursor: pointer;
-    overflow-y: hidden;
+    overflow-y: auto;
     overflow-x: hidden;
     text-indent: 10px;
     padding: 0px;

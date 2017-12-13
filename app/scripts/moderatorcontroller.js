@@ -3,16 +3,18 @@
 	'use strict';
 	var app = angular.module('confab');
 
-	app.controller('ModeratorController', function( StaticDataFactory, $uibModal, StorageFactory)
+	app.controller('ModeratorController', function( StaticDataFactory, $uibModal, StorageFactory, ModeratorFactory)
 	{
 
 		var vm = this;
 		vm.showModel = showModel;
 		vm.deleteProperty = deleteProperty;
+		vm.deleteItem = deleteItem;
 		vm.changeAttr = changeAttr;
 		vm.addProperty = addProperty;
 		vm.addNewClass = addNewClass;
 		vm.otherSlot = otherSlot;
+		vm.postTag = postTag;
 		
 		console.log("moderatorcontroller attached...");
 		StaticDataFactory.stopTimer();
@@ -23,6 +25,8 @@
 		vm.addingProperty = false;
 		vm.newProperty = null;
 		vm.addingItem = false;
+
+		
 		
 		if (vm.dataModel === null)
 		{
@@ -33,7 +37,35 @@
 			});
 		}
 
-		
+
+
+		function deleteItem()
+		{
+			ModeratorFactory.deleteItem(vm.selectedItem.classname).then(function succcess(res)
+				{
+					console.log(res);
+					var parking = vm.selectedItem.classname;
+					delete vm.dataModel[parking];
+					vm.selectedItem = vm.dataModel[Object.keys(vm.dataModel)[0]];
+				},
+				function fail(err)
+				{
+					console.log(err);
+				});
+		}
+
+		function postTag()
+		{
+			console.log(vm.selectedItem);
+			ModeratorFactory.postTag(vm.selectedItem).then(function success(res)
+			{
+				console.log("success",res);
+			}, 
+			function fail(err)
+			{
+				console.log("fail",err);
+			});
+		}
 
 		function addNewClass()
 		{
@@ -54,7 +86,6 @@
 			}
 			vm.selectedItem.xml = StorageFactory.getGetter("slot" + vm.currentSlotNumber)();
 		}
-
 
 		function changeAttr(index)
 		{
@@ -100,7 +131,6 @@
 			vm.selectedItem.properties.splice(index,1);
 		}
 
-
 		function showModel()
 		{
 
@@ -118,11 +148,7 @@
 			});
 		}
 
-		
-
-
 		// console.log(vm.datamModel);
-
 	}).
 	controller('ModalController', function($uibModalInstance, items)
 	{

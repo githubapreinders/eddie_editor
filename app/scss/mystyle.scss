@@ -3,6 +3,8 @@
 $background0 :  "../media/concrete_seamless.png";
 $background1 : "../media/cheap_diagonal_fabric_mirrored.png";
 $background2 : "../media/cheap_diagonal_fabric.png";
+$background3 : "../media/spirationdark.png";
+$background4 : "../media/whitewall.png";
 
 $corkColor1:#666666;
 $corkColor2:#996666;
@@ -18,6 +20,8 @@ h6
 {
 	color:blue;
 }
+
+
 
 .mainmodcontainer
 {
@@ -35,18 +39,32 @@ h6
 	}
 	.rightmodcontainer
 	{
-		border : 1px solid grey;
+		background : url($background3);
+		border-left : 1px solid grey;
+		border-top : 1px solid grey;
+		border-radius : 10px 0px 0px 0px;
+		padding : 5px;
 		width:65%;
 		height:100%;
 		textarea
 		{
-			color:red;
-			width:100%;
-			height:100%;
+			color: white;
+			width: 100%;
+			height: 100%;
 		}
-		h4
+		h1, h2, h3, h4
 		{
 			text-align:center;
+			color:#EEEEEE;
+		}
+		p[contenteditable] 
+		{
+		  	background : url($background4);
+		  	color:black;
+			font-size:20px;
+		  	outline: none;
+		  	height: 94%;
+		  	padding : 5px;
 		}
 
 	}
@@ -70,6 +88,7 @@ h6
 {
 	display:flex;
 	background:url($background0);
+	padding : 5px;
 	height : 8%;
 	label
 	{
@@ -162,7 +181,19 @@ html, body
 
 	.rounded
 	{
-		border-radius: 0px 0px 3px 0px;
+		border-radius: 0px 3px 3px 0px;
+		border-top : 1px solid grey;
+		border-right : 1px solid grey;
+		border-bottom : 1px solid grey;
+		border-left : 0px;
+	}
+	.rounded2
+	{
+		border-radius: 3px 0px 0px 3px;
+		border-top : 1px solid grey;
+		border-left : 1px solid grey;
+		border-bottom : 1px solid grey;
+		border-right : 0px;
 	}	
 	i
 	{
@@ -243,7 +274,7 @@ html, body
 					flex-grow:1;
 					background:url($background0);
 					cursor : pointer;
-					overflow-y:hidden;
+					overflow-y:auto;
 					overflow-x:hidden;
 					text-indent:10px;
 					padding: 0px;

@@ -512,9 +512,9 @@ to a string and inserted in the editor;*/
 
             if(item !== undefined)
             {
-                console.log("item:", typeof item, JSON.stringify(item));
                 var newstring = item.replace(/&lt;/g,'<');
                 var newerstring = newstring.replace(/&gt;/g,'>');
+                console.log("filteroutput:", JSON.stringify(newerstring));
                 return newerstring;
             }
         };
