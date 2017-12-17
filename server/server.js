@@ -221,6 +221,24 @@ app.get('/deleteItem', function (req, res)
 		}
 		else
 		{
+			var filepath = path.join(__dirname,'./resources/snippets/' + param +'.xml');
+			fs.stat(filepath, function(err, stats)
+			{
+				if(stats)
+				{
+					fs.unlink(filepath, function(err)
+					{
+						if (err)
+						{
+							console.log("deletion error on",filepath,'\n', err);
+						}
+						else
+						{
+							console.log("succesfully deleted ", filepath);
+						}
+					});
+				}
+			});
 			res.status(200).send(result);
 			saveJson();
 		}
@@ -334,10 +352,9 @@ function saveJson()
 				{
 					myjson[item.classname] = item;
 				});
-			console.log("json:\n", myjson);	
 			fs.writeFile(filepath , JSON.stringify(myjson), function(result)
 			{
-				console.log("file write result ", result);
+				console.log("file write result ok");
 			});
 			}
 		});

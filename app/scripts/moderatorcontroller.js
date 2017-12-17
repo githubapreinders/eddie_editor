@@ -159,6 +159,13 @@
 		function closeModal()
 		{
 			$uibModalInstance.close();
-		};
-	})
+		}
+	});
+
+	app.controller('CourseInfoController', function(StaticDataFactory)
+	{
+		var vm = this;
+		console.log("CourseInfoController loaded");
+		StaticDataFactory.stopTimer();
+	});
 }());

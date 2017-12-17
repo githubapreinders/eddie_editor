@@ -27,6 +27,15 @@ app.config(function ($stateProvider, $urlRouterProvider)
                     }
                 }
             })
+        .state('app.courseinfo', {
+                url:'courseinfo',
+                views: {
+                    'content@': {
+                        templateUrl : 'views/courseinfo.html',
+                        controller  : 'CourseInfoController as vm'
+                    }
+                }
+            })
 
 
 
