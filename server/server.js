@@ -115,8 +115,21 @@ app.post('/postIaftag', function(req, res)
 			}
 			else
 			{
-				res.status(200).send(result);
-				saveJson();
+				if(tag.type === 'snippet')
+				{
+					var convert = require('xml-js');
+					var contents = convert.json2xml(tag.xml,{compact:true, spaces: 4});
+					fs.writeFile(filepath , contents, function(result)
+					{
+						console.log('write result',result);
+					});
+					res.status(200).send('successfully saved snippet.');
+				}
+				else
+				{
+					res.status(200).send('successfully saved iaftag.');
+				}
+					saveJson();
 			}
 		});
 
@@ -155,20 +168,31 @@ app.post('/postJsonBulk', function(req, res)
 
 });
 
-//converts a client xml file to json with the xml-js library;
-app.post('/convertXml',function (req, res)
+app.post('/convertToXml', function(req, res)
 {
-		var thebody = '';
-		req.on('data' , function(chunk)
-		{
-			thebody += chunk;
-		}).on('end', function()
-		{
-			var convert = require('xml-js');
-			var result = convert.xml2json(thebody,{compact:true, spaces: 4});
-		 	res.status(200).send(result);
-		});
+	console.log("converting to xml\n");
+	res.set('Content-type','application/xml');
+	var convert = require('xml-js');
+	res.status(200).send(convert.json2xml(req.body));
 });
+
+app.post('/convertToJson', function(req, res)
+{
+	console.log("converting xml to json\n");
+	res.set('Content-type','application/json');
+	var thebody = "";
+	req.on('data' , function(chunk)
+	{
+		thebody += chunk;
+	}).on('end', function()
+	{
+		var convert = require('xml-js');
+		res.status(200).send(convert.xml2json(thebody));
+	});
+});
+
+//converts a client xml file to json with the xml-js library;
+
 
 //saves a json snippet in the db and an the appropriate snippet in the file system. 		 
 app.post('/savesnippet', function(req, res)
@@ -334,7 +358,7 @@ function saveJson()
 				{
 					myjson[item.classname] = item;
 				});
-			console.log("json:\n", myjson);	
+			//console.log("json:\n", myjson);	
 			fs.writeFile(filepath , JSON.stringify(myjson), function(result)
 			{
 				console.log("file write result ", result);

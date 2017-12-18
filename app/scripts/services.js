@@ -44,7 +44,6 @@
             getFontSizes: getFontSizes,
             setTimerId : setTimerId,
             stopTimer : stopTimer
-
         };
 
         function setTimerId(timerid)
@@ -107,6 +106,8 @@
           return thejson;
         }
 
+        
+
         function loadXml(which)
         {
           console.log("file to catch:", which);
@@ -118,6 +119,8 @@
               console.log("error loading xml", error);
             });
         }
+
+        
 
         
 

@@ -15,6 +15,7 @@
 		vm.addNewClass = addNewClass;
 		vm.otherSlot = otherSlot;
 		vm.postTag = postTag;
+		vm.checkForXml = checkForXml;
 		
 		console.log("moderatorcontroller attached...");
 		StaticDataFactory.stopTimer();
@@ -37,7 +38,14 @@
 			});
 		}
 
-
+		function checkForXml()
+		{
+			console.log("selected",vm.selectedItem.classname);
+			StaticDataFactory.loadXml(vm.selectedItem.classname).then(function success(res)
+			{
+				vm.selectedItem.xml = res.data;
+			});
+		}
 
 		function deleteItem()
 		{
@@ -161,4 +169,9 @@
 			$uibModalInstance.close();
 		};
 	})
+	
+
+	
+
+
 }());

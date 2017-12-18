@@ -33,14 +33,15 @@
           {
           	return convertXml(theobject.xml).then(function (res)
 	          {
-	           	theobject.xml = res.data;	
-	             $http.post(API_URL+'/savesnippet', theobject).then(function success(resp)
+	          		var parking = angular.copy(theobject);//to prevent the original model from corrupting
+	           		parking.xml = res.data;	
+	             $http.post(API_URL+'/postIaftag', parking).then(function success(resp)
 	              {
 	                return console.log("saving result", resp.status);
 	              },
 	              function failure(err)
 	              {
-	                return console.log("failed result", err.status);
+	                return console.log("failed result posting snippet", err.status);
 	              });
 	          });	
           }
@@ -53,7 +54,7 @@
 	          },
 	          function failure(err)
 	          {
-	            console.log("failed result", err.status);
+	            console.log("failed result posting tag", err.status);
 	          });
           }
         }
@@ -61,8 +62,8 @@
         
         function convertXml(thexml)
         {
-          // console.log("slot to convert to json:", StorageFactory.getGetter(slot)());
-         	return $http({method:"POST",url: API_URL + '/convertXml',data: thexml ,headers:{"Content-Type":'application/xml'} }).then(function(data)
+          	//console.log("slot to convert to json:", StorageFactory.getGetter(slot)());
+         	return $http({method:"POST",url: API_URL + '/convertToJson',data: thexml ,headers:{"Content-Type":'application/xml'} }).then(function(data)
 	        {
 	          return data;
 	        },function(error)
