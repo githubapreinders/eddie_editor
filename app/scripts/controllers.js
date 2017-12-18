@@ -2,7 +2,7 @@
     'use strict';
 
     angular.module('confab')
-        .controller('IndexController', function ($scope,$interval,$timeout, xmlTag, attributeObject, StaticDataFactory, StorageFactory, EditorFactory, ValidationFactory, IafFactory)
+        .controller('IndexController', function ($scope,$interval,$timeout, xmlTag, attributeObject, StaticDataFactory, StorageFactory, EditorFactory, ValidationFactory, IafFactory, ModeratorFactory)
         {
 
             console.log('IndexController...');
@@ -29,6 +29,8 @@
             vm.validateXml = validateXml;
             vm.sendToIaf = sendToIaf;
             vm.setCredentials = setCredentials;
+            vm.setAvailableLesson = setAvailableLesson;
+            
 
             //Static values
             vm.message = "Angular Controller is working allright...";
@@ -56,12 +58,17 @@
 
             vm.currentSlotNumber = 0;
             vm.theslots = [];
+            vm.availableLessons = [];
             
             
 
+            function setAvailableLesson(which)
+            {
+                ModeratorFactory.setAvailableLesson(which);
+            }
 
 
-
+            //saves the localstorage slot that is open every 5 seconds 
             function saveInSlot()
             {
                 vm.timerId = $interval(function()
@@ -137,8 +144,24 @@
                 thedocument = editor.getDoc();
                 StaticDataFactory.getJson().then(function success(response)
                 {
-                    console.log("response: ", response.data);
+                    console.log("returned datamodel : \n", response.data);
                     vm.navigatorModel = response.data;
+                    
+
+
+                    Object.keys(vm.navigatorModel).forEach(function (item, index)
+                    {
+                       
+                        if(vm.navigatorModel[item].type === 'lesson')
+                        {
+                            vm.availableLessons.push( vm.navigatorModel[item] );
+                        }
+                        if (vm.availableLessons.length > 0)
+                        {
+                            setAvailableLesson(vm.availableLessons[0].url);
+                        }
+                    });
+
                     editor.setOption('hintOptions', {schemaInfo: vm.navigatorModel});
                     editor.foldCode(CodeMirror.Pos(0,0));
                     editor.foldCode(CodeMirror.Pos(thedocument.lineCount(),0));
@@ -504,6 +527,8 @@ to a string and inserted in the editor;*/
             return filtered;
         };
     })
+
+
     //replaces escaped tag signs with the proper symbols, used in the description area where sometimes strange symbols appear.
     .filter('cleanupFilter', function()
     {

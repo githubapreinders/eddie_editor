@@ -25,5 +25,14 @@
 <label>Font Size : <select ng-model="vm.selectedFontSize" ng-options="fontsize for fontsize in vm.fontSizes" ng-change="vm.changeFontSize()"></select></label>
 
 <div class="divider"></div>
-<div ng-include="'./views/authentication.html'"></div>
+<div ng-include="'./views/authentication.html'"></div> 
+
+<div class="divider"></div>
+
+<div ng-show = "vm.availableLessons.length === 0 ">No lessons available</div>
+
+<div ng-repeat = "item in vm.availableLessons">
+	<h6 ng-click = "vm.setAvailableLesson(item.url)">{{item.classname}}	</h6>
+</div>
+
 

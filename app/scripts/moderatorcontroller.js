@@ -155,10 +155,10 @@
 					}}
 			});
 		}
-
 		// console.log(vm.datamModel);
-	}).
-	controller('ModalController', function($uibModalInstance, items)
+	})
+	
+	.controller('ModalController', function($uibModalInstance, items)
 	{
 		var vm = this;
 		vm.closeModal = closeModal;
@@ -167,11 +167,21 @@
 		function closeModal()
 		{
 			$uibModalInstance.close();
+
 		};
 	})
 	
+	.controller('CourseInfoController', function(StaticDataFactory, ModeratorFactory)
+	{
+		var vm = this;
+		console.log("CourseInfoController loaded");
+		StaticDataFactory.stopTimer();
+		vm.currentLesson = ModeratorFactory.getAvailableLesson();
 
-	
+		document.getElementById('Example2').src = vm.currentLesson;
+		
 
+
+	});
 
 }());

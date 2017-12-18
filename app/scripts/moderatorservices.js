@@ -6,13 +6,30 @@
 
 	app.factory('ModeratorFactory', function($http, StorageFactory, API_URL, IAF_URL)
 	{
+	var availableLesson = null;	
 		return {
 			postIaftag : postIaftag,
 			postJsonBulk : postJsonBulk,
 			postTag : postTag,
 			postSchema : postSchema,
-			deleteItem : deleteItem
+			deleteItem : deleteItem,
+			setAvailableLesson : setAvailableLesson,
+			getAvailableLesson : getAvailableLesson
 		}
+
+		function setAvailableLesson(which)
+		{
+			availableLesson = which;
+			console.log("availableLesson", availableLesson);
+		}
+
+
+		function getAvailableLesson()
+		{
+			return availableLesson;
+		}
+
+
 
 		function postIaftag()
 		{
@@ -23,7 +40,6 @@
 		{
 			
 		}
-
 
 
 		function postTag(theobject)
