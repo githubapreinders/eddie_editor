@@ -36,7 +36,7 @@
                     </div>
         </div>
     </div>
-    <div ng-show = "vm.selectedItem.type === 'snippets' ">
+    <div style="height: 92%;" ng-show = "vm.selectedItem.type === 'snippets' ">
         <div class="divider"></div>  
         <div class="navigatorTop">
             <span ng-click="vm.otherSlot()"   class="rounded">
@@ -45,6 +45,6 @@
             <div></div>
             <strong>XML Contents</strong>
             <div></div>    
-    </div>  
-    <pre>{{vm.selectedItem.xml}}</pre>
+        </div>  
+        <pre style="height: 92%; overflow-x: hidden;">{{vm.selectedItem.xml}}</pre>
     </div>

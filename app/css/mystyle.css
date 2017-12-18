@@ -34,9 +34,8 @@ h6 {
     .mainmodcontainer .rightmodcontainer h1, .mainmodcontainer .rightmodcontainer h2, .mainmodcontainer .rightmodcontainer h3, .mainmodcontainer .rightmodcontainer h4 {
       text-align: center;
       color: #EEEEEE; }
-    .mainmodcontainer .rightmodcontainer p[contenteditable] {
-      background: url("../media/whitewall.png");
-      color: black;
+    .mainmodcontainer .rightmodcontainer span[contenteditable] {
+      color: #EEEEEE;
       font-size: 20px;
       outline: none;
       height: 94%;

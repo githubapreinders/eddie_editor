@@ -2,14 +2,14 @@
 <div ng-show = "!vm.showPropertyDescription" style="height:100%;"> 
 	<h2  id="newclassname" contenteditable ng-model = "vm.selectedItem.classname">{{vm.selectedItem.classname}}</h2>
 
-	<p  contenteditable spellcheck="false"   id = "myarea" style="white-space: pre;"  ng-model = "vm.selectedItem.description" class="moderatordescription">{{vm.selectedItem.description }}</p>
+	<span  contenteditable spellcheck="false"   id = "newdescription" style="white-space: pre;"  ng-model = "vm.selectedItem.description" class="moderatordescription">{{vm.selectedItem.description }}</span>
 </div>
 
 <div ng-show = "vm.showPropertyDescription && vm.newProperty === null" style="height:100%;">
 	
 	<h2 id="propertyheader">{{vm.selectedItem.properties[vm.selectedProperty][0] }}</h2>
 
-	<p  contenteditable spellcheck="false" ng-model = "vm.selectedItem.properties[vm.selectedProperty][1]" class="moderatordescription">{{vm.selectedItem.properties[vm.selectedProperty][1]}}</p  contenteditable spellcheck="false">
+	<span  contenteditable spellcheck="false" ng-model = "vm.selectedItem.properties[vm.selectedProperty][1]" class="moderatordescription">{{vm.selectedItem.properties[vm.selectedProperty][1]}}</span  contenteditable spellcheck="false">
 
 </div>
 
@@ -17,6 +17,6 @@
 	
 	<h2 id="newpropertyheader">{{vm.newProperty.propname }}</h2>
 
-	<p  contenteditable spellcheck="false" ng-model = "vm.newProperty.propdes " class="moderatordescription">{{vm.newProperty.propdes }}</p  contenteditable spellcheck="false">
+	<span  contenteditable spellcheck="false" ng-model = "vm.newProperty.propdes " class="moderatordescription">{{vm.newProperty.propdes }}</span  contenteditable spellcheck="false">
 
 </div>

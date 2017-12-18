@@ -15,6 +15,7 @@
 		vm.addNewClass = addNewClass;
 		vm.otherSlot = otherSlot;
 		vm.postTag = postTag;
+		vm.checkForXml = checkForXml;
 		
 		console.log("moderatorcontroller attached...");
 		StaticDataFactory.stopTimer();
@@ -37,7 +38,14 @@
 			});
 		}
 
-
+		function checkForXml()
+		{
+			console.log("selected",vm.selectedItem.classname);
+			StaticDataFactory.loadXml(vm.selectedItem.classname).then(function success(res)
+			{
+				vm.selectedItem.xml = res.data;
+			});
+		}
 
 		function deleteItem()
 		{
@@ -147,10 +155,10 @@
 					}}
 			});
 		}
-
 		// console.log(vm.datamModel);
-	}).
-	controller('ModalController', function($uibModalInstance, items)
+	})
+	
+	.controller('ModalController', function($uibModalInstance, items)
 	{
 		var vm = this;
 		vm.closeModal = closeModal;
@@ -159,13 +167,21 @@
 		function closeModal()
 		{
 			$uibModalInstance.close();
-		}
-	});
 
-	app.controller('CourseInfoController', function(StaticDataFactory)
+		};
+	})
+	
+	.controller('CourseInfoController', function(StaticDataFactory, ModeratorFactory)
 	{
 		var vm = this;
 		console.log("CourseInfoController loaded");
 		StaticDataFactory.stopTimer();
+		vm.currentLesson = ModeratorFactory.getAvailableLesson();
+
+		document.getElementById('Example2').src = vm.currentLesson;
+		
+
+
 	});
+
 }());

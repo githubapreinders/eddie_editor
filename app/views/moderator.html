@@ -10,7 +10,7 @@
                   <a ui-sref="app">  
                   <img src="../media/ip-logo.png"   />
                     </a>
-<label>Selected Item : <select id = 'myselect' ng-model="vm.selectedItem" ng-options="value.classname for (key,value) in vm.dataModel"    ></select></label>
+<label>Selected Item : <select id = 'myselect' ng-model="vm.selectedItem" ng-options="value.classname for (key,value) in vm.dataModel"  ng-change = "vm.checkForXml(value.classname)"  ></select></label>
                 </div>
 
 
