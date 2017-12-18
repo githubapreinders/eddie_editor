@@ -64,11 +64,21 @@ h6 {
   background: url("../media/concrete_seamless.png");
   padding: 5px;
   height: 8%; }
+  #mynavbar img {
+    width: 46px;
+    height: 46px;
+    margin-top: 4px;
+    margin-right: 25px; }
   #mynavbar label {
     text-align: center; }
   #mynavbar .navBarLeft {
     position: relative;
     width: 39%; }
+    #mynavbar .navBarLeft .iplogo {
+      position: absolute;
+      width: 46px;
+      height: 46px;
+      margin-top: 4px; }
     #mynavbar .navBarLeft .navItem {
       position: absolute;
       cursor: pointer;
