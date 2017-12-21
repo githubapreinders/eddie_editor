@@ -16,6 +16,7 @@
 		vm.otherSlot = otherSlot;
 		vm.postTag = postTag;
 		vm.checkForXml = checkForXml;
+		vm.postJsonBulk = postJsonBulk;
 		
 		console.log("moderatorcontroller attached...");
 		StaticDataFactory.stopTimer();
@@ -36,6 +37,11 @@
 				vm.dataModel = response.data;
 				vm.selectedItem = vm.dataModel[(Object.keys(vm.dataModel)[0])];
 			});
+		}
+
+		function postJsonBulk()
+		{
+			ModeratorFactory.postJsonBulk(vm.selectedItem.description);
 		}
 
 		function checkForXml()

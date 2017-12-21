@@ -36,9 +36,25 @@
 
 		}
 
-		function postJsonBulk()
+		function postJsonBulk(json)
 		{
-			
+
+			try
+			{
+				//JSON.parse(json);
+				$http.post(API_URL + '/postJsonBulk', json).then(function success(resp)
+					{
+						console.log("success",resp);
+					},
+					function failure(err)
+					{
+						console.log("failure",err);
+					});
+			}
+			catch(err)
+			{
+				alert ("improper json\n",err);
+			}
 		}
 
 

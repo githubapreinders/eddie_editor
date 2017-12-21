@@ -36,8 +36,10 @@ function init()
 	app = express();
 	app.use(cors());
 	app.set('port', process.env.PORT || 3000);
-	app.use(bodyParser.json());
+	//app.use(bodyParser.json());
 	//app.use(bodyParser.xml());
+	app.use(bodyParser.json({limit: "50mb"}));
+	app.use(bodyParser.urlencoded({limit: "50mb", extended: true, parameterLimit:50000}));
 	app.listen(app.get('port'), function ()
 	{
 	    console.log('\nApp listening on port\n ' + app.get('port'));
@@ -103,7 +105,9 @@ app.post('/postIaftag', function(req, res)
 			description: tag.description,
 			attrs: tag.attrs,
 			properties : tag.properties,
-			xml : tag.xml
+			xml : tag.xml,
+			free : tag.free,
+			url : tag.url
 		}, 
 		{upsert : true},
 		function (err, result)
@@ -129,7 +133,7 @@ app.post('/postIaftag', function(req, res)
 				{
 					res.status(200).send('successfully saved iaftag.');
 				}
-					saveJson();
+				saveJson();
 			}
 		});
 
@@ -138,6 +142,7 @@ app.post('/postIaftag', function(req, res)
 /*Posts a complete json body of the type {"mytag1":{"classname":"name1", ......},"mytag2":{"classname":"name2", ......}}*/
 app.post('/postJsonBulk', function(req, res)
 {
+	console.log("receiving...");
 	var iaftags = [];
 	_.each(req.body, function(item, index)
 	{
@@ -148,9 +153,12 @@ app.post('/postJsonBulk', function(req, res)
 			description: item.description,
 			attrs: item.attrs,
 			properties: item.properties,
-			xml: item.xml
+			xml: item.xml,
+			url:item.url,
+			free:item.free
 		}));
 	});
+	console.log("tags length ", iaftags.length);
 	Iaftag.insertMany(iaftags, function(err, resp)
 	{
 		if(err)
@@ -161,7 +169,7 @@ app.post('/postJsonBulk', function(req, res)
 		else
 		{
 			res.status(200).send(resp);
-			console.log("inserted ", docs.length, " objects.");
+			console.log("inserted ", iaftags.length, " objects.");
 			saveJson();
 		}
 	});

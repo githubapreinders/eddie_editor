@@ -10,13 +10,16 @@
         
         <label class="radio-inline" for="myRadio4">General </label>
             <input type="radio" name = "types" id="myRadio4" value="general" ng-checked = "vm.selectedItem.type == 'general'"  ng-disabled ="vm.selectedItem.type !== 'general' && vm.addingItem ===  false " ng-model = "vm.selectedItem.type">
+
+            <label class="radio-inline" for="myRadio5">Lesson </label>
+            <input type="radio" name = "types" id="myRadio5" value="lesson" ng-checked = "vm.selectedItem.type == 'lesson'"  ng-disabled ="vm.selectedItem.type !== 'lesson' && vm.addingItem ===  false " ng-model = "vm.selectedItem.type">
         
     </div>
 
 
 
 
-    <div ng-show="vm.selectedItem.type !== 'snippets' ">
+    <div ng-show="vm.selectedItem.type !== 'snippets' && vm.selectedItem.type !== 'lesson' ">
         <div class="divider"></div>
         <div ng-include="'./views/addProperty.html'"></div>
         <div class="divider"></div>
@@ -35,6 +38,21 @@
                         </span>
                     </div>
         </div>
+    </div>
+    <div ng-show = "vm.selectedItem.type === 'lesson' ">
+        <div class="divider"></div>  
+        <label for="urlinput">url</label><input type="text" name="urlinput" id="urlinput" style="width:75%;margin-left:15px;" ng-model = "vm.selectedItem.url">
+         <div >
+        <label class="radio-inline" for="myRadio10">free </label>
+            <input type="radio"  name = "free" id="myRadio10" ng-checked = "vm.selectedItem.free === 'true'" value="true"  ng-model = "vm.selectedItem.free" >
+        
+        <label class="radio-inline" for="myRadio11">restricted </label>
+            <input type="radio" name = "free"  id="myRadio11" value="false" ng-checked = "vm.selectedItem.free === 'false'"   ng-model = "vm.selectedItem.free">
+    </div>
+
+
+
+
     </div>
     <div style="height: 92%;" ng-show = "vm.selectedItem.type === 'snippets' ">
         <div class="divider"></div>  

@@ -29,10 +29,23 @@
 
 <div class="divider"></div>
 
-<div ng-show = "vm.availableLessons.length === 0 ">No lessons available</div>
+<div class="navigatorTop">
+    <span  style="position:absolute;border: 0px;">
+                    <i class="fa fa-info"></i>
+    </span>
+    <div></div><strong><div ng-show = "vm.availableLessons.length === 0 ">No lessons available</div>
+<div ng-show = "vm.availableLessons.length > 0 ">Available lessons</div></strong><div></div>    
+    
+ </div>  
+
+
+
+
+
 
 <div ng-repeat = "item in vm.availableLessons">
-	<h6 ng-click = "vm.setAvailableLesson(item.url)">{{item.classname}}	</h6>
+	<!-- <h5  ng-click = "vm.setAvailableLesson(item.url)">{{item.classname}}	</h6> -->
+		<a ng-href="{{item.url}}" target="_blank">{{item.classname}}</a>
 </div>
 
 
