@@ -61,25 +61,25 @@
 		function postTag(theobject)
         {
           console.log("posting tag", theobject);
-          if(theobject.type === 'snippets')
-          {
-          	return convertXml(theobject.xml).then(function (res)
-	          {
-	          		var parking = angular.copy(theobject);//to prevent the original model from corrupting
-	           		parking.xml = res.data;	
-	             $http.post(API_URL+'/postIaftag', parking).then(function success(resp)
-	              {
-	                return console.log("saving result", resp.status);
-	              },
-	              function failure(err)
-	              {
-	                return console.log("failed result posting snippet", err.status);
-	              });
-	          });	
-          }
-          else
-          {
-          	  theobject.xml = "";
+          // if(theobject.type === 'snippets')
+          // {
+          // 	return convertXml(theobject.xml).then(function (res)
+	         //  {
+	         //  		var parking = angular.copy(theobject);//to prevent the original model from corrupting
+	         //   		parking.xml = res.data;	
+	         //     $http.post(API_URL+'/postIaftag', parking).then(function success(resp)
+	         //      {
+	         //        return console.log("saving result", resp.status);
+	         //      },
+	         //      function failure(err)
+	         //      {
+	         //        return console.log("failed result posting snippet", err.status);
+	         //      });
+	         //  });	
+          // }
+          // else
+          // {
+          	  //theobject.xml = "";
           	  return  $http.post(API_URL+'/postIaftag', theobject).then(function success(resp)
 	          {
 	            console.log("saving result", resp.status);
@@ -88,7 +88,7 @@
 	          {
 	            console.log("failed result posting tag", err.status);
 	          });
-          }
+          // }
         }
 
         

@@ -18,7 +18,7 @@
             vm.clearEditor = clearEditor;
             vm.showNav = showNav;
             vm.showConf = showConf;
-            vm.loadXml = loadXml;
+            // vm.loadXml = loadXml;
             vm.storeData = storeData;
             vm.retrieveData = retrieveData;
             vm.toggleSlot = toggleSlot;
@@ -316,14 +316,14 @@
 
             
             //inserts an xml snippet at the cursor position;
-            function loadXml()
-            {
-                StaticDataFactory.loadXml(vm.selectedItem.classname).then(function succes(response)
-                {
-                    thedocument.replaceSelection(response.data);
-                    styleEditorContent();
-                });
-            }
+            // function loadXml()
+            // {
+            //     StaticDataFactory.loadXml(vm.selectedItem.classname).then(function succes(response)
+            //     {
+            //         thedocument.replaceSelection(response.data);
+            //         styleEditorContent();
+            //     });
+            // }
 
 
             
@@ -490,7 +490,8 @@ to a string and inserted in the editor;*/
                 if(vm.selectedItem.type === 'snippets')
                 {
                     console.log("selectedItem:",vm.selectedItem);
-                    loadXml(vm.selectedItem.file);
+                    //loadXml(vm.selectedItem.file);
+                    thedocument.replaceSelection(vm.selectedItem.xml);
                 }
                 else
                 {

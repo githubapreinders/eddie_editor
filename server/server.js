@@ -325,40 +325,40 @@ The content of an xml snippet  is retrieved ;
 An example request looks like "http://localhost:3000/snippets?resource=HelloWorld";
 In case the file is not found the system will try to recover it from the db.
 */
-app.get('/snippets', function(req, res)
-{
-	var param = req.query.resource;
-	var filepath = path.join(__dirname,'./resources/snippets/' + param + '.xml');
-	console.log("Getting an xml snippet called ", param);
-	res.set('Content-type','application/xml');
-	fs.readFile(filepath,{encoding:'utf-8'}, function(err, doc)
-	{
-		if(err)
-		{
-			Iaftag.find({classname:param},{xml:1}, function(err, result)
-			{
-				var convert = require('xml-js');
-				try
-				{
-					var myres = convert.json2xml(JSON.stringify(result[0].xml),{compact:true, spaces: 4});
-					fs.writeFile(filepath , myres, function(result)
-					{
-						console.log('written ' + filepath );
-						res.status(200).send(myres);
-					});
-				}
-				catch (err)
-				{
-					res.status(400).send(err);
-				}
-			});
-		}
-		else
-		{
-			res.status(200).send(doc);
-		}
-	});
-});
+// app.get('/snippets', function(req, res)
+// {
+// 	var param = req.query.resource;
+// 	var filepath = path.join(__dirname,'./resources/snippets/' + param + '.xml');
+// 	console.log("Getting an xml snippet called ", param);
+// 	res.set('Content-type','application/xml');
+// 	fs.readFile(filepath,{encoding:'utf-8'}, function(err, doc)
+// 	{
+// 		if(err)
+// 		{
+// 			Iaftag.find({classname:param},{xml:1}, function(err, result)
+// 			{
+// 				var convert = require('xml-js');
+// 				try
+// 				{
+// 					var myres = convert.json2xml(JSON.stringify(result[0].xml),{compact:true, spaces: 4});
+// 					fs.writeFile(filepath , myres, function(result)
+// 					{
+// 						console.log('written ' + filepath );
+// 						res.status(200).send(myres);
+// 					});
+// 				}
+// 				catch (err)
+// 				{
+// 					res.status(400).send(err);
+// 				}
+// 			});
+// 		}
+// 		else
+// 		{
+// 			res.status(200).send(doc);
+// 		}
+// 	});
+// });
 
 
 
