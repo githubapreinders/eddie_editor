@@ -203,41 +203,41 @@ app.post('/convertToJson', function(req, res)
 
 
 //saves a json snippet in the db and an the appropriate snippet in the file system. 		 
-app.post('/savesnippet', function(req, res)
-{
-	var filepath = path.join(__dirname,'./resources/snippets/' + req.body.classname + '.xml');
-	var item = new Iaftag(req.body);
-	console.log("item:", item);
-	Iaftag.update({classname: item.classname},
-		{
+// app.post('/savesnippet', function(req, res)
+// {
+// 	var filepath = path.join(__dirname,'./resources/snippets/' + req.body.classname + '.xml');
+// 	var item = new Iaftag(req.body);
+// 	console.log("item:", item);
+// 	Iaftag.update({classname: item.classname},
+// 		{
 			
-			type: item.type,
-			description: item.description,
-			attrs: item.attrs,
-			properties : item.properties,
-			xml : item.xml
-		},
-		{upsert:true},
-		function(err, result)
-		{
-			if(err)
-			{
-				res.status(500).send(err);
-			}
-			else
-			{
-				saveJson();
-				console.log("result", result);
-				var convert = require('xml-js');
-				var contents = convert.json2xml(item.xml,{compact:true, spaces: 4});
-				fs.writeFile(filepath , contents, function(result)
-				{
-					console.log('write result',result);
-				});
-				res.status(200).send('successfully saved snippet.');
-			}
-	});
-});
+// 			type: item.type,
+// 			description: item.description,
+// 			attrs: item.attrs,
+// 			properties : item.properties,
+// 			xml : item.xml
+// 		},
+// 		{upsert:true},
+// 		function(err, result)
+// 		{
+// 			if(err)
+// 			{
+// 				res.status(500).send(err);
+// 			}
+// 			else
+// 			{
+// 				saveJson();
+// 				console.log("result", result);
+// 				var convert = require('xml-js');
+// 				var contents = convert.json2xml(item.xml,{compact:true, spaces: 4});
+// 				fs.writeFile(filepath , contents, function(result)
+// 				{
+// 					console.log('write result',result);
+// 				});
+// 				res.status(200).send('successfully saved snippet.');
+// 			}
+// 	});
+// });
 
 /* the delete request looks like: "http://localhost:3000/deleteItem?resource=HelloWorld"; */
 app.get('/deleteItem', function (req, res)
@@ -253,24 +253,24 @@ app.get('/deleteItem', function (req, res)
 		}
 		else
 		{
-			var filepath = path.join(__dirname,'./resources/snippets/' + param +'.xml');
-			fs.stat(filepath, function(err, stats)
-			{
-				if(stats)
-				{
-					fs.unlink(filepath, function(err)
-					{
-						if (err)
-						{
-							console.log("deletion error on",filepath,'\n', err);
-						}
-						else
-						{
-							console.log("succesfully deleted ", filepath);
-						}
-					});
-				}
-			});
+			// var filepath = path.join(__dirname,'./resources/snippets/' + param +'.xml');
+			// fs.stat(filepath, function(err, stats)
+			// {
+			// 	if(stats)
+			// 	{
+			// 		fs.unlink(filepath, function(err)
+			// 		{
+			// 			if (err)
+			// 			{
+			// 				console.log("deletion error on",filepath,'\n', err);
+			// 			}
+			// 			else
+			// 			{
+			// 				console.log("succesfully deleted ", filepath);
+			// 			}
+			// 		});
+			// 	}
+			// });
 			res.status(200).send(result);
 			saveJson();
 		}

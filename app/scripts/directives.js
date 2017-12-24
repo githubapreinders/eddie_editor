@@ -27,22 +27,26 @@ angular.module('confab')
 
 				/* a checked checkbox will be written onto vm.selectedProperties,
 				when it is unchecked we will want to remove it from there. */
-				if(elemt === Object)
-				switch (elemt.checked)
-				{
-					case true :
+				
+				if(typeof (elemt) === 'object')
+					switch (elemt.checked)
 					{
-						scope.vm.selectedProperties[data[0]] = new attributeObject(data[0], new Array(input.value));
-						break;
-					}
+						case true :
+						{
+							console.log("adding ...");
+							scope.vm.selectedProperties[data[0]] = new attributeObject(data[0], new Array(input.value));
+							break;
+						}
 
-					case false : 
-					{
-						delete scope.vm.selectedProperties[data[0]];
-						break;
+						case false : 
+						{
+							console.log("deleting ...");
+							delete scope.vm.selectedProperties[data[0]];
+							break;
+						}
 					}
-				}
 				console.info("selected properties",scope.vm.selectedProperties);
+
 			});
 		}
 

@@ -181,18 +181,24 @@
                 });
             }
 
+            function toggleReadonly(slot)
+            {
+                
+            }
+
+
               
 
             function changeTheme()
             {
-
                 editor.setOption('theme', vm.selectedTheme);
             }
 
 
 
                 
-
+            //responds to change of the slotname : internally the slotnames are slot1, slot2...etc,
+            //externally a user can choose any alias he wants.
             function modifyAlias(slotn, newname)
             {
                 console.log("modify ",slotn, newname);
@@ -205,36 +211,32 @@
             function toggleSlot(slot)
             {
                 console.log("slot: ", typeof (slot) );
+                //opening a slot from the key item in the navigator
                 if(typeof slot === 'number')
                 {
-                    console.log("pushed key icon", typeof (slot));
                     var slotnumber = Number(slot) + 1;
                     if (slotnumber === 5)
                     {
                         slotnumber = 1 ;
                     }
                     vm.currentSlot = "slot" + slotnumber.toString();
-                    console.log("current slot: ", vm.currentSlot);
                     vm.currentSlotNumber = slotnumber;
-                    StorageFactory.setCurrentKey(vm.currentSlot);
-                    retrieveData(vm.currentSlot);
                 }   
 
-                //a keypress on an open folder, in other words, closing a folder
+                //a keypress on an open folder icon, in other words, closing a folder, resetting to first slot.
                 else if(vm.currentSlot === slot)
                 {
                     vm.currentSlot = vm.theslots[0];
-                    vm.currentSlotNumber = parseInt(slot.substring(4,5));
-                    StorageFactory.setCurrentKey(vm.currentSlot);
+                    vm.currentSlotNumber = 1;
                 }
-                //opening a slot
+                //opening a slot,pushing on a closed folder icon.
                 else
                 {
                     vm.currentSlot = slot;
                     vm.currentSlotNumber = parseInt(slot.substring(4,5));
-                    StorageFactory.setCurrentKey(vm.currentSlot);
-                    retrieveData(slot);
                 }
+                StorageFactory.setCurrentKey(vm.currentSlot);
+                retrieveData(vm.currentSlot);
 
                 console.log("Current slotnumber and slot:",vm.currentSlotNumber, vm.currentSlot);
             }
