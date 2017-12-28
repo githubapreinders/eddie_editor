@@ -3,7 +3,7 @@
 	'use strict';
 	var app = angular.module('confab');
 
-	app.controller('ModeratorController', function( StaticDataFactory, $uibModal, StorageFactory, ModeratorFactory)
+	app.controller('ModeratorController', function($scope, StaticDataFactory, $uibModal, StorageFactory, ModeratorFactory)
 	{
 
 		var vm = this;
@@ -20,6 +20,16 @@
 		
 		console.log("moderatorcontroller attached...");
 		StaticDataFactory.stopTimer();
+
+		
+		$scope.$on('$viewContentLoaded', function()
+		{
+			
+  		});
+
+
+
+
 		vm.dataModel = StaticDataFactory.getStaticJson();
 		vm.currentSlotNumber = parseInt(StorageFactory.getCurrentKey().substring(4,5));
 		vm.showPropertyDescription= false;
@@ -37,6 +47,10 @@
 				vm.dataModel = response.data;
 				vm.selectedItem = vm.dataModel[(Object.keys(vm.dataModel)[0])];
 			});
+		}
+		else
+		{
+			vm.selectedItem = StaticDataFactory.getSelectedItem();
 		}
 
 		function postJsonBulk()

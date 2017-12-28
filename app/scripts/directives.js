@@ -75,10 +75,8 @@ angular.module('confab')
       element.bind("blur keyup change", function(event) 
       {
         var el = event.target.id;
-        console.log("id:", el);
         if(el !== 'newproperty' && el !== 'newclassname' && el !== 'newdescription')
         {
-        	console.log("modifying attribute...");
 	        var oldvalue = scope.vm.selectedItem.properties[scope.vm.selectedProperty][0];
 	        scope.$apply(read);
 	        var newvalue = scope.vm.selectedItem.properties[scope.vm.selectedProperty][0];

@@ -6,13 +6,12 @@
 <body>
 
 <div  id="mynavbar">
-                <div class="navBarLeft" style="display:flex;">
-                  <a ui-sref="app">  
-                  <img src="../media/ip-logo.png"   />
-                    </a>
-<label>Selected Item : <select id = 'myselect' ng-model="vm.selectedItem" ng-options="value.classname for (key,value) in vm.dataModel"  ng-change = "vm.checkForXml(value.classname)"  ></select></label>
+                <div class="navBarLeft" style="width:45%;">
+                      <a ui-sref="app">  
+                        <img src="../media/ip-logo.png"  class="iplogo2" />
+                      </a>
+                    <label>Selected Item : <select id = 'myselect' ng-model="vm.selectedItem" ng-options="value.classname for (key,value) in vm.dataModel"  ></select></label>
                 </div>
-
 
 
                 <div class = "navBarRight" >
@@ -20,29 +19,24 @@
 
                     <div ></div>
 
-                    <span ng-click="vm.deleteItem()" class="fa-stack fa-2x ">
-                        <i class="fa fa-square-o fa-stack-2x"></i>
-                        <i class="fa  fa-plus fa-rotate-45 fa-stack-1x " style="color:red;"></i>
+                    <span ng-click="vm.deleteItem()" class="mybutton">
+                        <i class="fa  fa-plus fa-rotate-45  fa-2x" style="color:red;"></i>
                     </span>
 
-                    <span ng-click="vm.postJsonBulk()" class="fa-stack fa-2x ">
-                        <i class="fa fa-square-o fa-stack-2x"></i>
-                        <i class="fa  fa-stack-1x " style="font-size: 14px;">BULK</i>
+                    <span ng-click="vm.postJsonBulk()" class="mybutton ">
+                        <i class="fa   fa-2x" style="font-size: 14px;">BULK</i>
                     </span>
 
-                    <span ng-click="vm.showModel()" class="fa-stack fa-2x ">
-                        <i class="fa fa-square-o fa-stack-2x"></i>
-                        <i class="fa fa-search-plus fa-stack-1x " ></i>
+                    <span ng-click="vm.showModel()" class="mybutton ">
+                        <i class="fa fa-search-plus fa-2x" ></i>
                     </span>
 
-                    <span ng-click="vm.postTag()" class="fa-stack fa-2x ">
-                        <i class="fa fa-square-o fa-stack-2x"></i>
-                        <i class="fa fa-save fa-stack-1x "></i>
+                    <span ng-click="vm.postTag()" class="mybutton ">
+                        <i class="fa fa-save fa-2x"></i>
                     </span>
 
-                    <span ng-click="vm.addNewClass()" class="fa-stack fa-2x ">
-                        <i class="fa fa-square-o fa-stack-2x"></i>
-                        <i class="fa fa-plus fa-stack-1x "></i>
+                    <span ng-click="vm.addNewClass()" class="mybutton ">
+                        <i class="fa fa-plus  fa-2x"></i>
                     </span>
 
                 </div>

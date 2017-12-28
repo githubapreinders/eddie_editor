@@ -2,8 +2,7 @@
         
         	<div  id="mynavbar">
                 <div class="navBarLeft">
-                    <img src="../media/ip-logo.png" class="iplogo"  />
-                  
+                        <img src="../media/ip-logo.png" class="iplogo" id="iplogo"  />
                     <div id = "navItem" class="navItem" >
                         <div></div>
                         <span  id = "rightspan" ng-click="vm.showNav()" >
@@ -13,9 +12,8 @@
                 </div>
 
                 <div class = "navBarRight" >
-                    <span  ng-click="vm.submitForm()" class="fa-stack fa-2x myspan">
-                        <i class="fa fa-square-o fa-stack-2x outer"></i>
-                        <i class="fa fa-rotate-45 fa-arrow-circle-right fa-stack-1x inner "></i>
+                    <span  ng-click="vm.submitForm()" class="mybutton">
+                        <i class="fa fa-rotate-45 fa-arrow-circle-right fa-3x "></i>
                     </span>
 
                     <div ></div>
@@ -28,32 +26,27 @@
                     </a>    -->                 
 
 
-                    <a style="text-decoration: none;color:#000;" ui-sref="app.moderator">
-                    <span ng-click="angular.noop()" class="fa-stack fa-2x ">
-                        <i class="fa fa-square-o fa-stack-2x"></i>
-                        <i class="fa  fa-stack-1x fa-wrench" ></i>
+                    <a style="text-decoration: none;" class=mybutton " ui-sref="app.moderator">
+                    <span ng-click="angular.noop()" >
+                        <i class="fa  fa-wrench fa-2x" ></i>
                     </span>
                     </a>
 
 
-                    <span ng-click="vm.validateXml() ;" class="fa-stack fa-2x ">
-                        <i class="fa fa-square-o fa-stack-2x"></i>
-                        <i class="fa  fa-check  fa-stack-1x "></i>
+                    <span ng-click="vm.validateXml() ;" class="mybutton">
+                        <i class="fa  fa-check  fa-2x "></i>
                     </span>
 
-                    <span ng-click="vm.clearEditor()" class="fa-stack fa-2x ">
-                        <i class="fa fa-square-o fa-stack-2x"></i>
-                        <i class="fa  fa-eraser  fa-stack-1x "></i>
+                    <span ng-click="vm.clearEditor()" class="mybutton">
+                        <i class="fa  fa-eraser fa-2x "></i>
                     </span>
 
-                    <span ng-click="vm.styleEditorContent()" class="fa-stack fa-2x ">
-                        <i class="fa fa-square-o fa-stack-2x"></i>
-                        <i class="fa fa-align-left fa-stack-1x "></i>
+                    <span ng-click="vm.styleEditorContent()" class="mybutton">
+                        <i class="fa fa-align-left fa-2x"></i>
                     </span>
 
-                    <span ng-click="vm.sendToIaf()" class="fa-stack fa-2x ">
-                        <i class="fa fa-square-o fa-stack-2x"></i>
-                        <i class="fa fa-send fa-stack-1x "></i>
+                    <span ng-click="vm.sendToIaf()" class="mybutton">
+                        <i class="fa fa-send fa-2x"></i>
                     </span>
 
                 </div>
@@ -62,7 +55,7 @@
 <div class="mainContainer">
     <div id="navigatorcontainer">
          <div class="dataSourceArea" ng-include="'./views/dataSourceArea.html'"></div>
-         <div class="classArea" ng-include="'./views/classArea.html'"></div>
+         <div class="classArea" style="direction:rtl;" ng-include="'./views/classArea.html'"></div>
          <div class="descriptionArea" ng-include="'./views/descriptionArea.html'"></div>
          <div class="propertyArea" ng-include="'./views/propertyArea.html'"></div>
     </div>
@@ -73,6 +66,9 @@
 
     <div id = "editorcontainer">
         <div class = "editorArea" ui-codemirror="{ onLoad : vm.codemirrorLoaded }"></div>
+        <span class="lockicon" ng-click="vm.unlock()" ng-show = "vm.theslots[vm.currentSlotNumber-1].locked">
+            <i class="fa fa-lock fa-4x"></i>
+        </span>
     </div>
 </div>
 

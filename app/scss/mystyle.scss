@@ -8,6 +8,42 @@ $background4 : "../media/whitewall.png";
 
 $corkColor1:#666666;
 $corkColor2:#996666;
+$guttercolor:#222;
+$gutterlinenumber:#aaa;
+
+.mytooltip 
+{
+    position: relative;
+    display: inline-block;
+}
+
+/* myTooltip text */
+.mytooltip .mytooltiptext {
+    visibility: hidden;
+    width: 200px;
+    background-color: black;
+    color: #fff;
+    text-align: center;
+    padding: 5px ;
+    border-radius: 6px;
+    font-size:10px;
+    top:-30px;
+    left:-30px;
+ 
+    /* Position the mytooltip text - see examples below! */
+    position: absolute;
+    z-index: 100;
+}
+
+/* Show the mytooltip text when you mouse over the mytooltip container */
+.mytooltip:hover .mytooltiptext {
+    visibility: visible;
+}
+
+
+
+
+
 
 
 .CodeMirror 
@@ -20,8 +56,6 @@ h6
 {
 	color:blue;
 }
-
-
 
 .mainmodcontainer
 {
@@ -88,7 +122,6 @@ h6
 {
 	display:flex;
 	background:url($background0);
-	padding : 5px;
 	height : 8%;
 	img
 	{
@@ -104,15 +137,29 @@ h6
 
 		.navBarLeft
 		{
-		position:relative;	
+		position:relative;
+		display:flex;
+		align-items:center;
 		width:39%;
+
+		
+
 		.iplogo
 		{
-			position : absolute;
-			width : 46px;
-			height : 46px;
-			margin-top :4px;
+			position:absolute;
+			margin-left:10px;
+			max-width : 50px;
+			max-height : 50px;
+			transition: top 0.4s;
 		}
+		.iplogo2
+		{
+			margin-left:10px;
+			max-width : 50px;
+			max-height : 50px;
+		}
+
+
 		.navItem
 			{
 				position:absolute;
@@ -125,19 +172,19 @@ h6
 				
 				span
 				{
-					width:30px;
+					width:37px;
 					padding:2px;
 					padding-left: 7px;
-					border:1px solid grey;
 					border-radius: 3px;
 					border-bottom:0px;
+					background:$guttercolor;
 				}
 					
 				i
 				{
 					display:inline;
+					color:$gutterlinenumber;
 				}
-				
 			}	
 			
 		}
@@ -145,6 +192,7 @@ h6
 		.navBarRight
 		{
 			display: flex;
+			align-items: center;
 			width:100%;
 			
 			div
@@ -154,8 +202,25 @@ h6
 			span
 			{
 				cursor:pointer;
+
 			}
-			
+
+			.mybutton
+			{
+  				display:block;
+  				color:$guttercolor;
+  				opacity:0.5;
+  				padding:3%;
+			}
+			.mybutton:hover
+			{
+				background:#CCCCCC!important;
+			}
+			.mybutton:active
+			{
+				color:green;
+				background:#FFFFFF!important;
+			}
 		}
 
 }
@@ -180,12 +245,23 @@ html, body
 
 	span
 	{
-		padding:2px;
+		padding:4px;
+		padding-top:4px;
+		padding-bottom:4px;
 		border:1px solid grey;
 		border-top:0px;
 		border-radius: 0px 0px 0px 3px;
-
 	}
+
+	.minusicon
+	{
+			padding-right:5px;
+			border:0px;
+			border-radius: 3px 0px 0px 3px;
+			background:$guttercolor;
+			color:$gutterlinenumber;
+	}
+
 	.indescriptionarea
 		{
 			border:1px solid grey;
@@ -203,10 +279,12 @@ html, body
 	.rounded2
 	{
 		border-radius: 3px 0px 0px 3px;
-		border-top : 1px solid grey;
-		border-left : 1px solid grey;
-		border-bottom : 1px solid grey;
+		border-top : 1px solid $guttercolor;
+		border-left : 1px solid $guttercolor;
+		border-bottom : 1px solid $guttercolor;
 		border-right : 0px;
+		background:$guttercolor;
+		color:$gutterlinenumber;
 	}	
 	i
 	{
@@ -225,7 +303,6 @@ html, body
 	width:100%;
   	height:92%;
   	position:relative;
-  	border-top: 1px solid grey;
 }
 
 #editorcontainer
@@ -237,9 +314,15 @@ html, body
   	position:absolute;
   	transition: width 0.4s, left 0.4s;
   	z-index:5;
-  	.editorArea
+  	.lockicon
   	{
-  		
+  		position:absolute;
+  		cursor:pointer;
+  		left:94%;
+  		top : 1%;
+  		color: grey;
+  		opacity:0.4;
+  		z-index:6
   	}
 
 }
@@ -273,9 +356,11 @@ html, body
   
   				.dataSourceArea
 				{
-					height:15%;
+					height:10%;
 					background:url($background0);
-					padding:  0px 0px 15px 0px;
+					padding:  0px 0px 0px 0px;
+					margin-bottom: 5px;
+					box-shadow : 0px 3px 2px #888888;
 					.btn-group
 					{
 						padding: 5px;
@@ -291,8 +376,9 @@ html, body
 					overflow-y:auto;
 					overflow-x:hidden;
 					text-indent:10px;
-					padding: 0px;
-					height:20%;
+					margin-bottom: 5px;
+					box-shadow : 0px 3px 2px #888888;
+					height:25%;
 					.filler
 					{
 						flex-grow : 1;
@@ -305,7 +391,7 @@ html, body
 					{
 						display:block;
 						color:white;
-						background:#222;
+						background:$guttercolor;
 					}
 				}
 				.descriptionArea
@@ -318,6 +404,9 @@ html, body
 					overflow-x:hidden;
 					padding: 15px;
 					padding-right: 0px;
+					margin-bottom: 5px;
+					box-shadow : 0px 3px 2px #888888;
+
 					.filler
 					{
 						flex-grow: 1 ;
