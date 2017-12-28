@@ -9,7 +9,6 @@
 		var vm = this;
 		vm.showModel = showModel;
 		vm.deleteProperty = deleteProperty;
-		vm.deleteItem = deleteItem;
 		vm.changeAttr = changeAttr;
 		vm.addProperty = addProperty;
 		vm.addNewClass = addNewClass;
@@ -17,6 +16,7 @@
 		vm.postTag = postTag;
 		vm.checkForXml = checkForXml;
 		vm.postJsonBulk = postJsonBulk;
+		vm.confirmDelete = confirmDelete;
 		
 		console.log("moderatorcontroller attached...");
 		StaticDataFactory.stopTimer();
@@ -175,7 +175,48 @@
 					}}
 			});
 		}
-		// console.log(vm.datamModel);
+
+		function confirmDelete()
+		{
+
+			var modalInstance = $uibModal.open(
+			{
+				templateUrl : "./views/modal_delete_item.html",
+				animation : true,
+				controller : "Modal2Controller as vm",
+				size : "sm",
+				backdrop : "static",
+				resolve : 
+				{
+					item : function ()
+					{
+						return vm.selectedItem;
+					}
+				}
+			}).result.then(function(result)
+			{
+				console.log("result:", result);
+				if(result === 'delete')
+				{
+					ModeratorFactory.deleteItem(vm.selectedItem.classname).then(function succcess(res)
+					{
+						console.log("response from service: ", res);
+						var parking = vm.selectedItem.classname;
+						delete vm.dataModel[parking];
+						vm.selectedItem = vm.dataModel[Object.keys(vm.dataModel)[0]];
+					},
+					function fail(err)
+					{
+						console.log(err);
+					});
+				}
+			});
+
+			
+
+
+		}
+
 	})
 	
 	.controller('ModalController', function($uibModalInstance, items)
@@ -188,7 +229,25 @@
 		{
 			$uibModalInstance.close();
 
-		};
+		}
+	})
+
+	.controller('Modal2Controller', function($uibModalInstance, item)
+	{
+		var vm = this;
+		vm.closeModal = closeModal;
+		vm.deleteItem = deleteItem;
+		vm.item = item;
+
+		function closeModal()
+		{
+			$uibModalInstance.close("cancel");
+		}
+
+		function deleteItem()
+		{
+			$uibModalInstance.close("delete");
+		}
 	})
 	
 	.controller('CourseInfoController', function(StaticDataFactory, ModeratorFactory)

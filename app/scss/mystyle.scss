@@ -15,9 +15,9 @@ $gutterlinenumber:#aaa;
 {
     position: relative;
     display: inline-block;
+    cursor: pointer;
 }
 
-/* myTooltip text */
 .mytooltip .mytooltiptext {
     visibility: hidden;
     width: 200px;
@@ -29,15 +29,13 @@ $gutterlinenumber:#aaa;
     font-size:10px;
     top:-30px;
     left:-30px;
- 
-    /* Position the mytooltip text - see examples below! */
     position: absolute;
     z-index: 100;
 }
 
-/* Show the mytooltip text when you mouse over the mytooltip container */
-.mytooltip:hover .mytooltiptext {
-    visibility: visible;
+.mytooltip:hover .mytooltiptext 
+{
+    visibility: visible;cursor:none;
 }
 
 
@@ -195,10 +193,7 @@ h6
 			align-items: center;
 			width:100%;
 			
-			div
-			{
-				flex-grow:1;
-			}
+			
 			span
 			{
 				cursor:pointer;
@@ -211,10 +206,11 @@ h6
   				color:$guttercolor;
   				opacity:0.5;
   				padding:3%;
+  				transition: background 0.3s ease;
 			}
 			.mybutton:hover
 			{
-				background:#CCCCCC!important;
+				background:#CCCCCC;
 			}
 			.mybutton:active
 			{
@@ -379,10 +375,7 @@ html, body
 					margin-bottom: 5px;
 					box-shadow : 0px 3px 2px #888888;
 					height:25%;
-					.filler
-					{
-						flex-grow : 1;
-					}
+					
 					.classItem
 					{
 						color:black;
@@ -407,10 +400,7 @@ html, body
 					margin-bottom: 5px;
 					box-shadow : 0px 3px 2px #888888;
 
-					.filler
-					{
-						flex-grow: 1 ;
-					}
+					
 				}
 				.propertyArea
 				{
@@ -421,6 +411,13 @@ html, body
 					padding: 15px;
 				}
 }
+
+.filler
+{
+	flex-grow:1;
+}
+
+
 
 /* manages the slots for local storage on the config page */
 .slotContainer
@@ -463,6 +460,23 @@ html, body
 .fa-rotate-45 
 {
     transform: rotate(45deg);
+}
+
+.modal-footer
+{
+	border-top: 0px;
+}
+.modal-body
+{
+	h4
+	{
+		text-align:center;
+	}
+	p
+	{
+		font-style : italic;
+		color : grey;
+	}
 }
 
 

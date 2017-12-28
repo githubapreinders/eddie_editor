@@ -1,8 +1,8 @@
 .mytooltip {
   position: relative;
-  display: inline-block; }
+  display: inline-block;
+  cursor: pointer; }
 
-/* myTooltip text */
 .mytooltip .mytooltiptext {
   visibility: hidden;
   width: 200px;
@@ -14,13 +14,12 @@
   font-size: 10px;
   top: -30px;
   left: -30px;
-  /* Position the mytooltip text - see examples below! */
   position: absolute;
   z-index: 100; }
 
-/* Show the mytooltip text when you mouse over the mytooltip container */
 .mytooltip:hover .mytooltiptext {
-  visibility: visible; }
+  visibility: visible;
+  cursor: none; }
 
 .CodeMirror {
   font-size: 14px;
@@ -151,20 +150,17 @@ h6 {
         -ms-flex-align: center;
             align-items: center;
     width: 100%; }
-    #mynavbar .navBarRight div {
-      -webkit-box-flex: 1;
-      -webkit-flex-grow: 1;
-          -ms-flex-positive: 1;
-              flex-grow: 1; }
     #mynavbar .navBarRight span {
       cursor: pointer; }
     #mynavbar .navBarRight .mybutton {
       display: block;
       color: #222;
       opacity: 0.5;
-      padding: 3%; }
+      padding: 3%;
+      -webkit-transition: background 0.3s ease;
+      transition: background 0.3s ease; }
     #mynavbar .navBarRight .mybutton:hover {
-      background: #CCCCCC !important; }
+      background: #CCCCCC; }
     #mynavbar .navBarRight .mybutton:active {
       color: green;
       background: #FFFFFF !important; }
@@ -288,11 +284,6 @@ html, body {
     margin-bottom: 5px;
     box-shadow: 0px 3px 2px #888888;
     height: 25%; }
-    #navigatorcontainer .classArea .filler {
-      -webkit-box-flex: 1;
-      -webkit-flex-grow: 1;
-          -ms-flex-positive: 1;
-              flex-grow: 1; }
     #navigatorcontainer .classArea .classItem {
       color: black; }
     #navigatorcontainer .classArea .selectedItem {
@@ -317,11 +308,6 @@ html, body {
     padding-right: 0px;
     margin-bottom: 5px;
     box-shadow: 0px 3px 2px #888888; }
-    #navigatorcontainer .descriptionArea .filler {
-      -webkit-box-flex: 1;
-      -webkit-flex-grow: 1;
-          -ms-flex-positive: 1;
-              flex-grow: 1; }
   #navigatorcontainer .propertyArea {
     -webkit-box-flex: 1;
     -webkit-flex-grow: 1;
@@ -331,6 +317,12 @@ html, body {
     background: url("../media/concrete_seamless.png");
     overflow: scroll;
     padding: 15px; }
+
+.filler {
+  -webkit-box-flex: 1;
+  -webkit-flex-grow: 1;
+      -ms-flex-positive: 1;
+          flex-grow: 1; }
 
 /* manages the slots for local storage on the config page */
 .slotContainer {
@@ -365,3 +357,13 @@ html, body {
 .fa-rotate-45 {
   -webkit-transform: rotate(45deg);
           transform: rotate(45deg); }
+
+.modal-footer {
+  border-top: 0px; }
+
+.modal-body h4 {
+  text-align: center; }
+
+.modal-body p {
+  font-style: italic;
+  color: grey; }
