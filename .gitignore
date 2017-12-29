@@ -3,3 +3,5 @@ node_modules/
 app/bower_components
 app/js
 media/scratch.txt
+*.xml
+voorstel_tutorial.txt
