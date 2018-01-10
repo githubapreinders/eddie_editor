@@ -85,12 +85,15 @@
 		function postTag()
 		{
 			console.log(vm.selectedItem);
+			toggleSpinner();
 			ModeratorFactory.postTag(vm.selectedItem).then(function success(res)
 			{
+				toggleSpinner();
 				console.log("success",res);
 			}, 
 			function fail(err)
 			{
+				toggleSpinner();
 				console.log("fail",err);
 			});
 		}
@@ -152,6 +155,11 @@
 			}
 		}
 
+		function toggleSpinner()
+		{
+			vm.showSpinner = !vm.showSpinner;
+		}
+
 		function deleteProperty(index)
 		{
 			console.log("deleting property", index, vm.selectedItem.properties[index][0]);
@@ -198,8 +206,10 @@
 				console.log("result:", result);
 				if(result === 'delete')
 				{
+					toggleSpinner();
 					ModeratorFactory.deleteItem(vm.selectedItem.classname).then(function succcess(res)
 					{
+						toggleSpinner();
 						console.log("response from service: ", res);
 						var parking = vm.selectedItem.classname;
 						delete vm.dataModel[parking];
@@ -207,6 +217,7 @@
 					},
 					function fail(err)
 					{
+						toggleSpinner();
 						console.log(err);
 					});
 				}

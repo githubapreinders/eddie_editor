@@ -26,6 +26,7 @@
             vm.changeFontSize = changeFontSize;
             vm.validateXml = validateXml;
             vm.sendToIaf = sendToIaf;
+            vm.toggleSpinner = toggleSpinner;
             vm.setCredentials = setCredentials;
             vm.setAvailableLesson = setAvailableLesson;
             vm.toggleReadonly = toggleReadonly;
@@ -54,20 +55,16 @@
             vm.selectedFontSize = 14;
             vm.fontSizes = StaticDataFactory.getFontSizes();
             
-
             vm.currentSlotNumber = 0;
             vm.theslots = [];
             vm.availableLessons = [];
-            
-            
 
             function setAvailableLesson(which)
             {
                 ModeratorFactory.setAvailableLesson(which);
             }
 
-
-            //saves the localstorage slot that is open every 5 seconds 
+            //saves editor content in the localstorage slot that is open every 5 seconds 
             function saveInSlot()
             {
                 vm.timerId = $interval(function()
@@ -78,15 +75,24 @@
                 StaticDataFactory.setTimerId(vm.timerId);
             }
             
+
+            function toggleSpinner()
+            {
+                vm.showSpinner = !vm.showSpinner;
+            }
+
             function sendToIaf()
             {   
+                toggleSpinner();
                 var message = "dummymessage";
                 IafFactory.postConfig(StorageFactory.getGetter(StorageFactory.getCurrentKey())()).then(function succes(response)
                     {
+                        toggleSpinner();
                         console.log("getting response", response);
                     },
                     function failure(response)
                     {
+                        toggleSpinner();
                         console.log("getting failure...", response);
                     });
             }
@@ -115,16 +121,18 @@
 
             function validateXml()
             {
+                toggleSpinner();
                 ValidationFactory.validateXml(vm.currentSlot).then
                 (
                     function success(res)
                     {
                         vm.validationMessage = res;
+                        toggleSpinner();
                         console.log("validating....", vm.validationMessage);
                     }, 
                     function failure(err)
                     {
-                        
+                        toggleSpinner();
                     }
                 );
                 

@@ -1,4 +1,5 @@
-
+<!-- <link href="css/mystyle.css" rel="stylesheet" ng-disabled = "vm.selectedTheme === 'monokai' ">
+<link href="css/mystyle_monokai.css" rel="stylesheet" ng-disabled = "vm.selectedTheme === 'twilight'"> -->
         
         	<div  id="mynavbar">
                 <div class="navBarLeft">
@@ -24,9 +25,13 @@
                         <i class="fa  fa-info fa-stack-1x " ></i>
                     </span>
                     </a>    -->                 
+                    <span ng-show = "vm.showSpinner" style="color:grey;">
+                        <i   class="fa fa-spinner fa-spin fa-2x fa-fw "></i>
+                    </span>
 
+                    <div class="filler "></div>
 
-                    <a style="text-decoration: none;" class=mybutton " ui-sref="app.moderator">
+                    <a style="text-decoration: none;" class="mybutton" ui-sref="app.moderator">
                     <span ng-click="angular.noop()" >
                         <i class="fa  fa-wrench fa-2x" ></i>
                     </span>
