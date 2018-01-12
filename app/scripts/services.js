@@ -134,15 +134,47 @@
             });
         }
 
-        
-
-        
-
-
-        
-
-
     });
+
+     app.factory('ZipService', function (StorageFactory)
+     {
+        var thelist = 
+        [
+  {
+    "id": 1,
+    "title": "dir1",
+    "isDirectory": true,
+    "nodes": [
+      {
+        "id": 2,
+        "title": "file1",
+        "isDirectory": false,
+        "isLocked": false,
+        "nodes": []
+      }
+    ]
+  }
+];
+        return {
+            init : init,
+            getSlots : getSlots
+        };
+
+        function init()
+        {
+            return StorageFactory.getGetter("thejson")();
+        }
+
+        function getSlots()
+        {
+            return StorageFactory.getGetter("myslots")();
+        } 
+
+     });
+
+
+
+
     /*
     facilitates local storage; we can store and retrieve values: storing : StorageFactory.getSetter(key)(value)
     retrieving : StorageFactory.getGetter(key)() ; removing a key : StorageFactory.getSetter(key)()
@@ -150,11 +182,9 @@
     app.factory('StorageFactory',['storage', '$log', function(storage, $log)
     {
       var api = {};
-      var thekeys = ["slot1","slot2","slot3","slot4","slot5","slot6"];
-      var thealiases = ["aliasslot1","aliasslot2","aliasslot3","aliasslot4","aliasslot5","aliasslot6"];
-      var template = ["slot1","slot2","slot3","slot4","slot5","slot6","aliasslot1","aliasslot2","aliasslot3", "aliasslot4","aliasslot5","aliasslot6"];
+      var thekeys;
+      var thealiases = ["file1"];
       var currentKey = "slot1";
-      var mykeys;
       var myaliases;
       
       return {
@@ -164,36 +194,99 @@
         createAPIForKey : createAPIForKey,
         createSetter : createSetter,
         createGetter : createGetter,
-        getKeys : getKeys,
         getAliases : getAliases,
+        switchKey : switchKey,
         setCurrentKey : setCurrentKey,
         getCurrentKey : getCurrentKey,
+        getNewSlotname : getNewSlotname,
         initialise : initialise
       };
 
+      function switchKey()
+      {
+          var helper = thekeys.shift();
+          thekeys.push(helper);
+          currentKey = thekeys[0]
+          return thekeys[0];
+      }
+
+      //remove from keys array
+      function removeKey(itsAlias)
+      {
+        var index;
+        for(var i =0 ; i< thekeys.length; i++)
+        {
+          if(thekeys[i].title === itsAlias)
+          {
+              index = i;
+          }
+        }
+        thekeys.splice(index, 1);
+
+        if(currentKey.title === itsAlias)//check if the file we're working on is deleted
+        {
+          currentKey = thekeys[0];
+        }
+      }
+
+      function getNewSlotname(createdAlias, theid)
+      {
+        console.log("id ", theid);
+        var newslotname = "slot" + Math.ceil(Math.random()*1000);
+        var theobject = { "title" : createdAlias, "isLocked" : false };
+        thekeys.push(theobject);
+        getSetter(newslotname)("enter a value");
+        getSetter(createdAlias)(newslotname);
+        var helper = getGetter("myslots")();
+        helper[theid] = theobject;
+        getSetter("myslots")(helper);
+        return newslotname;
+      }
 
       function initialise()
       {
-        //iterating possible keys which are in the template in the localstorage
-        template.forEach(function(templateitem)
+        
+        if(storage.getKeys().length === 0)
         {
-          //if the key is not in the template
-          if(!(storage.getKeys().includes(templateitem)))
+          getSetter("slot1")(" start here...");
+          getSetter("file1")("slot1");
+          var thejson = [
+                          {
+                            "id": 1,
+                            "title": "dir1",
+                            "isDirectory": true,
+                            "nodes": [
+                              {
+                                "id": 2,
+                                "title": "file1",
+                                "isDirectory": false,
+                                "isLocked": false,
+                                "nodes": []
+                              }
+                            ]
+                          }
+                        ];
+          var myslots = { 2 : {"title":"file1",isLocked:false} };              
+          getSetter("thejson")(thejson);//setting file structure in localstorage; w
+          getSetter("myslots")(myslots);//setting the open files configuration
+          thekeys = createKeys(["file1"]);
+        }
+        else
+        {
+          var helper = storage.getKeys();
+          if(helper.indexOf("thejson") > -1)
           {
-            
-            if(templateitem.substring(0,5) === 'alias')
-            {
-              //make an entry that binds a key to its alias.
-              getSetter(templateitem)(templateitem.substring(5,10));
-            }
-            else
-            {
-              //make an entry that has just itself as a value.
-              getSetter(templateitem)(templateitem.substring(0,5)); 
-            }
-          }
-        });
+              helper.splice(helper.indexOf("thejson"),1);
+          }  
+          if(helper.indexOf("myslots") > -1)
+          {
+              helper.splice(helper.indexOf("myslots"),1);
+          } 
+          thekeys = createKeys(helper); 
+        }
         currentKey = thekeys[0];
+        console.log("thekeys: ", thekeys);
+        console.log("currentKey: ", currentKey);
       }
 
 
@@ -210,27 +303,28 @@
       }
 
 
-
-       function setCurrentKey(key)
+      //current key is an object { title:"", isLocked: bool }
+      function setCurrentKey(key)
       {
+       console.log("set currentkey::", key); 
         currentKey = key;
       }
 
       function getCurrentKey()
       {
+        //console.log("currentkey::", currentKey);
         return currentKey;
       }      
 
 
-      function getKeys()
+      function createKeys(helper)
       {
-        var thekeys = storage.getKeys();
         var result = [];
-        thekeys.forEach(function(val)
+        helper.forEach(function(val)
         {
-          if(val.substring(0,4) === 'slot')
+          if(val.substring(0,4) !== 'slot')
           {
-            result.push(val);
+            result.push({"title" : val, "isLocked" : false});
           }
         });
         return result;

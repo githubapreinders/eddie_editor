@@ -26,6 +26,7 @@
             vm.changeFontSize = changeFontSize;
             vm.validateXml = validateXml;
             vm.sendToIaf = sendToIaf;
+            vm.toggleSpinner = toggleSpinner;
             vm.setCredentials = setCredentials;
             vm.setAvailableLesson = setAvailableLesson;
             vm.toggleReadonly = toggleReadonly;
@@ -47,6 +48,7 @@
             vm.timerId = null;
             vm.showValidationMessage = false;
             vm.validationMessage = null;
+            vm.currentKey = StorageFactory.getCurrentKey();
 
             //Editor Styling
             vm.themes = StaticDataFactory.getThemes();
@@ -54,39 +56,53 @@
             vm.selectedFontSize = 14;
             vm.fontSizes = StaticDataFactory.getFontSizes();
             
-
-            vm.currentSlotNumber = 0;
-            vm.theslots = [];
             vm.availableLessons = [];
-            
-            
+
+
+            $scope.$on("Keychange", function()
+            {
+                vm.currentKey = StorageFactory.getCurrentKey();
+                console.log("keychange", vm.currentKey.title);
+                retrieveData(vm.currentKey);
+                toggleReadonly(vm.currentKey);
+            });
+
 
             function setAvailableLesson(which)
             {
                 ModeratorFactory.setAvailableLesson(which);
             }
 
-
-            //saves the localstorage slot that is open every 5 seconds 
+            //saves editor content in the localstorage slot that is open every 5 seconds 
             function saveInSlot()
             {
                 vm.timerId = $interval(function()
                 {
-                    console.log("saving ", StorageFactory.getCurrentKey());
-                    StorageFactory.getSetter(StorageFactory.getCurrentKey())(thedocument.getValue());
+                    console.log("saving ", StorageFactory.getCurrentKey().title);
+                    var thekey = StorageFactory.getGetter(StorageFactory.getCurrentKey().title)()
+                    StorageFactory.getSetter(thekey)(thedocument.getValue());
                 }, 5000);
                 StaticDataFactory.setTimerId(vm.timerId);
             }
             
+
+            function toggleSpinner()
+            {
+                vm.showSpinner = !vm.showSpinner;
+            }
+
             function sendToIaf()
             {   
+                toggleSpinner();
                 var message = "dummymessage";
                 IafFactory.postConfig(StorageFactory.getGetter(StorageFactory.getCurrentKey())()).then(function succes(response)
                     {
+                        toggleSpinner();
                         console.log("getting response", response);
                     },
                     function failure(response)
                     {
+                        toggleSpinner();
                         console.log("getting failure...", response);
                     });
             }
@@ -99,7 +115,7 @@
 
             function postSnippet()
             {
-                StaticDataFactory.postSnippet(vm.currentSlot).then(function (res)
+                StaticDataFactory.postSnippet(vm.currentKey.title).then(function (res)
                 {
                     console.log("response", res);
                 },
@@ -115,16 +131,18 @@
 
             function validateXml()
             {
-                ValidationFactory.validateXml(vm.currentSlot).then
+                toggleSpinner();
+                ValidationFactory.validateXml(vm.currentKey.title).then
                 (
                     function success(res)
                     {
                         vm.validationMessage = res;
+                        toggleSpinner();
                         console.log("validating....", vm.validationMessage);
                     }, 
                     function failure(err)
                     {
-                        
+                        toggleSpinner();
                     }
                 );
                 
@@ -145,9 +163,6 @@
                 {
                     console.log("returned datamodel : \n", response.data);
                     vm.navigatorModel = response.data;
-                    
-
-
                     Object.keys(vm.navigatorModel).forEach(function (item, index)
                     {
                        
@@ -180,12 +195,11 @@
                 });
             }
 
-            function toggleReadonly(slot)
+            //receiving object
+            function toggleReadonly(akey)
             {
-                var id = parseInt(slot.substring(4,5))-1;
-                console.log("toggling lock", slot, id);
-                vm.theslots[id].locked = !vm.theslots[id].locked;
-                setReadonly(vm.theslots[id].locked);
+                console.log("toggling lock", akey.title, akey.isLocked);
+                setReadonly(akey.isLocked);
             }
 
             function setReadonly(val)
@@ -193,22 +207,15 @@
                 editor.setOption('readOnly', val);
             }
 
-            function unlock()
+            function unlock(akey)
             {
-                vm.theslots[vm.currentSlotNumber-1].locked = false;
                 setReadonly(false);
             }
-              
-
-
 
             function changeTheme()
             {
                 editor.setOption('theme', vm.selectedTheme);
             }
-
-
-
                 
             //responds to change of the slotname : internally the slotnames are slot1, slot2...etc,
             //externally a user can choose any alias he wants.
@@ -218,75 +225,40 @@
                 StorageFactory.getSetter(slotn)(newname);
             }
 
-            console.log("retrieved keys",StorageFactory.getKeys());
-
+            //console.log("retrieved keys",StorageFactory.getKeys());
             
-            function toggleSlot(slot)
+            function toggleSlot()
             {
                 // console.log("slot: ", typeof (slot) , vm.currentSlotNumber);
                 //opening a slot from the key item in the navigator
-                console.log("length:",vm.theslots.length);
-                if(typeof slot === 'number')
-                {
-                    var slotnumber = Number(slot) + 1;
-                    if (slotnumber === vm.theslots.length + 1)
-                    {
-                        slotnumber = 1 ;
-                    }
-                    vm.currentSlot = "slot" + slotnumber.toString();
-                    vm.currentSlotNumber = slotnumber;
-                    console.log("see:",vm.currentSlot, vm.currentSlotNumber);
-                }   
-
-                //a keypress on an open folder icon, in other words, closing a folder, resetting to first slot.
-                else if(vm.currentSlot === slot)
-                {
-                    vm.currentSlot = vm.theslots[0].id;
-                    vm.currentSlotNumber = 1;
-                }
-                //opening a slot,pushing on a closed folder icon.
-                else
-                {
-                    vm.currentSlot = slot;
-                    vm.currentSlotNumber = parseInt(slot.substring(4,5));
-                }
-                StorageFactory.setCurrentKey(vm.currentSlot);
-                retrieveData(vm.currentSlot);
-                setReadonly(vm.theslots[vm.currentSlotNumber-1].locked);
+                console.log("getting next document:");
+                
+                StorageFactory.switchKey();
+                retrieveData(vm.currentSlot.title);
+                //setReadonly(vm.theslots[vm.currentSlotNumber-1].locked);
                 // console.log("Current slotprops:",vm.theslots[vm.currentSlotNumber-1]);
             }
 
             function storeData()
             {
-                var mykey = StorageFactory.getCurrentKey();
+                var myalias = StorageFactory.getCurrentKey().title;
                 var myvalue = thedocument.getValue();
-                console.log("storing data", mykey, myvalue);
+                var mykey = StorageFactory.getGetter(myalias)();
+                console.log("storing data", myalias, mykey, myvalue);
                 StorageFactory.getSetter(mykey)(myvalue);
             }
 
-            function retrieveData(key)
+            // key is an alias
+            function retrieveData(alias)
             {
-                console.log("retrieving data");
                 
-                if(key === undefined)
+                if(alias === undefined)
                 {
-                    var ks = StorageFactory.getCurrentKey();
-                    thedocument.setValue(StorageFactory.getGetter(ks)());
-                    var slots = StorageFactory.getKeys();
-                    var aliases = StorageFactory.getAliases();
-                    for (var i =0 ; i < slots.length; i++)
-                    {
-                        vm.theslots[i] = {id:slots[i], locked:false, alias:aliases[i]};
-                    }
-                    vm.currentSlot = vm.theslots[0].id;
-                    vm.currentSlotNumber = 1;
-                    console.log("slots after initialisation:",vm.theslots);
+                    alias = StorageFactory.getCurrentKey();
                 }
-                else
-                {
-                    // console.log("getting value for slot ", key);
-                    thedocument.setValue(StorageFactory.getGetter(key)());
-                }
+                var thekey = StorageFactory.getGetter(alias.title)();
+                console.log("retrieving data and setting the document value...", alias, thekey);
+                thedocument.setValue(StorageFactory.getGetter(thekey)());
             }
 
             //toggles the configuration menu in the left area;
