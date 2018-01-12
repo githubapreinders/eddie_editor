@@ -3,6 +3,70 @@
 	'use strict';
 
 angular.module('confab')
+
+.directive('nameGiver', function(StorageFactory)
+        {
+            return{
+                restrict:"A",
+                link : function(scope, el , attrs)
+                {
+                    el.bind('blur' , function(event)
+                    {
+                        var digit = event.target.id.match(/\d+/g)[0];
+                        console.log("digit", digit, event.target.id);
+                        var element = document.getElementById('treeitem' + digit);
+                        var text = element.innerHTML;
+                        var thelist = scope.vm2.list;
+                        console.log("text",text, thelist, digit);
+                        traverseArray(thelist);
+
+                        function traverseArray(sublist)
+                        {
+                            for(var i = 0 ; i<sublist.length; i++)
+                            {
+                                console.log(sublist[i].title,sublist[i].id);
+                                //compares int with a string, so NOT === in the comparator
+                                if(sublist[i].id == digit) 
+                                {
+                                    sublist[i].title = text;
+                                    console.log("match", sublist[i], text, scope.vm2.mySlots);
+                                    if(!(sublist[i].isDirectory))
+                                    {
+                                        //changing a filename changes the alias of a storageslot;
+                                        //"oldname:slot1" has to become "newname:slot1"
+                                        var theslot = StorageFactory.getGetter(scope.vm2.mySlots[digit].title)();
+                                        StorageFactory.getSetter(scope.vm2.mySlots[digit].title)();
+                                        StorageFactory.getSetter(text)(theslot);
+                                        scope.vm2.mySlots[digit].title = text;
+                                    }
+                                    element.setAttribute('contentEditable', false);
+                                    scope.$apply();
+                                    StorageFactory.getSetter("thejson")(scope.vm2.list);//saving changed json
+                                    break;
+                                }
+                                if(sublist[i].nodes.length > 0)
+                                {
+                                    traverseArray(sublist[i].nodes);
+                                }
+                            }
+                        }
+
+                    });
+                    el.bind(['keydown'],function(event)
+                    {
+                        var code = event.which || event.keyCode || eventt.charCode ;
+                        console.log("code", code);
+                        if (code === 13)// enter key
+                        {
+                            event.preventDefault();
+                            var element = document.getElementById('treeitem'+event.target.id.match(/\d+/g));
+                            element.blur();
+                        } 
+                    });
+                }
+            };
+        })
+
 .directive('propertyListener', function(attributeObject)
 {
 	
@@ -74,6 +138,7 @@ angular.module('confab')
       
       element.bind("blur keyup change", function(event) 
       {
+        console.log("changing......");
         var el = event.target.id;
         if(el !== 'newproperty' && el !== 'newclassname' && el !== 'newdescription')
         {

@@ -180,7 +180,7 @@
                     //initialising the cache and loading it in the editor;
                     var avalue = StorageFactory.initialise();
                     retrieveData();
-                    saveInSlot();
+                    //saveInSlot();
                     console.log("data:", vm.navigatorModel);
                 },function error(response)
                 {

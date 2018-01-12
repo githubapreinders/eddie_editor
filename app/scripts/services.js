@@ -134,15 +134,47 @@
             });
         }
 
-        
-
-        
-
-
-        
-
-
     });
+
+     app.factory('ZipService', function (StorageFactory)
+     {
+        var thelist = 
+        [
+  {
+    "id": 1,
+    "title": "dir1",
+    "isDirectory": true,
+    "nodes": [
+      {
+        "id": 2,
+        "title": "file1",
+        "isDirectory": false,
+        "isLocked": false,
+        "nodes": []
+      }
+    ]
+  }
+];
+        return {
+            init : init,
+            getSlots : getSlots
+        };
+
+        function init()
+        {
+            return StorageFactory.getGetter("thejson")();
+        }
+
+        function getSlots()
+        {
+            return StorageFactory.getGetter("myslots")();
+        } 
+
+     });
+
+
+
+
     /*
     facilitates local storage; we can store and retrieve values: storing : StorageFactory.getSetter(key)(value)
     retrieving : StorageFactory.getGetter(key)() ; removing a key : StorageFactory.getSetter(key)()
@@ -150,11 +182,10 @@
     app.factory('StorageFactory',['storage', '$log', function(storage, $log)
     {
       var api = {};
-      var thekeys = ["slot1","slot2","slot3","slot4","slot5","slot6"];
-      var thealiases = ["aliasslot1","aliasslot2","aliasslot3","aliasslot4","aliasslot5","aliasslot6"];
-      var template = ["slot1","slot2","slot3","slot4","slot5","slot6","aliasslot1","aliasslot2","aliasslot3", "aliasslot4","aliasslot5","aliasslot6"];
+      var thekeys = ["slot1"];
+      var thealiases = ["file1"];
+      var template = ["slot1","aliasslot1"];
       var currentKey = "slot1";
-      var mykeys;
       var myaliases;
       
       return {
@@ -168,31 +199,61 @@
         getAliases : getAliases,
         setCurrentKey : setCurrentKey,
         getCurrentKey : getCurrentKey,
+        getNewSlotname : getNewSlotname,
         initialise : initialise
       };
 
 
+      function getNewSlotname(createdAlias)
+      {
+        var newslotname = "slot" + Math.ceil(Math.random()*1000);
+        thekeys.push(newslotname);
+        getSetter(newslotname)("enter a value");
+        getSetter(createdAlias)(newslotname);
+        return newslotname;
+      }
+
       function initialise()
       {
-        //iterating possible keys which are in the template in the localstorage
-        template.forEach(function(templateitem)
+        
+        if(storage.getKeys().length === 0)
         {
-          //if the key is not in the template
-          if(!(storage.getKeys().includes(templateitem)))
+          getSetter("slot1")(" start here...");
+          getSetter("file1")("slot1");
+          var thejson = [
+                          {
+                            "id": 1,
+                            "title": "dir1",
+                            "isDirectory": true,
+                            "nodes": [
+                              {
+                                "id": 2,
+                                "title": "file1",
+                                "isDirectory": false,
+                                "isLocked": false,
+                                "nodes": []
+                              }
+                            ]
+                          }
+                        ];
+          var myslots = { 2 : {"title":"file1",isLocked:false} };              
+          getSetter("thejson")(thejson);
+          getSetter("myslots")(myslots);
+
+        }
+        else
+        {
+          thekeys = storage.getKeys();
+          if(thekeys.indexOf("thejson") > -1)
           {
-            
-            if(templateitem.substring(0,5) === 'alias')
-            {
-              //make an entry that binds a key to its alias.
-              getSetter(templateitem)(templateitem.substring(5,10));
-            }
-            else
-            {
-              //make an entry that has just itself as a value.
-              getSetter(templateitem)(templateitem.substring(0,5)); 
-            }
-          }
-        });
+              thekeys.splice(thekeys.indexOf("thejson"),1);
+          }  
+          if(thekeys.indexOf("myslots") > -1)
+          {
+              thekeys.splice(thekeys.indexOf("myslots"),1);
+          }  
+        }
+
         currentKey = thekeys[0];
       }
 
