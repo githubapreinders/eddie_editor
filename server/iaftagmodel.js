@@ -12,7 +12,7 @@ var iaftagSchema = new Schema({
     xml : {type:Schema.Types.Mixed, default:{}},
     free : {type:String, default:"true"},
     url : {type:String, default:""}
-    });
+    },{minimize : false});
 
 var Iaftag = mongoose.model('iaftag',iaftagSchema);
 module.exports = Iaftag;

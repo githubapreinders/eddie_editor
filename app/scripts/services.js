@@ -13,6 +13,7 @@
         var themes = ["twilight", "monokai", "neat"];
         var fontSizes = [12,13,14,15,16,17,18,19,20];
         var thejson = null;
+        var selectedItem = null;
 
         var formattingSettings = {
                 "indent_size": 4,
@@ -43,8 +44,21 @@
             getThemes: getThemes,
             getFontSizes: getFontSizes,
             setTimerId : setTimerId,
-            stopTimer : stopTimer
+            stopTimer : stopTimer,
+            setSelectedItem : setSelectedItem,
+            getSelectedItem : getSelectedItem
+
         };
+
+        function setSelectedItem(item)
+        {
+          selectedItem = item;
+        }
+
+         function getSelectedItem()
+        {
+          return selectedItem;
+        }
 
         function setTimerId(timerid)
         {
@@ -136,9 +150,9 @@
     app.factory('StorageFactory',['storage', '$log', function(storage, $log)
     {
       var api = {};
-      var thekeys = ["slot1","slot2","slot3","slot4"];
-      var thealiases = ["aliasslot1","aliasslot2","aliasslot3"];
-      var template = ["slot1","slot2","slot3","slot4","aliasslot1","aliasslot2","aliasslot3"];
+      var thekeys = ["slot1","slot2","slot3","slot4","slot5","slot6"];
+      var thealiases = ["aliasslot1","aliasslot2","aliasslot3","aliasslot4","aliasslot5","aliasslot6"];
+      var template = ["slot1","slot2","slot3","slot4","slot5","slot6","aliasslot1","aliasslot2","aliasslot3", "aliasslot4","aliasslot5","aliasslot6"];
       var currentKey = "slot1";
       var mykeys;
       var myaliases;
@@ -160,16 +174,21 @@
 
       function initialise()
       {
+        //iterating possible keys which are in the template in the localstorage
         template.forEach(function(templateitem)
         {
+          //if the key is not in the template
           if(!(storage.getKeys().includes(templateitem)))
           {
+            
             if(templateitem.substring(0,5) === 'alias')
             {
+              //make an entry that binds a key to its alias.
               getSetter(templateitem)(templateitem.substring(5,10));
             }
             else
             {
+              //make an entry that has just itself as a value.
               getSetter(templateitem)(templateitem.substring(0,5)); 
             }
           }

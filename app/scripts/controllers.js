@@ -10,7 +10,6 @@
         
             //Functions
             vm.submitForm = submitForm;
-            //vm.codemirrorLoaded = codemirrorLoaded;
             vm.codemirrorLoaded = getEditor;
             vm.setSelectedClass = setSelectedClass;
             vm.toggle_datasource = toggle_datasource;
@@ -18,7 +17,6 @@
             vm.clearEditor = clearEditor;
             vm.showNav = showNav;
             vm.showConf = showConf;
-            // vm.loadXml = loadXml;
             vm.storeData = storeData;
             vm.retrieveData = retrieveData;
             vm.toggleSlot = toggleSlot;
@@ -30,7 +28,8 @@
             vm.sendToIaf = sendToIaf;
             vm.setCredentials = setCredentials;
             vm.setAvailableLesson = setAvailableLesson;
-            
+            vm.toggleReadonly = toggleReadonly;
+            vm.unlock = unlock;
 
             //Static values
             vm.message = "Angular Controller is working allright...";
@@ -181,18 +180,38 @@
                 });
             }
 
+            function toggleReadonly(slot)
+            {
+                var id = parseInt(slot.substring(4,5))-1;
+                console.log("toggling lock", slot, id);
+                vm.theslots[id].locked = !vm.theslots[id].locked;
+                setReadonly(vm.theslots[id].locked);
+            }
+
+            function setReadonly(val)
+            {
+                editor.setOption('readOnly', val);
+            }
+
+            function unlock()
+            {
+                vm.theslots[vm.currentSlotNumber-1].locked = false;
+                setReadonly(false);
+            }
               
+
+
 
             function changeTheme()
             {
-
                 editor.setOption('theme', vm.selectedTheme);
             }
 
 
 
                 
-
+            //responds to change of the slotname : internally the slotnames are slot1, slot2...etc,
+            //externally a user can choose any alias he wants.
             function modifyAlias(slotn, newname)
             {
                 console.log("modify ",slotn, newname);
@@ -204,39 +223,37 @@
             
             function toggleSlot(slot)
             {
-                console.log("slot: ", typeof (slot) );
+                // console.log("slot: ", typeof (slot) , vm.currentSlotNumber);
+                //opening a slot from the key item in the navigator
+                console.log("length:",vm.theslots.length);
                 if(typeof slot === 'number')
                 {
-                    console.log("pushed key icon", typeof (slot));
                     var slotnumber = Number(slot) + 1;
-                    if (slotnumber === 5)
+                    if (slotnumber === vm.theslots.length + 1)
                     {
                         slotnumber = 1 ;
                     }
                     vm.currentSlot = "slot" + slotnumber.toString();
-                    console.log("current slot: ", vm.currentSlot);
                     vm.currentSlotNumber = slotnumber;
-                    StorageFactory.setCurrentKey(vm.currentSlot);
-                    retrieveData(vm.currentSlot);
+                    console.log("see:",vm.currentSlot, vm.currentSlotNumber);
                 }   
 
-                //a keypress on an open folder, in other words, closing a folder
+                //a keypress on an open folder icon, in other words, closing a folder, resetting to first slot.
                 else if(vm.currentSlot === slot)
                 {
-                    vm.currentSlot = vm.theslots[0];
-                    vm.currentSlotNumber = parseInt(slot.substring(4,5));
-                    StorageFactory.setCurrentKey(vm.currentSlot);
+                    vm.currentSlot = vm.theslots[0].id;
+                    vm.currentSlotNumber = 1;
                 }
-                //opening a slot
+                //opening a slot,pushing on a closed folder icon.
                 else
                 {
                     vm.currentSlot = slot;
                     vm.currentSlotNumber = parseInt(slot.substring(4,5));
-                    StorageFactory.setCurrentKey(vm.currentSlot);
-                    retrieveData(slot);
                 }
-
-                console.log("Current slotnumber and slot:",vm.currentSlotNumber, vm.currentSlot);
+                StorageFactory.setCurrentKey(vm.currentSlot);
+                retrieveData(vm.currentSlot);
+                setReadonly(vm.theslots[vm.currentSlotNumber-1].locked);
+                // console.log("Current slotprops:",vm.theslots[vm.currentSlotNumber-1]);
             }
 
             function storeData()
@@ -255,11 +272,15 @@
                 {
                     var ks = StorageFactory.getCurrentKey();
                     thedocument.setValue(StorageFactory.getGetter(ks)());
-                    vm.theslots = StorageFactory.getKeys();
-                    vm.thealiases = StorageFactory.getAliases();
-                    vm.currentSlot = vm.theslots[0];
+                    var slots = StorageFactory.getKeys();
+                    var aliases = StorageFactory.getAliases();
+                    for (var i =0 ; i < slots.length; i++)
+                    {
+                        vm.theslots[i] = {id:slots[i], locked:false, alias:aliases[i]};
+                    }
+                    vm.currentSlot = vm.theslots[0].id;
                     vm.currentSlotNumber = 1;
-                    // console.log("slots after initialisation:",vm.thealiases);
+                    console.log("slots after initialisation:",vm.theslots);
                 }
                 else
                 {
@@ -291,6 +312,7 @@
                 var editor = document.getElementById('editorcontainer');
                 var navItem = document.getElementById('navItem');
                 var picture = document.getElementById('picture');
+                var iplogo = document.getElementById('iplogo');
                 
                 if(!picture || !navItem || !editor){return;}
 
@@ -299,7 +321,8 @@
                 {
                   editor.style.width = '75%';
                   editor.style.left = '25%';
-                  navItem.style.left = '90%';
+                  iplogo.style.top = '15px';
+                  navItem.style.left = '89%';
                   picture.classList.add('fa-toggle-left');
                   picture.classList.remove('fa-toggle-right');
                 }
@@ -308,39 +331,28 @@
                   editor.style.width = '100%';
                   editor.style.left = '0%';
                   navItem.style.left = '0%';
+                  iplogo.style.top = '5px';
                   picture.classList.remove('fa-toggle-left');
                   picture.classList.add('fa-toggle-right');
                 }
                 vm.showNavigator = !vm.showNavigator;
               }
 
-            
-            //inserts an xml snippet at the cursor position;
-            // function loadXml()
-            // {
-            //     StaticDataFactory.loadXml(vm.selectedItem.classname).then(function succes(response)
-            //     {
-            //         thedocument.replaceSelection(response.data);
-            //         styleEditorContent();
-            //     });
-            // }
-
-
-            
+           
 
 
             //responds to the selection of an item in the class Area;
             function setSelectedClass(item)
             {
                 vm.selectedItem = item;
+                StaticDataFactory.setSelectedItem(item);
                 vm.selectedProperties = {};
                 
+                //checking a default classname property
                 for(var i=0 ; i<item.properties.length; i++)
                 {
                     if(item.properties[i][0]=='classname' || item.properties[i][0]=='className')
                     {
-                        
-
                         var checkbox = document.getElementById('checkbox' + i);
                         if(checkbox === null)
                         {
@@ -350,30 +362,34 @@
                         break;
                     }
                 }
+
             }
 
 
 
             //responds to the radiobuttons in the dataSource area and switches to pipe, receiver, snippet or general; the first item of 
             //the chosen type is selected.
-            function toggle_datasource(string)
+            function toggle_datasource(thetype)
             {
-                StaticDataFactory.setDataSource(string);
+                StaticDataFactory.setDataSource(thetype);
                 vm.datasource = StaticDataFactory.getDataSource();
                 vm.showPropertyDescription = false;
                 
                 var done = false;
+                var parking = "zzz"
                 Object.keys(vm.navigatorModel).forEach(function(key)
                 {
-                    if (!done && vm.navigatorModel[key].type === string )
+                    if (!done && vm.navigatorModel[key].type === thetype )
                     {
+                        if (key < parking)
+                        {
+                            parking = key;
+                        }
                         //vm.selectedItem = vm.navigatorModel[key];
                         //vm.selectedProperties = {};
-                        setSelectedClass(vm.navigatorModel[key]);
-
-                        done = true;
                     }
                 });
+                setSelectedClass(vm.navigatorModel[parking]);
 
 
                 console.log("vm.datasource", vm.datasource);
@@ -382,6 +398,10 @@
             //empties the editor
             function clearEditor()
             {
+                if(editor.getOption('readOnly') === true)
+                {
+                    return;
+                }
                 thedocument.setValue("<?xml version='1.0' encoding='UTF-8'?>\n");
                 thedocument.setCursor({line:thedocument.lastLine(),ch:0});
                 editor.focus();
@@ -483,7 +503,7 @@ to a string and inserted in the editor;*/
 
             {
 
-                if (vm.selectedItem === null)
+                if (vm.selectedItem === null || editor.getOption('readOnly') === true)
                 {
                     return;
                 }
@@ -519,12 +539,20 @@ to a string and inserted in the editor;*/
             var filtered = [];
             angular.forEach(items, function(item)
             {
-               // console.log("item:", item);
                if (item.type === StaticDataFactory.getDataSource())
                 {
                     filtered.push(item);
                 }
             });
+            //sorting the resulting array of objects on the classname property.
+            filtered.sort(function(a,b)
+                {
+                    var x = a.classname.toLowerCase();
+                    var y = b.classname.toLowerCase();
+                    if (x < y) {return -1;}
+                    if (x > y) {return 1;}
+                    return 0;
+                });
             return filtered;
         };
     })
@@ -540,7 +568,6 @@ to a string and inserted in the editor;*/
             {
                 var newstring = item.replace(/&lt;/g,'<');
                 var newerstring = newstring.replace(/&gt;/g,'>');
-                console.log("filteroutput:", JSON.stringify(newerstring));
                 return newerstring;
             }
         };

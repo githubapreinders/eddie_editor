@@ -1,3 +1,26 @@
+.mytooltip {
+  position: relative;
+  display: inline-block;
+  cursor: pointer; }
+
+.mytooltip .mytooltiptext {
+  visibility: hidden;
+  width: 200px;
+  background-color: black;
+  color: #fff;
+  text-align: center;
+  padding: 5px;
+  border-radius: 6px;
+  font-size: 10px;
+  top: -30px;
+  left: -30px;
+  position: absolute;
+  z-index: 100; }
+
+.mytooltip:hover .mytooltiptext {
+  visibility: visible;
+  cursor: none; }
+
 .CodeMirror {
   font-size: 14px;
   height: 800px; }
@@ -61,7 +84,6 @@ h6 {
   display: -ms-flexbox;
   display: flex;
   background: url("../media/concrete_seamless.png");
-  padding: 5px;
   height: 8%; }
   #mynavbar img {
     width: 46px;
@@ -72,12 +94,26 @@ h6 {
     text-align: center; }
   #mynavbar .navBarLeft {
     position: relative;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+        -ms-flex-align: center;
+            align-items: center;
     width: 39%; }
     #mynavbar .navBarLeft .iplogo {
       position: absolute;
-      width: 46px;
-      height: 46px;
-      margin-top: 4px; }
+      margin-left: 10px;
+      max-width: 50px;
+      max-height: 50px;
+      -webkit-transition: top 0.4s;
+      transition: top 0.4s; }
+    #mynavbar .navBarLeft .iplogo2 {
+      margin-left: 10px;
+      max-width: 50px;
+      max-height: 50px; }
     #mynavbar .navBarLeft .navItem {
       position: absolute;
       cursor: pointer;
@@ -95,27 +131,39 @@ h6 {
       -webkit-transition: left 0.4s;
       transition: left 0.4s; }
       #mynavbar .navBarLeft .navItem span {
-        width: 30px;
+        width: 37px;
         padding: 2px;
         padding-left: 7px;
-        border: 1px solid grey;
         border-radius: 3px;
-        border-bottom: 0px; }
+        border-bottom: 0px;
+        background: #222; }
       #mynavbar .navBarLeft .navItem i {
-        display: inline; }
+        display: inline;
+        color: #aaa; }
   #mynavbar .navBarRight {
     display: -webkit-box;
     display: -webkit-flex;
     display: -ms-flexbox;
     display: flex;
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+        -ms-flex-align: center;
+            align-items: center;
     width: 100%; }
-    #mynavbar .navBarRight div {
-      -webkit-box-flex: 1;
-      -webkit-flex-grow: 1;
-          -ms-flex-positive: 1;
-              flex-grow: 1; }
     #mynavbar .navBarRight span {
       cursor: pointer; }
+    #mynavbar .navBarRight .mybutton {
+      display: block;
+      color: #222;
+      opacity: 0.5;
+      padding: 3%;
+      -webkit-transition: background 0.3s ease;
+      transition: background 0.3s ease; }
+    #mynavbar .navBarRight .mybutton:hover {
+      background: #CCCCCC; }
+    #mynavbar .navBarRight .mybutton:active {
+      color: green;
+      background: #FFFFFF !important; }
 
 html, body {
   width: 100%;
@@ -128,10 +176,18 @@ html, body {
   display: flex;
   cursor: pointer; }
   .configTop span, .navigatorTop span {
-    padding: 2px;
+    padding: 4px;
+    padding-top: 4px;
+    padding-bottom: 4px;
     border: 1px solid grey;
     border-top: 0px;
     border-radius: 0px 0px 0px 3px; }
+  .configTop .minusicon, .navigatorTop .minusicon {
+    padding-right: 5px;
+    border: 0px;
+    border-radius: 3px 0px 0px 3px;
+    background: #222;
+    color: #aaa; }
   .configTop .indescriptionarea, .navigatorTop .indescriptionarea {
     border: 1px solid grey;
     border-right: 0px; }
@@ -143,10 +199,12 @@ html, body {
     border-left: 0px; }
   .configTop .rounded2, .navigatorTop .rounded2 {
     border-radius: 3px 0px 0px 3px;
-    border-top: 1px solid grey;
-    border-left: 1px solid grey;
-    border-bottom: 1px solid grey;
-    border-right: 0px; }
+    border-top: 1px solid #222;
+    border-left: 1px solid #222;
+    border-bottom: 1px solid #222;
+    border-right: 0px;
+    background: #222;
+    color: #aaa; }
   .configTop i, .navigatorTop i {
     display: inline; }
   .configTop div, .navigatorTop div {
@@ -158,8 +216,7 @@ html, body {
 .mainContainer {
   width: 100%;
   height: 92%;
-  position: relative;
-  border-top: 1px solid grey; }
+  position: relative; }
 
 #editorcontainer {
   left: 25%;
@@ -170,6 +227,14 @@ html, body {
   -webkit-transition: width 0.4s, left 0.4s;
   transition: width 0.4s, left 0.4s;
   z-index: 5; }
+  #editorcontainer .lockicon {
+    position: absolute;
+    cursor: pointer;
+    left: 94%;
+    top: 1%;
+    color: grey;
+    opacity: 0.4;
+    z-index: 6; }
 
 #configcontainer {
   position: absolute;
@@ -190,9 +255,11 @@ html, body {
   -webkit-transition: left 0.4s;
   transition: left 0.4s; }
   #navigatorcontainer .dataSourceArea {
-    height: 15%;
+    height: 10%;
     background: url("../media/concrete_seamless.png");
-    padding: 0px 0px 15px 0px; }
+    padding: 0px 0px 0px 0px;
+    margin-bottom: 5px;
+    box-shadow: 0px 3px 2px #888888; }
     #navigatorcontainer .dataSourceArea .btn-group {
       padding: 5px; }
   #navigatorcontainer .classArea {
@@ -214,13 +281,9 @@ html, body {
     overflow-y: auto;
     overflow-x: hidden;
     text-indent: 10px;
-    padding: 0px;
-    height: 20%; }
-    #navigatorcontainer .classArea .filler {
-      -webkit-box-flex: 1;
-      -webkit-flex-grow: 1;
-          -ms-flex-positive: 1;
-              flex-grow: 1; }
+    margin-bottom: 5px;
+    box-shadow: 0px 3px 2px #888888;
+    height: 25%; }
     #navigatorcontainer .classArea .classItem {
       color: black; }
     #navigatorcontainer .classArea .selectedItem {
@@ -242,12 +305,9 @@ html, body {
     overflow-y: auto;
     overflow-x: hidden;
     padding: 15px;
-    padding-right: 0px; }
-    #navigatorcontainer .descriptionArea .filler {
-      -webkit-box-flex: 1;
-      -webkit-flex-grow: 1;
-          -ms-flex-positive: 1;
-              flex-grow: 1; }
+    padding-right: 0px;
+    margin-bottom: 5px;
+    box-shadow: 0px 3px 2px #888888; }
   #navigatorcontainer .propertyArea {
     -webkit-box-flex: 1;
     -webkit-flex-grow: 1;
@@ -257,6 +317,12 @@ html, body {
     background: url("../media/concrete_seamless.png");
     overflow: scroll;
     padding: 15px; }
+
+.filler {
+  -webkit-box-flex: 1;
+  -webkit-flex-grow: 1;
+      -ms-flex-positive: 1;
+          flex-grow: 1; }
 
 /* manages the slots for local storage on the config page */
 .slotContainer {
@@ -291,3 +357,13 @@ html, body {
 .fa-rotate-45 {
   -webkit-transform: rotate(45deg);
           transform: rotate(45deg); }
+
+.modal-footer {
+  border-top: 0px; }
+
+.modal-body h4 {
+  text-align: center; }
+
+.modal-body p {
+  font-style: italic;
+  color: grey; }

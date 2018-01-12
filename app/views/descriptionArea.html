@@ -9,12 +9,12 @@
 </div>
 
 <div ng-show = "!vm.showPropertyDescription && !vm.showValidationMessage"> 
-<h4>{{vm.selectedItem.classname}}</h4>
-<p>{{vm.selectedItem.description | cleanupFilter}}
+	<h4>{{vm.selectedItem.classname}}</h4>
+	<p>{{vm.selectedItem.description | cleanupFilter}}
+	</div>
+	<div ng-show = "vm.showPropertyDescription && !vm.showValidationMessage">
+		<h4 id="propertyheader">dummyheader</h4>
+		<p id="propertytext">dummytext</p>
 </div>
-<div ng-show = "vm.showPropertyDescription && !vm.showValidationMessage">
-	<h4 id="propertyheader">dummyheader</h4>
-	<p id="propertytext">dummytext</p>
-</div>
-<div class="filler"></div>
-<div class="divider"></div>
+
+

@@ -112,7 +112,15 @@
 
 		function deleteItem(classname)
 		{
-			return $http({method:"GET", url: API_URL + '/deleteItem?resource=' + classname  })
+			return $http({method:"GET", url: API_URL + '/deleteItem?resource=' + classname  }).then(
+				function success(res)
+				{
+					return res;
+				}, 
+				function failure(err)
+				{
+					return err;
+				});
 		}
 
 	});
