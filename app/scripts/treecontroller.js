@@ -8,31 +8,74 @@
 
             console.log('TreeController...');
             var vm2 = this;
-            vm2.submitForm = submitForm;
             vm2.remove = remove;
             vm2.toggle = toggle;
             vm2.setSelectedSlot = setSelectedSlot;
             vm2.changeName = changeName;
             vm2.newSubitem = newSubitem;
             vm2.list = StorageFactory.getGetter("thejson")();
-            vm2.mySlots = StorageFactory.getGetter("myslots")();
-            vm2.selectedSlot = "file1";
             vm2.modifyAlias = modifyAlias;
-            var deleted;
 
-            console.log("list", vm2.list);
-
-            console.log("myslots:",vm2.mySlots);
             //is called in home.html
             vm2.treeOptions =
             {
                    
             };
+            init();
 
+            function init()
+            {
+                vm2.mySlots = StorageFactory.getGetter("myslots")();
+                var keys = Object.keys(vm2.mySlots);
+                setSelectedSlot({id:keys[0]}) ;
+
+                //$scope.$apply();
+            }
+
+            getZip();
+
+
+            function getZip()
+            {
+                ZipService.getZip();
+            }
+
+            $scope.$on('KeySwitch', function(event, key)
+            {
+                var thekeys = Object.keys(vm2.mySlots);
+                console.log("treecontro", key, thekeys);
+                for(var i=0 ;i < thekeys.length; i++)
+                {
+                    console.log(i , " : ", vm2.mySlots[thekeys[i]]);
+
+                    if(vm2.mySlots[thekeys[i]].title == key.title)
+                    {
+                        console.log("bingo",thekeys[i]);
+
+                        var helper = 
+                        {
+                            id:thekeys[i],
+                            title:thekeys[i].title,
+                            isLocked:thekeys,
+                            nodes:[],
+                            isDirectory:false
+                        };
+
+                        setSelectedSlot(helper);
+                    }
+                }
+
+            })
+
+            $scope.$watch('vm2.selectedSlot', function()
+            {
+                console.log("selected slot changed: ", vm2.selectedSlot);
+            })
 
             //Any change in the file tree is saved in localstorage to reload later
             $scope.$watch('vm2.list', function()
             {
+                console.log("updating local storage;");
                 StorageFactory.getSetter("thejson")(vm2.list);
             }, true);
 
@@ -48,7 +91,16 @@
 
             function setSelectedSlot(object)
             {
-                vm2.selectedSlot = object.$modelValue.id;
+                if(object.hasOwnProperty('id'))
+                {
+                    console.log("from adding new file...");
+                    vm2.selectedSlot = object.id;
+                }
+                else
+                {
+                    console.log("from button...");
+                    vm2.selectedSlot = object.$modelValue.id;
+                }    
                 StorageFactory.setCurrentKey(vm2.mySlots[vm2.selectedSlot]);
                 console.log("selected slot:  ", vm2.mySlots[vm2.selectedSlot], vm2.mySlots, vm2.selectedSlot);
                 $scope.$emit('Keychange');
@@ -250,41 +302,31 @@
                 {
                     var theid = Math.floor(Math.random()*10000);
                     var thetitle = theitem.title + '-' + createRandomSuffix();
-                    if(item.$parentNodeScope !== null)
-                    {
-                        item.$parentNodeScope.$modelValue.nodes.push({
+                    var newobject = {
                             id: theid ,
                             title: thetitle,
                             isDirectory : false,
                             isLocked : false,
                             nodes: []
-                            });
+                            }
+
+
+                    if(item.$parentNodeScope !== null)
+                    {
+                        item.$parentNodeScope.$modelValue.nodes.push(newobject);
                     }
                     else
                     {
-                        vm2.list.push(
-                            {
-                                id: theid ,
-                                title: theitem.title + '-' + createRandomSuffix(),
-                                isDirectory : false,
-                                isLocked : false,
-                                nodes: []
-                            });
-                        console.log("item:", item);
+                        vm2.list.push(newobject);
                     }
+                    console.log("item:", item);
                     console.log("theid ", theid);
                     StorageFactory.getNewSlotname(thetitle, theid);
                     vm2.mySlots[theid] = {"title" : thetitle,"isLocked": false};
-                    setSelectedSlot(item);
+                    setSelectedSlot(newobject);
                 }
             }
 
-            vm2.distortedText = vm2.list;
-
-            function submitForm()
-            {
-            	vm2.distortedText = "it works...";
-            }
 
             function createRandomSuffix()
             {

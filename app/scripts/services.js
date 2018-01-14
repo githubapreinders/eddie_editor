@@ -136,28 +136,13 @@
 
     });
 
-     app.factory('ZipService', function (StorageFactory)
+     app.factory('ZipService', function (StorageFactory, $http, API_URL)
      {
-        var thelist = 
-        [
-  {
-    "id": 1,
-    "title": "dir1",
-    "isDirectory": true,
-    "nodes": [
-      {
-        "id": 2,
-        "title": "file1",
-        "isDirectory": false,
-        "isLocked": false,
-        "nodes": []
-      }
-    ]
-  }
-];
+        
         return {
             init : init,
-            getSlots : getSlots
+            getSlots : getSlots,
+            getZip : getZip
         };
 
         function init()
@@ -170,7 +155,75 @@
             return StorageFactory.getGetter("myslots")();
         } 
 
-     });
+        function getZip()
+        {
+
+          return $http({method:"GET", url:API_URL + "/getzip", responseType:'arraybuffer'}).then(function success(resp)
+          {
+            JSZip.loadAsync(resp.data).then(function(zip)
+            {
+              var myzipfiles = [];
+
+              zip.forEach(function(relativePath, file)
+              {
+                if(file.name.substring(0,2) !== '__')
+                {
+                  myzipfiles.push(file);
+                }
+              });
+
+              console.log("zipfiles",myzipfiles);
+              var myjson=[];
+              
+              //console.log("children in root:", checkForChildren(myzipfiles));
+
+
+                  function checkForDirectChildren(sublist)
+                  {
+                    var children = [];
+                    for (var j = 0; j < sublist.length; j++ )
+                    {
+                      if(isSubItem(myzipfiles[i].name, sublist[j].name))
+                      {
+                        children.push(sublist[j].name);
+                      }
+                    }
+                    return children;
+                  }
+                
+
+
+              function isSubItem(containerstring, candidatestring)
+              {
+
+                if(candidatestring.indexOf(containerstring) > -1)
+                {
+                  return true;
+                }
+                else 
+                {
+                  return false;
+                }
+
+              }
+
+
+
+
+          });//end of jszip async call
+
+
+
+
+
+
+        });//end of http
+
+      }//end of method getzip
+
+
+
+     });//end of factory
 
 
 
@@ -285,8 +338,8 @@
           thekeys = createKeys(helper); 
         }
         currentKey = thekeys[0];
-        console.log("thekeys: ", thekeys);
-        console.log("currentKey: ", currentKey);
+        // console.log("thekeys: ", thekeys);
+        // console.log("currentKey: ", currentKey);
       }
 
 

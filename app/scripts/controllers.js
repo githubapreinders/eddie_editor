@@ -188,7 +188,7 @@
                     var avalue = StorageFactory.initialise();
                     retrieveData();
                     saveInSlot();
-                    console.log("data:", vm.navigatorModel);
+                    // console.log("data:", vm.navigatorModel);
                 },function error(response)
                 {
                     console.log("error initialising:", response.data);
@@ -233,8 +233,10 @@
                 //opening a slot from the key item in the navigator
                 console.log("getting next document:");
                 
-                StorageFactory.switchKey();
-                retrieveData(vm.currentSlot.title);
+                var key = StorageFactory.switchKey();
+                console.log("returned key", key);
+                $scope.$broadcast('KeySwitch',key);
+                retrieveData(key);
                 //setReadonly(vm.theslots[vm.currentSlotNumber-1].locked);
                 // console.log("Current slotprops:",vm.theslots[vm.currentSlotNumber-1]);
             }
@@ -248,7 +250,7 @@
                 StorageFactory.getSetter(mykey)(myvalue);
             }
 
-            // key is an alias
+            // key is an object
             function retrieveData(alias)
             {
                 
@@ -256,6 +258,7 @@
                 {
                     alias = StorageFactory.getCurrentKey();
                 }
+                console.log("alias", alias);
                 var thekey = StorageFactory.getGetter(alias.title)();
                 console.log("retrieving data and setting the document value...", alias, thekey);
                 thedocument.setValue(StorageFactory.getGetter(thekey)());
@@ -364,7 +367,7 @@
                 setSelectedClass(vm.navigatorModel[parking]);
 
 
-                console.log("vm.datasource", vm.datasource);
+                // console.log("vm.datasource", vm.datasource);
             }
 
             //empties the editor

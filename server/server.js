@@ -5,6 +5,7 @@ var Iaftag;
 var fs;
 var path;
 var _;
+var spawn;
 
 /*
 	Iaftag
@@ -30,6 +31,7 @@ function init()
 	//require('body-parser-xml')(bodyParser);
 	fs = require('fs');
 	path = require('path');
+	spawn = require('child_process').spawn;
 	
 	_ = require('underscore-node'); //convenience library
 
@@ -93,6 +95,25 @@ app.get('/json', function (req, res)
 		}
 	});
 });
+
+
+app.get('/getzip', function(req, res)
+{
+	var filepath = path.join(__dirname,'./resources/example.zip');
+	fs.readFile(filepath, function read(err, data)//removing the utf-8 encoding flag
+	{
+		if(err)
+		{
+			res.status(500).send(err);
+		}
+		else
+		{
+			res.set('Content-type','application/zip');
+			res.status(200).send(data);
+		}
+	});
+});
+
 
 app.post('/postIaftag', function(req, res)
 {
