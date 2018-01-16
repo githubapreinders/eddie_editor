@@ -138,12 +138,14 @@
 
      app.factory('ZipService', function (StorageFactory, $http, API_URL)
      {
-        
+        var myslots;
         return {
             init : init,
             getSlots : getSlots,
-            getZip : getZip
+            getZip : getZip,
+            getMySlots : getMySlots
         };
+
 
         function init()
         {
@@ -155,15 +157,30 @@
             return StorageFactory.getGetter("myslots")();
         } 
 
+        function getMySlots()
+        {
+            return myslots;
+        } 
+
+
+        /*
+          retrieves IAF configuration zip file via http, and transforms this zipfile  to a json object
+          the zipfiles data are stored in LocalStorage;
+        */
         function getZip()
         {
 
           return $http({method:"GET", url:API_URL + "/getzip", responseType:'arraybuffer'}).then(function success(resp)
           {
+            return new Promise(function (resolve, reject)
+            {
             JSZip.loadAsync(resp.data).then(function(zip)
             {
+              console.log("loadasync...");
+              StorageFactory.deleteAll();
               var myzipfiles = [];
-
+              
+              //removing the mac specific entries...don't know whether this is the proper way...
               zip.forEach(function(relativePath, file)
               {
                 if(file.name.substring(0,2) !== '__')
@@ -172,56 +189,151 @@
                 }
               });
 
+                
+              /*Write to local storage; to avoid collisions, the calls
+              are made synchronously.*/
+              storeZip(0);
+              
+              function storeZip(index)
+              {
+                if(index > myzipfiles.length-1)
+                {
+                  return;
+                }
+                else
+                {
+                  if(!(myzipfiles[index].dir))
+                  {
+                    myzipfiles[index].async("string").then(function resolve(data)
+                    {
+                        var newslotname = "slot" + Math.ceil(Math.random()*1000);
+                        StorageFactory.getSetter(myzipfiles[index].name)(newslotname);
+                        StorageFactory.getSetter(newslotname)(data);
+                        index++;
+                        storeZip(index++);
+                    });
+                  }
+                  else
+                  {
+                    index++;
+                    storeZip(index);
+                  }
+                }
+              }                              
+
               console.log("zipfiles",myzipfiles);
               var myjson=[];
-              
-              //console.log("children in root:", checkForChildren(myzipfiles));
+              myslots = {};
 
-
-                  function checkForDirectChildren(sublist)
-                  {
-                    var children = [];
-                    for (var j = 0; j < sublist.length; j++ )
-                    {
-                      if(isSubItem(myzipfiles[i].name, sublist[j].name))
-                      {
-                        children.push(sublist[j].name);
-                      }
-                    }
-                    return children;
-                  }
-                
-
-
-              function isSubItem(containerstring, candidatestring)
+              //creation of a flat json structure              
+              for(var i =0 ; i< myzipfiles.length ; i++)
               {
-
-                if(candidatestring.indexOf(containerstring) > -1)
+                if(myzipfiles[i].dir)
                 {
-                  return true;
+                    myjson.push({
+                    id : Math.ceil(Math.random() * 10000),  
+                    isDirectory : myzipfiles[i].dir,
+                    title : myzipfiles[i].name.substring(0,myzipfiles[i].name.length-1),
+                    nodes : []
+                    });
                 }
-                else 
+                else
                 {
-                  return false;
+                  var myobj = {
+                    id : Math.ceil(Math.random() * 10000),
+                    isDirectory : myzipfiles[i].dir,
+                    title : myzipfiles[i].name,
+                    nodes : []
+                    };
+                  myjson.push(myobj);
+                  myslots[myobj.id] = {title:myobj.title, isLocked:false};
                 }
-
               }
 
+              //sorting the array: highest amount of nodes first .
+              myjson.sort(function compare(val1, val2)
+              {
+                if(val1.title.split('/').length > val2.title.split('/').length)
+                {
+                  return -1;
+                }
+                if(val1.title.split('/').length < val2.title.split('/').length)
+                {
+                  return 1;
+                }
+                return 0;
+              });
+
+                var helper = 0;//emergency variable to prevent a possible eternal loop
+                var parentsfound = true; //escapes the while loop when we had a run with no results
+
+                
+                /*
+                adding children to the parents node arrays; when there is a parent found myjson is changed
+                and we will start the loop again
+                */
+                while(parentsfound &&  helper <100)
+                {
+                  parentsfound = false;
+                  var copy = myjson;
+
+                  for(var index = 0 ; index < myjson.length; index ++)
+                  {
+                    for(var j=0 ; j< copy.length; j++)
+                    {
+                      if(isParent(myjson[index].title, copy[j].title))
+                      {
+                        // console.log(myjson[index].title, "direct parent of " ,copy[j].title);
+                        // console.log("myjson",myjson);
+                        myjson[index].nodes.push(copy[j]);
+                        myjson.splice(j,1);
+                        parentsfound = true;
+                        break;
+                      };
+                    }
+                    if(parentsfound)
+                    {
+                      break;
+                    }
+                  }
+                  helper ++;
+                }
+               
 
 
+                /* Main helper function of the recursive loop; "dir1/dir2/file1.abc" compared with "dir1/dir2" will
+                regard this as a direct parent-child relationship. */ 
+                function isParent(possibleparent, candidate)
+                {
+                  if(possibleparent === candidate)
+                  {
+                    return false;
+                  }
+                  var index = candidate.lastIndexOf('/');
+                  if(candidate.substring(0,index) === possibleparent)
+                  {
+                    return true;
+                  }
+                  else
+                  {
+                    return false;
+                  }
+                }
 
-          });//end of jszip async call
+                console.log("generated json out of zip:\n",myjson);
 
+                //saving json and working files structure to local storage, and returning to the caller
+                StorageFactory.getSetter('thejson')(myjson);
+                StorageFactory.getSetter('myslots')(myslots);  
+                resolve(myjson); 
 
+              });//end of jszip async call
 
-
-
+            });//end of Promise (necessary because of nested promises...)
 
         });//end of http
 
       }//end of method getzip
-
-
 
      });//end of factory
 
@@ -252,8 +364,18 @@
         setCurrentKey : setCurrentKey,
         getCurrentKey : getCurrentKey,
         getNewSlotname : getNewSlotname,
-        initialise : initialise
+        initialise : initialise,
+        deleteAll : deleteAll
       };
+
+      function deleteAll()
+      {
+        var keys = storage.getKeys();
+        keys.forEach(function(key)
+        {
+          getSetter(key)();
+        });
+      }
 
       function switchKey()
       {
@@ -282,6 +404,10 @@
         }
       }
 
+
+
+
+      //responding to the add new button in the file browser
       function getNewSlotname(createdAlias, theid)
       {
         console.log("id ", theid);
@@ -298,7 +424,6 @@
 
       function initialise()
       {
-        
         if(storage.getKeys().length === 0)
         {
           getSetter("slot1")(" start here...");
@@ -338,8 +463,6 @@
           thekeys = createKeys(helper); 
         }
         currentKey = thekeys[0];
-        // console.log("thekeys: ", thekeys);
-        // console.log("currentKey: ", currentKey);
       }
 
 
@@ -385,6 +508,7 @@
 
       function getSetter(key)
       {
+        console.log("Setting " , key);
         verifyKey(key);
         return api[key].setter;
       }

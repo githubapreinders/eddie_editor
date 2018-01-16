@@ -13,33 +13,47 @@
             vm2.setSelectedSlot = setSelectedSlot;
             vm2.changeName = changeName;
             vm2.newSubitem = newSubitem;
-            vm2.list = StorageFactory.getGetter("thejson")();
             vm2.modifyAlias = modifyAlias;
+            vm2.getZip = getZip;
 
             //is called in home.html
             vm2.treeOptions =
             {
                    
             };
+
             init();
 
             function init()
             {
+                vm2.list = StorageFactory.getGetter("thejson")();
                 vm2.mySlots = StorageFactory.getGetter("myslots")();
-                var keys = Object.keys(vm2.mySlots);
-                setSelectedSlot({id:keys[0]}) ;
-
-                //$scope.$apply();
             }
-
-            getZip();
-
 
             function getZip()
             {
-                ZipService.getZip();
+                ZipService.getZip().then(function success(data)
+                {
+                    console.log("data back", data);
+                    vm2.list = data;
+                    vm2.mySlots = ZipService.getMySlots();
+                    var keys = Object.keys(vm2.mySlots);
+                    setSelectedSlot({id:keys[0]}) ;
+                    console.log(vm2.list);        
+                }, function fail(err)
+                {
+                    console.log("failure getting zip: ", err);
+                });
             }
 
+            //After getting in a zip file all names are full paths. We will settle with just the extension.
+            function cleanupFileAndDirectoryNames()
+            {
+
+            }
+
+            
+            //listens to a button press on the key icon in the main controller
             $scope.$on('KeySwitch', function(event, key)
             {
                 var thekeys = Object.keys(vm2.mySlots);
@@ -114,7 +128,6 @@
             function changeName(item)
             {
                 var element = document.getElementById('treeitem' + item.$modelValue.id);
-                console.log("item",element);
                 element.setAttribute('contentEditable', true);
                 var textnode = element.firstChild;
                 var caret = textnode.length;
@@ -125,8 +138,6 @@
                 sel.removeAllRanges();
                 sel.addRange(range);
                 element.focus();
-                
-
             }
 
 
@@ -342,6 +353,22 @@
             }
 
 
+        })
+        //Returns the part after the last slash of a file.
+        .filter('cropFilter', function()
+        {
+            return function(item)
+            {
+                var helper = item.substring(item.lastIndexOf('/')+1,item.length);
+                if(helper.length > 0)
+                {
+                    return helper;
+                }
+                else
+                {
+                    return item;
+                }
+            };
         });
 
 })();
