@@ -705,11 +705,13 @@
         setIAFURL : setIAFURL
       };
 
+      //restoring value from localstorage during initialisation
       function setIAFURL()
       {
         IAF_URL = StorageFactory.getGetter('IAF_URL')();
       }
 
+      //resonding to the paperplane button upper right
       function postConfig(zipfile)
       {
         if(IAF_URL === undefined || typeof IAF_URL !== 'string')
@@ -732,6 +734,7 @@
             });
       }
 
+      //responding to the submit button in the authentication area.
       function setCredentials(server, uname, pw)
       {
         console.log("server",server, uname, pw);
@@ -750,11 +753,7 @@
           uname : uname,
           pw : pw
         };
-
-
       }
-
-
     });
 
 })();   

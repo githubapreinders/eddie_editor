@@ -24,10 +24,27 @@ angular.module('confab')
                         {
                             for(var i = 0 ; i<sublist.length; i++)
                             {
+
                                 console.log(sublist[i].title,sublist[i].id);
                                 //compares int with a string, so NOT === in the comparator
                                 if(sublist[i].id == digit) 
                                 {
+
+                                    /*check if there's no sibling node with the same title, otherwise
+                                    we will get name collisions and data loss in the local storage*/
+                                    var theobject = angular.element(element).scope();
+                                    console.log("siblings: ", theobject.$parentNodesScope.$modelValue);
+                                    var siblings = theobject.$parentNodesScope.$modelValue;
+                                    for(var s = 0 ; s < siblings.length; s++)
+                                    {
+                                        if(siblings[s].title == text)
+                                        {
+                                            element.innerHTML = cropFilter(theobject.$modelValue.title);
+                                            alert("please no double names in this directory!");
+                                            return;
+                                        }
+                                    }
+
                                     sublist[i].title = text;
                                     console.log("match", sublist[i], text, scope.vm2.mySlots);
                                     if(!(sublist[i].isDirectory))
@@ -35,18 +52,16 @@ angular.module('confab')
                                         //changing a filename changes the alias of a storageslot;
                                         //"oldname:slot1" has to become "newname:slot1"
                                         var theslot = StorageFactory.getGetter(scope.vm2.mySlots[digit].title)();
-                                        StorageFactory.getSetter(scope.vm2.mySlots[digit].title)();
-                                        StorageFactory.getSetter(text)(theslot);
-                                        scope.vm2.mySlots[digit].title = text;
+                                        StorageFactory.getSetter(scope.vm2.mySlots[digit].title)();//removing old alias
+                                        StorageFactory.getSetter(text)(theslot);//adding the new value
+                                        scope.vm2.mySlots[digit].title = text; //updating the current working files
 
                                         var myslots = StorageFactory.getGetter("myslots")();
                                         myslots[digit].title = text;
-                                        StorageFactory.getSetter("myslots")(myslots);
+                                        StorageFactory.getSetter("myslots")(myslots);//updating the working files in localstorage
                                     }
                                     element.setAttribute('contentEditable', false);
                                     scope.$apply();
-                                    
-
                                     StorageFactory.getSetter("thejson")(scope.vm2.list);//saving changed json
                                     break;
                                 }
@@ -56,6 +71,21 @@ angular.module('confab')
                                 }
                             }
                         }
+
+                        function cropFilter(item)
+                        {
+                            if(item === undefined) return "";
+                            var helper = item.substring(item.lastIndexOf('/') + 1 ,item.length);
+                            if(helper.length > 0)
+                            {
+                                return helper;
+                            }
+                            else
+                            {
+                                return item;
+                            }
+                        };
+
 
                     });
                     el.bind(['keydown'],function(event)

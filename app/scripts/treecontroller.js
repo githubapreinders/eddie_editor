@@ -3,7 +3,7 @@
     'use strict';
     /*TODO's : adding new directory / new file button*/
     angular.module('confab')
-        .controller('ApsTreeController', function ($scope,ZipService, StorageFactory)
+        .controller('ApsTreeController', function ($scope,ZipService, StorageFactory, $timeout)
         {
 
             console.log('TreeController...');
@@ -15,6 +15,7 @@
             vm2.newSubitem = newSubitem;
             vm2.modifyAlias = modifyAlias;
             vm2.getZip = getZip;
+            vm2.packZip = packZip;
 
             //is called in home.html
             vm2.treeOptions =
@@ -30,6 +31,21 @@
                 vm2.mySlots = StorageFactory.getGetter("myslots")();
             }
 
+            
+
+
+            // function packZip()
+            // {
+            //     var elements = document.querySelectorAll('[ui-tree-node]');
+
+            //     elements.forEach(function(item)
+            //     {
+            //         console.log(angular.element(item).scope().$modelValue.id);
+            //     });
+
+            //     console.log("json:",JSON.stringify(vm2.list));
+            // }
+
             function getZip()
             {
                 ZipService.getZip().then(function success(data)
@@ -39,12 +55,73 @@
                     vm2.mySlots = ZipService.getMySlots();
                     var keys = Object.keys(vm2.mySlots);
                     setSelectedSlot({id:keys[0]}) ;
-                    console.log(vm2.list);        
+                    console.log(vm2.list);
+                    //$timeout(changeTheNames, 1000);//waiting for the scope to have settled;otherwise view is ok but scope not parallel
+
+
                 }, function fail(err)
                 {
                     console.log("failure getting zip: ", err);
                 });
             }
+
+
+
+            //changing the names of the objects
+            function packZip()
+            {
+                    var zip = new JSZip();
+                    var elements = document.querySelectorAll('[ui-tree-node]');
+                    
+                    elements.forEach(function(item)
+                    {
+                        var object = angular.element(item).scope();
+                        var parents = [];
+
+                        while(object.$parentNodeScope !== null)
+                        {
+                            parents.push(object.$parentNodeScope.$modelValue.title);
+                            object = object.$parentNodeScope;
+                        }
+
+                        var filename = "";
+                        while(parents.length > 0)
+                        {   
+                            filename += cropFilter(parents.pop()) + '/';
+                        }
+                        filename += cropFilter(angular.element(item).scope().$modelValue.title) ;
+                        if(object.$modelValue.isDirectory)
+                        {
+                            zip.folder(filename);
+                        }
+                        else
+                        {   var theslot = StorageFactory.getGetter(angular.element(item).scope().$modelValue.title);
+                            zip.file(filename, StorageFactory.getGetter(theslot)());
+                        }
+
+                        console.log("filename: ", filename,"\n");
+                    });
+
+
+                    console.log("Zipfile ", zip);
+
+                    function cropFilter(item)
+                    {
+                        if(item === undefined) return "";
+                        var helper = item.substring(item.lastIndexOf('/') + 1 ,item.length);
+                        if(helper.length > 0)
+                        {
+                            return helper;
+                        }
+                        else
+                        {
+                            return item;
+                        }
+                    };
+                    
+
+          
+            };
 
             //listens to a button press on the key icon in the main controller
             $scope.$on('KeySwitch', function(event, key)
@@ -130,6 +207,7 @@
                 var sel = window.getSelection();
                 sel.removeAllRanges();
                 sel.addRange(range);
+                console.log("element: ",element);
                 element.focus();
             }
 
@@ -354,7 +432,7 @@
             return function(item)
             {
                 if(item === undefined) return "";
-                var helper = item.substring(item.lastIndexOf('/')+1,item.length);
+                var helper = item.substring(item.lastIndexOf('/') + 1 ,item.length);
                 if(helper.length > 0)
                 {
                     return helper;
