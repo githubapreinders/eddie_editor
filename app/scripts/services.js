@@ -4,7 +4,8 @@
     var app = angular.module('confab');
 
     app.constant('API_URL', "http://localhost:3000");
-    app.constant('IAF_URL', "http://localhost:8080/Ibis4Education/api/configurations/Ibis4Student/" + Math.round(+new Date()/1000));
+    // app.constant('IAF_URL', "http://localhost:8080/Ibis4Education/api/configurations/Ibis4Student/" + Math.round(+new Date()/1000));
+    // app.constant('IAF_URL', "dummy value");
     app.factory('StaticDataFactory', function(xmlTag, $http, StorageFactory,API_URL, $interval) 
     {
 
@@ -373,7 +374,10 @@
         var keys = storage.getKeys();
         keys.forEach(function(key)
         {
-          getSetter(key)();
+          if(key !== 'IAF_URL')
+          {
+            getSetter(key)();
+          }
         });
       }
 
@@ -460,6 +464,11 @@
           {
               helper.splice(helper.indexOf("myslots"),1);
           } 
+          if(helper.indexOf("IAF_URL") > -1)
+          {
+              helper.splice(helper.indexOf("IAF_URL"),1);
+          } 
+
           thekeys = createKeys(helper); 
         }
         currentKey = thekeys[0];
@@ -498,7 +507,7 @@
         var result = [];
         helper.forEach(function(val)
         {
-          if(val.substring(0,4) !== 'slot')
+          if(val.substring(0,4) !== 'slot' )
           {
             result.push({"title" : val, "isLocked" : false});
           }
@@ -508,7 +517,6 @@
 
       function getSetter(key)
       {
-        console.log("Setting " , key);
         verifyKey(key);
         return api[key].setter;
       }
@@ -686,19 +694,33 @@
           });  
       }
     });
-    app.factory('IafFactory', function($http, IAF_URL)
+    app.factory('IafFactory', function($http, StorageFactory)
     {
+    var IAF_URL;  
     var uname = null;
     var pw = null;
       return{
         postConfig : postConfig,
-        setCredentials : setCredentials
+        setCredentials : setCredentials,
+        setIAFURL : setIAFURL
       };
+
+      function setIAFURL()
+      {
+        IAF_URL = StorageFactory.getGetter('IAF_URL')();
+      }
 
       function postConfig(zipfile)
       {
+        if(IAF_URL === undefined || typeof IAF_URL !== 'string')
+        {
+          alert("add a correct IAF url");
+          return 'error';
+        }
+        var finalurl = IAF_URL + Math.round(+new Date()/1000);
+        alert(finalurl);
         console.log("posting to iaf");
-        return $http({method: 'POST',url:IAF_URL , data:zipfile , headers:{'Content-type':'application/xml'}}
+        return $http({method: 'POST',url:finalurl , data:zipfile , headers:{'Content-type':'application/xml'}}
             ).then(function succes(response)
             {
                 console.info("returning from backend",response);
@@ -713,19 +735,18 @@
       function setCredentials(server, uname, pw)
       {
         console.log("server",server, uname, pw);
-        if(!pw || !uname)
-        {
-          return;
-        }
+       
         if (server)
         {
-          API_URL = server;
+          IAF_URL = server;
+          console.log("iafurl", IAF_URL, typeof(IAF_URL));
+          StorageFactory.getSetter('IAF_URL')(server);
         }
         uname = uname;
         pw = pw;
 
         return{
-          apiurl:API_URL,
+          apiurl:server,
           uname : uname,
           pw : pw
         };

@@ -46,13 +46,6 @@
                 });
             }
 
-            //After getting in a zip file all names are full paths. We will settle with just the extension.
-            function cleanupFileAndDirectoryNames()
-            {
-
-            }
-
-            
             //listens to a button press on the key icon in the main controller
             $scope.$on('KeySwitch', function(event, key)
             {
@@ -354,11 +347,13 @@
 
 
         })
+        
         //Returns the part after the last slash of a file.
         .filter('cropFilter', function()
         {
             return function(item)
             {
+                if(item === undefined) return "";
                 var helper = item.substring(item.lastIndexOf('/')+1,item.length);
                 if(helper.length > 0)
                 {
