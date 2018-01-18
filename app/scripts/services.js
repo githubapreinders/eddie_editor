@@ -172,24 +172,126 @@
                 }
               });
 
-              console.log("zipfiles",myzipfiles);
               var myjson=[];
+              myzipfiles = myzipfiles.slice(1, myzipfiles.length);
+              console.log("zipfiles",myzipfiles);
               
-              //console.log("children in root:", checkForChildren(myzipfiles));
 
+              for(var i = 0 ; i < myzipfiles.length; i++)
+              {
+                myjson.push({title:myzipfiles[i].name, nodes:[], isDirectory:myzipfiles[i].dir})
+              }
 
-                  function checkForDirectChildren(sublist)
+              for(var i = 0 ; i < myjson.length; i++)
+              {
+                var container = myjson[i];
+                var helper is _.myjson.without(i);
+              }
+              
+
+              
+
+              //check where to add in json
+              function traverseArray(basepath, originobject)
+              {
+                var path = basepath.split('/');
+                cleanArray(path);
+                console.log("path:",path);
+                if(myjson.length === 0 )
+                {
+                  myjson.push(addItem(path , { title:path.shift(), nodes:[]}));
+                  console.log("myjson", myjson);
+                }
+
+                else
+                {
+                  var pathsegment = path.shift();
+                  if(pathsegment.split('.') > -1)
                   {
-                    var children = [];
-                    for (var j = 0; j < sublist.length; j++ )
-                    {
-                      if(isSubItem(myzipfiles[i].name, sublist[j].name))
-                      {
-                        children.push(sublist[j].name);
-                      }
-                    }
-                    return children;
+                    originobject.nodes.push( {title:pathsegment, nodes:[], isDirectory: false} )
+                    return;
                   }
+                  if(myjson[i].title === pathsegment
+                  {
+                    //run the function again but the with the smaller path and inserting into the nodes array of 'this'
+
+                  }
+                }
+
+
+
+              }
+
+
+              function find(node, value) {
+              if (node.title === value) 
+              {
+                  return node;
+              } else 
+              {
+                  for (var i = 0; i < node.nodes.length; i++) 
+                  {
+                      var found = find(node.nodes[i], value);
+                      if (found !== null) 
+                      {
+                          return found;
+                      }
+                  }
+                  return null;
+              }
+            }
+
+
+
+              function addItem(array,obj)
+              {
+                if(array.length > 0 )
+                {
+                  obj.nodes.push({title:array.shift(),nodes:[]})
+                  //console.log(obj);
+                  addItem(array, obj);
+                }
+                  return obj;
+              }
+
+              
+              function cleanArray(array)
+              {
+                while(array.indexOf('') > -1)
+                {
+                  array.splice(array.indexOf(''),1)
+                }
+                return array;
+              }
+
+              // function traverseArray(jsonitem, index)
+              // {
+              //     if(jsonitem.isDirectory)
+              //     {
+
+              //       jsonitem.nodes.push({});
+              //       traverseArray(myzipfiles.shift());
+              //     }
+              //     else
+              //     {
+              //       myjson.push(jsonitem)
+              //       traverseArray(myzipfiles.shift(), index)
+              //     }
+              //     console.log(myjson);
+              // }
+
+              function checkForDirectChildren(sublist)
+              {
+                var children = [];
+                for (var j = 0; j < sublist.length; j++ )
+                {
+                  if(isSubItem(myzipfiles[i].name, sublist[j].name))
+                  {
+                    children.push(sublist[j].name);
+                  }
+                }
+                return children;
+              }
                 
 
 
