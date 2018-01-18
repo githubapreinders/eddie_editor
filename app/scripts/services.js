@@ -177,7 +177,7 @@
             {
             JSZip.loadAsync(resp.data).then(function(zip)
             {
-              console.log("loadasync...");
+              console.log("loadasync...", zip);
               StorageFactory.deleteAll();
               var myzipfiles = [];
               
@@ -222,7 +222,7 @@
                 }
               }                              
 
-              console.log("zipfiles",myzipfiles);
+              // console.log("zipfiles",myzipfiles);
               var myjson=[];
               myslots = {};
 
@@ -694,7 +694,7 @@
           });  
       }
     });
-    app.factory('IafFactory', function($http, StorageFactory)
+    app.factory('IafFactory', function($http, StorageFactory, API_URL)
     {
     var IAF_URL;  
     var uname = null;
@@ -712,7 +712,7 @@
       }
 
       //resonding to the paperplane button upper right
-      function postConfig(zipfile)
+      function postConfig(zip)
       {
         if(IAF_URL === undefined || typeof IAF_URL !== 'string')
         {
@@ -720,18 +720,56 @@
           return 'error';
         }
         var finalurl = IAF_URL + Math.round(+new Date()/1000);
+                
+        return new Promise(function(resolve, reject)
+        {
+          //var finalurl = API_URL + "/postZipFile";
         alert(finalurl);
-        console.log("posting to iaf");
-        return $http({method: 'POST',url:finalurl , data:zipfile , headers:{'Content-type':'application/xml'}}
-            ).then(function succes(response)
+        zip.generateAsync({type:"binarystring"}).then(function(myzip)
+        {
+          var fileName = 'configuration.zip';
+          var fileObj = new File([myzip], fileName);
+          //console.log('File object created:', fileObj);
+          var fd = new FormData();
+          // fd.append('fileName', fileName);
+          // fd.append('configuration.zip', myzip);
+          // fd.append('mimeType', 'application/zip');
+          // console.log("myzip", myzip);
+
+          // var JSZIP = new JSZip();
+          // JSZIP.loadAsync(myzip).then(function(zipfiles)
+          // {
+          //   var myzipfiles = [];
+          //   zip.forEach(function(relativePath, file)
+          //     {
+          //       if(file.name.substring(0,2) !== '__')
+          //       {
+          //         myzipfiles.push(file);
+          //       }
+          //     });
+          //   console.log("myzipfiles...",myzipfiles);
+          // });
+
+            return new Promise(function(resolve, reject)
             {
-                console.info("returning from backend",response);
-                return response;
-            }, function failure(response)
-            {
-                console.info("returning error from backend",response);
-                return response;
+               console.log("posting to iaf", myzip);
+                return $http({method: 'POST',url:finalurl , data:fileObj , headers:{'Content-type':'application/x-zip-compressed'}}
+                    ).then(function succes(response)
+                    {
+                        console.info("returning from backend",response);
+                        resolve (response);
+                    }, function failure(response)
+                    {
+                        console.info("returning error from backend",response);
+                        reject(response);
+                    });
+                  })            
             });
+        resolve();
+        })
+
+
+
       }
 
       //responding to the submit button in the authentication area.

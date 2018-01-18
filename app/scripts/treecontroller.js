@@ -3,7 +3,7 @@
     'use strict';
     /*TODO's : adding new directory / new file button*/
     angular.module('confab')
-        .controller('ApsTreeController', function ($scope,ZipService, StorageFactory, $timeout)
+        .controller('ApsTreeController', function ($scope,ZipService, StorageFactory, IafFactory,$timeout)
         {
 
             console.log('TreeController...');
@@ -48,6 +48,7 @@
 
             function getZip()
             {
+                console.log("getzip...");
                 ZipService.getZip().then(function success(data)
                 {
                     console.log("data back", data);
@@ -67,7 +68,7 @@
 
 
 
-            //changing the names of the objects
+
             function packZip()
             {
                     var zip = new JSZip();
@@ -89,21 +90,28 @@
                         {   
                             filename += cropFilter(parents.pop()) + '/';
                         }
-                        filename += cropFilter(angular.element(item).scope().$modelValue.title) ;
+                        filename += "Student/" + cropFilter(angular.element(item).scope().$modelValue.title) ;
                         if(object.$modelValue.isDirectory)
                         {
                             zip.folder(filename);
                         }
                         else
-                        {   var theslot = StorageFactory.getGetter(angular.element(item).scope().$modelValue.title);
+                        {   
+                            var theslot = StorageFactory.getGetter(angular.element(item).scope().$modelValue.title);
                             zip.file(filename, StorageFactory.getGetter(theslot)());
                         }
-
                         console.log("filename: ", filename,"\n");
                     });
 
-
                     console.log("Zipfile ", zip);
+                    IafFactory.postConfig(zip).then(function success(resp)
+                    {
+                        console.log("returning from service",resp);
+                    }, 
+                    function fail(err)
+                    {
+                        console.log("returning from service",err);
+                    });
 
                     function cropFilter(item)
                     {

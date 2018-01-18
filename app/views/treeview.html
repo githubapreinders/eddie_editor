@@ -2,9 +2,10 @@
 <div class = "treeview" style="padding:5px;" ng-controller = "ApsTreeController as vm2">
     <div ui-tree="vm2.treeOptions" id="tree-root">
       <ol ui-tree-nodes ng-model="vm2.list">
-         <li ng-repeat="node in vm2.list" ui-tree-node ng-include="'./views/node_template.html'"></li>
+         <li ng-repeat="node in vm2.list" ui-tree-node ng-include="'./views/node_template.html'" ng-animate="{enter:'animate-enter',leave:'animate-leave'}"></li>
       </ol>
     </div>
-    <a href="#" ng-click = "vm2.getZip()">zip</a>
-    <a href="#" ng-click = "vm2.packZip()">log</a>
+<div class="filler"></div>
+ <div><a href="#" ng-click = "vm2.getZip()">zip</a>
+    <a href="#" ng-click = "vm2.packZip()">log</a></div>
 </div>
