@@ -49,6 +49,8 @@
             vm.showValidationMessage = false;
             vm.validationMessage = null;
             vm.currentKey = StorageFactory.getCurrentKey();
+            vm.iaf_url = StorageFactory.getGetter("IAF_URL")();
+
 
             //Editor Styling
             vm.themes = StaticDataFactory.getThemes();
@@ -85,7 +87,7 @@
                 StaticDataFactory.setTimerId(vm.timerId);
             }
             
-
+            //show a spinner while waiting for a response
             function toggleSpinner()
             {
                 vm.showSpinner = !vm.showSpinner;
@@ -95,22 +97,26 @@
             {   
                 toggleSpinner();
                 var message = "dummymessage";
-                IafFactory.postConfig(StorageFactory.getGetter(StorageFactory.getCurrentKey())()).then(function succes(response)
-                    {
-                        toggleSpinner();
-                        console.log("getting response", response);
-                    },
-                    function failure(response)
-                    {
-                        toggleSpinner();
-                        console.log("getting failure...", response);
-                    });
+                var res = IafFactory.postConfig(StorageFactory.getGetter(StorageFactory.getCurrentKey())()).then(function succes(response)
+                {
+                    toggleSpinner();
+                    console.log("getting response", response);
+                },
+                function failure(response)
+                {
+                    toggleSpinner();
+                    console.log("getting failure...", response);
+                });
+                if (res === 'error')
+                {
+                    toggleSpinner();
+                }
             }
 
             function setCredentials()
             {
-                var resp = IafFactory.setCredentials(vm.server, vm.username, vm.password);
-                console.log("credentials:", resp);
+                console.log("credentials:", vm.iaf_url);
+                var resp = IafFactory.setCredentials(vm.iaf_url, vm.username, vm.password);
             }
 
             function postSnippet()
@@ -188,7 +194,10 @@
                     var avalue = StorageFactory.initialise();
                     retrieveData();
                     saveInSlot();
-                    // console.log("data:", vm.navigatorModel);
+
+                    //setting the iaf url inside the storagefactory
+                    IafFactory.setIAFURL();
+
                 },function error(response)
                 {
                     console.log("error initialising:", response.data);
@@ -547,4 +556,5 @@ to a string and inserted in the editor;*/
             }
         };
     });
+
 })();

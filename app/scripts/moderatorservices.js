@@ -4,7 +4,7 @@
 
 	var app = angular.module('confab');
 
-	app.factory('ModeratorFactory', function($http, StorageFactory, API_URL, IAF_URL)
+	app.factory('ModeratorFactory', function($http, StorageFactory, API_URL)
 	{
 	var availableLesson = null;	
 		return {

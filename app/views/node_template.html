@@ -1,21 +1,19 @@
 <div ui-tree-handle class="tree-node tree-node-content" ng-class = "{'tree-node-content-selected' : node.id === vm2.selectedSlot} "  >
     
     <a class="btn " ng-if="node.isDirectory" data-nodrag ng-click="vm2.toggle(this)"><span
-        class="fa"
-        ng-class="{
+        class="fa">
+        <i   ng-class="{
           'fa-folder': collapsed,
           'fa-folder-open': !collapsed
-        }"></span></a>
+        }"></i></span></a>
     
-         <!-- <a class="btn btn-default btn-xs" ng-if="!node.isDirectory" data-nodrag ><span
-        class="glyphicon glyphicon-file" ng-click="vm2.setSelectedSlot(this)"
-        ></span></a> -->
+        
         <a class= "btn" ng-if="!node.isDirectory" data-nodrag ng-click="vm2.setSelectedSlot(this)">
         <span  ><i class="fa fa-file-o"></i></span>
         </a>
 
 <a href="#"   >
-    <span name-giver   id ="treeitem{{node.id}}"  >{{node.title}}</span>
+    <span name-giver   id ="treeitem{{node.id}}"  >{{node.title | cropFilter}}</span>
 </a>
   <div ></div>
 

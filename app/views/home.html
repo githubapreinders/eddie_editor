@@ -14,7 +14,7 @@
                 </div>
 
                 <div class = "navBarRight" >
-                    <span class="filename">{{vm.currentKey.title}}</span>
+                    <span class="filename">{{vm.currentKey.title | cropFilter}}</span>
                     <span  ng-click="vm.submitForm()" class="mybutton">
                         <i class="fa fa-rotate-45 fa-arrow-circle-right fa-3x "></i>
                     </span>
@@ -70,7 +70,10 @@
     </div>
     
     <div id="configcontainer">
-        <div  ng-include="'./views/configArea.html'"></div>
+        <div  class="configArea" ng-include="'./views/configArea.html'"></div>
+        <div  class="treeview" ng-include = "'./views/treeview.html'"></div>
+        <div class="themearea" ng-include="'./views/themearea.html'"></div> 
+        <div class ="authentication" ng-include="'./views/authentication.html'"></div> 
     </div>
 
     <div id = "editorcontainer">
