@@ -4,9 +4,12 @@
     var app = angular.module('confab');
 
     app.constant('API_URL', "http://localhost:3000");
-    app.constant('DOWNLOAD_URL',"http://localhost:8080/Ibis4Education/api/configurations/download/Ibis4Education/");
-    app.constant('UPLOAD_URL', "http://localhost:8080/Ibis4Education/iaf/api/configurations/Ibis4Student")
-    // app.constant('IAF_URL', "http://localhost:8080/Ibis4Education/api/configurations/Ibis4Student/" + Math.round(+new Date()/1000));
+    app.constant('UPLOAD_URL',"http://localhost:8080/Ibis4Education/iaf/api/configurations");
+    app.constant('DOWNLOAD_URL',"http://localhost:3000/getzip");
+    //app.constant('DOWNLOAD_URL',"http://localhost:8080/Ibis4Education/api/configurations/download/Ibis4Education/");
+
+
+
     // app.constant('IAF_URL', "dummy value");
     app.factory('StaticDataFactory', function(xmlTag, $http, StorageFactory,API_URL, $interval) 
     {
@@ -139,7 +142,11 @@
 
     });
 
+<<<<<<< HEAD
      app.factory('ZipService', function (StorageFactory, $http ,DOWNLOAD_URL)
+=======
+     app.factory('ZipService', function (StorageFactory, $http, DOWNLOAD_URL)
+>>>>>>> dff2ca2d60fe9ae248f94b2338b1ba88d71d20f8
      {
         var myslots;
         return {
@@ -173,7 +180,11 @@
         function getZip()
         {
 
+<<<<<<< HEAD
           return $http({method:"GET", url:DOWNLOAD_URL, responseType:'arraybuffer'}).then(function success(resp)
+=======
+          return $http({method:"GET", url:DOWNLOAD_URL , responseType:'arraybuffer'}).then(function success(resp)
+>>>>>>> dff2ca2d60fe9ae248f94b2338b1ba88d71d20f8
           {
             return new Promise(function (resolve, reject)
             {
@@ -191,8 +202,7 @@
                   myzipfiles.push(file);
                 }
               });
-
-                
+    
               /*Write to local storage; to avoid collisions, the calls
               are made synchronously.*/
               storeZip(0);
@@ -224,7 +234,7 @@
                 }
               }                              
 
-              // console.log("zipfiles",myzipfiles);
+              console.log("zipfiles",myzipfiles);
               var myjson=[];
               myslots = {};
 
@@ -292,7 +302,7 @@
                         myjson.splice(j,1);
                         parentsfound = true;
                         break;
-                      };
+                      }
                     }
                     if(parentsfound)
                     {
@@ -696,9 +706,9 @@
           });  
       }
     });
-    app.factory('IafFactory', function($http, StorageFactory, API_URL)
+    app.factory('IafFactory', function($http, StorageFactory, UPLOAD_URL)
     {
-    var IAF_URL;  
+      
     var uname = null;
     var pw = null;
       return{
@@ -710,24 +720,25 @@
       //restoring value from localstorage during initialisation
       function setIAFURL()
       {
-        IAF_URL = StorageFactory.getGetter('IAF_URL')();
+        UPLOAD_URL = StorageFactory.getGetter('UPLOAD_URL')();
       }
 
       //resonding to the paperplane button upper right
       function postConfig(zip)
       {
-        if(IAF_URL === undefined || typeof IAF_URL !== 'string')
-        {
-          alert("add a correct IAF url");
-          return 'error';
-        }
-        var finalurl = IAF_URL + Math.round(+new Date()/1000);
+        // if(UPLOAD_URL === undefined || typeof UPLOAD_URL !== 'string')
+        // {
+        //   alert("add a correct IAF url");
+        //   return 'error';
+        // }
+        //var finalurl = UPLOAD_URL + Math.round(+new Date()/1000);
                 
         return new Promise(function(resolve, reject)
         {
           //var finalurl = API_URL + "/postZipFile";
-        alert(finalurl);
-        zip.generateAsync({type:"binarystring"}).then(function(myzip)
+          var finalurl = UPLOAD_URL;
+          alert(finalurl);
+        zip.generateAsync({type:"blob"}).then(function(myzip)
         {
           var fileName = 'configuration.zip';
           var fileObj = new File([myzip], fileName);
@@ -737,6 +748,19 @@
           // fd.append('configuration.zip', myzip);
           // fd.append('mimeType', 'application/zip');
           // console.log("myzip", myzip);
+
+
+          fd.append("realm", 'jdbc');
+
+          fd.append("name", "Ibis4Student");
+          fd.append("version", 1);
+          fd.append("encoding", 'utf-8');
+          fd.append("multiple_configs", false);
+          fd.append("activate_config", true);
+          fd.append("automatic_reload", true);
+          fd.append("file", myzip, fileName);
+
+
 
           // var JSZIP = new JSZip();
           // JSZIP.loadAsync(myzip).then(function(zipfiles)
@@ -755,7 +779,7 @@
             return new Promise(function(resolve, reject)
             {
                console.log("posting to iaf", myzip);
-                return $http({method: 'POST',url:finalurl , data:fileObj , headers:{'Content-type':'application/x-zip-compressed'}}
+                return $http({method: 'POST',url:finalurl , data: fd , headers:{'Content-type': undefined}}
                     ).then(function succes(response)
                     {
                         console.info("returning from backend",response);
@@ -781,9 +805,9 @@
        
         if (server)
         {
-          IAF_URL = server;
-          console.log("iafurl", IAF_URL, typeof(IAF_URL));
-          StorageFactory.getSetter('IAF_URL')(server);
+          UPLOAD_URL = server;
+          console.log("upload url", UPLOAD_URL, typeof(IAF_URL));
+          StorageFactory.getSetter('UPLOAD_URL')(server);
         }
         uname = uname;
         pw = pw;

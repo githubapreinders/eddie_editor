@@ -99,7 +99,7 @@ app.get('/json', function (req, res)
 
 app.get('/getzip', function(req, res)
 {
-	var filepath = path.join(__dirname,'./resources/config.zip');
+	var filepath = path.join(__dirname,'./resources/Ibis4Student.zip');
 	fs.readFile(filepath, function read(err, data)//removing the utf-8 encoding flag
 	{
 		if(err)

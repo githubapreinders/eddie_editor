@@ -73,10 +73,11 @@
             {
                     var zip = new JSZip();
                     var elements = document.querySelectorAll('[ui-tree-node]');
-                    
                     elements.forEach(function(item)
                     {
                         var object = angular.element(item).scope();
+                        console.log("packzip...", object.$modelValue.isDirectory);       
+                        //console.log("element:",object.$modelValue.title);
                         var parents = [];
 
                         while(object.$parentNodeScope !== null)
@@ -90,17 +91,18 @@
                         {   
                             filename += cropFilter(parents.pop()) + '/';
                         }
-                        filename += "Student/" + cropFilter(angular.element(item).scope().$modelValue.title) ;
-                        if(object.$modelValue.isDirectory)
+                        filename += "Ibis4Student/" + cropFilter(angular.element(item).scope().$modelValue.title) ;
+                        
+                        if(angular.element(item).scope().$modelValue.isDirectory)
                         {
                             zip.folder(filename);
                         }
                         else
                         {   
-                            var theslot = StorageFactory.getGetter(angular.element(item).scope().$modelValue.title);
-                            zip.file(filename, StorageFactory.getGetter(theslot)());
+                            var theslot = StorageFactory.getGetter(angular.element(item).scope().$modelValue.title)();
+                            console.log("filename: ", filename, StorageFactory.getGetter(theslot)(),"\n");
+                            zip.file(filename,StorageFactory.getGetter(theslot)());
                         }
-                        console.log("filename: ", filename,"\n");
                     });
 
                     console.log("Zipfile ", zip);
