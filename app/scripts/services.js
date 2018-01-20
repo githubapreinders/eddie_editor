@@ -4,6 +4,8 @@
     var app = angular.module('confab');
 
     app.constant('API_URL', "http://localhost:3000");
+    app.constant('DOWNLOAD_URL',"http://localhost:8080/Ibis4Education/api/configurations/download/Ibis4Education/");
+    app.constant('UPLOAD_URL', "http://localhost:8080/Ibis4Education/iaf/api/configurations/Ibis4Student")
     // app.constant('IAF_URL', "http://localhost:8080/Ibis4Education/api/configurations/Ibis4Student/" + Math.round(+new Date()/1000));
     // app.constant('IAF_URL', "dummy value");
     app.factory('StaticDataFactory', function(xmlTag, $http, StorageFactory,API_URL, $interval) 
@@ -137,7 +139,7 @@
 
     });
 
-     app.factory('ZipService', function (StorageFactory, $http, API_URL)
+     app.factory('ZipService', function (StorageFactory, $http ,DOWNLOAD_URL)
      {
         var myslots;
         return {
@@ -171,7 +173,7 @@
         function getZip()
         {
 
-          return $http({method:"GET", url:API_URL + "/getzip", responseType:'arraybuffer'}).then(function success(resp)
+          return $http({method:"GET", url:DOWNLOAD_URL, responseType:'arraybuffer'}).then(function success(resp)
           {
             return new Promise(function (resolve, reject)
             {
