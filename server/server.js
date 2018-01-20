@@ -99,7 +99,7 @@ app.get('/json', function (req, res)
 
 app.get('/getzip', function(req, res)
 {
-	var filepath = path.join(__dirname,'./resources/example.zip');
+	var filepath = path.join(__dirname,'./resources/Ibis4Student.zip');
 	fs.readFile(filepath, function read(err, data)//removing the utf-8 encoding flag
 	{
 		if(err)
@@ -219,6 +219,39 @@ app.post('/convertToJson', function(req, res)
 		res.status(200).send(convert.xml2json(thebody));
 	});
 });
+
+app.post('/postZipFile', function(req, res)
+{
+	var thebody = "";
+	req.on('data' , function(chunk)
+	{
+		thebody += chunk;
+	}).on('end', function()
+	{
+		var JSZIP = require('jszip');
+		//console.log("body:",thebody);
+		JSZIP.loadAsync(thebody).then(function(zip)
+		{
+			  var myzipfiles = [];
+	          zip.forEach(function(relativePath, file)
+	          {
+	              myzipfiles.push(file);
+	          });
+			  console.log("reading zipdata...",myzipfiles);
+			res.status(200).send();
+		}, function(err)
+		{
+			console.log("error reading zipdata...",err);
+			res.status(500).send();
+		});
+	});
+
+
+
+		
+});
+
+
 
 //converts a client xml file to json with the xml-js library;
 
