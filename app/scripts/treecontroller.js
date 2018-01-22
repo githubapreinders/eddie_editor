@@ -15,7 +15,7 @@
             vm2.newSubitem = newSubitem;
             vm2.modifyAlias = modifyAlias;
             vm2.getZip = getZip;
-            vm2.packZip = packZip;
+            vm2.addFileOrFolder = addFileOrFolder;
 
             //is called in home.html
             vm2.treeOptions =
@@ -25,26 +25,38 @@
 
             init();
 
+
+            function addFileOrFolder(item)
+            {
+                var thetype = (item === 'file'? false : true);
+
+
+               var newobject = {
+                            id: Math.floor(Math.random()*10000) ,
+                            title: item + createRandomSuffix(),
+                            isDirectory : thetype,
+                            isLocked : false,
+                            nodes: []
+                            };
+               vm2.list.push(newobject);
+               if(item === 'file')
+               {
+                   StorageFactory.getNewSlotname(newobject.title, newobject.id);
+                   vm2.mySlots[newobject.id] = {"title" : newobject.title,"isLocked": false};
+                   setSelectedSlot(newobject);
+               }
+            }
+
+
+
+
             function init()
             {
                 vm2.list = StorageFactory.getGetter("thejson")();
                 vm2.mySlots = StorageFactory.getGetter("myslots")();
             }
 
-            
 
-
-            // function packZip()
-            // {
-            //     var elements = document.querySelectorAll('[ui-tree-node]');
-
-            //     elements.forEach(function(item)
-            //     {
-            //         console.log(angular.element(item).scope().$modelValue.id);
-            //     });
-
-            //     console.log("json:",JSON.stringify(vm2.list));
-            // }
 
             function getZip()
             {
@@ -66,74 +78,7 @@
                 });
             }
 
-
-
-
-            function packZip()
-            {
-                    var zip = new JSZip();
-                    var elements = document.querySelectorAll('[ui-tree-node]');
-                    elements.forEach(function(item)
-                    {
-                        var object = angular.element(item).scope();
-                        console.log("packzip...", object.$modelValue.isDirectory);       
-                        //console.log("element:",object.$modelValue.title);
-                        var parents = [];
-
-                        while(object.$parentNodeScope !== null)
-                        {
-                            parents.push(object.$parentNodeScope.$modelValue.title);
-                            object = object.$parentNodeScope;
-                        }
-
-                        var filename = "";
-                        while(parents.length > 0)
-                        {   
-                            filename += cropFilter(parents.pop()) + '/';
-                        }
-                        filename += "Ibis4Student/" + cropFilter(angular.element(item).scope().$modelValue.title) ;
-                        
-                        if(angular.element(item).scope().$modelValue.isDirectory)
-                        {
-                            zip.folder(filename);
-                        }
-                        else
-                        {   
-                            var theslot = StorageFactory.getGetter(angular.element(item).scope().$modelValue.title)();
-                            console.log("filename: ", filename, StorageFactory.getGetter(theslot)(),"\n");
-                            zip.file(filename,StorageFactory.getGetter(theslot)());
-                        }
-                    });
-
-                    console.log("Zipfile ", zip);
-                    IafFactory.postConfig(zip).then(function success(resp)
-                    {
-                        console.log("returning from service",resp);
-                    }, 
-                    function fail(err)
-                    {
-                        console.log("returning from service",err);
-                    });
-
-                    function cropFilter(item)
-                    {
-                        if(item === undefined) return "";
-                        var helper = item.substring(item.lastIndexOf('/') + 1 ,item.length);
-                        if(helper.length > 0)
-                        {
-                            return helper;
-                        }
-                        else
-                        {
-                            return item;
-                        }
-                    };
-                    
-
-          
-            };
-
-            //listens to a button press on the key icon in the main controller
+            //listens to a button press on the key icon in the main controller and updates the model
             $scope.$on('KeySwitch', function(event, key)
             {
                 var thekeys = Object.keys(vm2.mySlots);
@@ -411,8 +356,8 @@
                     {
                         vm2.list.push(newobject);
                     }
-                    console.log("item:", item);
-                    console.log("theid ", theid);
+                    // console.log("item:", item);
+                    // console.log("theid ", theid);
                     StorageFactory.getNewSlotname(thetitle, theid);
                     vm2.mySlots[theid] = {"title" : thetitle,"isLocked": false};
                     setSelectedSlot(newobject);

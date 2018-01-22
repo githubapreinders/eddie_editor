@@ -2,7 +2,7 @@
     'use strict';
 
     angular.module('confab')
-        .controller('IndexController', function ($scope,$interval,$timeout, xmlTag, attributeObject, StaticDataFactory, StorageFactory, EditorFactory, ValidationFactory, IafFactory, ModeratorFactory)
+        .controller('IndexController', function ($scope,$interval,$timeout, xmlTag, attributeObject, StaticDataFactory, StorageFactory, EditorFactory, ValidationFactory, IafFactory, ZipService,ModeratorFactory)
         {
 
             console.log('IndexController...');
@@ -25,7 +25,7 @@
             vm.changeTheme = changeTheme;
             vm.changeFontSize = changeFontSize;
             vm.validateXml = validateXml;
-            vm.sendToIaf = sendToIaf;
+            vm.sendZip = sendZip;
             vm.toggleSpinner = toggleSpinner;
             vm.setCredentials = setCredentials;
             vm.setAvailableLesson = setAvailableLesson;
@@ -93,24 +93,16 @@
                 vm.showSpinner = !vm.showSpinner;
             }
 
-            function sendToIaf()
+
+            function sendZip()
             {   
-                toggleSpinner();
-                var message = "dummymessage";
-                var res = IafFactory.postConfig(StorageFactory.getGetter(StorageFactory.getCurrentKey())()).then(function succes(response)
+                ZipService.sendZip().then(function succes(res)
                 {
-                    toggleSpinner();
-                    console.log("getting response", response);
-                },
-                function failure(response)
+                    console.log("successful response",res);
+                },function failure(err)
                 {
-                    toggleSpinner();
-                    console.log("getting failure...", response);
+                    console.log("error from zipservice sending zip",err);
                 });
-                if (res === 'error')
-                {
-                    toggleSpinner();
-                }
             }
 
             function setCredentials()

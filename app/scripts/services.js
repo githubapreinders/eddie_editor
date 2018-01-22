@@ -142,17 +142,14 @@
 
     });
 
-<<<<<<< HEAD
-     app.factory('ZipService', function (StorageFactory, $http ,DOWNLOAD_URL)
-=======
-     app.factory('ZipService', function (StorageFactory, $http, DOWNLOAD_URL)
->>>>>>> dff2ca2d60fe9ae248f94b2338b1ba88d71d20f8
+     app.factory('ZipService', function (StorageFactory, $http ,DOWNLOAD_URL, UPLOAD_URL)
      {
         var myslots;
         return {
             init : init,
             getSlots : getSlots,
             getZip : getZip,
+            sendZip : sendZip,
             getMySlots : getMySlots
         };
 
@@ -172,6 +169,122 @@
             return myslots;
         } 
 
+        function sendZip()
+        {
+                return new Promise(function(resolve, reject)
+                {
+                var zip = new JSZip();
+                var elements = document.querySelectorAll('[ui-tree-node]');
+                //each tree element gets a filename and we grab the content from storage
+
+
+                elements.forEach(function(item)
+                {
+                    var object = angular.element(item).scope();
+                    var parents = [];
+
+                    while(object.$parentNodeScope !== null)
+                    {
+                        parents.push(object.$parentNodeScope.$modelValue.title);
+                        object = object.$parentNodeScope;
+                    }
+                    //console.log("parents of...", object.$modelValue.title,"\n",parents);       
+
+                    var filename = "";
+                    while(parents.length > 0)
+                    {   
+                        filename += cropFilter(parents.pop()) + '/';
+                        console.log("filename: ", filename, "\n");
+                    }
+                    filename = "Ibis4Student/" + filename + cropFilter(angular.element(item).scope().$modelValue.title) ;
+                    console.log("filename finally: ", filename, "\n\n");
+                    if(angular.element(item).scope().$modelValue.isDirectory)
+                    {
+                        console.log("adding directory", angular.element(item).scope().$modelValue);
+                        zip.folder(filename);
+                    }
+                    else
+                    {   
+                        var theslot = StorageFactory.getGetter(angular.element(item).scope().$modelValue.title)();
+                        zip.file(filename,StorageFactory.getGetter(theslot)());
+                    }
+                });
+
+                console.log("Zipfile ", zip);
+                //takes a path pattern and returns the last part: "dir1/subdir2/myfile.txt" => "myfile.txt"
+                function cropFilter(item)
+                {
+                    if(item === undefined) return "";
+                    var helper = item.substring(item.lastIndexOf('/') + 1 ,item.length);
+                    if(helper.length > 0)
+                    {
+                        return helper;
+                    }
+                    else
+                    {
+                        return item;
+                    }
+                }
+                postConfig(zip).then(function success(resp)
+                {
+                  console.log("returning from postconfig");
+                  resolve(resp);
+                },function failure(err)
+                {
+                  console.log("returning error from postconfig");
+                  reject(err);
+                });
+                });
+        }
+
+
+        function postConfig(zip)
+        {
+          return new Promise(function(resolve, reject)
+          {
+            if(UPLOAD_URL === undefined || typeof UPLOAD_URL !== 'string')
+            {
+              alert("add a correct IAF url");
+              return 'error';
+            }
+
+            var finalurl = UPLOAD_URL;
+            alert(finalurl);
+            zip.generateAsync({type:"blob"}).then(function(myzip)
+            {
+              var fileName = 'configuration.zip';
+              var fd = new FormData();
+              fd.append("realm", 'jdbc');
+              fd.append("name", "Ibis4Student");
+              fd.append("version", 1);
+              fd.append("encoding", 'utf-8');
+              fd.append("multiple_configs", false);
+              fd.append("activate_config", true);
+              fd.append("automatic_reload", true);
+              fd.append("file", myzip, fileName);
+
+              console.log("posting to iaf", myzip);
+              $http({method: 'POST',url:finalurl , data: fd , headers:{'Content-type': undefined}})
+              .then(function succes(response)
+              {
+                  console.info("returning from backend",response);
+                  resolve (response);
+              }, function failure(err)
+              {
+                  console.info("returning error from backend",err);
+                  reject(err);
+              });
+
+              });//end of JSZIP promise
+
+            })//end of new promise
+
+        }
+
+
+
+
+
 
         /*
           retrieves IAF configuration zip file via http, and transforms this zipfile  to a json object
@@ -180,11 +293,7 @@
         function getZip()
         {
 
-<<<<<<< HEAD
           return $http({method:"GET", url:DOWNLOAD_URL, responseType:'arraybuffer'}).then(function success(resp)
-=======
-          return $http({method:"GET", url:DOWNLOAD_URL , responseType:'arraybuffer'}).then(function success(resp)
->>>>>>> dff2ca2d60fe9ae248f94b2338b1ba88d71d20f8
           {
             return new Promise(function (resolve, reject)
             {
@@ -430,7 +539,7 @@
         var newslotname = "slot" + Math.ceil(Math.random()*1000);
         var theobject = { "title" : createdAlias, "isLocked" : false };
         thekeys.push(theobject);
-        getSetter(newslotname)("enter a value");
+        getSetter(newslotname)('<?xml version="1.0" encoding="UTF-8"?>');
         getSetter(createdAlias)(newslotname);
         var helper = getGetter("myslots")();
         helper[theid] = theobject;
