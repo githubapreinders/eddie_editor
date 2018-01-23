@@ -10,7 +10,7 @@
             var vm2 = this;
             vm2.remove = remove;
             vm2.toggle = toggle;
-            vm2.setSelectedSlot = setSelectedSlot;
+            vm2.setSelectedSlot = setSelectedSlot;//is a number , the id of a node file object.
             vm2.changeName = changeName;
             vm2.newSubitem = newSubitem;
             vm2.modifyAlias = modifyAlias;
@@ -85,7 +85,7 @@
                 console.log("treecontro", key, thekeys);
                 for(var i=0 ;i < thekeys.length; i++)
                 {
-                    console.log(i , " : ", vm2.mySlots[thekeys[i]]);
+                    // console.log(i , " : ", vm2.mySlots[thekeys[i]]);
 
                     if(vm2.mySlots[thekeys[i]].title == key.title)
                     {

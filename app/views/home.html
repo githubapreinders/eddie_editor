@@ -9,16 +9,18 @@
                         <span  id = "rightspan" ng-click="vm.showNav()" >
                         <i  id="picture" class="fa fa-toggle-left fa-toggle-right"></i>
                         </span>
-
                     </div>
                 </div>
 
                 <div class = "navBarRight" >
-                    <span class="filename">{{vm.currentKey.title | cropFilter}}</span>
+                    <span class="filename" ng-click="vm.toggleSlot()" >{{vm.currentKey.title | cropFilter}}</span>
+                    
                     <span  ng-click="vm.submitForm()" class="mybutton">
                         <i class="fa fa-rotate-45 fa-arrow-circle-right fa-3x "></i>
                     </span>
-
+                    <span ng-show = "vm.showSpinnerSmall" style="color:grey ; margin-top:auto; font-size:10px;">
+                        <i   class="fa fa-spinner fa-spin fa-fw "></i>
+                    </span>
                     <div class="filler"></div>
 
                     <!-- <a ng-show="vm.availableLessons.length > 0" ui-sref="app.courseinfo">
