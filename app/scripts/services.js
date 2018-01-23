@@ -4,7 +4,7 @@
     var app = angular.module('confab');
 
     app.constant('API_URL', "http://localhost:3000");
-    app.constant('UPLOAD_URL',"http://localhost:8080/Ibis4Education/iaf/api/configurations");
+    app.constant('UPLOAD_URL',"http://localhost:8080/ibis4education/iaf/api/configurations");
     app.constant('DOWNLOAD_URL',"http://localhost:3000/getzip");
     //app.constant('DOWNLOAD_URL',"http://localhost:8080/Ibis4Education/api/configurations/download/Ibis4Education/");
 
@@ -487,8 +487,33 @@
         getCurrentKey : getCurrentKey,
         getNewSlotname : getNewSlotname,
         initialise : initialise,
-        deleteAll : deleteAll
+        deleteAll : deleteAll,
+        changeKeys : changeKeys
       };
+
+      function changeKeys(oldname, newname)
+      {
+        console.log(oldname , newname,"\n", thekeys, currentKey, "\n");
+        var index = -1;
+        var islocked = "";
+        for(var i= 0 ; i< thekeys.length ; i++)
+        {
+          if(thekeys[i].title === oldname)
+          {
+            index = i;
+            islocked = thekeys[i].isLocked;
+          }
+        }
+        if(index !== -1)
+        {
+          if(currentKey.title === oldname)
+          {
+            currentKey.title = newname;
+          }
+          thekeys[index].title = newname;
+        }
+        console.log("after change: ", thekeys,"\n", currentKey, "\n");
+      }
 
       function deleteAll()
       {

@@ -52,10 +52,11 @@ angular.module('confab')
                                         //changing a filename changes the alias of a storageslot;
                                         //"oldname:slot1" has to become "newname:slot1"
                                         var theslot = StorageFactory.getGetter(scope.vm2.mySlots[digit].title)();
-                                        StorageFactory.getSetter(scope.vm2.mySlots[digit].title)();//removing old alias
+                                        var oldalias = scope.vm2.mySlots[digit].title;
+                                        StorageFactory.changeKeys(oldalias,text);//keeping track of keys array and currentkey
+                                        StorageFactory.getSetter(oldalias)();//removing old alias
                                         StorageFactory.getSetter(text)(theslot);//adding the new value
                                         scope.vm2.mySlots[digit].title = text; //updating the current working files
-
                                         var myslots = StorageFactory.getGetter("myslots")();
                                         myslots[digit].title = text;
                                         StorageFactory.getSetter("myslots")(myslots);//updating the working files in localstorage

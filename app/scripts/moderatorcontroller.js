@@ -27,11 +27,9 @@
 			
   		});
 
-
-
-
 		vm.dataModel = StaticDataFactory.getStaticJson();
-		vm.currentSlotNumber = parseInt(StorageFactory.getCurrentKey().substring(4,5));
+		vm.currentSlotNumber = StorageFactory.getCurrentKey().title;
+		console.log(vm.currentSlotNumber);
 		vm.showPropertyDescription= false;
 		vm.selectedProperty = 0;
 		vm.addingProperty = false;
@@ -52,6 +50,7 @@
 		{
 			vm.selectedItem = StaticDataFactory.getSelectedItem();
 		}
+
 
 		function postJsonBulk()
 		{
@@ -109,13 +108,12 @@
 
 		function otherSlot()
 		{
-			console.log("toggle slot");
-			vm.currentSlotNumber += 1;
-			if (vm.currentSlotNumber === 5)
-			{
-				vm.currentSlotNumber = 1;
-			}
-			vm.selectedItem.xml = StorageFactory.getGetter("slot" + vm.currentSlotNumber)();
+			vm.currentSlotNumber.title = StorageFactory.switchKey();
+			console.log("toggle slot",vm.currentSlotNumber);
+			
+			var myslot = StorageFactory.getGetter(vm.currentSlotNumber)();
+
+			vm.selectedItem.xml = StorageFactory.getGetter(myslot)();
 		}
 
 		function changeAttr(index)
