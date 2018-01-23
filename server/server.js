@@ -352,7 +352,7 @@ app.post('/postSchema', function(req,res)
 
 
 /*returning the applicable schema document to validate against on the client side.*/
-app.get('/validate', function (req, res, next)
+app.get('/validate', function (req, res)
 {
 	//xmllint validates but crashes afterwards: the code works in the node shell but
 	//not in express environment...TODO : solve this issue
@@ -360,16 +360,19 @@ app.get('/validate', function (req, res, next)
 	// var  schema = fs.readFileSync('./server/test.xsd').toString();
 	// var xmllint =  require('xmllint');
 	// xmllint.validateXML({xml:xml, schema:schema});
-
-	var filepath = path.join(__dirname,'./resources/schema.xsd');
+	console.log("validating...");
+	var filepath = path.join(__dirname,'./resources/schema1.xsd');
 	fs.readFile(filepath,{encoding:'utf-8'} , function read(err, myxsd)
 	{
 		if(err)
 		{
 			res.status(500).send();
+		}else
+		{
+			console.log("sending xml...");
+			res.set('Content-type', 'application/xml');
+			res.send(myxsd);
 		}
-	res.set('Content-type', 'application/xml');
-	res.send(myxsd);
 	});		
 });
 

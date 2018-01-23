@@ -8,8 +8,6 @@
     app.constant('DOWNLOAD_URL',"http://localhost:3000/getzip");
     //app.constant('DOWNLOAD_URL',"http://localhost:8080/Ibis4Education/api/configurations/download/Ibis4Education/");
 
-
-
     // app.constant('IAF_URL', "dummy value");
     app.factory('StaticDataFactory', function(xmlTag, $http, StorageFactory,API_URL, $interval) 
     {
@@ -38,7 +36,7 @@
                 "js": {
                  "preserve-newlines": true
                 }
-                }
+                };
 
         return{
             getJson : getJson,
@@ -277,7 +275,7 @@
 
               });//end of JSZIP promise
 
-            })//end of new promise
+            });//end of new promise
 
         }
 
@@ -860,32 +858,15 @@
       //resonding to the paperplane button upper right
       function postConfig(zip)
       {
-        // if(UPLOAD_URL === undefined || typeof UPLOAD_URL !== 'string')
-        // {
-        //   alert("add a correct IAF url");
-        //   return 'error';
-        // }
-        //var finalurl = UPLOAD_URL + Math.round(+new Date()/1000);
-                
         return new Promise(function(resolve, reject)
         {
-          //var finalurl = API_URL + "/postZipFile";
           var finalurl = UPLOAD_URL;
           alert(finalurl);
         zip.generateAsync({type:"blob"}).then(function(myzip)
         {
           var fileName = 'configuration.zip';
-          var fileObj = new File([myzip], fileName);
-          //console.log('File object created:', fileObj);
           var fd = new FormData();
-          // fd.append('fileName', fileName);
-          // fd.append('configuration.zip', myzip);
-          // fd.append('mimeType', 'application/zip');
-          // console.log("myzip", myzip);
-
-
           fd.append("realm", 'jdbc');
-
           fd.append("name", "Ibis4Student");
           fd.append("version", 1);
           fd.append("encoding", 'utf-8');
@@ -895,36 +876,21 @@
           fd.append("file", myzip, fileName);
 
 
-
-          // var JSZIP = new JSZip();
-          // JSZIP.loadAsync(myzip).then(function(zipfiles)
-          // {
-          //   var myzipfiles = [];
-          //   zip.forEach(function(relativePath, file)
-          //     {
-          //       if(file.name.substring(0,2) !== '__')
-          //       {
-          //         myzipfiles.push(file);
-          //       }
-          //     });
-          //   console.log("myzipfiles...",myzipfiles);
-          // });
-
-            return new Promise(function(resolve, reject)
-            {
-               console.log("posting to iaf", myzip);
-                return $http({method: 'POST',url:finalurl , data: fd , headers:{'Content-type': undefined}}
-                    ).then(function succes(response)
-                    {
-                        console.info("returning from backend",response);
-                        resolve (response);
-                    }, function failure(response)
-                    {
-                        console.info("returning error from backend",response);
-                        reject(response);
-                    });
-                  })            
-            });
+          return new Promise(function(resolve, reject)
+          {
+             console.log("posting to iaf", myzip);
+              return $http({method: 'POST',url:finalurl , data: fd , headers:{'Content-type': undefined}}
+                  ).then(function succes(response)
+                  {
+                      console.info("returning from backend",response);
+                      resolve (response);
+                  }, function failure(response)
+                  {
+                      console.info("returning error from backend",response);
+                      reject(response);
+                  });
+                })            
+          });
         resolve();
         })
 

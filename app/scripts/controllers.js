@@ -75,13 +75,19 @@
                 ModeratorFactory.setAvailableLesson(which);
             }
 
-            //saves editor content in the localstorage slot that is open every 5 seconds 
+            //saves editor content in the localstorage slot that is open every 5 seconds, spinner indicates that 
             function saveInSlot()
             {
+
                 vm.timerId = $interval(function()
                 {
-                    console.log("saving ", StorageFactory.getCurrentKey().title);
-                    var thekey = StorageFactory.getGetter(StorageFactory.getCurrentKey().title)()
+                    vm.showSpinnerSmall = true;
+                    $timeout(function()
+                    {
+                        vm.showSpinnerSmall = false;
+                    }, 1000);
+                    // console.log("saving ", StorageFactory.getCurrentKey().title);
+                    var thekey = StorageFactory.getGetter(StorageFactory.getCurrentKey().title)();
                     StorageFactory.getSetter(thekey)(thedocument.getValue());
                 }, 5000);
                 StaticDataFactory.setTimerId(vm.timerId);
@@ -96,11 +102,14 @@
 
             function sendZip()
             {   
+                toggleSpinner();
                 ZipService.sendZip().then(function succes(res)
                 {
+                    toggleSpinner();
                     console.log("successful response",res);
                 },function failure(err)
                 {
+                    toggleSpinner();
                     console.log("error from zipservice sending zip",err);
                 });
             }
@@ -232,8 +241,18 @@
             {
                 // console.log("slot: ", typeof (slot) , vm.currentSlotNumber);
                 //opening a slot from the key item in the navigator
+                vm.showSpinnerSmall = true;
+                $timeout(function()
+                {
+                    vm.showSpinnerSmall = false;
+                }, 1000);
+                console.log("saving ", StorageFactory.getCurrentKey().title);
+                var thekey = StorageFactory.getGetter(StorageFactory.getCurrentKey().title)();
+                StorageFactory.getSetter(thekey)(thedocument.getValue());
+
+
+
                 console.log("getting next document:");
-                
                 var key = StorageFactory.switchKey();
                 console.log("returned key", key);
                 $scope.$broadcast('KeySwitch',key);
@@ -259,9 +278,9 @@
                 {
                     alias = StorageFactory.getCurrentKey();
                 }
-                console.log("alias", alias);
+                // console.log("alias", alias);
                 var thekey = StorageFactory.getGetter(alias.title)();
-                console.log("retrieving data and setting the document value...", alias, thekey);
+                // console.log("retrieving data and setting the document value...", alias, thekey);
                 thedocument.setValue(StorageFactory.getGetter(thekey)());
             }
 
