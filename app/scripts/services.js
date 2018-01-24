@@ -194,8 +194,22 @@
                         filename += cropFilter(parents.pop()) + '/';
                         console.log("filename: ", filename, "\n");
                     }
-                    filename = "Ibis4Student/" + filename + cropFilter(angular.element(item).scope().$modelValue.title) ;
+                    
+
+                    // Het framework wil een configuration file perse met rootfolder hebben, zodoende dit onlogische stukje.
+                    //"Ibis4Student/" +
+                    if(cropFilter(angular.element(item).scope().$modelValue.title) === 'Configuration.xml')
+                    {
+                      
+                      filename = "Ibis4Student/Configuration.xml";
+                    }
+                    else
+                    {
+                      
+                      filename =  filename + cropFilter(angular.element(item).scope().$modelValue.title) ;
+                    }
                     console.log("filename finally: ", filename, "\n\n");
+
                     if(angular.element(item).scope().$modelValue.isDirectory)
                     {
                         console.log("adding directory", angular.element(item).scope().$modelValue);
@@ -207,6 +221,7 @@
                         zip.file(filename,StorageFactory.getGetter(theslot)());
                     }
                 });
+
 
                 console.log("Zipfile ", zip);
                 //takes a path pattern and returns the last part: "dir1/subdir2/myfile.txt" => "myfile.txt"
