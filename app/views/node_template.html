@@ -21,8 +21,8 @@
         ><i class="fa fa-pencil"></i></span></a>
     <a class="pull-right btn " data-nodrag ng-click="vm2.remove(this)"><span
         ><i class="fa fa-times"></i></span></a>
-    <a class="pull-right btn " data-nodrag ng-click="vm2.newSubitem(this)" style="margin-right: 8px;">
-      <span  ><i class="fa fa-plus"></i></span></a>
+    <!-- <a class="pull-right btn " data-nodrag ng-click="vm2.newSubitem(this)" style="margin-right: 8px;">
+      <span  ><i class="fa fa-plus"></i></span></a> -->
 </div>
 <ol ui-tree-nodes="" ng-model="node.nodes" ng-class="{hidden: collapsed}">
   <li ng-repeat="node in node.nodes" ui-tree-node ng-include="'./views/node_template.html'" >

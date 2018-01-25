@@ -1,0 +1,17 @@
+<div class="modal-header">
+    <h3 style="text-align: center;" class="modal-title" id="modal-title">Load Zip</h3>
+</div>
+<div class="modal-body" id="modal-body">
+    
+    <p>Warning : loading from zip will delete your current working tree; use the save button to store it as a zip in your downloads folder.</p>
+    
+
+</div>
+<div class="modal-footer">
+    <div style="display:flex">
+    <button class="btn btn-default" type="button" ng-click="vm3.closeModal()">Cancel</button>
+    <div class="filler"></div>
+	<button class="btn btn-success" type="button" ng-click="vm3.getZipOverHttp()">Zip from IAF</button>   
+	<button class="btn btn-primary" style="display:inline;"  ><input  id = "zipfromfile"   type="file" accept="zip"  ></button>
+	</div>
+</div>

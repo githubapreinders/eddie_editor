@@ -362,6 +362,17 @@ html, body
   	overflow:auto;
 
   }
+
+  .treeview_buttonsbelow
+  {
+  	background : lighten($guttercolor, 75%);
+  	display:flex;
+  	div.pad
+  	{
+  		flex-grow:0.05;
+  	}
+  }
+
   .configArea
   {
   	height:5%;
@@ -587,9 +598,18 @@ tr.angular-ui-tree-empty
 /* --- Tree --- */
 .tree-node 
 {
-    border: 1px solid #dae2ea;
-    background: #f8faff;
+    border: 0px solid #dae2ea;
+    border-radius: 2px;
+    background: url($background0);
+    padding: 0px;
+    margin:0px;
 
+}
+
+.angular-ui-tree-handle
+{
+	height:25px;
+	padding:2px;
 }
 
 .nodrop 

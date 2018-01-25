@@ -86,8 +86,8 @@
                     {
                         vm.showSpinnerSmall = false;
                     }, 1000);
-                    // console.log("saving ", StorageFactory.getCurrentKey().title);
                     var thekey = StorageFactory.getGetter(StorageFactory.getCurrentKey().title)();
+                    console.log("saving : ", thekey);
                     StorageFactory.getSetter(thekey)(thedocument.getValue());
                 }, 5000);
                 StaticDataFactory.setTimerId(vm.timerId);
@@ -278,7 +278,7 @@
                 {
                     alias = StorageFactory.getCurrentKey();
                 }
-                // console.log("alias", alias);
+                console.log("alias", alias);
                 var thekey = StorageFactory.getGetter(alias.title)();
                 // console.log("retrieving data and setting the document value...", alias, thekey);
                 thedocument.setValue(StorageFactory.getGetter(thekey)());

@@ -12,7 +12,7 @@ angular.module('confab')
         tagTypes are "STARTTAG", "COMBITAG", and "ENDTAG"
         */
 
-        var staticPipenames = ["XmlWellFormedChecker","XmlValidator","XmlSwitch","XmlIf","WsdlXmlValidator","RemoveFromSession","PutSystemDateInSession","PutInSession","MailSender","LogSender","Json2XmlValidator","JmsCommunicator","PutParametersInSession","IsolatedServiceExecutor","IsolatedServiceCaller","IfMultipart","GetFromSession","FixedResultSender","FixedResult","FilenameSwitch","XmlParamSwitch","EchoSender"]
+        var staticPipenames = ["FixedQuerySender", "XmlWellFormedChecker","XmlValidator","XmlSwitch","XmlIf","WsdlXmlValidator","RemoveFromSession","PutSystemDateInSession","PutInSession","MailSender","LogSender","Json2XmlValidator","JmsCommunicator","PutParametersInSession","IsolatedServiceExecutor","IsolatedServiceCaller","IfMultipart","GetFromSession","FixedResultSender","FixedResult","FilenameSwitch","XmlParamSwitch","EchoSender"]
 
 
         function xmlTag(elementname, proparray) 

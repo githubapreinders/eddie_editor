@@ -275,6 +275,17 @@ html, body {
             flex-direction: column;
     color: red;
     overflow: auto; }
+  #configcontainer .treeview_buttonsbelow {
+    background: #e1e1e1;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex; }
+    #configcontainer .treeview_buttonsbelow div.pad {
+      -webkit-box-flex: 0.05;
+      -webkit-flex-grow: 0.05;
+          -ms-flex-positive: 0.05;
+              flex-grow: 0.05; }
   #configcontainer .configArea {
     height: 5%;
     overflow: hidden; }
@@ -453,8 +464,15 @@ tr.angular-ui-tree-empty {
 
 /* --- Tree --- */
 .tree-node {
-  border: 1px solid #dae2ea;
-  background: #f8faff; }
+  border: 0px solid #dae2ea;
+  border-radius: 2px;
+  background: url("../media/concrete_seamless.png");
+  padding: 0px;
+  margin: 0px; }
+
+.angular-ui-tree-handle {
+  height: 25px;
+  padding: 2px; }
 
 .nodrop {
   background-color: #f2dede; }

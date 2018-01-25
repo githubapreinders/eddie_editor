@@ -6,9 +6,15 @@
       </ol>
     </div>
 <div class="filler"></div>
- <div style="display:flex;"><a href="#" ng-click = "vm2.getZip()">zip</a>
+ <div class="treeview_buttonsbelow">
+ 	<a href="#" ng-click = "vm2.showZipDialog()"><span class="glyphicon glyphicon-refresh"></span></a>
+ 	<div class="pad"></div>
+ 	<a href="#" ng-click = "vm2.saveToFile()"><span class="glyphicon glyphicon-save"></span></a>
  	<div class="filler"></div>
  	<a href="#" ng-click = "vm2.addFileOrFolder('folder')"><span class="glyphicon glyphicon-folder-close"></span></a>
+ 	<div class="pad"></div>
  	<a href="#" ng-click = "vm2.addFileOrFolder('file')"><span class="glyphicon glyphicon-file"></span></a>
     </div>
 </div>
+
+

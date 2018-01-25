@@ -108,7 +108,7 @@
 
 		function otherSlot()
 		{
-			vm.currentSlotNumber.title = StorageFactory.switchKey();
+			vm.currentSlotNumber = StorageFactory.switchKey().title;
 			console.log("toggle slot",vm.currentSlotNumber);
 			
 			var myslot = StorageFactory.getGetter(vm.currentSlotNumber)();

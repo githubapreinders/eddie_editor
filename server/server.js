@@ -99,7 +99,7 @@ app.get('/json', function (req, res)
 
 app.get('/getzip', function(req, res)
 {
-	var filepath = path.join(__dirname,'./resources/example.zip');
+	var filepath = path.join(__dirname,'./resources/Ibis4Student.zip');
 	fs.readFile(filepath, function read(err, data)//removing the utf-8 encoding flag
 	{
 		if(err)
@@ -148,13 +148,15 @@ app.post('/postIaftag', function(req, res)
 					{
 						console.log('write result',result);
 					});
+					saveJson();
 					res.status(200).send('successfully saved snippet.');
 				}
 				else
-				{
+				{	
+					saveJson();
 					res.status(200).send('successfully saved iaftag.');
 				}
-				saveJson();
+				
 			}
 		});
 
@@ -253,45 +255,7 @@ app.post('/postZipFile', function(req, res)
 
 
 
-//converts a client xml file to json with the xml-js library;
 
-
-//saves a json snippet in the db and an the appropriate snippet in the file system. 		 
-// app.post('/savesnippet', function(req, res)
-// {
-// 	var filepath = path.join(__dirname,'./resources/snippets/' + req.body.classname + '.xml');
-// 	var item = new Iaftag(req.body);
-// 	console.log("item:", item);
-// 	Iaftag.update({classname: item.classname},
-// 		{
-			
-// 			type: item.type,
-// 			description: item.description,
-// 			attrs: item.attrs,
-// 			properties : item.properties,
-// 			xml : item.xml
-// 		},
-// 		{upsert:true},
-// 		function(err, result)
-// 		{
-// 			if(err)
-// 			{
-// 				res.status(500).send(err);
-// 			}
-// 			else
-// 			{
-// 				saveJson();
-// 				console.log("result", result);
-// 				var convert = require('xml-js');
-// 				var contents = convert.json2xml(item.xml,{compact:true, spaces: 4});
-// 				fs.writeFile(filepath , contents, function(result)
-// 				{
-// 					console.log('write result',result);
-// 				});
-// 				res.status(200).send('successfully saved snippet.');
-// 			}
-// 	});
-// });
 
 /* the delete request looks like: "http://localhost:3000/deleteItem?resource=HelloWorld"; */
 app.get('/deleteItem', function (req, res)

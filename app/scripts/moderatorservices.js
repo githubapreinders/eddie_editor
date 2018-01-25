@@ -8,7 +8,6 @@
 	{
 	var availableLesson = null;	
 		return {
-			postIaftag : postIaftag,
 			postJsonBulk : postJsonBulk,
 			postTag : postTag,
 			postSchema : postSchema,
@@ -30,11 +29,6 @@
 		}
 
 
-
-		function postIaftag()
-		{
-
-		}
 
 		function postJsonBulk(json)
 		{

@@ -3,7 +3,7 @@
     'use strict';
     /*TODO's : adding new directory / new file button*/
     angular.module('confab')
-        .controller('ApsTreeController', function ($scope,ZipService, StorageFactory, IafFactory,$timeout)
+        .controller('ApsTreeController', function ($scope,$uibModal, ZipService, StorageFactory, IafFactory,$timeout)
         {
 
             console.log('TreeController...');
@@ -16,6 +16,8 @@
             vm2.modifyAlias = modifyAlias;
             vm2.getZip = getZip;
             vm2.addFileOrFolder = addFileOrFolder;
+            vm2.saveToFile= saveToFile;
+            vm2.showZipDialog = showZipDialog;
 
             //is called in home.html
             vm2.treeOptions =
@@ -25,6 +27,85 @@
 
             init();
 
+            function showZipDialog()
+            {
+
+                var modalInstance = $uibModal.open(
+                {
+                    templateUrl : "./views/loadzipdialog.html",
+                    controller : "LoadZipController as vm3",
+                    size : "md",
+                    resolve : {items : function ()
+                        {
+                            return "something";
+                        }}
+                });
+
+                
+
+                modalInstance.rendered.then(
+                function success(resp)
+                {
+                var zipfromfile = document.getElementById('zipfromfile');
+                console.log(zipfromfile);
+                zipfromfile.addEventListener('change', function(event)
+                {
+                    console.log("file chosen !", event.target.files[0]);
+                    modalInstance.close({returntype:"viafile"});
+                    ZipService.getZipFromFile(event.target.files[0]).then(function success(resp)
+                    {
+                        console.log("succes...");
+                        vm2.list = resp;
+                        console.log(vm2.list);
+                        vm2.mySlots = ZipService.getMySlots();
+                        var keys = Object.keys(vm2.mySlots);
+                        StorageFactory.setCurrentKey(vm2.mySlots[keys[0]]);
+                        setSelectedSlot({id:keys[0]});                         
+
+                    },function failure(err)
+                    {
+                        console.log("failure...", err);
+                    })
+
+                });    
+                },function failure(err)
+                {
+                    
+                });
+
+
+
+
+                modalInstance.result.then(function success(resp)
+                {
+                    console.log("response: " , resp.returntype);
+                    if(resp.returntype === 'viahttp')
+                    {
+                        vm2.list = resp.data;
+                        vm2.mySlots = ZipService.getMySlots();
+                        var keys = Object.keys(vm2.mySlots);
+                        setSelectedSlot({id:keys[0]}) ;
+                        console.log(vm2.list);
+                    }
+
+                    },function failure(err)
+                    {
+                        console.log("no result from modal...");
+                    });
+            }
+
+
+            function saveToFile()
+            {
+                ZipService.sendZip(true).then(function success(resp)
+                {
+                    alert("savedToFile!");    
+                },
+                function failure(err)
+                {
+                    console.log("saving to file failed...");
+                });
+            }
 
             function addFileOrFolder(item)
             {
@@ -70,8 +151,6 @@
                     setSelectedSlot({id:keys[0]}) ;
                     console.log(vm2.list);
                     //$timeout(changeTheNames, 1000);//waiting for the scope to have settled;otherwise view is ok but scope not parallel
-
-
                 }, function fail(err)
                 {
                     console.log("failure getting zip: ", err);
@@ -381,6 +460,36 @@
 
         })
         
+        .controller('LoadZipController', function($uibModalInstance, ZipService, items)
+            {
+                var vm3 = this;
+                vm3.closeModal = closeModal;
+                vm3.getZipOverHttp = getZipOverHttp;
+
+                function getZipOverHttp()
+                {
+                    console.log("getzip over http...");
+                    ZipService.getZip().then(function success(data)
+                    {
+                        console.log("data back", data);
+                        $uibModalInstance.close({returntype:"viahttp",data:data});
+                        
+                    }, function fail(err)
+                    {
+                        console.log("failure getting zip via http: ", err);
+                    });
+                }                
+
+                
+
+                function closeModal()
+                {
+                    $uibModalInstance.close("dialog cancelled.");
+                }
+            })
+
+
+
         //Returns the part after the last slash of a file.
         .filter('cropFilter', function()
         {

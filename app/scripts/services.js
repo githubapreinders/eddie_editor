@@ -4,7 +4,7 @@
     var app = angular.module('confab');
 
     app.constant('API_URL', "http://localhost:3000");
-    app.constant('UPLOAD_URL',"http://localhost:8080/ibis4education/iaf/api/configurations");
+    app.constant('UPLOAD_URL',"http://localhost:8080/Ibis4Education/iaf/api/configurations");
     app.constant('DOWNLOAD_URL',"http://localhost:3000/getzip");
     //app.constant('DOWNLOAD_URL',"http://localhost:8080/Ibis4Education/api/configurations/download/Ibis4Education/");
 
@@ -147,6 +147,7 @@
             init : init,
             getSlots : getSlots,
             getZip : getZip,
+            getZipFromFile : getZipFromFile,
             sendZip : sendZip,
             getMySlots : getMySlots
         };
@@ -167,7 +168,7 @@
             return myslots;
         } 
 
-        function sendZip()
+        function sendZip(saveas)
         {
                 return new Promise(function(resolve, reject)
                 {
@@ -192,7 +193,7 @@
                     while(parents.length > 0)
                     {   
                         filename += cropFilter(parents.pop()) + '/';
-                        console.log("filename: ", filename, "\n");
+                        // console.log("filename: ", filename, "\n");
                     }
                     
 
@@ -208,11 +209,11 @@
                       
                       filename =  filename + cropFilter(angular.element(item).scope().$modelValue.title) ;
                     }
-                    console.log("filename finally: ", filename, "\n\n");
+                    // console.log("filename finally: ", filename, "\n\n");
 
                     if(angular.element(item).scope().$modelValue.isDirectory)
                     {
-                        console.log("adding directory", angular.element(item).scope().$modelValue);
+                        // console.log("adding directory", angular.element(item).scope().$modelValue);
                         zip.folder(filename);
                     }
                     else
@@ -238,15 +239,30 @@
                         return item;
                     }
                 }
-                postConfig(zip).then(function success(resp)
+
+                if(saveas)//responding to the save button in the treeview using file-saver API
                 {
-                  console.log("returning from postconfig");
-                  resolve(resp);
-                },function failure(err)
+                  console.log("saving as a zip file...");
+                  zip.generateAsync({type:"blob"}).then(function(myzip)
+                  {
+                    var blob = new Blob([myzip],{type:"application/zip"});
+                    console.log("generated a zip...", blob);
+                    saveAs(blob, "configuration.zip");
+                    resolve();
+                  });
+                }
+                else //sending zip file to IAF
                 {
-                  console.log("returning error from postconfig");
-                  reject(err);
-                });
+                  postConfig(zip).then(function success(resp)
+                  {
+                    console.log("returning from postconfig");
+                    resolve(resp);
+                  },function failure(err)
+                  {
+                    console.log("returning error from postconfig");
+                    reject(err);
+                  });
+                }
                 });
         }
 
@@ -292,6 +308,164 @@
 
             });//end of new promise
 
+        }
+
+
+        function getZipFromFile(file)
+        {
+          return JSZip.loadAsync(file).then(function(zip)
+            {
+              console.log("loadasync from file...", zip);
+              StorageFactory.deleteAll();
+              var myzipfiles = [];
+              
+              //removing the mac specific entries...don't know whether this is the proper way...
+              zip.forEach(function(relativePath, file)
+              {
+                if(file.name.substring(0,2) !== '__')
+                {
+                  myzipfiles.push(file);
+                }
+              });
+    
+              /*Write to local storage; to avoid collisions, the calls
+              are made synchronously.*/
+              storeZip(0);
+              
+              function storeZip(index)
+              {
+                if(index > myzipfiles.length-1)
+                {
+                  return;
+                }
+                else
+                {
+                  if(!(myzipfiles[index].dir))
+                  {
+                    myzipfiles[index].async("string").then(function resolve(data)
+                    {
+                        var newslotname = "slot" + Math.ceil(Math.random()*1000);
+                        StorageFactory.getSetter(myzipfiles[index].name)(newslotname);
+                        StorageFactory.getSetter(newslotname)(data);
+                        index++;
+                        storeZip(index++);
+                    });
+                  }
+                  else
+                  {
+                    index++;
+                    storeZip(index);
+                  }
+                }
+              }                              
+
+              console.log("zipfiles",myzipfiles);
+              var myjson=[];
+              myslots = {};
+
+              //creation of a flat json structure              
+              for(var i =0 ; i< myzipfiles.length ; i++)
+              {
+                if(myzipfiles[i].dir)
+                {
+                    myjson.push({
+                    id : Math.ceil(Math.random() * 10000),  
+                    isDirectory : myzipfiles[i].dir,
+                    title : myzipfiles[i].name.substring(0,myzipfiles[i].name.length-1),
+                    nodes : []
+                    });
+                }
+                else
+                {
+                  var myobj = {
+                    id : Math.ceil(Math.random() * 10000),
+                    isDirectory : myzipfiles[i].dir,
+                    title : myzipfiles[i].name,
+                    nodes : []
+                    };
+                  myjson.push(myobj);
+                  myslots[myobj.id] = {title:myobj.title, isLocked:false};
+                }
+              }
+
+              //sorting the array: highest amount of nodes first .
+              myjson.sort(function compare(val1, val2)
+              {
+                if(val1.title.split('/').length > val2.title.split('/').length)
+                {
+                  return -1;
+                }
+                if(val1.title.split('/').length < val2.title.split('/').length)
+                {
+                  return 1;
+                }
+                return 0;
+              });
+
+                var helper = 0;//emergency variable to prevent a possible eternal loop
+                var parentsfound = true; //escapes the while loop when we had a run with no results
+
+                
+                /*
+                adding children to the parents node arrays; when there is a parent found myjson is changed
+                and we will start the loop again
+                */
+                while(parentsfound &&  helper <100)
+                {
+                  parentsfound = false;
+                  var copy = myjson;
+
+                  for(var index = 0 ; index < myjson.length; index ++)
+                  {
+                    for(var j=0 ; j< copy.length; j++)
+                    {
+                      if(isParent(myjson[index].title, copy[j].title))
+                      {
+                        // console.log(myjson[index].title, "direct parent of " ,copy[j].title);
+                        // console.log("myjson",myjson);
+                        myjson[index].nodes.push(copy[j]);
+                        myjson.splice(j,1);
+                        parentsfound = true;
+                        break;
+                      }
+                    }
+                    if(parentsfound)
+                    {
+                      break;
+                    }
+                  }
+                  helper ++;
+                }
+               
+
+
+                /* Main helper function of the recursive loop; "dir1/dir2/file1.abc" compared with "dir1/dir2" will
+                regard this as a direct parent-child relationship. */ 
+                function isParent(possibleparent, candidate)
+                {
+                  if(possibleparent === candidate)
+                  {
+                    return false;
+                  }
+                  var index = candidate.lastIndexOf('/');
+                  if(candidate.substring(0,index) === possibleparent)
+                  {
+                    return true;
+                  }
+                  else
+                  {
+                    return false;
+                  }
+                }
+
+                console.log("generated json out of zip:\n",myjson);
+
+                //saving json and working files structure to local storage, and returning to the caller
+                StorageFactory.getSetter('thejson')(myjson);
+                StorageFactory.getSetter('myslots')(myslots);  
+                return(myjson); 
+
+              });//end of jszip async call
         }
 
 
@@ -458,6 +632,7 @@
                 console.log("generated json out of zip:\n",myjson);
 
                 //saving json and working files structure to local storage, and returning to the caller
+                StorageFactory.setCurrentKey(myslots[0]);
                 StorageFactory.getSetter('thejson')(myjson);
                 StorageFactory.getSetter('myslots')(myslots);  
                 resolve(myjson); 
