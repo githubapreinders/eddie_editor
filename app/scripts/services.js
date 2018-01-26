@@ -222,10 +222,14 @@
                         zip.file(filename,StorageFactory.getGetter(theslot)());
                     }
                 });
-
+                var timestamp = Date.now();
+                var text = "configuration.version=" + timestamp;
+                zip.file("BuildInfo_SC.properties" , text);
 
                 console.log("Zipfile ", zip);
                 //takes a path pattern and returns the last part: "dir1/subdir2/myfile.txt" => "myfile.txt"
+               
+               
                 function cropFilter(item)
                 {
                     if(item === undefined) return "";
@@ -253,7 +257,7 @@
                 }
                 else //sending zip file to IAF
                 {
-                  postConfig(zip).then(function success(resp)
+                  postConfig(zip, timestamp).then(function success(resp)
                   {
                     console.log("returning from postconfig");
                     resolve(resp);
@@ -267,7 +271,7 @@
         }
 
 
-        function postConfig(zip)
+        function postConfig(zip, timestamp)
         {
           return new Promise(function(resolve, reject)
           {
@@ -278,14 +282,15 @@
             }
 
             var finalurl = UPLOAD_URL;
-            alert(finalurl);
-            zip.generateAsync({type:"blob"}).then(function(myzip)
+            alert(finalurl);            zip.generateAsync({type:"blob"}).then(function(myzip)
             {
               var fileName = 'configuration.zip';
               var fd = new FormData();
+              
+
               fd.append("realm", 'jdbc');
               fd.append("name", "Ibis4Student");
-              fd.append("version", 1);
+              fd.append("version", timestamp);
               fd.append("encoding", 'utf-8');
               fd.append("multiple_configs", false);
               fd.append("activate_config", true);

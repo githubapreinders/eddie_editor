@@ -87,11 +87,26 @@
                         vm.showSpinnerSmall = false;
                     }, 1000);
                     var thekey = StorageFactory.getGetter(StorageFactory.getCurrentKey().title)();
-                    console.log("saving : ", thekey);
+                    console.log("saving : ", cropFilter(StorageFactory.getCurrentKey().title));
                     StorageFactory.getSetter(thekey)(thedocument.getValue());
                 }, 5000);
                 StaticDataFactory.setTimerId(vm.timerId);
             }
+
+            function cropFilter(item)
+            {
+                if(item === undefined) return "";
+                var helper = item.substring(item.lastIndexOf('/') + 1 ,item.length);
+                if(helper.length > 0)
+                {
+                    return helper;
+                }
+                else
+                {
+                    return item;
+                }
+            }
+
             
             //show a spinner while waiting for a response
             function toggleSpinner()
@@ -99,17 +114,29 @@
                 vm.showSpinner = !vm.showSpinner;
             }
 
-
+            //send the current configuration to the framework.
             function sendZip()
             {   
                 toggleSpinner();
                 ZipService.sendZip().then(function succes(res)
                 {
                     toggleSpinner();
+                    var el = document.getElementById('sendstatus');
+                    el.style.background = 'green';
+                    $timeout(function()
+                        {
+                            el.style.background = 'none';
+                        }, 5000);
                     console.log("successful response",res);
                 },function failure(err)
                 {
+                    var el = document.getElementById('sendstatus');
+                    el.style.background = 'red';
                     toggleSpinner();
+                   $timeout(function()
+                   {
+                            el.style.background = 'none';
+                        }, 5000);
                     console.log("error from zipservice sending zip",err);
                 });
             }

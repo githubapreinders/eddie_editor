@@ -1,4 +1,3 @@
-
 @import url('https://fonts.googleapis.com/css?family=Muli|Cuprum|Play|Audiowide');
 
 $mainwindowfont :muli;
@@ -239,6 +238,13 @@ h6
 
 }
 
+#sendstatus
+{	
+	width : 6px;
+	height: 6px;
+	border-radius:6px;
+}
+
 
 html, body
 {
@@ -348,19 +354,18 @@ html, body
 {
   position:absolute;
   width:25%;
-  height:92%;
+  height:100%;
   display:flex;
   flex-direction:column;
   z-index: 3;
   background : url($background0);
   .treeview
   {
-  	flex-grow:1;
+  	height:100%;
   	display:flex;
   	flex-direction:column;
   	color:red;
-  	overflow:auto;
-
+  	
   }
 
   .treeview_buttonsbelow
@@ -675,4 +680,3 @@ ol
     border: 2px dashed #bed2db;
     box-sizing: border-box;
 }
-
