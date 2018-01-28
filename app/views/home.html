@@ -75,9 +75,28 @@
     <div id="configcontainer">
         <div  class="configArea" ng-include="'./views/configArea.html'"></div>
         <div  class="treeview" ng-include = "'./views/treeview.html'"></div>
+        <div class="tabArea" >
+                <div class="tabheaders">
+                    <a id="tabauth" ng-click=" vm.toggleTab('tabauth')">
+                    <span><i class="fa fa-drivers-license-o"></i></span>
+                    </a>
+                    <a id="tabedit" ng-click="vm.toggleTab('tabedit')">
+                        <span ><i class="fa fa-edit"></i></span>
+                    </a>
+                </div> 
+                    <div ng-show="vm.showauth;" ng-include="'./views/authentication.html'"></div>
+                    <div ng-show="vm.showeditor;" ng-include="'./views/themearea.html'"></div>
+            </div>
+    </div>
+
+
+
+    <!-- <div id="configcontainer">
+        <div  class="configArea" ng-include="'./views/configArea.html'"></div>
+        <div  class="treeview" ng-include = "'./views/treeview.html'"></div>
         <div class="themearea" ng-include="'./views/themearea.html'"></div> 
         <div class ="authentication" ng-include="'./views/authentication.html'"></div> 
-    </div>
+    </div> -->
 
     <div id = "editorcontainer">
         <div class = "editorArea" ui-codemirror="{ onLoad : vm.codemirrorLoaded }"></div>

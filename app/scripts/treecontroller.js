@@ -209,19 +209,23 @@
 
             function setSelectedSlot(object)
             {
+                    console.log("changing selected slot...", object);
                 if(object.hasOwnProperty('id'))
                 {
-                    console.log("from adding new file...");
                     vm2.selectedSlot = object.id;
+                    StorageFactory.setCurrentKey(vm2.mySlots[vm2.selectedSlot]);
+                    $scope.$emit('Keychange');
                 }
                 else
                 {
-                    console.log("from button...");
-                    vm2.selectedSlot = object.$modelValue.id;
+                    if(!(object.isDirectory))
+                    {
+                        vm2.selectedSlot = object.id;
+                        vm2.selectedSlot = object.$modelValue.id;
+                        StorageFactory.setCurrentKey(vm2.mySlots[vm2.selectedSlot]);
+                        $scope.$emit('Keychange');
+                    }
                 }    
-                StorageFactory.setCurrentKey(vm2.mySlots[vm2.selectedSlot]);
-                console.log("selected slot:  ", vm2.mySlots[vm2.selectedSlot], vm2.mySlots, vm2.selectedSlot);
-                $scope.$emit('Keychange');
                 console.log("setting slot to ", vm2.selectedSlot);
             }
 

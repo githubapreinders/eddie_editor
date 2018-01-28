@@ -264,6 +264,9 @@ html, body {
           flex-direction: column;
   z-index: 3;
   background: url("../media/concrete_seamless.png"); }
+  #configcontainer .configArea {
+    height: 5%;
+    overflow: hidden; }
   #configcontainer .treeview {
     height: 100%;
     display: -webkit-box;
@@ -287,28 +290,57 @@ html, body {
       -webkit-flex-grow: 0.05;
           -ms-flex-positive: 0.05;
               flex-grow: 0.05; }
-  #configcontainer .configArea {
-    height: 5%;
-    overflow: hidden; }
-  #configcontainer .authentication {
-    padding: 5px;
-    height: 15%; }
-    #configcontainer .authentication .slotContainer {
-      padding: 5px;
+  #configcontainer .tabArea {
+    border: 0px;
+    margin-top: 3px;
+    min-height: 30%;
+    background: #dddddd; }
+    #configcontainer .tabArea .tabheaders {
+      background: url("../media/concrete_seamless.png");
       display: -webkit-box;
       display: -webkit-flex;
       display: -ms-flexbox;
-      display: flex; }
-      #configcontainer .authentication .slotContainer div {
+      display: flex;
+      -webkit-box-orient: horizontal;
+      -webkit-box-direction: normal;
+      -webkit-flex-direction: row;
+          -ms-flex-direction: row;
+              flex-direction: row;
+      margin: 0px;
+      padding: 0px; }
+      #configcontainer .tabArea .tabheaders a {
+        text-decoration: none;
+        margin-left: 10px;
+        background: #c4c4c4;
+        border: 1px solid #c4c4c4;
+        border-radius: 3px 3px 0px 0px;
+        color: #484848;
+        -webkit-transition: background 0.3s ease;
+        transition: background 0.3s ease; }
+        #configcontainer .tabArea .tabheaders a i {
+          width: 30px;
+          text-align: center; }
+      #configcontainer .tabArea .tabheaders a:hover {
+        background: #dddddd;
+        border: 1px solid #dddddd; }
+      #configcontainer .tabArea .tabheaders .active1 {
+        background: #dddddd;
+        border: 1px solid #dddddd; }
+    #configcontainer .tabArea .slotContainer {
+      display: -webkit-box;
+      display: -webkit-flex;
+      display: -ms-flexbox;
+      display: flex;
+      padding: 5px; }
+      #configcontainer .tabArea .slotContainer div {
         -webkit-box-flex: 1;
         -webkit-flex-grow: 1;
             -ms-flex-positive: 1;
                 flex-grow: 1; }
-      #configcontainer .authentication .slotContainer input {
-        width: 75%; }
-  #configcontainer .themearea {
-    padding: 5px;
-    height: 15%; }
+      #configcontainer .tabArea .slotContainer input {
+        width: 70%; }
+      #configcontainer .tabArea .slotContainer select {
+        width: 50%; }
 
 #navigatorcontainer {
   position: absolute;
@@ -480,7 +512,7 @@ tr.angular-ui-tree-empty {
 
 .tree-node-content {
   margin: 1px;
-  font-size: 10px;
+  font-size: 12px;
   padding: 2px;
   display: -webkit-box;
   display: -webkit-flex;
@@ -493,6 +525,7 @@ tr.angular-ui-tree-empty {
             flex-grow: 1; }
   .tree-node-content a {
     padding: 3px;
+    text-decoration: none;
     margin: 2px;
     color: #222; }
   .tree-node-content i {

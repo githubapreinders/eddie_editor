@@ -60,6 +60,33 @@
             
             vm.availableLessons = [];
 
+            //tabs control
+            vm.toggleTab = toggleTab;
+            vm.thetabs=["tabauth", "tabedit"];
+            toggleTab('tabauth');
+
+            function toggleTab(thetab)
+            {   
+                switch(thetab)
+                {
+                    case("tabauth"):{vm.showeditor = false;vm.showauth = true;break;}
+                    case("tabedit"):{vm.showeditor = true;vm.showauth = false;break;}
+                }
+
+                var elem = document.getElementById(thetab);
+                elem.classList.toggle('active1');
+                var theothers = _.without(vm.thetabs, thetab);
+                theothers.forEach(function(el)
+                {
+                    var ele =  document.getElementById(el);
+                    ele.classList.remove('active1');
+                });
+                console.log("toggling tab",vm.showeditor, vm.showauth);
+
+            }
+
+
+
 
             $scope.$on("Keychange", function()
             {
