@@ -222,8 +222,8 @@
                 thedocument = editor.getDoc();
                 StaticDataFactory.getJson().then(function success(response)
                 {
-                    console.log("returned datamodel : \n", response.data);
-                    vm.navigatorModel = response.data;
+                    vm.navigatorModel = JSON.parse(response.data.JSONMONSTER.MYMONSTER);
+                    console.log("returned datamodel : \n", vm.navigatorModel);
                     Object.keys(vm.navigatorModel).forEach(function (item, index)
                     {
                        
