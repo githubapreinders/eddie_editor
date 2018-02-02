@@ -4,12 +4,16 @@
     var app = angular.module('confab');
 
     app.constant('API_URL', "http://localhost:3000");
-    app.constant('UPLOAD_URL',"http://localhost:8080/Ibis4Education/iaf/api/configurations");
-    app.constant('DOWNLOAD_URL',"http://localhost:3000/getzip");
+    app.constant('DOWNLOAD_URL',"http://localhost:8080/Ibis4Education/iaf/api/configurations/download/Ibis4Student");
+    app.constant('UPLOAD_URL',"http://ibis4education-env.bz46fawhzf.eu-central-1.elasticbeanstalk.com/iaf/api/configurations");
     //app.constant('DOWNLOAD_URL',"http://localhost:8080/Ibis4Education/api/configurations/download/Ibis4Education/");
+    // app.constant('UPLOAD_URL',"http://localhost:8080/Ibis4Education/iaf/api/configurations");
+    //app.constant('IAF_URL', "http://localhost:8080/Ibis4Education/api");
+    app.constant('IAF_URL', "http://ibis4education-env.bz46fawhzf.eu-central-1.elasticbeanstalk.com");
+    //http://ibis4education-env.bz46fawhzf.eu-central-1.elasticbeanstalk.com/iaf/api/configurations
 
-    // app.constant('IAF_URL', "dummy value");
-    app.factory('StaticDataFactory', function(xmlTag, $http, StorageFactory,API_URL, $interval) 
+
+    app.factory('StaticDataFactory', function(xmlTag, $http, StorageFactory,API_URL, IAF_URL, $interval) 
     {
 
         var datasource = 'pipes';
@@ -102,19 +106,31 @@
         }
 
 
-        /* data is available directly in the response
-        */
+                /* data is available directly in the response
+          */
         function getJson()
-        {
-          return $http.get(API_URL + '/json').then(function(data)
-            {
-              console.info("returning json from server with status ",data.status);
-                thejson = data.data;
-                return data;
+        {          
+          // return $http.get(API_URL + '/json').then(function(data)
+          //   {
+          //     console.info("returning json from server with status ",data.status);
+          //       thejson = data.data;
+          //       return data;
                 
-            },function (error)
+          //   },function (error)
+          //   {
+          //     console.log("server error :", error );
+          //   });
+
+          return $http.get(IAF_URL + '/api/getjson').then(
+            function success(data)
             {
-              console.log("server error :", error );
+                console.info("returning json from server with status ",data.status);
+                thejson = data.data.JSONMONSTER.MYMONSTER;
+                return data;
+            },
+            function fail(err)
+            {
+              console.log("server error :", err );
             });
         }  
 
@@ -484,9 +500,11 @@
         */
         function getZip()
         {
+          console.log("Download url",DOWNLOAD_URL);
 
           return $http({method:"GET", url:DOWNLOAD_URL, responseType:'arraybuffer'}).then(function success(resp)
           {
+            console.log("Download url",DOWNLOAD_URL);
             return new Promise(function (resolve, reject)
             {
             JSZip.loadAsync(resp.data).then(function(zip)
@@ -642,11 +660,25 @@
                 StorageFactory.getSetter('myslots')(myslots);  
                 resolve(myjson); 
 
+              }, 
+              function failure(err)
+              {
+                console.log("error", err);
+                reject(err);
               });//end of jszip async call
 
             });//end of Promise (necessary because of nested promises...)
 
-        });//end of http
+        },
+        function failure(err)
+        {
+          console.log("error in http call", err);
+          return;
+        },function failure(err)
+        {
+          console.log("error in http call", err);
+          return;
+        });//end of http);//end of http
 
       }//end of method getzip
 
@@ -1084,10 +1116,10 @@
                       console.info("returning error from backend",response);
                       reject(response);
                   });
-                })            
+                });           
           });
         resolve();
-        })
+        });
 
 
 
