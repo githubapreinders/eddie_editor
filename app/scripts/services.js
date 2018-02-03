@@ -14,6 +14,7 @@
 
 
     app.factory('StaticDataFactory', function(xmlTag, $http, StorageFactory,API_URL, IAF_URL, $interval) 
+
     {
 
         var datasource = 'pipes';
@@ -110,6 +111,7 @@
           */
         function getJson()
         {          
+
           // return $http.get(API_URL + '/json').then(function(data)
           //   {
           //     console.info("returning json from server with status ",data.status);
@@ -122,6 +124,7 @@
           //   });
 
           return $http.get(IAF_URL + '/api/getjson').then(
+
             function success(data)
             {
                 console.info("returning json from server with status ",data.status);
@@ -132,9 +135,10 @@
             {
               console.log("server error :", err );
             });
+
         }  
 
-        //returns the datamodel for other controllers
+        //returns the datamodel for the moderatorController
         function getStaticJson()
         {
           return thejson;
