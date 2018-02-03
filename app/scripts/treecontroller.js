@@ -42,7 +42,7 @@
                 });
 
                 
-
+                //sets a listener on the load from file button;
                 modalInstance.rendered.then(
                 function success(resp)
                 {
@@ -463,7 +463,8 @@
 
 
         })
-        
+
+        //controls the modal that appears when you're loading a zip
         .controller('LoadZipController', function($uibModalInstance, ZipService, items)
             {
                 var vm3 = this;
