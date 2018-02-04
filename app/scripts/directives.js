@@ -85,7 +85,7 @@ angular.module('confab')
                             {
                                 return item;
                             }
-                        };
+                        }
 
 
                     });

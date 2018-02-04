@@ -5,7 +5,7 @@
 
 app.config(function ($stateProvider, $urlRouterProvider)
 {
-    console.log('Application config...')
+    console.log('Application config...');
     $stateProvider
 
         // route for the home p age

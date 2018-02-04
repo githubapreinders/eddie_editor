@@ -760,7 +760,7 @@
       {
           var helper = thekeys.shift();
           thekeys.push(helper);
-          currentKey = thekeys[0]
+          currentKey = thekeys[0];
           return thekeys[0];
       }
 
@@ -961,7 +961,7 @@
             setter(value);
           }
           return value;
-        }
+        };
       }
     }]);
     app.factory('EditorFactory', function()

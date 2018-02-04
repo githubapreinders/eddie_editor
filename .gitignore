@@ -1,5 +1,6 @@
 # Dependency directories
 node_modules/
+build/
 app/bower_components
 app/js
 media/scratch.txt

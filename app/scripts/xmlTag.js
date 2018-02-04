@@ -12,7 +12,7 @@ angular.module('confab')
         tagTypes are "STARTTAG", "COMBITAG", and "ENDTAG"
         */
 
-        var staticPipenames = ["FixedQuerySender", "XmlWellFormedChecker","XmlValidator","XmlSwitch","XmlIf","WsdlXmlValidator","RemoveFromSession","PutSystemDateInSession","PutInSession","MailSender","LogSender","Json2XmlValidator","JmsCommunicator","PutParametersInSession","IsolatedServiceExecutor","IsolatedServiceCaller","IfMultipart","GetFromSession","FixedResultSender","FixedResult","FilenameSwitch","XmlParamSwitch","EchoSender"]
+        var staticPipenames = ["FixedQuerySender", "XmlWellFormedChecker","XmlValidator","XmlSwitch","XmlIf","WsdlXmlValidator","RemoveFromSession","PutSystemDateInSession","PutInSession","MailSender","LogSender","Json2XmlValidator","JmsCommunicator","PutParametersInSession","IsolatedServiceExecutor","IsolatedServiceCaller","IfMultipart","GetFromSession","FixedResultSender","FixedResult","FilenameSwitch","XmlParamSwitch","EchoSender"];
 
 
         function xmlTag(elementname, proparray) 
@@ -77,7 +77,7 @@ angular.module('confab')
             //converts its contents to a readable xml-tag, dependent on its type
             toObject : function()
             {
-                var theobject = {} 
+                var theobject = {} ;
                 theobject[this.elementName] = this.tagProperties;
                 console.log("myobj", theobject);
                 return theobject;
@@ -149,15 +149,13 @@ angular.module('confab')
             {
                 if (this.hasDefault)
                 {
-                    this.values.unShift(value)
+                    this.values.unShift(value);
                 }
                 else 
                 {
                     this.values.push(value);
                 }
-            }
-
-            ,
+            },
 
             //insert a whole array
             insertValues : function(array)
@@ -185,10 +183,10 @@ angular.module('confab')
             {
                 return this.name + 'Allowed values:' + this.values.join();
             }
-        }   
+        };
 
 
-        return(attributeObject)
+        return(attributeObject);
 
         
 

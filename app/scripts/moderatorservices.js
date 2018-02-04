@@ -1,20 +1,20 @@
 (function()
 {
-	'use strict'
+	'use strict';
 
 	var app = angular.module('confab');
 
 	app.factory('ModeratorFactory', function($http, StorageFactory, API_URL)
 	{
 	var availableLesson = null;	
-		return {
+		return{
 			postJsonBulk : postJsonBulk,
 			postTag : postTag,
 			postSchema : postSchema,
 			deleteItem : deleteItem,
 			setAvailableLesson : setAvailableLesson,
-			getAvailableLesson : getAvailableLesson
-		}
+			getAvailableLessons : getAvailableLessons
+		};
 
 		function setAvailableLesson(which)
 		{
@@ -23,7 +23,7 @@
 		}
 
 
-		function getAvailableLesson()
+		function getAvailableLessons()
 		{
 			return availableLesson;
 		}
@@ -118,4 +118,4 @@
 		}
 
 	});
-}())
+}());

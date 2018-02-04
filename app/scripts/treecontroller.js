@@ -65,7 +65,7 @@
                     },function failure(err)
                     {
                         console.log("failure...", err);
-                    })
+                    });
 
                 });    
                 },function failure(err)
@@ -183,12 +183,12 @@
                     }
                 }
 
-            })
+            });
 
             $scope.$watch('vm2.selectedSlot', function()
             {
                 console.log("selected slot changed: ", vm2.selectedSlot);
-            })
+            });
 
             //Any change in the file tree is saved in localstorage to reload later
             $scope.$watch('vm2.list', function()
@@ -428,7 +428,7 @@
                             isDirectory : false,
                             isLocked : false,
                             nodes: []
-                            }
+                            };
 
 
                     if(item.$parentNodeScope !== null)

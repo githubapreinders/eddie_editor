@@ -264,7 +264,7 @@
 		var vm = this;
 		console.log("CourseInfoController loaded");
 		StaticDataFactory.stopTimer();
-		vm.currentLesson = ModeratorFactory.getAvailableLesson();
+		vm.currentLesson = ModeratorFactory.getAvailableLessons();
 
 		document.getElementById('Example2').src = vm.currentLesson;
 		

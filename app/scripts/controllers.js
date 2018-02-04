@@ -425,7 +425,7 @@
                 vm.showPropertyDescription = false;
                 
                 var done = false;
-                var parking = "zzz"
+                var parking = "zzz";
                 Object.keys(vm.navigatorModel).forEach(function(key)
                 {
                     if (!done && vm.navigatorModel[key].type === thetype )
