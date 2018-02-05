@@ -14,7 +14,9 @@ var browserSync = require('browser-sync').create(),
     stylish = require('jshint-stylish'),
     uglify = require('gulp-uglify'),
     useref = require('gulp-useref'),
+    stripDebug = require('gulp-strip-debug'),
     strip = require('gulp-strip-comments');
+
 
 gulp.task('default',function()
 {
@@ -27,6 +29,7 @@ gulp.task('build',function(callback)
 {
     runSequence('concatAndStash','removeDirs',['uglifyJs','handleAngular','uglifyCodemirror','copy_html','copy_images','copy_fonts'],'browser_Sync_build');
 });
+
 
 gulp.task('concatAndStash',['clean'], function ()
 {
@@ -52,6 +55,7 @@ gulp.task('uglifyJs', function()
     return gulp.src(['app/scripts/application.js','app/scripts/controllers.js','app/scripts/directives.js','app/scripts/moderatorcontroller.js','app/scripts/moderatorservices.js','app/scripts/services.js','app/scripts/treecontroller.js','app/scripts/xmlTag.js'])
         .pipe(concat('scripts.min.js'))
         .pipe(strip())
+        .pipe(stripDebug())
         .pipe(sourcemaps.init())
         .pipe(ngAnnotate())
         .pipe(uglify())

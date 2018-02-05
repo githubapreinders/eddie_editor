@@ -8,7 +8,7 @@
 <div class="slotContainer">
 	<span>Editor theme :</span>
 	<div></div>
-	<select ng-model="vm.selectedTheme" ng-options="theme for theme in vm.themes" ng-change="vm.changeTheme()"></select>
+	<select class="form-control" ng-model="vm.selectedTheme" ng-options="theme for theme in vm.themes" ng-change="vm.changeTheme()"></select>
 </div>
 
 
@@ -18,5 +18,5 @@
 <div class="slotContainer">
 	<span> Font Size :</span>
 	<div></div>
-	<select ng-model="vm.selectedFontSize" ng-options="fontsize for fontsize in vm.fontSizes" ng-change="vm.changeFontSize()"></select>
+	<select class="form-control" ng-model="vm.selectedFontSize" ng-options="fontsize for fontsize in vm.fontSizes" ng-change="vm.changeFontSize()"></select>
 </div>

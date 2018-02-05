@@ -370,7 +370,7 @@
                 {
                   editor.style.width = '75%';
                   editor.style.left = '25%';
-                  iplogo.style.top = '15px';
+                  iplogo.style.top = '10px';
                   navItem.style.left = '89%';
                   picture.classList.add('fa-toggle-left');
                   picture.classList.remove('fa-toggle-right');
@@ -380,7 +380,7 @@
                   editor.style.width = '100%';
                   editor.style.left = '0%';
                   navItem.style.left = '0%';
-                  iplogo.style.top = '5px';
+                  iplogo.style.top = '10px';
                   picture.classList.remove('fa-toggle-left');
                   picture.classList.add('fa-toggle-right');
                 }

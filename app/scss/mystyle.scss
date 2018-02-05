@@ -1,3 +1,9 @@
+
+@font-face{
+	font-family:'mainwindowfont';
+	src: url('muli-regular.ttf');
+}
+
 @import url('https://fonts.googleapis.com/css?family=Muli|Cuprum|Play|Audiowide');
 
 $mainwindowfont :muli;
@@ -15,6 +21,15 @@ $corkColor2:#996666;
 $guttercolor:#222;
 $guttercolorhover:#CCCCCC;
 $gutterlinenumber:#aaa;
+
+html, body
+{
+	width:100%;
+	height:100%;
+	font-family:$mainwindowfont;
+}
+
+
 
 .mytooltip 
 {
@@ -144,9 +159,10 @@ h6
 		.iplogo
 		{
 			position:absolute;
+			top : 10px;
 			margin-left:10px;
-			max-width : 50px;
-			max-height : 50px;
+			max-width : 30px;
+			max-height : 30px;
 			transition: top 0.4s;
 		}
 		.iplogo2
@@ -235,12 +251,7 @@ h6
 }
 
 
-html, body
-{
-	width:100%;
-	height:100%;
-	font-family:$mainwindowfont;
-}
+
 
 
 
@@ -452,6 +463,7 @@ html, body
 #navigatorcontainer
 {
   position:absolute;
+  font-family:$mainwindowfont;
   width:25%;
   height:100%;
   background:url($background0);
@@ -507,6 +519,10 @@ html, body
 					padding-right: 0px;
 					margin-bottom: 5px;
 					box-shadow : 0px 3px 2px #888888;
+					h4
+					{
+						font-family : $filenameheader;
+					}
 
 					
 				}
@@ -517,6 +533,11 @@ html, body
 					background:url($background0);
 					overflow:scroll;
 					padding: 15px;
+					input.form-control, div.checkbox
+					{
+						width:100%;
+					}
+					
 				}
 }
 
@@ -665,6 +686,7 @@ tr.angular-ui-tree-empty
 {
     margin: 1px;
     font-size:12px;
+    font-family: $mainwindowfont;
     padding: 2px;
     display:flex;
     div

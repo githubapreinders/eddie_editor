@@ -2,7 +2,7 @@
 
 'use strict';
     var app = angular.module('confab');
-
+    app.constant('PROJECTNAME','Ibis4Student');
     app.constant('API_URL', "http://localhost:3000");
     app.constant('DOWNLOAD_URL',"http://localhost:8080/Ibis4Education/iaf/api/configurations/download/Ibis4Student");
     app.constant('UPLOAD_URL',"http://ibis4education-env.bz46fawhzf.eu-central-1.elasticbeanstalk.com/iaf/api/configurations");
@@ -160,7 +160,7 @@
 
     });
 
-     app.factory('ZipService', function (StorageFactory, $http ,DOWNLOAD_URL, UPLOAD_URL)
+     app.factory('ZipService', function (StorageFactory, $http ,DOWNLOAD_URL, UPLOAD_URL, PROJECTNAME)
      {
         var myslots;
         return {
@@ -344,15 +344,30 @@
               StorageFactory.deleteAll();
               var myzipfiles = [];
               
-              //removing the mac specific entries...don't know whether this is the proper way...
+              //removing unwanted entries
               zip.forEach(function(relativePath, file)
               {
-                if(file.name.substring(0,2) !== '__')
+                if(file.name.substring(0,2) !== '__' && file.name !== PROJECTNAME +'/' && file.name !== 'BuildInfo_SC.properties')
                 {
                   myzipfiles.push(file);
                 }
               });
-    
+              
+              //removing an unwanted wrapper directory ('Ibis4Student/Configuration.xml becomes 'Configuration.xml')
+              for(var i=0 ; i< myzipfiles.length; i++)
+              {
+                if(myzipfiles[i].name.indexOf(PROJECTNAME) > -1)
+                      {
+                        console.log("slicing out", myzipfiles[i].name);
+                        var item = myzipfiles[i].name;
+                        var helper = item.substring(item.lastIndexOf('/') + 1 ,item.length);
+                        myzipfiles[i].name = helper;
+                      }
+              }
+
+
+
+
               /*Write to local storage; to avoid collisions, the calls
               are made synchronously.*/
               storeZip(0);
