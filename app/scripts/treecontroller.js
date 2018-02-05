@@ -3,7 +3,7 @@
     'use strict';
     /*TODO's : adding new directory / new file button*/
     angular.module('confab')
-        .controller('ApsTreeController', function ($scope,$uibModal, ZipService, StorageFactory, IafFactory,$timeout)
+        .controller('ApsTreeController', function ($scope,$uibModal, ZipService, StorageFactory,StaticDataFactory, IafFactory,$timeout)
         {
 
             console.log('TreeController...');
@@ -52,6 +52,7 @@
                 {
                     console.log("file chosen !", event.target.files[0]);
                     modalInstance.close({returntype:"viafile"});
+                    StaticDataFactory.stopTimer();
                     ZipService.getZipFromFile(event.target.files[0]).then(function success(resp)
                     {
                         console.log("succes...");
@@ -60,7 +61,9 @@
                         vm2.mySlots = ZipService.getMySlots();
                         var keys = Object.keys(vm2.mySlots);
                         StorageFactory.setCurrentKey(vm2.mySlots[keys[0]]);
-                        setSelectedSlot({id:keys[0]});                         
+                        setSelectedSlot({id:keys[0]});
+
+                        //$scope.$emit('Keychange');                         
 
                     },function failure(err)
                     {
@@ -212,6 +215,7 @@
                     console.log("changing selected slot...", object);
                 if(object.hasOwnProperty('id'))
                 {
+                    $scope.$emit('saveOldValues');
                     vm2.selectedSlot = object.id;
                     StorageFactory.setCurrentKey(vm2.mySlots[vm2.selectedSlot]);
                     $scope.$emit('Keychange');
@@ -220,7 +224,8 @@
                 {
                     if(!(object.isDirectory))
                     {
-                        vm2.selectedSlot = object.id;
+                        $scope.$emit('saveOldValues');
+                        //vm2.selectedSlot = object.id;
                         vm2.selectedSlot = object.$modelValue.id;
                         StorageFactory.setCurrentKey(vm2.mySlots[vm2.selectedSlot]);
                         $scope.$emit('Keychange');

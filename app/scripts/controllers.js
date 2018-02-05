@@ -105,7 +105,6 @@
             //saves editor content in the localstorage slot that is open every 5 seconds, spinner indicates that 
             function saveInSlot()
             {
-
                 vm.timerId = $interval(function()
                 {
                     vm.showSpinnerSmall = true;
@@ -114,11 +113,23 @@
                         vm.showSpinnerSmall = false;
                     }, 1000);
                     var thekey = StorageFactory.getGetter(StorageFactory.getCurrentKey().title)();
-                    console.log("saving : ", cropFilter(StorageFactory.getCurrentKey().title));
+                    //console.log("saving : ", cropFilter(StorageFactory.getCurrentKey().title));
                     StorageFactory.getSetter(thekey)(thedocument.getValue());
                 }, 5000);
                 StaticDataFactory.setTimerId(vm.timerId);
             }
+
+            $scope.$on('saveOldValues',function()
+            {
+                    vm.showSpinnerSmall = true;
+                    $timeout(function()
+                    {
+                        vm.showSpinnerSmall = false;
+                    }, 1000);
+                    var thekey = StorageFactory.getGetter(StorageFactory.getCurrentKey().title)();
+                    console.log("saving : ", cropFilter(StorageFactory.getCurrentKey().title));
+                    StorageFactory.getSetter(thekey)(thedocument.getValue());
+            });
 
             function cropFilter(item)
             {
@@ -300,9 +311,12 @@
                 {
                     vm.showSpinnerSmall = false;
                 }, 1000);
-                console.log("saving ", StorageFactory.getCurrentKey().title);
-                var thekey = StorageFactory.getGetter(StorageFactory.getCurrentKey().title)();
-                StorageFactory.getSetter(thekey)(thedocument.getValue());
+
+                //$scope.$emit('saveOldValues');
+
+                // console.log("saving ", StorageFactory.getCurrentKey().title);
+                // var thekey = StorageFactory.getGetter(StorageFactory.getCurrentKey().title)();
+                // StorageFactory.getSetter(thekey)(thedocument.getValue());
 
 
 
@@ -327,15 +341,31 @@
             // key is an object
             function retrieveData(alias)
             {
-                
                 if(alias === undefined)
                 {
                     alias = StorageFactory.getCurrentKey();
                 }
                 console.log("alias", alias);
-                var thekey = StorageFactory.getGetter(alias.title)();
-                // console.log("retrieving data and setting the document value...", alias, thekey);
-                thedocument.setValue(StorageFactory.getGetter(thekey)());
+                if(StorageFactory.getGetter(alias.title)() === undefined)
+                {
+                    $timeout(function() 
+                    {
+                        console.log("waiting for StorageFactory to settle...", Date.now());
+                        var thekey = StorageFactory.getGetter(alias.title)();
+                        // console.log("retrieving data , setting the document value...", StorageFactory.getGetter(thekey)());
+                        thedocument.setValue(StorageFactory.getGetter(thekey)());
+                    }, 50);
+                }
+                else
+                {
+                    var thekey = StorageFactory.getGetter(alias.title)();
+                    // console.log("retrieving data and setting the document value...", StorageFactory.getGetter(thekey)());
+                    thedocument.setValue(StorageFactory.getGetter(thekey)());
+                }
+                if(StaticDataFactory.getTimerId() === 0 )
+                {
+                    saveInSlot();
+                }
             }
 
             //toggles the configuration menu in the left area;
