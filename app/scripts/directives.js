@@ -4,6 +4,8 @@
 
 angular.module('confab')
 
+/*Part of the file navigator (node_template.html) changing the name of a file of directory neeeds to be updated
+In local storage. For this the old and the new name have to be in one place.*/
 .directive('nameGiver', function(StorageFactory)
         {
             return{
@@ -173,16 +175,16 @@ angular.module('confab')
         element.html(ngModel.$viewValue || "");
       };
       
-      element.bind("blur keyup change", function(event) 
+      element.bind("keyup change", function(event) 
       {
-        console.log("changing......");
+        console.log("changing property......");
         var el = event.target.id;
         if(el !== 'newproperty' && el !== 'newclassname' && el !== 'newdescription')
         {
-	        var oldvalue = scope.vm.selectedItem.properties[scope.vm.selectedProperty][0];
+	        var oldvalue = scope.vm3.selectedItem.properties[scope.vm3.selectedProperty][0];
 	        scope.$apply(read);
-	        var newvalue = scope.vm.selectedItem.properties[scope.vm.selectedProperty][0];
-	        var theattrs = scope.vm.selectedItem.attrs;
+	        var newvalue = scope.vm3.selectedItem.properties[scope.vm3.selectedProperty][0];
+	        var theattrs = scope.vm3.selectedItem.attrs;
 	        if(newvalue !== oldvalue)
 	        {
 	        	Object.defineProperty(theattrs, newvalue,
@@ -190,15 +192,32 @@ angular.module('confab')
 	        	delete theattrs[oldvalue];
 	        }
         }
-        else
-        {
+        else if(el !== 'newclassname'){
         	scope.$apply(read);
         }
-
       });
+      element.bind("blur", function(event) 
+      {
+        console.log("changing classname......");
+        var el = event.target.id;
+        
+        if(el === 'newclassname') 
+        {
+            var oldvalue = (scope.vm3.selectedItem.classname);
+            scope.$apply(read);
+            var newvalue = (scope.vm3.selectedItem.classname);
+            delete scope.vm3.dataModel[oldvalue];
+            scope.vm3.dataModel[newvalue] = scope.vm3.selectedItem;
+        }      
+        else{
+            scope.$apply(read);
+        }
+      });
+
     }
   };
 });
+
 
 
 }());

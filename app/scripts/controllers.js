@@ -28,7 +28,7 @@
             vm.sendZip = sendZip;
             vm.toggleSpinner = toggleSpinner;
             vm.setCredentials = setCredentials;
-            vm.setAvailableLesson = setAvailableLesson;
+           // vm.setAvailableLesson = setAvailableLesson;
             vm.toggleReadonly = toggleReadonly;
             vm.unlock = unlock;
 
@@ -156,6 +156,10 @@
             function sendZip()
             {   
                 toggleSpinner();
+                //saving the current file before uploading it...
+                var thekey = StorageFactory.getGetter(StorageFactory.getCurrentKey().title)();
+                console.log("saving : ", cropFilter(StorageFactory.getCurrentKey().title));
+                StorageFactory.getSetter(thekey)(thedocument.getValue());
                 ZipService.sendZip().then(function succes(res)
                 {
                     toggleSpinner();
@@ -235,18 +239,17 @@
                 {
                     vm.navigatorModel = JSON.parse(response.data.JSONMONSTER.MYMONSTER);
                     console.log("returned datamodel : \n", vm.navigatorModel);
-                    Object.keys(vm.navigatorModel).forEach(function (item, index)
-                    {
-                       
-                        if(vm.navigatorModel[item].type === 'lesson')
-                        {
-                            vm.availableLessons.push( vm.navigatorModel[item] );
-                        }
-                        if (vm.availableLessons.length > 0)
-                        {
-                            setAvailableLesson(vm.availableLessons[0].url);
-                        }
-                    });
+                    // Object.keys(vm.navigatorModel).forEach(function (item, index)
+                    // {
+                    //     if(vm.navigatorModel[item].type === 'lesson')
+                    //     {
+                    //         vm.availableLessons.push( vm.navigatorModel[item] );
+                    //     }
+                    //     if (vm.availableLessons.length > 0)
+                    //     {
+                    //         setAvailableLesson(vm.availableLessons[0].url);
+                    //     }
+                    // });
 
                     editor.setOption('hintOptions', {schemaInfo: vm.navigatorModel});
                     editor.foldCode(CodeMirror.Pos(0,0));

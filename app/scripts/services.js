@@ -4,8 +4,8 @@
     var app = angular.module('confab');
     app.constant('PROJECTNAME','Ibis4Student');
     app.constant('API_URL', "http://localhost:3000");
-    app.constant('DOWNLOAD_URL',"http://localhost:8080/Ibis4Education/iaf/api/configurations/download/Ibis4Student");
-    //app.constant('DOWNLOAD_URL',"http://ibis4education-env.bz46fawhzf.eu-central-1.elasticbeanstalk.com/iaf/api/configurations/download/Ibis4Student");
+    // app.constant('DOWNLOAD_URL',"http://localhost:8080/Ibis4Education/iaf/api/configurations/download/Ibis4Student");
+    app.constant('DOWNLOAD_URL',"http://ibis4education-env.bz46fawhzf.eu-central-1.elasticbeanstalk.com/iaf/api/configurations/download/Ibis4Student");
     app.constant('UPLOAD_URL',"http://localhost:8080/Ibis4Education/iaf/api/configurations");
     // app.constant('UPLOAD_URL',"http://ibis4education-env.bz46fawhzf.eu-central-1.elasticbeanstalk.com/iaf/api/configurations");
     app.constant('IAF_URL', "http://ibis4education-env.bz46fawhzf.eu-central-1.elasticbeanstalk.com");
@@ -120,17 +120,6 @@
           */
         function getJson()
         {          
-
-          // return $http.get(API_URL + '/json').then(function(data)
-          //   {
-          //     console.info("returning json from server with status ",data.status);
-          //       thejson = data.data;
-          //       return data;
-                
-          //   },function (error)
-          //   {
-          //     console.log("server error :", error );
-          //   });
 
           return $http.get(IAF_URL + '/api/getjson').then(
 
