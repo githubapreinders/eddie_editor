@@ -23,23 +23,10 @@ app.config(function ($stateProvider, $urlRouterProvider)
             views: {
                 'content@': {
                     templateUrl : 'views/moderator.html',
-                    controller  : 'ModeratorController as vm'
+                    controller  : 'ModeratorController as vm3'
                 }
             }
-        })
-        .state('app.courseinfo', {
-            url:'courseinfo',
-            views: {
-                'content@': {
-                    templateUrl : 'views/courseinfo.html',
-                    controller  : 'CourseInfoController as vm'
-                }
-            }
-        })
-
-
-
-    ;
+        });
     $urlRouterProvider.otherwise('/');
 
     

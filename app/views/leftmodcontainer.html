@@ -1,68 +1,55 @@
     <div >
         <label class="radio-inline" for="myRadio1">Pipes </label>
-            <input type="radio"  name = "types" id="myRadio1" ng-checked = "vm.selectedItem.type == 'pipes'" value="pipes" ng-disabled ="vm.selectedItem.type !== 'pipes' && vm.addingItem === false " ng-model = "vm.selectedItem.type" >
+            <input type="radio"  name = "types" id="myRadio1" ng-checked = "vm3.selectedItem.type == 'pipes'" value="pipes" ng-disabled ="vm3.selectedItem.type !== 'pipes' && vm3.addingItem === false " ng-model = "vm3.selectedItem.type" >
         
         <label class="radio-inline" for="myRadio2">Receivers </label>
-            <input type="radio" name = "types"  id="myRadio2" value="receivers" ng-checked = "vm.selectedItem.type == 'receivers'"  ng-disabled ="vm.selectedItem.type !== 'receivers' && vm.addingItem === false " ng-model = "vm.selectedItem.type">
+            <input type="radio" name = "types"  id="myRadio2" value="receivers" ng-checked = "vm3.selectedItem.type == 'receivers'"  ng-disabled ="vm3.selectedItem.type !== 'receivers' && vm3.addingItem === false " ng-model = "vm3.selectedItem.type">
         
         <label class="radio-inline" for="myRadio3">Snippets </label>
-            <input type="radio" name = "types" id="myRadio3" value="snippets" ng-checked = "vm.selectedItem.type == 'snippets'"  ng-disabled ="vm.selectedItem.type !== 'snippets' && vm.addingItem ===  false " ng-model = "vm.selectedItem.type">
+            <input type="radio" name = "types" id="myRadio3" value="snippets" ng-checked = "vm3.selectedItem.type == 'snippets'"  ng-disabled ="vm3.selectedItem.type !== 'snippets' && vm3.addingItem ===  false " ng-model = "vm3.selectedItem.type">
         
         <label class="radio-inline" for="myRadio4">General </label>
-            <input type="radio" name = "types" id="myRadio4" value="general" ng-checked = "vm.selectedItem.type == 'general'"  ng-disabled ="vm.selectedItem.type !== 'general' && vm.addingItem ===  false " ng-model = "vm.selectedItem.type">
+            <input type="radio" name = "types" id="myRadio4" value="general" ng-checked = "vm3.selectedItem.type == 'general'"  ng-disabled ="vm3.selectedItem.type !== 'general' && vm3.addingItem ===  false " ng-model = "vm3.selectedItem.type">
 
-            <label class="radio-inline" for="myRadio5">Lesson </label>
-            <input type="radio" name = "types" id="myRadio5" value="lesson" ng-checked = "vm.selectedItem.type == 'lesson'"  ng-disabled ="vm.selectedItem.type !== 'lesson' && vm.addingItem ===  false " ng-model = "vm.selectedItem.type">
+            
         
     </div>
 
 
 
 
-    <div ng-show="vm.selectedItem.type !== 'snippets' && vm.selectedItem.type !== 'lesson' ">
+    <div ng-show="vm3.selectedItem.type !== 'snippets' && vm3.selectedItem.type !== 'lesson' ">
         <div class="divider"></div>
         <div ng-include="'./views/addProperty.html'"></div>
         <div class="divider"></div>
-        <div style="padding-bottom:10px;" ng-repeat = "property in vm.selectedItem.properties">
+        <div style="padding-bottom:10px;" ng-repeat = "property in vm3.selectedItem.properties">
                     <div>
-                        <label  contenteditable ng-model = "vm.selectedItem.properties[$index][0]" ng-click= "vm.selectedProperty === $index? vm.showPropertyDescription = !vm.showPropertyDescription:vm.selectedProperty = $index" ng-change = "vm.changeAttrName($index)">
+                        <label  contenteditable ng-model = "vm3.selectedItem.properties[$index][0]" ng-click= "vm3.selectedProperty === $index? vm3.showPropertyDescription = !vm3.showPropertyDescription:vm3.selectedProperty = $index" ng-change = "vm3.changeAttrName($index)">
                             <span id = "property{{$index}}"   > {{property[0]}}
                             </span>
                         </label>
                         </div> 
                         <div style="display:flex;">
-                        <input style="width:75%" id= "propertyvalue{{$index}}" type="text" ng-value = "vm.selectedItem.properties[$index][2]" ng-model = "vm.selectedItem.properties[$index][2]" ng-change="vm.changeAttr($index)"/>
+                        <input style="width:75%" id= "propertyvalue{{$index}}" type="text" ng-value = "vm3.selectedItem.properties[$index][2]" ng-model = "vm3.selectedItem.properties[$index][2]" ng-change="vm3.changeAttr($index)"/>
                         <div style="flex-grow:1"></div>
-                        <span ng-click="vm.deleteProperty($index)" >
+                        <span ng-click="vm3.deleteProperty($index)" >
                                 <i class="fa fa-close  "></i>
                         </span>
                     </div>
         </div>
     </div>
-    <div ng-show = "vm.selectedItem.type === 'lesson' ">
-        <div class="divider"></div>  
-        <label for="urlinput">url</label><input type="text" name="urlinput" id="urlinput" style="width:75%;margin-left:15px;" ng-model = "vm.selectedItem.url">
-         <div >
-        <label class="radio-inline" for="myRadio10">free </label>
-            <input type="radio"  name = "free" id="myRadio10" ng-checked = "vm.selectedItem.free === 'true'" value="true"  ng-model = "vm.selectedItem.free" >
-        
-        <label class="radio-inline" for="myRadio11">restricted </label>
-            <input type="radio" name = "free"  id="myRadio11" value="false" ng-checked = "vm.selectedItem.free === 'false'"   ng-model = "vm.selectedItem.free">
-    </div>
-
-
-
+    
 
     </div>
-    <div style="height: 92%;" ng-show = "vm.selectedItem.type === 'snippets' ">
+    <div style="height: 92%;" ng-show = "vm3.selectedItem.type === 'snippets' ">
         <div class="divider"></div>  
         <div class="navigatorTop">
-            <span ng-click="vm.otherSlot()"   class="rounded">
-                            <i   class="fa fa-key  "></i>{{vm.currentSlotNumber |cropFilter}}
+            <span ng-click="vm3.otherSlot()"   class="rounded">
+                            <i   class="fa fa-key  "></i>{{vm3.currentSlotNumber |cropFilter}}
             </span>
             <div></div>
             <strong>XML Contents</strong>
             <div></div>    
         </div>  
-        <pre style="height: 92%; overflow-x: hidden;">{{vm.selectedItem.xml}}</pre>
+        <pre style="height: 92%; overflow-x: hidden;">{{vm3.selectedItem.xml}}</pre>
     </div>

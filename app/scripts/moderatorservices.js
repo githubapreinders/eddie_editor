@@ -4,12 +4,12 @@
 
 	var app = angular.module('confab');
 
-	app.factory('ModeratorFactory', function($http, StorageFactory, API_URL)
+	app.factory('ModeratorFactory', function($http, StorageFactory, IAF_URL)
 	{
 	var availableLesson = null;	
 		return{
 			postJsonBulk : postJsonBulk,
-			postTag : postTag,
+			postDatamonster : postDatamonster,
 			postSchema : postSchema,
 			deleteItem : deleteItem,
 			setAvailableLesson : setAvailableLesson,
@@ -22,20 +22,15 @@
 			console.log("availableLesson", availableLesson);
 		}
 
-
 		function getAvailableLessons()
 		{
 			return availableLesson;
 		}
 
-
-
 		function postJsonBulk(json)
 		{
-
 			try
 			{
-				//JSON.parse(json);
 				$http.post(API_URL + '/postJsonBulk', json).then(function success(resp)
 					{
 						console.log("success",resp);
@@ -52,44 +47,13 @@
 		}
 
 
-		function postTag(theobject)
-        {
-          console.log("posting tag", theobject);
-          // if(theobject.type === 'snippets')
-          // {
-          // 	return convertXml(theobject.xml).then(function (res)
-	         //  {
-	         //  		var parking = angular.copy(theobject);//to prevent the original model from corrupting
-	         //   		parking.xml = res.data;	
-	         //     $http.post(API_URL+'/postIaftag', parking).then(function success(resp)
-	         //      {
-	         //        return console.log("saving result", resp.status);
-	         //      },
-	         //      function failure(err)
-	         //      {
-	         //        return console.log("failed result posting snippet", err.status);
-	         //      });
-	         //  });	
-          // }
-          // else
-          // {
-          	  //theobject.xml = "";
-          	  return  $http.post(API_URL+'/postIaftag', theobject).then(function success(resp)
-	          {
-	            console.log("saving result", resp.status);
-	          },
-	          function failure(err)
-	          {
-	            console.log("failed result posting tag", err.status);
-	          });
-          // }
-        }
+		
 
         
         function convertXml(thexml)
         {
           	//console.log("slot to convert to json:", StorageFactory.getGetter(slot)());
-         	return $http({method:"POST",url: API_URL + '/convertToJson',data: thexml ,headers:{"Content-Type":'application/xml'} }).then(function(data)
+         	return $http({method:"POST",url: IAF_URL + '/convertToJson',data: thexml ,headers:{"Content-Type":'application/xml'} }).then(function(data)
 	        {
 	          return data;
 	        },function(error)
@@ -104,9 +68,38 @@
 			
 		}
 
+		function postDatamonster(datamonster, thetag)
+        {
+          console.log("posting a monster with length ", Object.keys(datamonster).length);
+          
+          	  var helper = JSON.stringify(datamonster);
+          	  return  $http.post(IAF_URL +'/storejson',helper).then(function success(resp)
+	          {
+	            console.log("saving result", resp.status);
+	            posttag(tag);
+	          },
+	          function failure(err)
+	          {
+	            console.log("failed result posting datamonster", err.status);
+	          });
+        }
+
+        function postTag(tag)
+        {
+        	return  $http.post(IAF_URL +'/postiaftag', tag).then(function success(resp)
+	          {
+	            console.log("saving a tag", resp.status);
+	          },
+	          function failure(err)
+	          {
+	            console.log("failed result posting tag", err.status);
+	          });
+        }
+
+		//TODO delete item directly in mongodb
 		function deleteItem(classname)
 		{
-			return $http({method:"GET", url: API_URL + '/deleteItem?resource=' + classname  }).then(
+			return $http({method:"GET", url: IAF_URL + '/deleteiaftag/' + classname }).then(
 				function success(res)
 				{
 					return res;

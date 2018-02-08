@@ -1,22 +1,22 @@
 
-<div ng-show = "!vm.showPropertyDescription" style="height:100%;"> 
-	<h2  id="newclassname" contenteditable ng-model = "vm.selectedItem.classname">{{vm.selectedItem.classname}}</h2>
+<div ng-show = "!vm3.showPropertyDescription" style="height:100%;"> 
+	<h2  id="newclassname" contenteditable ng-model = "vm3.selectedItem.classname">{{vm3.selectedItem.classname}}</h2>
 
-	<span  contenteditable spellcheck="false"   id = "newdescription" style="white-space: pre;"  ng-model = "vm.selectedItem.description" class="moderatordescription">{{vm.selectedItem.description }}</span>
+	<span  contenteditable spellcheck="false"   id = "newdescription" style="white-space: pre;"  ng-model = "vm3.selectedItem.description" class="moderatordescription">{{vm3.selectedItem.description }}</span>
 </div>
 
-<div ng-show = "vm.showPropertyDescription && vm.newProperty === null" style="height:100%;">
+<div ng-show = "vm3.showPropertyDescription && vm3.newProperty === null" style="height:100%;">
 	
-	<h2 id="propertyheader">{{vm.selectedItem.properties[vm.selectedProperty][0] }}</h2>
+	<h2 id="propertyheader">{{vm3.selectedItem.properties[vm3.selectedProperty][0] }}</h2>
 
-	<span  contenteditable spellcheck="false" ng-model = "vm.selectedItem.properties[vm.selectedProperty][1]" class="moderatordescription">{{vm.selectedItem.properties[vm.selectedProperty][1]}}</span  contenteditable spellcheck="false">
+	<span  contenteditable spellcheck="false" ng-model = "vm3.selectedItem.properties[vm3.selectedProperty][1]" class="moderatordescription">{{vm3.selectedItem.properties[vm3.selectedProperty][1]}}</span  contenteditable spellcheck="false">
 
 </div>
 
-<div ng-show = "vm.showPropertyDescription && vm.newProperty !== null" style="height:100%;">
+<div ng-show = "vm3.showPropertyDescription && vm3.newProperty !== null" style="height:100%;">
 	
-	<h2 id="newpropertyheader">{{vm.newProperty.propname }}</h2>
+	<h2 id="newpropertyheader">{{vm3.newProperty.propname }}</h2>
 
-	<span  contenteditable spellcheck="false" ng-model = "vm.newProperty.propdes " class="moderatordescription">{{vm.newProperty.propdes }}</span  contenteditable spellcheck="false">
+	<span  contenteditable spellcheck="false" ng-model = "vm3.newProperty.propdes " class="moderatordescription">{{vm3.newProperty.propdes }}</span  contenteditable spellcheck="false">
 
 </div>
