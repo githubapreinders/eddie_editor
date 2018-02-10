@@ -12,7 +12,7 @@
 		vm3.addProperty = addProperty;
 		vm3.addNewClass = addNewClass;
 		vm3.otherSlot = otherSlot;
-		vm3.postTag = postTag;
+		vm3.postDatamonster = postDatamonster;
 		vm3.checkForXml = checkForXml;
 		vm3.postJsonBulk = postJsonBulk;
 		vm3.confirmDelete = confirmDelete;
@@ -86,21 +86,7 @@
 
 
 
-		function postTag()
-		{
-			console.log(vm3.selectedItem);
-			toggleSpinner();
-			ModeratorFactory.postTag(vm3.dataModel).then(function success(res)
-			{
-				toggleSpinner();
-				console.log("success",res);
-			}, 
-			function fail(err)
-			{
-				toggleSpinner();
-				console.log("fail",err);
-			});
-		}
+		
 
 		function addNewClass()
 		{
@@ -187,6 +173,22 @@
 			});
 		}
 
+		function postDatamonster()
+		{
+			console.log(vm3.selectedItem);
+			toggleSpinner();
+			ModeratorFactory.postDatamonster(vm3.dataModel).then(function success(res)
+			{
+				toggleSpinner();
+				console.log("success",res);
+			}, 
+			function fail(err)
+			{
+				toggleSpinner();
+				console.log("fail",err);
+			});
+		}
+
 		function confirmDelete()
 		{
 
@@ -194,14 +196,14 @@
 			{
 				templateUrl : "./views/modal_delete_item.html",
 				animation : true,
-				controller : "Modal2Controller as vm",
+				controller : "Modal2Controller as vm6",
 				size : "sm",
 				backdrop : "static",
 				resolve : 
 				{
 					item : function ()
 					{
-						return vm.selectedItem;
+						return vm3.selectedItem;
 					}
 				}
 			}).result.then(function(result)
@@ -210,13 +212,14 @@
 				if(result === 'delete')
 				{
 					toggleSpinner();
-					ModeratorFactory.deleteItem(vm.selectedItem.classname).then(function succcess(res)
+					ModeratorFactory.deleteItem(vm3.selectedItem.classname).then(function succcess(res)
 					{
 						toggleSpinner();
 						console.log("response from service: ", res);
-						var parking = vm.selectedItem.classname;
-						delete vm.dataModel[parking];
-						vm.selectedItem = vm.dataModel[Object.keys(vm.dataModel)[0]];
+						var parking = vm3.selectedItem.classname;
+						delete vm3.dataModel[parking];
+						vm3.selectedItem = vm3.dataModel[Object.keys(vm3.dataModel)[0]];
+						postDatamonster();
 					},
 					function fail(err)
 					{

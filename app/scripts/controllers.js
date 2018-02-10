@@ -63,7 +63,7 @@
             //tabs control
             vm.toggleTab = toggleTab;
             vm.thetabs=["tabauth", "tabedit"];
-            toggleTab('tabauth');
+            toggleTab('tabauth');//initializing
 
             function toggleTab(thetab)
             {   
@@ -84,18 +84,6 @@
                 console.log("toggling tab",vm.showeditor, vm.showauth);
 
             }
-
-
-
-
-            $scope.$on("Keychange", function()
-            {
-                vm.currentKey = StorageFactory.getCurrentKey();
-                console.log("keychange", vm.currentKey.title);
-                retrieveData(vm.currentKey);
-                toggleReadonly(vm.currentKey);
-            });
-
 
             function setAvailableLesson(which)
             {
@@ -119,6 +107,17 @@
                 StaticDataFactory.setTimerId(vm.timerId);
             }
 
+            //setting the editor content after a new file has been chosen to edit
+            $scope.$on("Keychange", function()
+            {
+                vm.currentKey = StorageFactory.getCurrentKey();
+                console.log("keychange", vm.currentKey.title);
+                retrieveData(vm.currentKey);
+                toggleReadonly(vm.currentKey);
+            });
+
+
+            // after a switch in focus, saving the work that is just made
             $scope.$on('saveOldValues',function()
             {
                     vm.showSpinnerSmall = true;

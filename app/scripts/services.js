@@ -4,14 +4,17 @@
     var app = angular.module('confab');
     app.constant('PROJECTNAME','Ibis4Student');
     app.constant('API_URL', "http://localhost:3000");
-    // app.constant('DOWNLOAD_URL',"http://localhost:8080/Ibis4Education/iaf/api/configurations/download/Ibis4Student");
-    app.constant('DOWNLOAD_URL',"/iaf/api/configurations/download/Ibis4Student");
-    app.constant('UPLOAD_URL',"/iaf/api/configurations");
+
+
+    // app.constant('DOWNLOAD_URL',"http://ibis4education-env.bz46fawhzf.eu-central-1.elasticbeanstalk.com/iaf/api/configurations/download/Ibis4Student");
     // app.constant('UPLOAD_URL',"http://ibis4education-env.bz46fawhzf.eu-central-1.elasticbeanstalk.com/iaf/api/configurations");
-    app.constant('IAF_URL', "http://ibis4education-env.bz46fawhzf.eu-central-1.elasticbeanstalk.com");
+    // app.constant('IAF_URL', "http://ibis4education-env.bz46fawhzf.eu-central-1.elasticbeanstalk.com");
+
+    app.constant('DOWNLOAD_URL',"http://localhost:8080/Ibis4Education/iaf/api/configurations/download/Ibis4Student");
+    app.constant('UPLOAD_URL',"http://localhost:8080/Ibis4Education/iaf/api/configurations");
+    app.constant('IAF_URL', "http://localhost:8080/Ibis4Education/api");
     
     //app.constant('DOWNLOAD_URL',"http://localhost:8080/Ibis4Education/api/configurations/download/Ibis4Education/");
-    //app.constant('IAF_URL', "http://localhost:8080/Ibis4Education/api");
     //http://ibis4education-env.bz46fawhzf.eu-central-1.elasticbeanstalk.com/iaf/api/configurations
 
 
@@ -133,7 +136,7 @@
           //   return null;
           // }         
 
-          return $http.get(IAF_URL + '/api/getjson').then(
+          return $http.get(IAF_URL + '/getjson').then(
 
             function success(data)
             {
