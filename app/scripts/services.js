@@ -5,8 +5,8 @@
     app.constant('PROJECTNAME','Ibis4Student');
     app.constant('API_URL', "http://localhost:3000");
     // app.constant('DOWNLOAD_URL',"http://localhost:8080/Ibis4Education/iaf/api/configurations/download/Ibis4Student");
-    app.constant('DOWNLOAD_URL',"http://ibis4education-env.bz46fawhzf.eu-central-1.elasticbeanstalk.com/iaf/api/configurations/download/Ibis4Student");
-    app.constant('UPLOAD_URL',"http://localhost:8080/Ibis4Education/iaf/api/configurations");
+    app.constant('DOWNLOAD_URL',"/iaf/api/configurations/download/Ibis4Student");
+    app.constant('UPLOAD_URL',"/iaf/api/configurations");
     // app.constant('UPLOAD_URL',"http://ibis4education-env.bz46fawhzf.eu-central-1.elasticbeanstalk.com/iaf/api/configurations");
     app.constant('IAF_URL', "http://ibis4education-env.bz46fawhzf.eu-central-1.elasticbeanstalk.com");
     
@@ -15,7 +15,7 @@
     //http://ibis4education-env.bz46fawhzf.eu-central-1.elasticbeanstalk.com/iaf/api/configurations
 
 
-    app.factory('StaticDataFactory', function(xmlTag, $http, StorageFactory,API_URL, IAF_URL, $interval) 
+    app.factory('StaticDataFactory', function(xmlTag, $http, StorageFactory,API_URL, $interval) 
 
     {
 
@@ -25,6 +25,7 @@
         var fontSizes = [12,13,14,15,16,17,18,19,20];
         var thejson = null;
         var selectedItem = null;
+        var IAF_URL = StorageFactory.getGetter('IAF_URL')();
 
         var formattingSettings = {
                 "indent_size": 4,
@@ -48,7 +49,7 @@
         return{
             getJson : getJson,
             getStaticJson : getStaticJson,
-            loadXml : loadXml,
+            // loadXml : loadXml,
             setDataSource: setDataSource,
             getDataSource: getDataSource,
             getFormattingSettings: getFormattingSettings,
@@ -58,9 +59,15 @@
             getTimerId : getTimerId,
             stopTimer : stopTimer,
             setSelectedItem : setSelectedItem,
-            getSelectedItem : getSelectedItem
+            getSelectedItem : getSelectedItem,
+            setIafUrl : setIafUrl
 
         };
+
+        function setIafUrl()
+        {
+          IAF_URL = StorageFactory.getGetter("IAF_URL")();
+        }
 
         function setSelectedItem(item)
         {
@@ -119,7 +126,12 @@
                 /* data is available directly in the response
           */
         function getJson()
-        {          
+        { 
+          // if(IAF_URL === null || IAF_URL === undefined)
+          // {
+          //   //alert('please enter an iaf url;\nhttp://ibis4education-env.bz46fawhzf.eu-central-1.elasticbeanstalk.com\nhttp://localhost:8080/Ibis4Education ');
+          //   return null;
+          // }         
 
           return $http.get(IAF_URL + '/api/getjson').then(
 
@@ -144,32 +156,38 @@
 
         
 
-        function loadXml(which)
-        {
-          console.log("file to catch:", which);
-          return $http.get(API_URL + '/snippets?resource=' + which ).then(function(data)
-            {
-              return data;
-            },function(error)
-            {
-              console.log("error loading xml", error);
-            });
-        }
+        // function loadXml(which)
+        // {
+        //   console.log("file to catch:", which);
+        //   return $http.get(API_URL + '/snippets?resource=' + which ).then(function(data)
+        //     {
+        //       return data;
+        //     },function(error)
+        //     {
+        //       console.log("error loading xml", error);
+        //     });
+        // }
 
     });
 
      app.factory('ZipService', function (StorageFactory, $http ,DOWNLOAD_URL, UPLOAD_URL, PROJECTNAME)
      {
         var myslots;
+        var IAF_URL;
         return {
             init : init,
             getSlots : getSlots,
             getZip : getZip,
             getZipFromFile : getZipFromFile,
             sendZip : sendZip,
-            getMySlots : getMySlots
+            getMySlots : getMySlots,
+            setIafUrl : setIafUrl
         };
 
+        function setIafUrl()
+        {
+          IAF_URL = StorageFactory.getGetter('IAF_URL')();
+        }
 
         function init()
         {
@@ -293,14 +311,16 @@
         {
           return new Promise(function(resolve, reject)
           {
-            if(UPLOAD_URL === undefined || typeof UPLOAD_URL !== 'string')
+            if(IAF_URL === undefined || typeof IAF_URL !== 'string')
             {
-              alert("add a correct IAF url");
+              alert("please add a correct IAF url");
               return 'error';
             }
 
-            var finalurl = UPLOAD_URL;
-            alert(finalurl);            zip.generateAsync({type:"blob"}).then(function(myzip)
+            var finalurl = IAF_URL + UPLOAD_URL;
+            alert(finalurl);            
+
+            zip.generateAsync({type:"blob"}).then(function(myzip)
             {
               var fileName = 'configuration.zip';
               var fd = new FormData();
@@ -517,11 +537,11 @@
         */
         function getZip()
         {
-          console.log("Download url",DOWNLOAD_URL);
+          var finalUrl = IAF_URL + DOWNLOAD_URL;
+          console.log("Download url :",finalUrl);
 
-          return $http({method:"GET", url:DOWNLOAD_URL, responseType:'arraybuffer'}).then(function success(resp)
+          return $http({method:"GET", url: finalUrl, responseType:'arraybuffer'}).then(function success(resp)
           {
-            console.log("Download url",DOWNLOAD_URL);
             return new Promise(function (resolve, reject)
             {
             JSZip.loadAsync(resp.data).then(function(zip)
@@ -1069,7 +1089,7 @@
             }
 
     });
-    app.factory('ValidationFactory', function(StorageFactory, $http, API_URL)
+    app.factory('ValidationFactory', function(StorageFactory, $http, IAF_URL)
     {
       return {
         validateXml : validateXml
@@ -1077,15 +1097,6 @@
 
       function validateXml()
       {
-        // return $http({method:"POST", data:StorageFactory.getGetter(StorageFactory.getCurrentKey())(), url:API_URL + '/validate', headers:{"Content-type":"application/xml"}}).then( function(response)
-        // {
-        //   console.log("response:", response);
-        //   return response.message; 
-        // }, function failure(err)
-        // {
-        //   console.log("error",err);
-        //   return err;
-        // });
 
           return $http.get(API_URL + '/validate').then(function succes(res)
           {
@@ -1102,7 +1113,7 @@
           });  
       }
     });
-    app.factory('IafFactory', function($http, StorageFactory, UPLOAD_URL)
+    app.factory('IafFactory', function($http, StorageFactory, StaticDataFactory, ZipService, UPLOAD_URL)
     {
       
     var uname = null;
@@ -1110,14 +1121,7 @@
       return{
         postConfig : postConfig,
         setCredentials : setCredentials,
-        setIAFURL : setIAFURL
       };
-
-      //restoring value from localstorage during initialisation
-      function setIAFURL()
-      {
-        UPLOAD_URL = StorageFactory.getGetter('UPLOAD_URL')();
-      }
 
       //resonding to the paperplane button upper right
       function postConfig(zip)
@@ -1166,21 +1170,32 @@
       function setCredentials(server, uname, pw)
       {
         console.log("server",server, uname, pw);
-       
-        if (server)
+        return new Promise(function(resolve, reject)
         {
-          UPLOAD_URL = server;
-          console.log("upload url", UPLOAD_URL, typeof(IAF_URL));
-          StorageFactory.getSetter('UPLOAD_URL')(server);
-        }
-        uname = uname;
-        pw = pw;
-
-        return{
-          apiurl:server,
-          uname : uname,
-          pw : pw
-        };
+          if (server)
+          {
+            console.log("iaf url",  server);
+            StorageFactory.getSetter('IAF_URL')(server);
+            StaticDataFactory.setIafUrl();
+            if(StaticDataFactory.getStaticJson() === null || StaticDataFactory.getStaticJson() === undefined)
+            {
+              StaticDataFactory.getJson().then(function success(resp)
+              {
+                console.log("succes from factory... now updating the scope, how to find it?");
+                resolve(resp);
+              },
+              function failure(err)
+              {
+                 console.log("failure getting json...", err);
+                 reject(err);
+              });
+            }
+          }
+          else
+          {
+            console.log("doing noting...");
+          }
+        });
       }
     });
 

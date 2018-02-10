@@ -2,7 +2,7 @@
     'use strict';
 
     angular.module('confab')
-        .controller('IndexController', function ($scope,$interval,$timeout, xmlTag, attributeObject, StaticDataFactory, StorageFactory, EditorFactory, ValidationFactory, IafFactory, ZipService,ModeratorFactory)
+        .controller('IndexController', function ($scope,$interval,$timeout, $uibModal, xmlTag, attributeObject, StaticDataFactory, StorageFactory, EditorFactory, ValidationFactory, IafFactory, ZipService,ModeratorFactory)
         {
 
             console.log('IndexController...');
@@ -186,8 +186,52 @@
             function setCredentials()
             {
                 console.log("credentials:", vm.iaf_url);
-                var resp = IafFactory.setCredentials(vm.iaf_url, vm.username, vm.password);
+                IafFactory.setCredentials(vm.iaf_url, vm.username, vm.password).then(
+                function succes(resp)
+                {
+                    console.log("setting credentials and updating the scope");    
+                    vm.navigatorModel = JSON.parse(resp.data.JSONMONSTER.MYMONSTER);
+                    toggle_datasource('pipes');
+                },
+                function fail(err)
+                {
+
+                });
             }
+
+
+            function showCredentialsDialog()
+            {
+
+                var modalInstance = $uibModal.open(
+                {
+                    templateUrl : "./views/modalcredentials.html",
+                    controller : "LoadCredentialsController as vm4",
+                    size : "md",
+                    resolve : {items : function ()
+                        {
+                            return "something";
+                        }}
+                });
+
+                modalInstance.result.then(
+                function success(resp)
+                {
+                    console.log("response: " , resp);
+                    vm.iaf_url = resp.iaf_url;
+                    vm.username = resp.username;
+                    vm.password = resp.password;
+                    setCredentials();
+
+
+                }
+                ,function failure(err)
+                {
+                    console.log("no result from modal...");
+                });
+            }
+
+
 
             function postSnippet()
             {
@@ -235,42 +279,37 @@
             {
                 editor = EditorFactory.editorLoaded(_editor);
                 thedocument = editor.getDoc();
-                StaticDataFactory.getJson().then(function success(response)
+                if(StorageFactory.getGetter('IAF_URL')() === null || StorageFactory.getGetter('IAF_URL')() === undefined)
                 {
-                    vm.navigatorModel = JSON.parse(response.data.JSONMONSTER.MYMONSTER);
-                    console.log("returned datamodel : \n", vm.navigatorModel);
-                    // Object.keys(vm.navigatorModel).forEach(function (item, index)
-                    // {
-                    //     if(vm.navigatorModel[item].type === 'lesson')
-                    //     {
-                    //         vm.availableLessons.push( vm.navigatorModel[item] );
-                    //     }
-                    //     if (vm.availableLessons.length > 0)
-                    //     {
-                    //         setAvailableLesson(vm.availableLessons[0].url);
-                    //     }
-                    // });
+                    showCredentialsDialog();
+                }
 
-                    editor.setOption('hintOptions', {schemaInfo: vm.navigatorModel});
-                    editor.foldCode(CodeMirror.Pos(0,0));
-                    editor.foldCode(CodeMirror.Pos(thedocument.lineCount(),0));
-                    toggle_datasource('pipes');
-                    showNav(); 
-                    showConf();
-                    showConf();
+                else
+                {
+                    StaticDataFactory.getJson().then(
+                    function success(response)
+                    {
+                        vm.navigatorModel = JSON.parse(response.data.JSONMONSTER.MYMONSTER);
+                        console.log("returned datamodel : \n", vm.navigatorModel);
+                        editor.setOption('hintOptions', {schemaInfo: vm.navigatorModel});
+                        editor.foldCode(CodeMirror.Pos(0,0));
+                        editor.foldCode(CodeMirror.Pos(thedocument.lineCount(),0));
+                        toggle_datasource('pipes');
+                        showNav(); 
+                        showConf();
+                        showConf();
+                    
+                        //initialising the cache and loading it in the editor;
+                        var avalue = StorageFactory.initialise();
+                        retrieveData();
+                        saveInSlot();
+
+                    },function error(response)
+                    {
+                        console.log("error initialising:", response.data);
+                    });
+                }
                 
-                    //initialising the cache and loading it in the editor;
-                    var avalue = StorageFactory.initialise();
-                    retrieveData();
-                    saveInSlot();
-
-                    //setting the iaf url inside the storagefactory
-                    IafFactory.setIAFURL();
-
-                },function error(response)
-                {
-                    console.log("error initialising:", response.data);
-                });
             }
 
             //receiving object
@@ -613,8 +652,32 @@ to a string and inserted in the editor;*/
                 }
             }
         })
+
+    .controller('LoadCredentialsController', function($uibModalInstance, items)
+    {
+        console.log("loading credentials...");
+        var vm4 = this;
+        vm4.iaf_url = null;
+        vm4.username = null;
+        vm4.password = null;
+        vm4.submitCredentials = submitCredentials;
+        vm4.closeModal = closeModal;
+
+        function submitCredentials()
+        {
+            console.log("returning with credentials...");
+            $uibModalInstance.close({iaf_url:vm4.iaf_url, username: vm4.username, password: vm4.password});
+        }
+
+        function closeModal()
+        {
+           $uibModalInstance.dismiss();
+        }
+    })
+
+
     /*determines which classes are shown in the navigator, based on the JSON item type (pipes, receivers, general or snippets)*/
-.filter('datasourceFilter', function(StaticDataFactory)
+    .filter('datasourceFilter', function(StaticDataFactory)
     {
         return function(items)
         {
