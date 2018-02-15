@@ -27,7 +27,7 @@ gulp.task('default',function()
 
 gulp.task('build',function(callback)
 {
-    runSequence('concatAndStash','removeDirs',['uglifyJs','handleAngular','uglifyCodemirror','copy_html','copy_images','copy_fonts'],'browser_Sync_build');
+    runSequence('concatAndStash','removeDirs',['uglifyJs','handleAngular','uglifyCodemirror','copy_html','copy_images','copy_fonts']);
 });
 
 
@@ -36,17 +36,17 @@ gulp.task('concatAndStash',['clean'], function ()
     return gulp.src('app/index.html')
         .pipe(useref())
         .pipe(gulpIf('*.css' , cssnano()))
-        .pipe(gulp.dest('build'));
+        .pipe(gulp.dest('webapp'));
 });
 
 gulp.task('removeDirs', function()
 {
-    return del(['build/scripts']);
+    return del(['webapp/scripts']);
 });
 
 gulp.task('minifyCss', function()
 {
-    return gulp.src('build/styles/main.css')
+    return gulp.src('webapp/styles/main.css')
     .pipe(cssnano());
 });
 
@@ -54,19 +54,19 @@ gulp.task('uglifyJs', function()
 {
     return gulp.src(['app/scripts/application.js','app/scripts/controllers.js','app/scripts/directives.js','app/scripts/moderatorcontroller.js','app/scripts/moderatorservices.js','app/scripts/services.js','app/scripts/treecontroller.js','app/scripts/xmlTag.js'])
         .pipe(concat('scripts.min.js'))
-        .pipe(strip())
-        .pipe(stripDebug())
+        // .pipe(strip())
+        // .pipe(stripDebug())
         .pipe(sourcemaps.init())
         .pipe(ngAnnotate())
         .pipe(uglify())
         .pipe(sourcemaps.write('.'))
-        .pipe(gulp.dest('build/scripts'));
+        .pipe(gulp.dest('webapp/scripts'));
 });
 
 gulp.task('handleAngular', function()
 {
     return gulp.src(["app/bower_components/angular/angular.min.js","app/bower_components/angular-ui-router/release/angular-ui-router.min.js","app/bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js","app/bower_components/angular-cookies/angular-cookies.min.js","app/bower_components/angularLocalStorage/dist/angularLocalStorage.min.js","app/bower_components/angular-ui-tree/dist/angular-ui-tree.min.js","app/bower_components/jszip/dist/jszip.min.js","app/bower_components/underscore/underscore-min.js","app/bower_components/angular-animate/angular-animate.min.js","app/bower_components/file-saver/FileSaver.min.js"])
-    .pipe(gulp.dest('build/scripts'));
+    .pipe(gulp.dest('webapp/scripts'));
 });
 
 gulp.task('uglifyCodemirror', function()
@@ -77,19 +77,19 @@ gulp.task('uglifyCodemirror', function()
         .pipe(sourcemaps.init())
         .pipe(uglify())
         .pipe(sourcemaps.write('.'))
-        .pipe(gulp.dest('build/scripts'));
+        .pipe(gulp.dest('webapp/scripts'));
 });
 
 gulp.task('copy_html', function()
 {
     return gulp.src(['app/views/*.html'])
-        .pipe(gulp.dest('build/views'));
+        .pipe(gulp.dest('webapp/views'));
 });
 
 gulp.task('copy_fonts', function()
 {
     return gulp.src(['app/fonts/glyphicons-halflings-regular.woff2','app/fonts/glyphicons-halflings-regular.woff','app/fonts/fontawesome-webfont.woff','app/fonts/fontawesome-webfont.woff2','app/fonts/glyphicons-halflings-regular.ttf'])
-        .pipe(gulp.dest('build/fonts'));
+        .pipe(gulp.dest('webapp/fonts'));
 });
 
 
@@ -98,19 +98,19 @@ gulp.task('copy_images', function()
 {
     return gulp.src('app/media/**/*.+(png|jpg|gif|svg)')
         .pipe(imagemin())
-        .pipe(gulp.dest('build/media'));
+        .pipe(gulp.dest('webapp/media'));
 });
 
 gulp.task('clean', function()
 {
-    return del(['tmp','build']);
+    return del(['tmp','webapp']);
 });   
 
 gulp.task('browser_Sync_build',function()
 {
     browserSync.init(
     {
-        server:{baseDir:'build'}
+        server:{baseDir:'webapp'}
     });
     browserSync.reload();
 });

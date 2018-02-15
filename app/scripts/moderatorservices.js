@@ -4,8 +4,9 @@
 
 	var app = angular.module('confab');
 
-	app.factory('ModeratorFactory', function($http, StorageFactory, IAF_URL)
+	app.factory('ModeratorFactory', function($http, StorageFactory)
 	{
+	var IAF_URL = StorageFactory.getGetter('IAF_URL')();	
 	var availableLesson = null;	
 		return{
 			postJsonBulk : postJsonBulk,
@@ -72,11 +73,11 @@
         {
           console.log("posting a monster with length ", Object.keys(datamonster).length);
           
-          	  var helper = JSON.stringify(datamonster);
-          	  return  $http.post(IAF_URL +'/storejson',helper).then(function success(resp)
+          	  //var helper = JSON.stringify(datamonster);
+          	  return  $http({method:"POST",url:IAF_URL +'/api/storejson',data:datamonster,headers:{'content-type':'application/json'}}).then(function success(resp)
 	          {
 	            console.log("saving result", resp.status);
-	            posttag(tag);
+	            postTag(thetag);
 	          },
 	          function failure(err)
 	          {
@@ -86,7 +87,7 @@
 
         function postTag(tag)
         {
-        	return  $http.post(IAF_URL +'/postiaftag', tag).then(function success(resp)
+        	return  $http.post(IAF_URL +'/api/postiaftag', tag).then(function success(resp)
 	          {
 	            console.log("saving a tag", resp.status);
 	          },
@@ -99,7 +100,7 @@
 		//TODO delete item directly in mongodb
 		function deleteItem(classname)
 		{
-			return $http({method:"GET", url: IAF_URL + '/deleteiaftag/' + classname }).then(
+			return $http({method:"GET", url: IAF_URL + '/api/deleteiaftag/' + classname }).then(
 				function success(res)
 				{
 					return res;

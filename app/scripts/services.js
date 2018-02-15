@@ -6,19 +6,19 @@
     app.constant('API_URL', "http://localhost:3000");
 
 
-    // app.constant('DOWNLOAD_URL',"http://ibis4education-env.bz46fawhzf.eu-central-1.elasticbeanstalk.com/iaf/api/configurations/download/Ibis4Student");
-    // app.constant('UPLOAD_URL',"http://ibis4education-env.bz46fawhzf.eu-central-1.elasticbeanstalk.com/iaf/api/configurations");
+    app.constant('DOWNLOAD_URL',"/iaf/api/configurations/download/Ibis4Student");
+    app.constant('UPLOAD_URL',"/iaf/api/configurations");
     // app.constant('IAF_URL', "http://ibis4education-env.bz46fawhzf.eu-central-1.elasticbeanstalk.com");
 
-    app.constant('DOWNLOAD_URL',"http://localhost:8080/Ibis4Education/iaf/api/configurations/download/Ibis4Student");
-    app.constant('UPLOAD_URL',"http://localhost:8080/Ibis4Education/iaf/api/configurations");
-    app.constant('IAF_URL', "http://localhost:8080/Ibis4Education/api");
+    // app.constant('DOWNLOAD_URL',"http://localhost:8080/Ibis4Education/iaf/api/configurations/download/Ibis4Student");
+    // app.constant('UPLOAD_URL',"http://localhost:8080/Ibis4Education/iaf/api/configurations");
+    // app.constant('IAF_URL', "http://localhost:8080/Ibis4Education/api");
     
     //app.constant('DOWNLOAD_URL',"http://localhost:8080/Ibis4Education/api/configurations/download/Ibis4Education/");
     //http://ibis4education-env.bz46fawhzf.eu-central-1.elasticbeanstalk.com/iaf/api/configurations
 
 
-    app.factory('StaticDataFactory', function(xmlTag, $http, StorageFactory,API_URL, $interval) 
+    app.factory('StaticDataFactory', function(xmlTag, $http, StorageFactory, $interval) 
 
     {
 
@@ -95,6 +95,7 @@
 
         function stopTimer()
         {
+          console.log("stopping timer...");
           $interval.cancel(timerId);
           timerId = 0 ; 
         }
@@ -130,24 +131,18 @@
           */
         function getJson()
         { 
-          // if(IAF_URL === null || IAF_URL === undefined)
-          // {
-          //   //alert('please enter an iaf url;\nhttp://ibis4education-env.bz46fawhzf.eu-central-1.elasticbeanstalk.com\nhttp://localhost:8080/Ibis4Education ');
-          //   return null;
-          // }         
 
-          return $http.get(IAF_URL + '/getjson').then(
-
-            function success(data)
-            {
-                console.info("returning json from server with status ",data.status);
-                thejson = data.data.JSONMONSTER.MYMONSTER;
-                return data;
-            },
-            function fail(err)
-            {
-              console.log("server error :", err );
-            });
+          return $http.get(IAF_URL + '/api/getjson').then(
+          function success(data)
+          {
+              console.info("returning json from server with status ",data.status);
+              thejson = data.data.JSONMONSTER.MYMONSTER;
+              return data;
+          },
+          function fail(err)
+          {
+            console.log("server error :", err );
+          });
 
         }  
 
@@ -176,7 +171,7 @@
      app.factory('ZipService', function (StorageFactory, $http ,DOWNLOAD_URL, UPLOAD_URL, PROJECTNAME)
      {
         var myslots;
-        var IAF_URL;
+        var IAF_URL = StorageFactory.getGetter('IAF_URL')();
         return {
             init : init,
             getSlots : getSlots,
@@ -770,6 +765,65 @@
         changeKeys : changeKeys
       };
 
+      function initialise()
+      {
+
+        if(storage.getKeys().indexOf("ngIdle.expiry") > -1)
+        {
+            getSetter("ngIdle.expiry")();
+        }  
+
+
+        if(storage.getKeys().length === 0 || storage.getKeys().length === 1 && getGetter('IAF_URL')() !== null)
+        {
+          console.log("adding files...");
+          getSetter("slot1")(" start here...");
+          getSetter("file1")("slot1");
+          var thejson = [
+                          {
+                            "id": 1,
+                            "title": "dir1",
+                            "isDirectory": true,
+                            "nodes": [
+                              {
+                                "id": 2,
+                                "title": "file1",
+                                "isDirectory": false,
+                                "isLocked": false,
+                                "nodes": []
+                              }
+                            ]
+                          }
+                        ];
+          var myslots = { 2 : {"title":"file1",isLocked:false} };              
+          getSetter("thejson")(thejson);//setting file structure in localstorage; w
+          getSetter("myslots")(myslots);//setting the open files configuration
+          thekeys = createKeys(["file1"]);
+        }
+        else
+        {
+          console.log("adding from local storage contents.");
+          var helper = storage.getKeys();
+
+          if(helper.indexOf("thejson") > -1)
+          {
+              helper.splice(helper.indexOf("thejson"),1);
+          }  
+          if(helper.indexOf("myslots") > -1)
+          {
+              helper.splice(helper.indexOf("myslots"),1);
+          } 
+          if(helper.indexOf("IAF_URL") > -1)
+          {
+              helper.splice(helper.indexOf("IAF_URL"),1);
+          }
+
+          thekeys = createKeys(helper); 
+          console.log("created keys:", thekeys);
+        }
+        currentKey = thekeys[0];
+      }
+
       function changeKeys(oldname, newname)
       {
         console.log(oldname , newname,"\n", thekeys, currentKey, "\n");
@@ -851,59 +905,7 @@
         return newslotname;
       }
 
-      function initialise()
-      {
-        if(storage.getKeys().length === 0)
-        {
-          getSetter("slot1")(" start here...");
-          getSetter("file1")("slot1");
-          var thejson = [
-                          {
-                            "id": 1,
-                            "title": "dir1",
-                            "isDirectory": true,
-                            "nodes": [
-                              {
-                                "id": 2,
-                                "title": "file1",
-                                "isDirectory": false,
-                                "isLocked": false,
-                                "nodes": []
-                              }
-                            ]
-                          }
-                        ];
-          var myslots = { 2 : {"title":"file1",isLocked:false} };              
-          getSetter("thejson")(thejson);//setting file structure in localstorage; w
-          getSetter("myslots")(myslots);//setting the open files configuration
-          thekeys = createKeys(["file1"]);
-        }
-        else
-        {
-          var helper = storage.getKeys();
-
-          if(helper.indexOf("ngIdle.expiry") > -1)
-          {
-              helper.splice(helper.indexOf("ngIdle.expiry"),1);
-          }  
-
-          if(helper.indexOf("thejson") > -1)
-          {
-              helper.splice(helper.indexOf("thejson"),1);
-          }  
-          if(helper.indexOf("myslots") > -1)
-          {
-              helper.splice(helper.indexOf("myslots"),1);
-          } 
-          if(helper.indexOf("IAF_URL") > -1)
-          {
-              helper.splice(helper.indexOf("IAF_URL"),1);
-          } 
-
-          thekeys = createKeys(helper); 
-        }
-        currentKey = thekeys[0];
-      }
+      
 
 
       function getAliases()
@@ -1092,7 +1094,7 @@
             }
 
     });
-    app.factory('ValidationFactory', function(StorageFactory, $http, IAF_URL)
+    app.factory('ValidationFactory', function(StorageFactory, $http )
     {
       return {
         validateXml : validateXml
@@ -1101,19 +1103,19 @@
       function validateXml()
       {
 
-          return $http.get(API_URL + '/validate').then(function succes(res)
-          {
-            var thexml = StorageFactory.getGetter(StorageFactory.getCurrentKey())();
-            console.log("xsd:\n",  res);
-            console.log("xml:\n", typeof thexml);
-            var message = validateXML(thexml, res.data);
-            return message;
-          },
-          function fail(err)
-          {
-            console.log("failure....", err);
-            return err;
-          });  
+          // return $http.get(API_URL + '/validate').then(function succes(res)
+          // {
+          //   var thexml = StorageFactory.getGetter(StorageFactory.getCurrentKey())();
+          //   console.log("xsd:\n",  res);
+          //   console.log("xml:\n", typeof thexml);
+          //   var message = validateXML(thexml, res.data);
+          //   return message;
+          // },
+          // function fail(err)
+          // {
+          //   console.log("failure....", err);
+          //   return err;
+          // });  
       }
     });
     app.factory('IafFactory', function($http, StorageFactory, StaticDataFactory, ZipService, UPLOAD_URL)
@@ -1121,6 +1123,7 @@
       
     var uname = null;
     var pw = null;
+    var IAF_URL = StorageFactory.getGetter('IAF_URL')();
       return{
         postConfig : postConfig,
         setCredentials : setCredentials,
@@ -1131,7 +1134,7 @@
       {
         return new Promise(function(resolve, reject)
         {
-          var finalurl = UPLOAD_URL;
+          var finalurl = IAF_URL + UPLOAD_URL;
           alert(finalurl);
         zip.generateAsync({type:"blob"}).then(function(myzip)
         {
@@ -1172,19 +1175,31 @@
       //responding to the submit button in the authentication area.
       function setCredentials(server, uname, pw)
       {
-        console.log("server",server, uname, pw);
         return new Promise(function(resolve, reject)
         {
           if (server)
           {
-            console.log("iaf url",  server);
+            if(server.indexOf('/#/')> -1)
+            {
+              server = server.substring(0,server.indexOf('/#/'));
+            }
+
+            if(server.charAt(server.length-1) === '/')
+            {
+              server = server.substring(0,server.length-1);
+            }
+
+
+            console.log("credentials: " , server, uname, pw);
+            IAF_URL = server;
             StorageFactory.getSetter('IAF_URL')(server);
             StaticDataFactory.setIafUrl();
+            ZipService.setIafUrl();
             if(StaticDataFactory.getStaticJson() === null || StaticDataFactory.getStaticJson() === undefined)
             {
               StaticDataFactory.getJson().then(function success(resp)
               {
-                console.log("succes from factory... now updating the scope, how to find it?");
+                console.log("succes from factory... now updating the scope");
                 resolve(resp);
               },
               function failure(err)
