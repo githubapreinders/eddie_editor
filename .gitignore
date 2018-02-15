@@ -1,5 +1,6 @@
 # Dependency directories
 node_modules/
+webapp/
 build/
 app/bower_components
 app/js
