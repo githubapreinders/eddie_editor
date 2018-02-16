@@ -125,9 +125,12 @@
                     {
                         vm.showSpinnerSmall = false;
                     }, 1000);
-                    var thekey = StorageFactory.getGetter(StorageFactory.getCurrentKey().title)();
-                    console.log("saving : ", cropFilter(StorageFactory.getCurrentKey().title));
-                    StorageFactory.getSetter(thekey)(thedocument.getValue());
+                    if(StorageFactory.getCurrentKey())
+                    {
+                        var thekey = StorageFactory.getGetter(StorageFactory.getCurrentKey().title)();
+                        console.log("saving : ", cropFilter(StorageFactory.getCurrentKey().title));
+                        StorageFactory.getSetter(thekey)(thedocument.getValue());
+                    }
             });
 
             function cropFilter(item)

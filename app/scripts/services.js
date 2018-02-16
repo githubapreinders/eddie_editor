@@ -10,9 +10,9 @@
     // app.constant('UPLOAD_URL',"http://ibis4education-env.bz46fawhzf.eu-central-1.elasticbeanstalk.com/iaf/api/configurations");
     // app.constant('IAF_URL', "http://ibis4education-env.bz46fawhzf.eu-central-1.elasticbeanstalk.com");
 
-    app.constant('DOWNLOAD_URL',"http://localhost:8080/Ibis4Education/iaf/api/configurations/download/Ibis4Student");
-    app.constant('UPLOAD_URL',"http://localhost:8080/Ibis4Education/iaf/api/configurations");
-    app.constant('IAF_URL', "http://localhost:8080/Ibis4Education/api");
+    app.constant('DOWNLOAD_URL',"/iaf/api/configurations/download/Ibis4Student");
+    app.constant('UPLOAD_URL',"/iaf/api/configurations");
+    //app.constant('IAF_URL', "http://localhost:8080/Ibis4Education/api");
     
     //app.constant('DOWNLOAD_URL',"http://localhost:8080/Ibis4Education/api/configurations/download/Ibis4Education/");
     //http://ibis4education-env.bz46fawhzf.eu-central-1.elasticbeanstalk.com/iaf/api/configurations
@@ -136,7 +136,7 @@
           //   return null;
           // }         
 
-          return $http.get(IAF_URL + '/getjson').then(
+          return $http.get(IAF_URL + '/api/getjson').then(
 
             function success(data)
             {
@@ -176,7 +176,7 @@
      app.factory('ZipService', function (StorageFactory, $http ,DOWNLOAD_URL, UPLOAD_URL, PROJECTNAME)
      {
         var myslots;
-        var IAF_URL;
+        var IAF_URL = StorageFactory.getGetter('IAF_URL')();
         return {
             init : init,
             getSlots : getSlots,
@@ -1092,8 +1092,10 @@
             }
 
     });
-    app.factory('ValidationFactory', function(StorageFactory, $http, IAF_URL)
+    app.factory('ValidationFactory', function(StorageFactory, $http)
     {
+      var IAF_URL = StorageFactory.getGetter('IAF_URL')();
+
       return {
         validateXml : validateXml
       };

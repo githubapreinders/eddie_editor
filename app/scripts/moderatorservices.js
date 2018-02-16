@@ -4,9 +4,10 @@
 
 	var app = angular.module('confab');
 
-	app.factory('ModeratorFactory', function($http, StorageFactory, IAF_URL)
+	app.factory('ModeratorFactory', function($http, StorageFactory)
 	{
 	var availableLesson = null;	
+	var IAF_URL = StorageFactory.getGetter('IAF_URL')();
 		return{
 			postJsonBulk : postJsonBulk,
 			postDatamonster : postDatamonster,
