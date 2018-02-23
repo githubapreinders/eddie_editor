@@ -1,5 +1,5 @@
 
-<div class = "treeview" style="padding:5px;" ng-controller = "ApsTreeController as vm2">
+<div class = "treeview"  ng-controller = "ApsTreeController as vm2">
     <div ui-tree="vm2.treeOptions" id="tree-root">
       <ol ui-tree-nodes ng-model="vm2.list">
          <li ng-repeat="node in vm2.list" ui-tree-node ng-include="'./views/node_template.html'" ng-animate="{enter:'animate-enter',leave:'animate-leave'}"></li>

@@ -2,7 +2,7 @@
     'use strict';
 
     angular.module('confab')
-        .controller('IndexController', function ($scope,$interval,$timeout, $uibModal, xmlTag, attributeObject, StaticDataFactory, StorageFactory, EditorFactory, ValidationFactory, IafFactory, ZipService,ModeratorFactory)
+        .controller('IndexController', function ($scope, $interval, $timeout, $uibModal, xmlTag, attributeObject, StaticDataFactory, StorageFactory, EditorFactory, ValidationFactory, IafFactory, ZipService,ModeratorFactory)
         {
 
             console.log('IndexController...');
@@ -50,6 +50,7 @@
             vm.validationMessage = null;
             vm.currentKey = StorageFactory.getCurrentKey();
             vm.iaf_url = StorageFactory.getGetter("IAF_URL")();
+            var avalue = StorageFactory.initialise();
 
 
             //Editor Styling
@@ -93,6 +94,13 @@
             //saves editor content in the localstorage slot that is open every 5 seconds, spinner indicates that 
             function saveInSlot()
             {
+                if (StaticDataFactory.getTimerId() !== 0 )
+                {
+                    console.log("cancelling a timer...");
+                 return;
+                }//avoiding running two timers...
+                
+                console.log("starting timer");
                 vm.timerId = $interval(function()
                 {
                     vm.showSpinnerSmall = true;
@@ -101,11 +109,19 @@
                         vm.showSpinnerSmall = false;
                     }, 1000);
                     var thekey = StorageFactory.getGetter(StorageFactory.getCurrentKey().title)();
-                    //console.log("saving : ", cropFilter(StorageFactory.getCurrentKey().title));
+                    //console.log("saving : ", cropFilter(StorageFactory.getCurrentKey().title)," with id ",vm.timerId);
                     StorageFactory.getSetter(thekey)(thedocument.getValue());
                 }, 5000);
                 StaticDataFactory.setTimerId(vm.timerId);
             }
+
+
+
+            $scope.$on('$destroy', function()
+            {
+                console.log("cancelling timer...", typeof(vm.timerId));
+                $interval.cancel();
+            });
 
             //setting the editor content after a new file has been chosen to edit
             $scope.$on("Keychange", function()
@@ -300,9 +316,10 @@
                         showNav(); 
                         showConf();
                         showConf();
+
                     
                         //initialising the cache and loading it in the editor;
-                        var avalue = StorageFactory.initialise();
+                        // var avalue = StorageFactory.initialise();
                         retrieveData();
                         saveInSlot();
 

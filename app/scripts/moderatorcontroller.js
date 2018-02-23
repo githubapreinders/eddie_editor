@@ -168,7 +168,7 @@
 				windowClass : "mymodal",
 				resolve : {items : function ()
 					{
-						return vm3.dataModel;
+						return vm3.selectedItem;
 					}}
 			});
 		}

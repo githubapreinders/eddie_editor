@@ -1,4 +1,4 @@
-<div ui-tree-handle class="tree-node tree-node-content" ng-class = "{'tree-node-content-selected' : node.id === vm2.selectedSlot} "  >
+<div ui-tree-handle  style="cursor:default;" class="tree-node tree-node-content" ng-class = "{'tree-node-content-selected' : node.id === vm2.selectedSlot} "  >
     
     <a class="btn " ng-if="node.isDirectory" data-nodrag ng-click="vm2.toggle(this)"><span
         class="fa">
@@ -12,17 +12,16 @@
         <span  ><i class="fa fa-file-o"></i></span>
         </a>
 
-<a href="#"  data-nodrag ng-click="vm2.setSelectedSlot(this)"  >
+<a href="#"   ng-click="node.isDirectory?vm2.setSelectedSlot(this):angular.noop()"  >
     <span name-giver   id ="treeitem{{node.id}}"  >{{node.title | cropFilter}}</span>
 </a>
   <div ></div>
 
+    <a  class="pull-right btn " data-nodrag ng-click="vm2.remove(this)"><span
+        ><i class="fa fa-times showwhenhover"></i></span></a>
     <a class="pull-right btn " data-nodrag ng-click="vm2.changeName(this)"><span
         ><i class="fa fa-pencil"></i></span></a>
-    <a class="pull-right btn " data-nodrag ng-click="vm2.remove(this)"><span
-        ><i class="fa fa-times"></i></span></a>
-    <!-- <a class="pull-right btn " data-nodrag ng-click="vm2.newSubitem(this)" style="margin-right: 8px;">
-      <span  ><i class="fa fa-plus"></i></span></a> -->
+    
 </div>
 <ol ui-tree-nodes="" ng-model="node.nodes" ng-class="{hidden: collapsed}">
   <li ng-repeat="node in node.nodes" ui-tree-node ng-include="'./views/node_template.html'" >
