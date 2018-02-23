@@ -1,0 +1,22 @@
+@font-face{
+	font-family:'mainwindowfont';
+	src: url('muli-regular.ttf');
+}
+
+@import url('https://fonts.googleapis.com/css?family=Muli|Cuprum|Play|Audiowide');
+
+$mainwindowfont: 'muli';
+$filenameheader: 'cuprum';
+$navigatorheaders: 'play';
+
+$background0:  "../../media/concrete_seamless.png";
+$background1: "../media/cheap_diagonal_fabric_mirrored.png";
+$background2: "../media/cheap_diagonal_fabric.png";
+$background3: "../media/spirationdark.png";
+$background4: "../media/whitewall.png";
+
+$corkColor1:#AAAAAA;
+$corkColor2:#996666;
+$guttercolor:#222;
+$guttercolorhover:#CCCCCC;
+$gutterlinenumber:#aaa;
