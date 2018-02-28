@@ -72,8 +72,39 @@
 		{
 			width:100%;
 		}
+		
+		.popovertemplate
+		{
+			min-width:200px;
+			overflow-y: auto;
+			overflow-x:hidden;
+		}
+
+		
+		
+		h5
+		{
+			text-align: center;
+		}
+
 	}
 }
+
+.popover-content
+{
+	background:url($background3);
+	color:white;
+	padding:2px;
+	border-radius:5px;
+}
+
+.arrow:after
+{
+	display:none;
+}
+
+
+
 
 .divider
 {

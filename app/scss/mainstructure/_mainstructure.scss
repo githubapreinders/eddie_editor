@@ -6,32 +6,7 @@ html, body
 }
 
 
-.mytooltip 
-{
-    position: relative;
-    display: inline-block;
-    cursor: pointer;
-}
 
-.mytooltip .mytooltiptext {
-    visibility: hidden;
-    width: 200px;
-    background-color: black;
-    color: #fff;
-    text-align: center;
-    padding: 5px ;
-    border-radius: 6px;
-    font-size:10px;
-    top:-30px;
-    left:-30px;
-    position: absolute;
-    z-index: 100;
-}
-
-.mytooltip:hover .mytooltiptext 
-{
-    visibility: visible;cursor:none;
-}
 
 .mymodal .modal-dialog
 {
@@ -50,7 +25,6 @@ html, body
 	display:flex;
 	cursor:pointer;
 	
-
 	span
 	{
 		padding:4px;

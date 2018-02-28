@@ -154,7 +154,7 @@ gulp.task('browser_Sync',function()
 {
     browserSync.init(
     {
-        server:{baseDir:'app'}
+        server:{baseDir:'app', cors:true}
     });
 });
 

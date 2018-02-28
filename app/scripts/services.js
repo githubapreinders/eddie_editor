@@ -156,18 +156,6 @@
 
         
 
-        // function loadXml(which)
-        // {
-        //   console.log("file to catch:", which);
-        //   return $http.get(API_URL + '/snippets?resource=' + which ).then(function(data)
-        //     {
-        //       return data;
-        //     },function(error)
-        //     {
-        //       console.log("error loading xml", error);
-        //     });
-        // }
-
     });
 
      app.factory('ZipService', function (StorageFactory, $http ,DOWNLOAD_URL, UPLOAD_URL, PROJECTNAME)
@@ -382,9 +370,6 @@
                         myzipfiles[i].name = helper;
                       }
               }
-
-
-
 
               /*Write to local storage; to avoid collisions, the calls
               are made synchronously.*/

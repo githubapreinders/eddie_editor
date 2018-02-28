@@ -2,7 +2,7 @@
     'use strict';
 
     angular.module('confab')
-        .controller('IndexController', function ($scope, $interval, $timeout, $uibModal, xmlTag, attributeObject, StaticDataFactory, StorageFactory, EditorFactory, ValidationFactory, IafFactory, ZipService,ModeratorFactory)
+        .controller('IndexController', function ($scope, $interval, $timeout, $uibModal,$uibTooltip, xmlTag, attributeObject, StaticDataFactory, StorageFactory, EditorFactory, ValidationFactory, IafFactory, ZipService,ModeratorFactory)
         {
 
             console.log('IndexController...');
@@ -65,6 +65,15 @@
             vm.toggleTab = toggleTab;
             vm.thetabs=["tabauth", "tabedit"];
             toggleTab('tabauth');//initializing
+
+
+            setTooltipSettings();
+            function setTooltipSettings()
+            {
+                //console.log("tooltip", $uibTooltip);
+                 //$uibTooltip.options({'trigger':'mouseenter'});
+            }
+
 
             function toggleTab(thetab)
             {   

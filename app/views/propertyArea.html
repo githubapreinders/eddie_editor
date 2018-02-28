@@ -1,11 +1,11 @@
 
-<div ng-repeat = "property in vm.selectedItem.properties">
+<div style="position:relative;" ng-repeat = "property in vm.selectedItem.properties">
 	<div style="display:flex;">
 		<div class="checkbox " >
 			<label class="checkbox-inline">
 				<input id="checkbox{{$index}}" type="checkbox" property-listener ng-checked="vm.checkDefaults(property)" "/>
-				<div class="mytooltip"  id = "property{{$index}}" ng-click = "vm.showPropertyDescription = true"  > {{property[0]}}
-					<div class="mytooltiptext">{{property[1]}}</div>
+				<div uib-popover-template="'./views/popovertemplate.html'" popover-placement="top-left" popover-trigger="'mouseenter'"  id = "property{{$index}}" ng-click = "vm.showPropertyDescription = true"  > {{property[0]}}
+					
 				</div>
 			</label>
 			<div style="flex-grow: 1">		
