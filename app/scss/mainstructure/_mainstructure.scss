@@ -5,6 +5,19 @@ html, body
 	font-family:$mainwindowfont;
 }
 
+.popover-content
+{
+	background:url($background3);
+	color:white;
+	padding:3px;
+	border:0.5px solid white;
+	border-radius:5px;
+}
+
+.arrow:after
+{
+	display:none;
+}
 
 
 
@@ -110,6 +123,16 @@ html, body
 		font-style : italic;
 		color : grey;
 	}
+}
+
+#zipfromfile, #mergefromfile
+{
+	width: 0.1px;
+	height: 0.1px;
+	opacity: 0;
+	overflow: hidden;
+	position: absolute;
+	z-index: -1;
 }
 
 .btn {
