@@ -128,7 +128,7 @@ html, body {
       -ms-flex-direction: column;
           flex-direction: column;
   z-index: 3;
-  background: url("../../media/concrete_seamless.png"); }
+  background: url("../media/concrete_seamless.png"); }
   #configcontainer .configArea {
     height: 5%;
     overflow: hidden; }
@@ -162,7 +162,7 @@ html, body {
     min-height: 30%;
     background: #dddddd; }
     #configcontainer .tabArea .tabheaders {
-      background: url("../../media/concrete_seamless.png");
+      background: url("../media/concrete_seamless.png");
       display: -webkit-box;
       display: -webkit-flex;
       display: -ms-flexbox;
@@ -234,7 +234,7 @@ tr.angular-ui-tree-empty {
 .tree-node {
   border: 0px solid #dae2ea;
   border-radius: 2px;
-  background: url("../../media/concrete_seamless.png");
+  background: url("../media/concrete_seamless.png");
   padding: 0px;
   margin: 0px; }
 
@@ -304,7 +304,7 @@ ol {
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  background: url("../../media/concrete_seamless.png");
+  background: url("../media/concrete_seamless.png");
   height: 8%; }
   #mynavbar img {
     width: 46px;
@@ -413,13 +413,13 @@ ol {
   font-family: "muli";
   width: 25%;
   height: 100%;
-  background: url("../../media/concrete_seamless.png");
+  background: url("../media/concrete_seamless.png");
   z-index: 4;
   -webkit-transition: left 0.4s;
   transition: left 0.4s; }
   #navigatorcontainer .dataSourceArea {
     height: 10%;
-    background: url("../../media/concrete_seamless.png");
+    background: url("../media/concrete_seamless.png");
     padding: 0px 0px 0px 0px;
     margin-bottom: 5px;
     box-shadow: 0px 3px 2px #888888; }
@@ -439,7 +439,7 @@ ol {
     -webkit-flex-grow: 1;
         -ms-flex-positive: 1;
             flex-grow: 1;
-    background: url("../../media/concrete_seamless.png");
+    background: url("../media/concrete_seamless.png");
     cursor: pointer;
     overflow-y: auto;
     overflow-x: hidden;
@@ -464,7 +464,7 @@ ol {
         -ms-flex-direction: column;
             flex-direction: column;
     height: 25%;
-    background: url("../../media/concrete_seamless.png");
+    background: url("../media/concrete_seamless.png");
     overflow-y: auto;
     overflow-x: hidden;
     padding: 15px;
@@ -479,7 +479,7 @@ ol {
         -ms-flex-positive: 1;
             flex-grow: 1;
     height: 40%;
-    background: url("../../media/concrete_seamless.png");
+    background: url("../media/concrete_seamless.png");
     overflow: scroll;
     padding: 15px; }
     #navigatorcontainer .propertyArea input.form-control, #navigatorcontainer .propertyArea div.checkbox {
@@ -516,7 +516,7 @@ ol {
       -ms-flex-direction: column;
           flex-direction: column;
   z-index: 3;
-  background: url("../../media/concrete_seamless.png"); }
+  background: url("../media/concrete_seamless.png"); }
   #configcontainer .configArea {
     height: 5%;
     overflow: hidden; }
@@ -550,7 +550,7 @@ ol {
     min-height: 30%;
     background: #dddddd; }
     #configcontainer .tabArea .tabheaders {
-      background: url("../../media/concrete_seamless.png");
+      background: url("../media/concrete_seamless.png");
       display: -webkit-box;
       display: -webkit-flex;
       display: -ms-flexbox;
@@ -622,7 +622,7 @@ tr.angular-ui-tree-empty {
 .tree-node {
   border: 0px solid #dae2ea;
   border-radius: 2px;
-  background: url("../../media/concrete_seamless.png");
+  background: url("../media/concrete_seamless.png");
   padding: 0px;
   margin: 0px; }
 
@@ -716,7 +716,7 @@ ol {
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  background: url("../../media/concrete_seamless.png"); }
+  background: url("../media/concrete_seamless.png"); }
   .mainmodcontainer .leftmodcontainer {
     width: 35%;
     height: 100%;

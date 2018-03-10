@@ -6,28 +6,35 @@
 <br>
 
 
-<div class="slotContainer">
-	<span>IAF url</span>	
-	<div></div>
-	<input type="text" class="form-control" ng-model="vm.iaf_url">
-	
-	
+
+
+<div ng-show = "vm.user===null">
+	<div class="slotContainer">
+		<span>Username</span>
+		<div></div>	
+		<input type="text" class="form-control" ng-model="vm.username">	
+	</div>
+	<div class="slotContainer">
+		<span>Password</span>
+		<div></div>	
+		<input type="Password" class="form-control" ng-model="vm.password" >
+	</div>
+	<div class="slotContainer">
+		<div></div>
+			<a id="loginbutton" href="#" ng-click="vm.login(vm.username, vm.password);" ng-show = "vm.user === null" ><span class="fa-stack fa-lg  loginIcons"  >
+                         <i class="fa fa-square-o fa-stack-2x "></i>
+                         <i class="fa fa-sign-in fa-stack-1x "></i>
+            </span></a>
+	</div>
 </div>
 
 <div class="slotContainer">
-	<span>Username</span>
-	<div></div>	
-	<input type="text" class="form-control" ng-model="vm.username">
-	
-	
+<span  ng-show = "vm.user !== null;">Logged in as {{vm.user.firstname}}  {{vm.user.lastname}}</span> 
+<div></div>	
+ <a id="logoutbutton" ng-show="vm.user !== null;" ng-click="vm.logout()"><span  class="fa-stack fa-lg loginIcons"  >
+                        <i class="fa fa-square-o fa-stack-2x "></i>
+                         <i class="fa fa-sign-out fa-stack-1x fa-flip-horizontal"></i>
+                     </span> </a>
 </div>
 
-<div class="slotContainer">
-	<span>Password</span>
-	<div></div>	
-	<input type="Password" class="form-control" ng-model="vm.password" >
-</div>
-<div class="slotContainer">
-	<div></div>
-	<button class="btn btn-info" ng-click = "vm.setCredentials()">Submit</button>
-</div>
+

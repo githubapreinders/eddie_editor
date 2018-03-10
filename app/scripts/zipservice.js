@@ -2,11 +2,22 @@
 {
 	'use strict';
 	var app = angular.module('confab');	
-
-	app.factory('ZipService', function (StorageFactory, $http ,DOWNLOAD_URL, UPLOAD_URL, PROJECTNAME)
+	app.factory('ZipService', function (StorageFactory, $http ,DOWNLOAD_URL, UPLOAD_URL, PROJECTNAME, $window)
      {
+     	console.log("ZipService.js...");
+
         var myslots;
-        var IAF_URL = StorageFactory.getGetter('IAF_URL')();
+        var MYIAF_URL = $window.location.href;
+        if(MYIAF_URL.indexOf('/#/')> -1)
+            {
+              MYIAF_URL = MYIAF_URL.substring(0,MYIAF_URL.indexOf('/#/'));
+            }
+
+            if(MYIAF_URL.charAt(MYIAF_URL.length-1) === '/')
+            {
+              MYIAF_URL = MYIAF_URL.substring(0,MYIAF_URL.length-1);
+            }
+        console.log("myiafurl:", MYIAF_URL);
         return {
             init : init,
             getSlots : getSlots,
@@ -20,7 +31,7 @@
 
         function setIafUrl()
         {
-          IAF_URL = StorageFactory.getGetter('IAF_URL')();
+          MYIAF_URL = StorageFactory.getGetter('MYIAF_URL')();
         }
 
         function init()
@@ -145,13 +156,13 @@
         {
           return new Promise(function(resolve, reject)
           {
-            if(IAF_URL === undefined || typeof IAF_URL !== 'string')
+            if(MYIAF_URL === undefined || typeof MYIAF_URL !== 'string')
             {
               alert("please add a correct IAF url");
               return 'error';
             }
 
-            var finalurl = IAF_URL + UPLOAD_URL;
+            var finalurl = MYIAF_URL + UPLOAD_URL;
             alert(finalurl);            
 
             zip.generateAsync({type:"blob"}).then(function(myzip)
@@ -255,7 +266,7 @@
               myslots = {};
 
               //creation of a flat json structure              
-              for(var i =0 ; i< myzipfiles.length ; i++)
+              for( i =0 ; i< myzipfiles.length ; i++)
               {
                 if(myzipfiles[i].dir)
                 {
@@ -293,7 +304,7 @@
                 return 0;
               });
 
-                var helper = 0;//emergency variable to prevent a possible eternal loop
+                var helper5 = 0;//emergency variable to prevent a possible eternal loop
                 var parentsfound = true; //escapes the while loop when we had a run with no results
 
                 
@@ -301,7 +312,7 @@
                 adding children to the parents node arrays; when there is a parent found myjson is changed
                 and we will start the loop again
                 */
-                while(parentsfound &&  helper <100)
+                while(parentsfound &&  helper5 <100)
                 {
                   parentsfound = false;
                   var copy = myjson;
@@ -325,7 +336,7 @@
                       break;
                     }
                   }
-                  helper ++;
+                  helper5 ++;
                 }
                
 
@@ -626,7 +637,7 @@
         */
         function getZip()
         {
-          var finalUrl = IAF_URL + DOWNLOAD_URL;
+          var finalUrl = MYIAF_URL + DOWNLOAD_URL;
           console.log("Download url :",finalUrl);
 
           return $http({method:"GET", url: finalUrl, responseType:'arraybuffer'}).then(function success(resp)
@@ -698,7 +709,7 @@
               myslots = {};
 
               //creation of a flat json structure              
-              for(var i =0 ; i< myzipfiles.length ; i++)
+              for( i =0 ; i< myzipfiles.length ; i++)
               {
                 if(myzipfiles[i].dir)
                 {
@@ -736,7 +747,7 @@
                 return 0;
               });
 
-                var helper = 0;//emergency variable to prevent a possible eternal loop
+                var helper3 = 0;//emergency variable to prevent a possible eternal loop
                 var parentsfound = true; //escapes the while loop when we had a run with no results
 
                 
@@ -744,7 +755,7 @@
                 adding children to the parents node arrays; when there is a parent found myjson is changed
                 and we will start the loop again
                 */
-                while(parentsfound &&  helper <100)
+                while(parentsfound &&  helper3 <100)
                 {
                   parentsfound = false;
                   var copy = myjson;
@@ -768,7 +779,7 @@
                       break;
                     }
                   }
-                  helper ++;
+                  helper3 ++;
                 }
                
 
@@ -825,5 +836,113 @@
       }//end of method getzip
 
 
-     });//end of factory
+     })//end of factory
+
+	.factory('IafFactory', function($http, ZipService, UPLOAD_URL, $window)
+    {
+      
+    var uname = null;
+    var pw = null;
+    var MYIAF_URL = $window.location.href;
+
+    if(MYIAF_URL.indexOf('/#/')> -1)
+            {
+              MYIAF_URL = MYIAF_URL.substring(0,MYIAF_URL.indexOf('/#/'));
+            }
+
+            if(MYIAF_URL.charAt(MYIAF_URL.length-1) === '/')
+            {
+              MYIAF_URL = MYIAF_URL.substring(0,MYIAF_URL.length-1);
+            }
+
+      console.log("IafFactory", MYIAF_URL);
+
+      return{
+        postConfig : postConfig
+        
+      };
+
+      //resonding to the paperplane button upper right
+      function postConfig(zip)
+      {
+        return new Promise(function(resolve, reject)
+        {
+          var finalurl = MYIAF_URL + UPLOAD_URL;
+          alert(finalurl);
+        zip.generateAsync({type:"blob"}).then(function(myzip)
+        {
+          var fileName = 'configuration.zip';
+          var fd = new FormData();
+          fd.append("realm", 'jdbc');
+          fd.append("name", "Ibis4Student");
+          fd.append("version", 1);
+          fd.append("encoding", 'utf-8');
+          fd.append("multiple_configs", false);
+          fd.append("activate_config", true);
+          fd.append("automatic_reload", true);
+          fd.append("file", myzip, fileName);
+
+
+          return new Promise(function(resolve, reject)
+          {
+             console.log("posting to iaf", myzip);
+              return $http({method: 'POST',url:finalurl , data: fd , headers:{'Content-type': undefined}}
+                  ).then(function succes(response)
+                  {
+                      console.info("returning from backend",response);
+                      resolve (response);
+                  }, function failure(response)
+                  {
+                      console.info("returning error from backend",response);
+                      reject(response);
+                  });
+                });           
+          });
+        resolve();
+        });
+      }
+      //responding to the submit button in the authentication area.
+      //function setCredentials(server, uname, pw)
+      //{
+        // return new Promise(function(resolve, reject)
+        // {
+        //   if (server)
+        //   {
+        //     if(server.indexOf('/#/')> -1)
+        //     {
+        //       server = server.substring(0,server.indexOf('/#/'));
+        //     }
+
+        //     if(server.charAt(server.length-1) === '/')
+        //     {
+        //       server = server.substring(0,server.length-1);
+        //     }
+
+
+        //     console.log("credentials: " , server, uname, pw);
+        //     MYIAF_URL = server;
+        //     StorageFactory.getSetter('MYIAF_URL')(server);
+        //     StaticDataFactory.setIafUrl();
+        //     ZipService.setIafUrl();
+        //     if(StaticDataFactory.getStaticJson() === null || StaticDataFactory.getStaticJson() === undefined)
+        //     {
+        //       StaticDataFactory.getJson().then(function success(resp)
+        //       {
+        //         console.log("succes from factory... now updating the scope");
+        //         resolve(resp);
+        //       },
+        //       function failure(err)
+        //       {
+        //          console.log("failure getting json...", err);
+        //          reject(err);
+        //       });
+        //     }
+        //   }
+        //   else
+        //   {
+        //     console.log("doing noting...");
+        //   }
+        // });
+     // }
+    });
 }());

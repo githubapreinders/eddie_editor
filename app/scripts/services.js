@@ -3,17 +3,17 @@
 'use strict';
     var app = angular.module('confab');
     app.constant('PROJECTNAME','Ibis4Student');
-    app.constant('API_URL', "http://localhost:3000");
     app.constant('DOWNLOAD_URL',"/iaf/api/configurations/download/Ibis4Student");
     app.constant('UPLOAD_URL',"/iaf/api/configurations");
-    //app.constant('IAF_URL', "http://localhost:8080/Ibis4Education/api");
-    // app.constant('DOWNLOAD_URL',"http://localhost:8080/Ibis4Education/iaf/api/configurations/download/Ibis4Student");
-    // app.constant('UPLOAD_URL',"http://localhost:8080/Ibis4Education/iaf/api/configurations");
-    // app.constant('IAF_URL', "http://localhost:8080/Ibis4Education/api");
-    //app.constant('DOWNLOAD_URL',"http://localhost:8080/Ibis4Education/api/configurations/download/Ibis4Education/");
-    //http://ibis4education-env.bz46fawhzf.eu-central-1.elasticbeanstalk.com/iaf/api/configurations
-    app.factory('StaticDataFactory', function(xmlTag, $http, StorageFactory, $interval) 
+    
+    //CHANGE THIS WHEN DEPLOYING TO AWS !!!
+    app.constant('IAF_URL','http://ibis4education-env.bz46fawhzf.eu-central-1.elasticbeanstalk.com');
+    
+    //app.constant('IAF_URL', "http://localhost:8080/Ibis4Education");
+    
+    app.factory('StaticDataFactory', function(xmlTag, $http, StorageFactory, $interval, IAF_URL) 
     {
+      console.log("StaticDatafactory...");
 
         var datasource = 'pipes';
         var timerId = 0 ;
@@ -21,8 +21,6 @@
         var fontSizes = [12,13,14,15,16,17,18,19,20];
         var thejson = null;
         var selectedItem = null;
-        var IAF_URL = StorageFactory.getGetter('IAF_URL')();
-
         var formattingSettings = {
                 "indent_size": 4,
                 "xml": {
@@ -62,7 +60,7 @@
 
         function setIafUrl()
         {
-          IAF_URL = StorageFactory.getGetter("IAF_URL")();
+          // IAF_URL = StorageFactory.getGetter("IAF_URL")();
         }
 
         function setSelectedItem(item)
@@ -151,8 +149,10 @@
     facilitates local storage; we can store and retrieve values: storing : StorageFactory.getSetter(key)(value)
     retrieving : StorageFactory.getGetter(key)() ; removing a key : StorageFactory.getSetter(key)()
     */
+    //TODO make exceptions for 'auth-token' key
     app.factory('StorageFactory',['storage', '$log', function(storage, $log)
     {
+      console.log("StorageFactory...");
       var api = {};
       var thekeys;
       var thealiases = ["file1"];
@@ -187,7 +187,7 @@
         }  
 
 
-        if(storage.getKeys().length === 0 || storage.getKeys().length === 1 && getGetter('IAF_URL')() !== null)
+        if(storage.getKeys().length === 0 || storage.getKeys().length === 1 && getGetter('auth-token')() !== null)
         {
           console.log("adding files...");
           getSetter("slot1")(" start here...");
@@ -226,9 +226,9 @@
           {
               helper.splice(helper.indexOf("myslots"),1);
           } 
-          if(helper.indexOf("IAF_URL") > -1)
+          if(helper.indexOf("auth-token") > -1)
           {
-              helper.splice(helper.indexOf("IAF_URL"),1);
+              helper.splice(helper.indexOf("auth-token"),1);
           }
 
           thekeys = createKeys(helper); 
@@ -244,7 +244,9 @@
       function getListOfDirectories()
       {
           var thejson = getGetter('thejson')();
-          var dirs = JSON.stringify(thejson).match(/(?<="isDirectory":true,"title":").*?"/g);
+          var regex = new RegExp('(?<="isDirectory":true,"title":").*?"','g'); 
+          var dirs = JSON.stringify(thejson).match(regex);
+          // var dirs = JSON.stringify(thejson).match(/(?<="isDirectory":true,"title":").*?"/g);
           for(var i=0 ; i< dirs.length; i++)
           {
             dirs[i] = dirs[i].replace('\"','/'); //replacing the last quote with a slash
@@ -294,7 +296,7 @@
         var keys = storage.getKeys();
         keys.forEach(function(key)
         {
-          if(key !== 'IAF_URL')
+          if(key !== 'auth-token')
           {
             getSetter(key)();
           }
@@ -328,7 +330,7 @@
         }
       }
 
-      //responding to the add new file button in the file browser
+      //responding to the add new file button in the file browser;we just add the xml-declaration as its contents
       function getNewSlotname(createdAlias, theid)
       {
         console.log("id ", theid);
@@ -457,6 +459,7 @@
     }]);
     app.factory('EditorFactory', function()
     {
+      console.log("Editorfactory...");
     var editor = null;  
       
       return {
@@ -527,9 +530,9 @@
             }
 
     });
-    app.factory('ValidationFactory', function(StorageFactory, $http )
+    app.factory('ValidationFactory', function(StorageFactory, $http, IAF_URL )
     {
-      var IAF_URL = StorageFactory.getGetter('IAF_URL')();
+      
 
       return {
         validateXml : validateXml
@@ -553,103 +556,6 @@
           // });  
       }
     });
-    app.factory('IafFactory', function($http, StorageFactory, StaticDataFactory, ZipService, UPLOAD_URL)
-    {
-      
-    var uname = null;
-    var pw = null;
-    var IAF_URL = StorageFactory.getGetter('IAF_URL')();
-      return{
-        postConfig : postConfig,
-        setCredentials : setCredentials,
-      };
-
-      //resonding to the paperplane button upper right
-      function postConfig(zip)
-      {
-        return new Promise(function(resolve, reject)
-        {
-          var finalurl = IAF_URL + UPLOAD_URL;
-          alert(finalurl);
-        zip.generateAsync({type:"blob"}).then(function(myzip)
-        {
-          var fileName = 'configuration.zip';
-          var fd = new FormData();
-          fd.append("realm", 'jdbc');
-          fd.append("name", "Ibis4Student");
-          fd.append("version", 1);
-          fd.append("encoding", 'utf-8');
-          fd.append("multiple_configs", false);
-          fd.append("activate_config", true);
-          fd.append("automatic_reload", true);
-          fd.append("file", myzip, fileName);
-
-
-          return new Promise(function(resolve, reject)
-          {
-             console.log("posting to iaf", myzip);
-              return $http({method: 'POST',url:finalurl , data: fd , headers:{'Content-type': undefined}}
-                  ).then(function succes(response)
-                  {
-                      console.info("returning from backend",response);
-                      resolve (response);
-                  }, function failure(response)
-                  {
-                      console.info("returning error from backend",response);
-                      reject(response);
-                  });
-                });           
-          });
-        resolve();
-        });
-
-
-
-      }
-
-      //responding to the submit button in the authentication area.
-      function setCredentials(server, uname, pw)
-      {
-        return new Promise(function(resolve, reject)
-        {
-          if (server)
-          {
-            if(server.indexOf('/#/')> -1)
-            {
-              server = server.substring(0,server.indexOf('/#/'));
-            }
-
-            if(server.charAt(server.length-1) === '/')
-            {
-              server = server.substring(0,server.length-1);
-            }
-
-
-            console.log("credentials: " , server, uname, pw);
-            IAF_URL = server;
-            StorageFactory.getSetter('IAF_URL')(server);
-            StaticDataFactory.setIafUrl();
-            ZipService.setIafUrl();
-            if(StaticDataFactory.getStaticJson() === null || StaticDataFactory.getStaticJson() === undefined)
-            {
-              StaticDataFactory.getJson().then(function success(resp)
-              {
-                console.log("succes from factory... now updating the scope");
-                resolve(resp);
-              },
-              function failure(err)
-              {
-                 console.log("failure getting json...", err);
-                 reject(err);
-              });
-            }
-          }
-          else
-          {
-            console.log("doing noting...");
-          }
-        });
-      }
-    });
+    
 
 })();   
