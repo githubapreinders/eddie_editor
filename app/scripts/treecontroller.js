@@ -42,12 +42,13 @@
                 });
 
                 
-                //sets a listener on the load from file button;
+                //sets listeners on the load from file and the merge buttons;
                 modalInstance.rendered.then(
                 function success(resp)
                 {
                 var zipfromfile = document.getElementById('zipfromfile');
-                console.log(zipfromfile);
+                var mergefromfile = document.getElementById('mergefromfile');
+                console.log(zipfromfile, mergefromfile);
                 zipfromfile.addEventListener('change', function(event)
                 {
                     console.log("file chosen !", event.target.files[0]);
@@ -55,13 +56,19 @@
                     StaticDataFactory.stopTimer();
                     ZipService.getZipFromFile(event.target.files[0]).then(function success(resp)
                     {
-                        console.log("succes...");
-                        vm2.list = resp;
-                        console.log(vm2.list);
-                        vm2.mySlots = ZipService.getMySlots();
-                        var keys = Object.keys(vm2.mySlots);
-                        StorageFactory.setCurrentKey(vm2.mySlots[keys[0]]);
-                        setSelectedSlot({id:keys[0]});
+                        $timeout(function() //TODO StorageFactory is sometimes too late to deliver the actual keys that are in the local storage...improve by adding promises.
+                        {
+                            console.log("succes replacing with zip from disk...");
+                            StorageFactory.initialise(); //resetting the known keys in the StorageFactory
+                            vm2.list = resp;
+                            console.log(vm2.list);
+                            vm2.mySlots = ZipService.getMySlots();
+                            var keys = Object.keys(vm2.mySlots);
+                            StorageFactory.setCurrentKey(vm2.mySlots[keys[0]]);
+                            setSelectedSlot({id:keys[0]});
+                        }, 100);
+
+                        
 
                         //$scope.$emit('Keychange');                         
 
@@ -71,12 +78,36 @@
                     });
 
                 });    
+
+                mergefromfile.addEventListener('change', function(event)
+                {
+                    console.log("file chosen to merge!", event.target.files[0]);
+                    modalInstance.close({returntype:"mergefile"});
+                    ZipService.mergeZipFromFile(event.target.files[0]).then(function success(resp)
+                    {
+                         $timeout(function() //TODO StorageFactory is sometimes too late to deliver the actual keys that are in the local storage...improve by adding promises.
+                        {
+                            StorageFactory.initialise();
+                            vm2.list = resp;
+                            console.log(vm2.list);
+                            vm2.mySlots = ZipService.getMySlots();
+                            console.log("succes merging files...", vm2.mySlots);
+                            var keys = Object.keys(vm2.mySlots);
+                            StorageFactory.setCurrentKey(vm2.mySlots[keys[0]]);
+                            setSelectedSlot({id:keys[0]});
+                            }, 100);
+                        //$scope.$emit('Keychange');                         
+
+                    },function failure(err)
+                    {
+                        console.log("failure mergin files...", err);
+                    });
+                });
+
                 },function failure(err)
                 {
                     
                 });
-
-
 
 
                 modalInstance.result.then(function success(resp)

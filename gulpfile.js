@@ -27,7 +27,7 @@ gulp.task('default',function()
 
 gulp.task('build',function(callback)
 {
-    runSequence('concatAndStash','removeDirs',['uglifyJs','handleAngular','uglifyCodemirror','copy_html','copy_images','copy_fonts']);
+    runSequence('concatAndStash','removeDirs',['uglifyJs','handleAngular','uglifyCodemirror','copy_html','copy_images','copy_fonts'],'browser_Sync_build');
 });
 
 
@@ -52,7 +52,7 @@ gulp.task('minifyCss', function()
 
 gulp.task('uglifyJs', function()
 {
-    return gulp.src(['app/scripts/application.js','app/scripts/controllers.js','app/scripts/directives.js','app/scripts/moderatorcontroller.js','app/scripts/moderatorservices.js','app/scripts/services.js','app/scripts/treecontroller.js','app/scripts/xmlTag.js'])
+    return gulp.src(['app/scripts/application.js','app/scripts/controllers.js','app/scripts/directives.js','app/scripts/moderatorcontroller.js','app/scripts/moderatorservices.js','app/scripts/services.js','app/scripts/treecontroller.js','app/scripts/xmlTag.js','app/scripts/userservice.js', 'app/scripts/zipservice.js'])
         .pipe(concat('scripts.min.js'))
         // .pipe(strip())
         // .pipe(stripDebug())
@@ -154,7 +154,7 @@ gulp.task('browser_Sync',function()
 {
     browserSync.init(
     {
-        server:{baseDir:'app'}
+        server:{baseDir:'app', cors:true}
     });
 });
 

@@ -2,7 +2,7 @@
     'use strict';
 
     angular.module('confab')
-        .controller('IndexController', function ($scope, $interval, $timeout, $uibModal, xmlTag, attributeObject, StaticDataFactory, StorageFactory, EditorFactory, ValidationFactory, IafFactory, ZipService,ModeratorFactory)
+        .controller('IndexController', function ( $scope, $interval, $timeout, $uibModal,$uibTooltip, xmlTag, attributeObject, StaticDataFactory, StorageFactory, EditorFactory, ValidationFactory,  IafFactory , ModeratorFactory, ZipService, UserFactory, AuthTokenFactory)
         {
 
             console.log('IndexController...');
@@ -31,6 +31,8 @@
            // vm.setAvailableLesson = setAvailableLesson;
             vm.toggleReadonly = toggleReadonly;
             vm.unlock = unlock;
+            vm.login = login;
+            vm.logout = logout;
 
             //Static values
             vm.message = "Angular Controller is working allright...";
@@ -51,6 +53,7 @@
             vm.currentKey = StorageFactory.getCurrentKey();
             vm.iaf_url = StorageFactory.getGetter("IAF_URL")();
             var avalue = StorageFactory.initialise();
+            vm.user = null;
 
 
             //Editor Styling
@@ -65,6 +68,145 @@
             vm.toggleTab = toggleTab;
             vm.thetabs=["tabauth", "tabedit"];
             toggleTab('tabauth');//initializing
+
+
+            
+            //startup function 
+
+            UserFactory.getUser().then(function success(response)
+            {
+                vm.user = response.data.user;
+                getJson();
+                console.log("Getting user from api/me ", JSON.stringify(vm.user));      
+                
+            }, function failure(response)
+            {
+                vm.user = null;
+                showCredentialsDialog();
+                console.log(JSON.stringify(response));
+            });
+
+
+
+            //standard loging
+            function login(useremail, password)
+            {
+
+                if (AuthTokenFactory.getToken())
+                {
+
+                }
+                else
+                {
+                    console.log("no token");
+                    UserFactory.login(useremail, password).then(function success(response)
+                    {
+                        console.log("returning from service;", JSON.stringify(response));
+                        if (response.status == 401)
+                        {
+                            alert("Not Authorized.")
+                        }
+                        else
+                        {
+                            vm.user = response.data.logindetails.user;
+                            console.log("vm.user : ", vm.user);
+                            getJson();
+                        }
+                    }, handleError);
+                }
+            }
+
+
+            function logout()
+            {
+                console.log('logging out');
+                UserFactory.logout().then(function succes(response)
+                {
+                    console.info("user set to null", response);
+                    vm.user = null;
+                    vm.useremail = "";
+                    vm.password = "";
+                },function failure(response)
+                {
+                    console.log("failure logging out...");
+                });
+            }
+
+            function handleError(response)
+            {
+             alert("error logging from service.")
+            }    
+
+            function setCredentials()
+            {
+            //     console.log("credentials:", vm.iaf_url);
+            //     IafFactory.setCredentials(vm.iaf_url, vm.username, vm.password).then(
+            //     function succes(resp)
+            //     {
+            //         console.log("setting credentials and updating the scope");    
+            //         vm.navigatorModel = JSON.parse(resp.data.JSONMONSTER.MYMONSTER);
+            //         toggle_datasource('pipes');
+            //     },
+            //     function fail(err)
+            //     {
+
+            //     });
+            }
+
+            function showCredentialsDialog()
+            {
+
+                var modalInstance = $uibModal.open(
+                {
+                    templateUrl : "./views/modalcredentials.html",
+                    controller : "LoadCredentialsController as vm4",
+                    size : "md",
+                    resolve : {items : function ()
+                        {
+                            return "something";
+                        }}
+                });
+                modalInstance.result.then(
+                function success(resp)
+                {
+                    console.log("response: " , resp);
+                    vm.iaf_url = resp.iaf_url;
+                    login(resp.username, resp.password);
+                }
+                ,function failure(err)
+                {
+                    console.log("no result from modal...");
+                });
+            }
+
+
+           function getJson()
+           {
+                StaticDataFactory.getJson().then(
+                function success(response)
+                {
+                    vm.navigatorModel = JSON.parse(response.data.JSONMONSTER.MYMONSTER);
+                    console.log("returned datamodel : \n", vm.navigatorModel);
+                    toggle_datasource('pipes');
+                    retrieveData();
+                    saveInSlot();
+                },
+                function error(response)
+                {
+                    console.log("error initialising:", response.data);
+                });
+
+           }
+
+
+
+            setTooltipSettings();
+            function setTooltipSettings()
+            {
+                //console.log("tooltip", $uibTooltip);
+                 //$uibTooltip.options({'trigger':'mouseenter'});
+            }
+
 
             function toggleTab(thetab)
             {   
@@ -201,53 +343,7 @@
                 });
             }
 
-            function setCredentials()
-            {
-                console.log("credentials:", vm.iaf_url);
-                IafFactory.setCredentials(vm.iaf_url, vm.username, vm.password).then(
-                function succes(resp)
-                {
-                    console.log("setting credentials and updating the scope");    
-                    vm.navigatorModel = JSON.parse(resp.data.JSONMONSTER.MYMONSTER);
-                    toggle_datasource('pipes');
-                },
-                function fail(err)
-                {
-
-                });
-            }
-
-
-            function showCredentialsDialog()
-            {
-
-                var modalInstance = $uibModal.open(
-                {
-                    templateUrl : "./views/modalcredentials.html",
-                    controller : "LoadCredentialsController as vm4",
-                    size : "md",
-                    resolve : {items : function ()
-                        {
-                            return "something";
-                        }}
-                });
-
-                modalInstance.result.then(
-                function success(resp)
-                {
-                    console.log("response: " , resp);
-                    vm.iaf_url = resp.iaf_url;
-                    vm.username = resp.username;
-                    vm.password = resp.password;
-                    setCredentials();
-
-
-                }
-                ,function failure(err)
-                {
-                    console.log("no result from modal...");
-                });
-            }
+            
 
 
 
@@ -292,43 +388,18 @@
                 ed.style.fontSize = vm.selectedFontSize.toString() + 'px';
             }
 
+            //
             //initialisation of editor(triggered by attribute in home.html), datamodel, and cache
             function getEditor(_editor)
             {
                 editor = EditorFactory.editorLoaded(_editor);
                 thedocument = editor.getDoc();
-                if(StorageFactory.getGetter('IAF_URL')() === null || StorageFactory.getGetter('IAF_URL')() === undefined)
-                {
-                    showCredentialsDialog();
-                }
-
-                else
-                {
-                    StaticDataFactory.getJson().then(
-                    function success(response)
-                    {
-                        vm.navigatorModel = JSON.parse(response.data.JSONMONSTER.MYMONSTER);
-                        console.log("returned datamodel : \n", vm.navigatorModel);
-                        editor.setOption('hintOptions', {schemaInfo: vm.navigatorModel});
-                        editor.foldCode(CodeMirror.Pos(0,0));
-                        editor.foldCode(CodeMirror.Pos(thedocument.lineCount(),0));
-                        toggle_datasource('pipes');
-                        showNav(); 
-                        showConf();
-                        showConf();
-
-                    
-                        //initialising the cache and loading it in the editor;
-                        // var avalue = StorageFactory.initialise();
-                        retrieveData();
-                        saveInSlot();
-
-                    },function error(response)
-                    {
-                        console.log("error initialising:", response.data);
-                    });
-                }
-                
+                editor.setOption('hintOptions', {schemaInfo: vm.navigatorModel});
+                editor.foldCode(CodeMirror.Pos(0,0));
+                editor.foldCode(CodeMirror.Pos(thedocument.lineCount(),0));
+                showNav(); 
+                showConf();
+                showConf();
             }
 
             //receiving object

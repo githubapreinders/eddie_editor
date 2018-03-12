@@ -7,13 +7,17 @@
     </div>
 <div class="filler"></div>
  <div class="treeview_buttonsbelow">
- 	<a href="#" ng-click = "vm2.showZipDialog()"><span class="glyphicon glyphicon-refresh"></span></a>
+ 	<a uib-popover="Load a zip from your local system or the current configuration from the Ibis."  popover-trigger="'mouseenter'"
+ 	popover-placement="top-left" href="#" ng-click = "vm2.showZipDialog()"><span class=" glyphicon glyphicon-refresh"></span></a>
  	<div class="pad"></div>
- 	<a href="#" ng-click = "vm2.saveToFile()"><span class="glyphicon glyphicon-save"></span></a>
+ 	<a uib-popover="Download your current tree into a zip folder. This will be stored in your Downloads folder."  popover-trigger="'mouseenter'"
+ 	popover-placement="top-left" href="#" ng-click = "vm2.saveToFile()"><span class="glyphicon glyphicon-save"></span></a>
  	<div class="filler"></div>
- 	<a href="#" ng-click = "vm2.addFileOrFolder('folder')"><span class="glyphicon glyphicon-folder-close"></span></a>
+ 	<a uib-popover="Create a new folder."  popover-trigger="'mouseenter'"
+ 	popover-placement="top-right" href="#" ng-click = "vm2.addFileOrFolder('folder')"><span class="glyphicon glyphicon-folder-close"></span></a>
  	<div class="pad"></div>
- 	<a href="#" ng-click = "vm2.addFileOrFolder('file')"><span class="glyphicon glyphicon-file"></span></a>
+ 	<a uib-popover="Create a new blank file. This will get a default filename."  popover-trigger="'mouseenter'"
+ 	popover-placement="top-right" href="#" ng-click = "vm2.addFileOrFolder('file')"><span class="glyphicon glyphicon-file"></span></a>
     </div>
 </div>
 

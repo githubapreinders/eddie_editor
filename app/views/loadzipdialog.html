@@ -3,7 +3,7 @@
 </div>
 <div class="modal-body" id="modal-body">
     
-    <p>Warning : loading from zip will delete your current working tree; use the save button to store it as a zip in your downloads folder.</p>
+    <p>Warning : loading from zip can delete your current working tree; use the save button to store it as a zip in your downloads folder.</p>
     
 
 </div>
@@ -11,7 +11,11 @@
     <div style="display:flex">
     <button class="btn btn-default" type="button" ng-click="vm3.closeModal()">Cancel</button>
     <div class="filler"></div>
-	<button class="btn btn-success" type="button" ng-click="vm3.getZipOverHttp()">Zip from IAF</button>   
-	<button class="btn btn-primary" style="display:inline;"  ><input  id = "zipfromfile"   type="file" accept="zip"  ></button>
+    <button uib-popover="Mix a local zip file with your existing tree."  popover-trigger="'mouseenter'"
+    popover-placement="bottom" class="btn btn-danger" type="button" ><input  id = "mergefromfile"   type="file" accept="zip"  ><label for="mergefromfile">Merge</label></button> 
+	<button uib-popover="Load the dynamic contents of the Ibis into the File Browser."  popover-trigger="'mouseenter'"
+    popover-placement="bottom" class="btn btn-warning" type="button" ng-click="vm3.getZipOverHttp()"><label for="zipfromibis">Zip from Ibis</label></button>   
+	<button uib-popover="Load a local zip file and replace the current contents."  popover-trigger="'mouseenter'"
+    popover-placement="bottom" class="btn btn-primary" style="display:inline;"  ><input  id = "zipfromfile"   type="file" accept="zip"  ><label for="zipfromfile">Replace</label></button>
 	</div>
 </div>
