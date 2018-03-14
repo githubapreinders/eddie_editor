@@ -39,7 +39,7 @@
                     <div class="filler "></div>
 
 
-                    <a uib-popover="Edit Javadoc descriptions in a separate window."  popover-trigger="'mouseenter'"
+                    <a ng-show="vm.user.role==='admin'" uib-popover="Edit Javadoc descriptions in a separate window."  popover-trigger="'mouseenter'"
     popover-placement="left" style="text-decoration: none;" class="mybutton" ui-sref="app.moderator">
                     <span  ng-click="angular.noop()" >
                         <i class="fa  fa-wrench fa-2x" ></i>
@@ -47,7 +47,7 @@
                     </a>
 
 
-                    <span uib-popover="Check well formedness of an xml."  popover-trigger="'mouseenter'"
+                    <span ng-show="vm.user.role==='admin'" uib-popover="Check well formedness of an xml."  popover-trigger="'mouseenter'"
     popover-placement="bottom" ng-click="vm.validateXml() ;" class="mybutton">
                         <i class="fa  fa-check  fa-2x "></i>
                     </span>

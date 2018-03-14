@@ -31,7 +31,6 @@ app.factory('UserFactory', function UserFactory($http,  AuthTokenFactory, Storag
         	console.log("url: ",theurl);
             return $http.post(theurl,
                 {"logindetails":{
-                    "instancename":IAF_URL,
                     "email": useremail,
                     "password": password}
                 }).then(function success(response)

@@ -30,6 +30,8 @@
 
 <div class="slotContainer">
 <span  ng-show = "vm.user !== null;">Logged in as {{vm.user.firstname}}  {{vm.user.lastname}}</span> 
+<div></div>
+<span  ng-show = "vm.user !== null;">Your Instance {{vm.user.instancename}}</span> 
 <div></div>	
  <a id="logoutbutton" ng-show="vm.user !== null;" ng-click="vm.logout()"><span  class="fa-stack fa-lg loginIcons"  >
                         <i class="fa fa-square-o fa-stack-2x "></i>

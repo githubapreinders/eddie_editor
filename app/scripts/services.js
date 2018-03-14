@@ -2,14 +2,14 @@
 
 'use strict';
     var app = angular.module('confab');
-    app.constant('PROJECTNAME','Ibis4Student');
+    
     app.constant('DOWNLOAD_URL',"/iaf/api/configurations/download/Ibis4Student");
     app.constant('UPLOAD_URL',"/iaf/api/configurations");
     
     //CHANGE THIS WHEN DEPLOYING TO AWS !!!
     app.constant('IAF_URL','http://ibis4education-env.bz46fawhzf.eu-central-1.elasticbeanstalk.com');
     
-    //app.constant('IAF_URL', "http://localhost:8080/Ibis4Education");
+    // app.constant('IAF_URL', "http://localhost:8080/Ibis4Education");
     
     app.factory('StaticDataFactory', function(xmlTag, $http, StorageFactory, $interval, IAF_URL) 
     {
@@ -21,6 +21,7 @@
         var fontSizes = [12,13,14,15,16,17,18,19,20];
         var thejson = null;
         var selectedItem = null;
+        var projectname = null;
         var formattingSettings = {
                 "indent_size": 4,
                 "xml": {
@@ -54,9 +55,25 @@
             stopTimer : stopTimer,
             setSelectedItem : setSelectedItem,
             getSelectedItem : getSelectedItem,
-            setIafUrl : setIafUrl
+            setIafUrl : setIafUrl,
+            getProjectName :getProjectName,
+            setProjectName : setProjectName
 
         };
+
+        function getProjectName()
+        {
+          console.log("returning projectname: ", projectname);
+          return projectname;
+        }
+
+        function setProjectName(name)
+        {
+          console.log("setting projectname: ", projectname);
+          projectname = name;
+        }
+
+
 
         function setIafUrl()
         {

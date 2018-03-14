@@ -2,10 +2,11 @@
 {
 	'use strict';
 	var app = angular.module('confab');	
-	app.factory('ZipService', function (StorageFactory, $http ,DOWNLOAD_URL, UPLOAD_URL, PROJECTNAME, $window)
+	app.factory('ZipService', function (StorageFactory, StaticDataFactory, $http ,DOWNLOAD_URL, UPLOAD_URL, $window)
      {
      	console.log("ZipService.js...");
 
+        var PROJECTNAME; 
         var myslots;
         var MYIAF_URL = $window.location.href;
         if(MYIAF_URL.indexOf('/#/')> -1)
@@ -53,6 +54,8 @@
         {
                 return new Promise(function(resolve, reject)
                 {
+                PROJECTNAME = StaticDataFactory.getProjectName();
+                console.log("projectname....", PROJECTNAME);
                 var zip = new JSZip();
                 var elements = document.querySelectorAll('[ui-tree-node]');
                 //each tree element gets a filename and we grab the content from storage
@@ -83,7 +86,9 @@
                     if(cropFilter(angular.element(item).scope().$modelValue.title) === 'Configuration.xml')
                     {
                       
-                      filename = "Ibis4Student/Configuration.xml";
+                      filename = PROJECTNAME + "/Configuration.xml";
+
+                      //filename = "Ibis4Student/Configuration.xml";
                     }
                     else
                     {
@@ -156,6 +161,7 @@
         {
           return new Promise(function(resolve, reject)
           {
+            PROJECTNAME = StaticDataFactory.getProjectName();
             if(MYIAF_URL === undefined || typeof MYIAF_URL !== 'string')
             {
               alert("please add a correct IAF url");
@@ -172,7 +178,8 @@
               
 
               fd.append("realm", 'jdbc');
-              fd.append("name", "Ibis4Student");
+              //fd.append("name", "Ibis4Student");
+              fd.append("name", PROJECTNAME);
               fd.append("version", timestamp);
               fd.append("encoding", 'utf-8');
               fd.append("multiple_configs", false);
@@ -218,7 +225,7 @@
                 }
               });
               
-              //removing an unwanted wrapper directory ('Ibis4Student/Configuration.xml becomes 'Configuration.xml')
+              //removing an unwanted wrapper directory ('PROJECTNAME/Configuration.xml becomes 'Configuration.xml')
               for(var i=0 ; i< myzipfiles.length; i++)
               {
                 if(myzipfiles[i].name.indexOf(PROJECTNAME) > -1)
@@ -379,6 +386,7 @@
         {
           return JSZip.loadAsync(file).then(function(zip)
             {
+              PROJECTNAME = StaticDataFactory.getProjectName();
               console.log("loadasync from file...", zip);
               
               var myzipfiles = [];
@@ -868,13 +876,15 @@
         return new Promise(function(resolve, reject)
         {
           var finalurl = MYIAF_URL + UPLOAD_URL;
+          PROJECTNAME = StaticDataFactory.getProjectName();
           alert(finalurl);
         zip.generateAsync({type:"blob"}).then(function(myzip)
         {
           var fileName = 'configuration.zip';
           var fd = new FormData();
           fd.append("realm", 'jdbc');
-          fd.append("name", "Ibis4Student");
+          fd.append("name", PROJECTNAME);
+          // fd.append("name", "Ibis4Student");
           fd.append("version", 1);
           fd.append("encoding", 'utf-8');
           fd.append("multiple_configs", false);

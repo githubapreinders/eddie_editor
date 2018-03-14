@@ -76,6 +76,8 @@
             UserFactory.getUser().then(function success(response)
             {
                 vm.user = response.data.user;
+                console.log("user from me ",vm.user);
+                StaticDataFactory.setProjectName(vm.user.instancename);
                 getJson();
                 console.log("Getting user from api/me ", JSON.stringify(vm.user));      
                 
@@ -109,6 +111,7 @@
                         else
                         {
                             vm.user = response.data.logindetails.user;
+                            StaticDataFactory.setProjectName(vm.user.instancename);
                             console.log("vm.user : ", vm.user);
                             getJson();
                         }
