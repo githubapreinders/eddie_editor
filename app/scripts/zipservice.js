@@ -2,8 +2,11 @@
 {
 	'use strict';
 	var app = angular.module('confab');	
-	app.factory('ZipService', function (StorageFactory, StaticDataFactory, $http ,DOWNLOAD_URL, UPLOAD_URL, $window)
+	app.
+
+  factory('ZipService', function (StorageFactory, StaticDataFactory, $http , UPLOAD_URL, $window)
      {
+
      	console.log("ZipService.js...");
 
         var PROJECTNAME; 
@@ -645,7 +648,10 @@
         */
         function getZip()
         {
+         
+          var DOWNLOAD_URL = "/iaf/api/configurations/download/" + StaticDataFactory.getProjectName();
           var finalUrl = MYIAF_URL + DOWNLOAD_URL;
+          PROJECTNAME = StaticDataFactory.getProjectName();
           console.log("Download url :",finalUrl);
 
           return $http({method:"GET", url: finalUrl, responseType:'arraybuffer'}).then(function success(resp)

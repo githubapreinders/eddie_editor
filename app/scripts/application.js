@@ -27,6 +27,15 @@
                         controller  : 'ModeratorController as vm3'
                     }
                 }
+            })
+            .state('app.userpage', {
+                url:'userpage',
+                views: {
+                    'content@': {
+                        templateUrl : 'views/userpage.html',
+                        controller  : 'UserController as vm6'
+                    }
+                }
             });
         $urlRouterProvider.otherwise('/');
     });

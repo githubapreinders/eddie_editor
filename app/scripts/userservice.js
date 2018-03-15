@@ -2,16 +2,75 @@
 {
 'use strict';
 
-var app = angular.module('confab');
-
-app.factory('UserFactory', function UserFactory($http,  AuthTokenFactory, StorageFactory, $q, $window, IAF_URL)
+var appliccat = angular.module('confab');
+appliccat.factory('UserFactory', function UserFactory($http,  AuthTokenFactory, StorageFactory, $q, $window, IAF_URL)
     {
+        
     	
         return {
             login: login,
             logout: logout,
-            getUser: getUser
+            getUser: getUser,
+            getAllUsers: getAllUsers,
+            saveUser: saveUser,
+            deleteUser: deleteUser
         };
+
+        function saveUser(user)
+        {
+            var theurl = IAF_URL + '/api/users';
+            var theuser = 
+            {
+                "user":
+                {
+                    "name":user.name,
+                    "lastname":user.lastname,
+                    "role":user.role,
+                    "email":user.email
+                }
+            };
+            console.log("url: ",theurl, JSON.stringify(theuser));
+            return $http({method:"POST",url:theurl,data:JSON.stringify(theuser),headers:{'content-type':'application/json'}}).then(
+            function success(response)
+            {
+                console.log("response", response);
+                return response;
+            },function failure(response)
+            {
+                console.log("response");
+                return response;
+            });
+        }
+
+        function deleteUser(useremail)
+        {
+            var theurl = IAF_URL + '/api/deleteuser/' + useremail
+            return $http.get(theurl).then(function success(response)
+            {
+                console.log("deleting user  ", response);
+                return response;
+            },function failure(response)
+            {
+                console.log("deleting user  ", response);
+                return response;
+            });
+        }
+
+
+
+        function getAllUsers()
+        {
+            var theurl = IAF_URL + '/api/getusers';
+            return $http.get(theurl).then(function success(response)
+            {
+                console.log("getting all users  ", response);
+                return response.data.users.user;
+            },function failure(response)
+            {
+                console.log("failure getting users  ", response);
+                return response;
+            });
+        }
 
         function getUser()
         {
@@ -64,7 +123,7 @@ app.factory('UserFactory', function UserFactory($http,  AuthTokenFactory, Storag
     });
 
 
-    app.factory('AuthTokenFactory', function AuthTokenFactory($window)
+    appliccat.factory('AuthTokenFactory', function AuthTokenFactory($window)
     {
 
         var store = $window.localStorage;
@@ -94,7 +153,7 @@ app.factory('UserFactory', function UserFactory($http,  AuthTokenFactory, Storag
     });
 
 
-    app.factory('AuthInterceptor', function AuthInterceptor(AuthTokenFactory)
+    appliccat.factory('AuthInterceptor', function AuthInterceptor(AuthTokenFactory)
     {
 
         return {

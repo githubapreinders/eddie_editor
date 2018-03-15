@@ -2,9 +2,8 @@
 {
 	'use strict';
 
-	var app = angular.module('confab');
-
-	app.factory('ModeratorFactory', function($http, StorageFactory)
+	var applicc = angular.module('confab');
+	applicc.factory('ModeratorFactory', function($http, StorageFactory)
 	{
 	var IAF_URL = StorageFactory.getGetter('IAF_URL')();	
 	var availableLesson = null;	

@@ -744,3 +744,13 @@ ol {
       outline: none;
       height: 94%;
       padding: 5px; }
+
+body {
+  background: purple; }
+
+.icons {
+  font-size: 0px; }
+
+a {
+  text-decoration: none;
+  color: black; }

@@ -39,7 +39,14 @@
                     <div class="filler "></div>
 
 
-                    <a ng-show="vm.user.role==='admin'" uib-popover="Edit Javadoc descriptions in a separate window."  popover-trigger="'mouseenter'"
+
+                    <a ng-show="vm.user.role==='admin'"  ui-sref="app.userpage"> <span uib-popover="User Administration."  popover-trigger="'mouseenter'"
+                        popover-placement="bottom"  class="mybutton">
+                                            <i class="fa fa-user fa-2x"></i>
+                                        </span></a>
+
+
+                    <a  ng-show="vm.user.role==='admin'" uib-popover="Edit Javadoc descriptions in a separate window."  popover-trigger="'mouseenter'"
     popover-placement="left" style="text-decoration: none;" class="mybutton" ui-sref="app.moderator">
                     <span  ng-click="angular.noop()" >
                         <i class="fa  fa-wrench fa-2x" ></i>

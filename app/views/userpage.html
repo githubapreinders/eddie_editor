@@ -1,0 +1,101 @@
+<!-- <link href="css/mystyle.css" rel="stylesheet" ng-disabled = "vm.selectedTheme === 'monokai' ">
+<link href="css/mystyle_monokai.css" rel="stylesheet" ng-disabled = "vm.selectedTheme === 'twilight'"> -->
+<div style="height: 100%; width:100%;">       
+            <div  id="mynavbar">
+                <div class="navBarLeft">
+                <h3>user administration</h3>
+                </div>
+
+                <div class = "navBarRight" >
+                   
+                   
+
+                    <span ng-show = "vm.showSpinner" style="color:grey;">
+                        <i   class="fa fa-spinner fa-spin fa-2x fa-fw "></i>
+                    </span>
+
+                    <div class="filler "></div>
+
+
+                    
+
+                    
+                    <span uib-popover="Erase the contents of the editor window."  popover-trigger="'mouseenter'"
+    popover-placement="bottom" ng-click="vm.clearEditor()" class="mybutton">
+                        <i class="fa  fa-eraser fa-2x "></i>
+                    </span>
+
+                    <span uib-popover="Format editor content."  popover-trigger="'mouseenter'"
+    popover-placement="bottom" ng-click="vm.styleEditorContent()" class="mybutton">
+                        <i class="fa fa-align-left fa-2x"></i>
+                    </span>
+
+                    <span uib-popover="Send your current files to the Ibis."  popover-trigger="'mouseenter'"
+    popover-placement="bottom-right" ng-click="vm.sendZip()" class="mybutton">
+                        <i class="fa fa-send fa-2x"></i>
+                        <div id="sendstatus"></div>
+                    </span>
+                </div>
+            </div>
+
+<div class="contentContainer">
+
+
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th class="col-xs-2">Email</th>
+                    <th class="col-xs-2">Role</th>
+                    <th class="col-xs-2">First Name</th>
+                    <th class="col-xs-2">Last Name</th>
+                    <th class="col-xs-2">Instance</th>
+                    <th class="col-xs-1">Operation</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="item in vm6.theusers">
+                    <td><input class="form-control " type="text" value="{{item.email}}" ng-model="item.email"
+                     ng-change="item.showIcon=true;"></td>
+                     
+                     <td>
+                        <div id="wordType22" class="input-group" style="padding:0px">
+                            <label class="radio-inline">
+                                <input type="radio" ng-checked="item.role==='admin'"
+                                ng-click="item.showIcon=true;vm6.setRole($index,'admin')"> admin
+                            </label>
+                            <label class="radio-inline">
+                                <input type="radio" ng-checked="item.role==='user'"
+                                ng-click="item.showIcon=true;vm6.setRole($index,'role')"> user
+                            </label>
+                            
+                        </div>
+                    </td>
+                    
+                    <td><input class="form-control " type="text" value="{{item.name}}" ng-model="item.name"
+                     ng-change="item.showIcon=true;"></td>
+                    <td><input class="form-control " type="text" value="{{item.lastname}}" ng-model="item.lastname"
+                     ng-change="item.showIcon=true;"></td>
+                    
+                    <td><span>{{item.instancename}}</span></td>
+
+
+
+     
+                     <td>
+                        <a   ng-click="showIcon=false;vm6.saveItem($index)">
+                            <span class="fa fa-2x fa-save icons"></span>
+                        </a>
+                        <span id="exclamationMark{{$index}}" ng-model="item.showIcon" class="fa fa-exclamation" ng-show="item.showIcon"></span>
+                        <a  ng-click="vm.deleteItem($index)">
+                            <span class="fa fa-2x fa-remove icons"></span>
+                        </a>
+                        <a  ng-click="vm6.sendMail($index)">
+                            <span class="fa fa-2x fa-envelope icons" ></span>
+                        </a>
+                    </td>
+                </tr>
+                    </tbody>
+                </table>
+            </div>
+
+</div>

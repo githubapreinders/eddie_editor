@@ -1,9 +1,9 @@
 (function()
 {
 	'use strict';
-	var app = angular.module('confab');
+	 var appl = angular.module('confab');
 	//TODO add a view and controller functionality to add items to the children array
-	app.controller('ModeratorController', function($scope, StaticDataFactory, $uibModal, StorageFactory, ModeratorFactory)
+	appl.controller('ModeratorController', function($scope, StaticDataFactory, $uibModal, StorageFactory, ModeratorFactory)
 	{
 		var vm3 = this;
 		vm3.showModel = showModel;
