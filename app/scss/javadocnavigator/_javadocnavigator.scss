@@ -4,13 +4,14 @@
 	font-family:$mainwindowfont;
 	width:25%;
 	height:100%;
-	background:url($background0);
+	background:$corkColor3;
 	z-index: 4;
 	transition: left 0.4s;
 	.dataSourceArea
 	{
 		height:10%;
-		background:url($background0);
+		background:$corkColor4;
+		color:white;
 		padding:  0px 0px 0px 0px;
 		margin-bottom: 5px;
 		box-shadow : 0px 3px 2px #888888;
@@ -22,9 +23,10 @@
 	.classArea
 	{
 		display:flex;
+		direction:rtl;
 		flex-direction: column;
 		flex-grow:1;
-		background:url($background0);
+		background:$corkColor3;
 		cursor : pointer;
 		overflow-y:auto;
 		overflow-x:hidden;
@@ -47,9 +49,10 @@
 	.descriptionArea
 	{
 		display:flex;
+		direction:rtl;
 		flex-direction: column;
 		height:25%;
-		background:url($background0);
+		background:#222;
 		overflow-y:auto;
 		overflow-x:hidden;
 		padding: 15px;
@@ -59,13 +62,16 @@
 		h4
 		{
 			font-family : $filenameheader;
+			text-align: center;
 		}
 	}
 	.propertyArea
 	{
 		flex-grow:1;
+		direction:rtl;
 		height:40%;
-		background:url($background0);
+		background:#222;
+		color:white;
 		overflow:scroll;
 		padding: 15px;
 		input.form-control, div.checkbox

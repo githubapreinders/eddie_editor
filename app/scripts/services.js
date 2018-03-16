@@ -1,17 +1,17 @@
 (function(){
 
 'use strict';
-    var applicca = angular.module('confab');
+    var app = angular.module('confab');
     
     //app.constant('DOWNLOAD_URL',"/iaf/api/configurations/download/Ibis4Student");
-    applicca.constant('UPLOAD_URL',"/iaf/api/configurations");
+    app.constant('UPLOAD_URL',"/iaf/api/configurations");
     
     //CHANGE THIS WHEN DEPLOYING TO AWS !!!
     //app.constant('IAF_URL','http://ibis4education-env.bz46fawhzf.eu-central-1.elasticbeanstalk.com');
     
-    applicca.constant('IAF_URL', "http://localhost:8080/Ibis4Education");
+    app.constant('IAF_URL', "http://localhost:8080/Ibis4Education");
     
-    applicca.factory('StaticDataFactory', function(xmlTag, $http, StorageFactory, $interval, IAF_URL) 
+    app.factory('StaticDataFactory', function(xmlTag, $http, StorageFactory, $interval, IAF_URL) 
     {
       console.log("StaticDatafactory...");
 
@@ -167,7 +167,7 @@
     retrieving : StorageFactory.getGetter(key)() ; removing a key : StorageFactory.getSetter(key)()
     */
     //TODO make exceptions for 'auth-token' key
-    applicca.factory('StorageFactory',['storage', '$log', function(storage, $log)
+    app.factory('StorageFactory',['storage', '$log', function(storage, $log)
     {
       console.log("StorageFactory...");
       var api = {};
@@ -474,7 +474,7 @@
         };
       }
     }]);
-    applicca.factory('EditorFactory', function()
+    app.factory('EditorFactory', function()
     {
       console.log("Editorfactory...");
     var editor = null;  
@@ -547,7 +547,7 @@
             }
 
     });
-    applicca.factory('ValidationFactory', function(StorageFactory, $http, IAF_URL )
+    app.factory('ValidationFactory', function(StorageFactory, $http, IAF_URL )
     {
       
 

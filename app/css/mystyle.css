@@ -160,7 +160,7 @@ html, body {
     border: 0px;
     margin-top: 3px;
     min-height: 30%;
-    background: #dddddd; }
+    background: #2962bf; }
     #configcontainer .tabArea .tabheaders {
       background: url("../media/concrete_seamless.png");
       display: -webkit-box;
@@ -177,8 +177,8 @@ html, body {
       #configcontainer .tabArea .tabheaders a {
         text-decoration: none;
         margin-left: 10px;
-        background: #c4c4c4;
-        border: 1px solid #c4c4c4;
+        background: #204d95;
+        border: 1px solid #204d95;
         border-radius: 3px 3px 0px 0px;
         color: #484848;
         -webkit-transition: background 0.3s ease;
@@ -187,11 +187,11 @@ html, body {
           width: 30px;
           text-align: center; }
       #configcontainer .tabArea .tabheaders a:hover {
-        background: #dddddd;
-        border: 1px solid #dddddd; }
+        background: #2962bf;
+        border: 1px solid #2962bf; }
       #configcontainer .tabArea .tabheaders .active1 {
-        background: #dddddd;
-        border: 1px solid #dddddd; }
+        background: #2962bf;
+        border: 1px solid #2962bf; }
     #configcontainer .tabArea .slotContainer {
       display: -webkit-box;
       display: -webkit-flex;
@@ -300,21 +300,23 @@ ol {
   box-sizing: border-box; }
 
 #mynavbar {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  background: url("../media/concrete_seamless.png");
   height: 8%; }
-  #mynavbar img {
-    width: 46px;
-    height: 46px;
-    margin-top: 4px;
-    margin-right: 25px; }
-  #mynavbar label {
-    text-align: center; }
-  #mynavbar .navBarLeft {
-    position: relative;
+  #mynavbar .mybutton {
+    opacity: 0.1;
+    color: white;
+    padding-right: 2%;
+    padding-left: 2%;
+    -webkit-transition: background 0.3s ease, opacity 0.3s ease;
+    transition: background 0.3s ease, opacity 0.3s ease; }
+  #mynavbar .mybutton:hover {
+    color: white;
+    opacity: 1.0;
+    background: #6b5a84; }
+  #mynavbar .mybutton:active {
+    color: green;
+    background: #FFFFFF !important; }
+  #mynavbar .navbarupper {
+    background: #464547;
     display: -webkit-box;
     display: -webkit-flex;
     display: -ms-flexbox;
@@ -323,85 +325,92 @@ ol {
     -webkit-align-items: center;
         -ms-flex-align: center;
             align-items: center;
-    width: 39%; }
-    #mynavbar .navBarLeft .iplogo {
-      position: absolute;
-      top: 10px;
+    height: 70%; }
+    #mynavbar .navbarupper .iplogo {
+      margin-top: auto;
+      margin-bottom: auto;
       margin-left: 10px;
       max-width: 30px;
-      max-height: 30px;
-      -webkit-transition: top 0.4s;
-      transition: top 0.4s; }
-    #mynavbar .navBarLeft .navItem {
-      position: absolute;
-      cursor: pointer;
-      left: 90%;
-      top: 75%;
+      max-height: 30px; }
+    #mynavbar .navbarupper .navHeading a {
+      margin-left: 10px;
+      text-transform: uppercase;
+      letter-spacing: 5px;
+      color: black;
+      text-decoration: none; }
+    #mynavbar .navbarupper .loginpane {
       display: -webkit-box;
       display: -webkit-flex;
       display: -ms-flexbox;
       display: flex;
-      -webkit-box-orient: vertical;
+      -webkit-box-orient: horizontal;
       -webkit-box-direction: normal;
-      -webkit-flex-direction: column;
-          -ms-flex-direction: column;
-              flex-direction: column;
-      -webkit-transition: left 0.4s;
-      transition: left 0.4s; }
-      #mynavbar .navBarLeft .navItem span {
-        width: 38px;
-        padding: 1px;
-        border-radius: 4px;
-        border-bottom: 0px;
-        background: #222; }
-      #mynavbar .navBarLeft .navItem i {
-        margin-left: 10px;
-        display: inline;
-        color: #aaa; }
-      #mynavbar .navBarLeft .navItem #filename {
-        background: none;
-        font-family: "cuprum";
-        color: #222;
-        position: relative; }
-        #mynavbar .navBarLeft .navItem #filename #contents {
-          position: absolute;
-          background: none;
-          left: 55px; }
-          #mynavbar .navBarLeft .navItem #filename #contents #spinnersmall {
-            position: absolute;
-            left: -25px;
-            z-index: 10;
-            background: none; }
-  #mynavbar .navBarRight {
+      -webkit-flex-direction: row;
+          -ms-flex-direction: row;
+              flex-direction: row;
+      -webkit-box-align: center;
+      -webkit-align-items: center;
+          -ms-flex-align: center;
+              align-items: center; }
+    #mynavbar .navbarupper .loginIcons {
+      font-size: 20px;
+      padding: 5px;
+      color: #6b5a84;
+      margin-bottom: .4em;
+      margin-left: .4em; }
+    #mynavbar .navbarupper .loginIcons:hover {
+      color: #463b57;
+      -webkit-transform: scale(1.07);
+              transform: scale(1.07);
+      cursor: default; }
+    #mynavbar .navbarupper .loginIcons:active {
+      color: #5f5075;
+      -webkit-transform: scale(1.07);
+              transform: scale(1.07);
+      cursor: default; }
+    #mynavbar .navbarupper .loginText {
+      font-size: 20px;
+      padding: 10px;
+      color: darkgrey;
+      font-family: cuprum; }
+  #mynavbar .navbarlower {
+    background: #4b4a4c;
     display: -webkit-box;
     display: -webkit-flex;
     display: -ms-flexbox;
     display: flex;
-    -webkit-box-align: center;
-    -webkit-align-items: center;
-        -ms-flex-align: center;
-            align-items: center;
-    width: 100%; }
-    #mynavbar .navBarRight span {
-      cursor: pointer; }
-    #mynavbar .navBarRight .mybutton {
-      display: block;
+    height: 30%; }
+    #mynavbar .navbarlower #filename {
+      background: none;
+      font-family: "cuprum";
       color: #222;
-      opacity: 0.5;
-      padding: 3%;
-      -webkit-transition: background 0.3s ease;
-      transition: background 0.3s ease; }
-    #mynavbar .navBarRight .mybutton:hover {
-      background: #CCCCCC; }
-    #mynavbar .navBarRight .mybutton:active {
-      color: green;
-      background: #FFFFFF !important; }
+      position: relative;
+      opacity: 0.1;
+      color: white;
+      padding-right: 2%;
+      padding-left: 2%;
+      -webkit-transition: background 0.3s ease, opacity 0.3s ease;
+      transition: background 0.3s ease, opacity 0.3s ease; }
+    #mynavbar .navbarlower #filename:hover {
+      color: white;
+      opacity: 1.0;
+      background: #6b5a84; }
+    #mynavbar .navbarlower #spinnersmall {
+      top: 2px;
+      color: white;
+      position: absolute;
+      left: 17px;
+      z-index: 10;
+      background: none; }
 
 /*displays a dot near the send to iaf button*/
 #sendstatus {
   width: 6px;
   height: 6px;
-  border-radius: 6px; }
+  margin-top: auto;
+  margin-bottom: auto;
+  border-radius: 6px;
+  margin-right: 5px; }
 
 /*rotates an icon in the navbar*/
 .fa-rotate-45 {
@@ -413,13 +422,14 @@ ol {
   font-family: "muli";
   width: 25%;
   height: 100%;
-  background: url("../media/concrete_seamless.png");
+  background: #464547;
   z-index: 4;
   -webkit-transition: left 0.4s;
   transition: left 0.4s; }
   #navigatorcontainer .dataSourceArea {
     height: 10%;
-    background: url("../media/concrete_seamless.png");
+    background: #4b4a4c;
+    color: white;
     padding: 0px 0px 0px 0px;
     margin-bottom: 5px;
     box-shadow: 0px 3px 2px #888888; }
@@ -430,6 +440,7 @@ ol {
     display: -webkit-flex;
     display: -ms-flexbox;
     display: flex;
+    direction: rtl;
     -webkit-box-orient: vertical;
     -webkit-box-direction: normal;
     -webkit-flex-direction: column;
@@ -439,7 +450,7 @@ ol {
     -webkit-flex-grow: 1;
         -ms-flex-positive: 1;
             flex-grow: 1;
-    background: url("../media/concrete_seamless.png");
+    background: #464547;
     cursor: pointer;
     overflow-y: auto;
     overflow-x: hidden;
@@ -458,13 +469,14 @@ ol {
     display: -webkit-flex;
     display: -ms-flexbox;
     display: flex;
+    direction: rtl;
     -webkit-box-orient: vertical;
     -webkit-box-direction: normal;
     -webkit-flex-direction: column;
         -ms-flex-direction: column;
             flex-direction: column;
     height: 25%;
-    background: url("../media/concrete_seamless.png");
+    background: #222;
     overflow-y: auto;
     overflow-x: hidden;
     padding: 15px;
@@ -472,14 +484,17 @@ ol {
     margin-bottom: 5px;
     box-shadow: 0px 3px 2px #888888; }
     #navigatorcontainer .descriptionArea h4 {
-      font-family: "cuprum"; }
+      font-family: "cuprum";
+      text-align: center; }
   #navigatorcontainer .propertyArea {
     -webkit-box-flex: 1;
     -webkit-flex-grow: 1;
         -ms-flex-positive: 1;
             flex-grow: 1;
+    direction: rtl;
     height: 40%;
-    background: url("../media/concrete_seamless.png");
+    background: #222;
+    color: white;
     overflow: scroll;
     padding: 15px; }
     #navigatorcontainer .propertyArea input.form-control, #navigatorcontainer .propertyArea div.checkbox {
@@ -548,7 +563,7 @@ ol {
     border: 0px;
     margin-top: 3px;
     min-height: 30%;
-    background: #dddddd; }
+    background: #2962bf; }
     #configcontainer .tabArea .tabheaders {
       background: url("../media/concrete_seamless.png");
       display: -webkit-box;
@@ -565,8 +580,8 @@ ol {
       #configcontainer .tabArea .tabheaders a {
         text-decoration: none;
         margin-left: 10px;
-        background: #c4c4c4;
-        border: 1px solid #c4c4c4;
+        background: #204d95;
+        border: 1px solid #204d95;
         border-radius: 3px 3px 0px 0px;
         color: #484848;
         -webkit-transition: background 0.3s ease;
@@ -575,11 +590,11 @@ ol {
           width: 30px;
           text-align: center; }
       #configcontainer .tabArea .tabheaders a:hover {
-        background: #dddddd;
-        border: 1px solid #dddddd; }
+        background: #2962bf;
+        border: 1px solid #2962bf; }
       #configcontainer .tabArea .tabheaders .active1 {
-        background: #dddddd;
-        border: 1px solid #dddddd; }
+        background: #2962bf;
+        border: 1px solid #2962bf; }
     #configcontainer .tabArea .slotContainer {
       display: -webkit-box;
       display: -webkit-flex;
