@@ -33,14 +33,11 @@
                 views: {
                     'content@': {
                         templateUrl : 'views/userpage.html',
-                        controller  : 'UserController as vm6'
+                        controller  : 'MyUserController as vm6'
                     }
                 }
             });
         $urlRouterProvider.otherwise('/');
     });
-
-
-
 
 })();

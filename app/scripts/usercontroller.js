@@ -2,9 +2,9 @@
 
 	'use strict';
 	var applic = angular.module('confab');
-	applic.controller('UserController',function(UserFactory)
+	applic.controller('MyUserController',function(UserFactory)
 	{
-		console.log("usercontroller...");
+		console.log("my usercontroller...");
 		var vm6 = this;
 		vm6.setRole = setRole;
 		vm6.saveItem = saveItem;
