@@ -524,30 +524,18 @@
               function showNav()
               {
                 var editor = document.getElementById('editorcontainer');
-                var navItem = document.getElementById('navItem');
-                var picture = document.getElementById('picture');
-                var iplogo = document.getElementById('iplogo');
                 
-                if(!picture || !navItem || !editor){return;}
-
+                console.log("items: ",editor)
 
                 if(vm.showNavigator)
                 {
                   editor.style.width = '75%';
                   editor.style.left = '25%';
-                  iplogo.style.top = '10px';
-                  navItem.style.left = '89%';
-                  picture.classList.add('fa-toggle-left');
-                  picture.classList.remove('fa-toggle-right');
                 }
                 else
                 {
                   editor.style.width = '100%';
                   editor.style.left = '0%';
-                  navItem.style.left = '0%';
-                  iplogo.style.top = '10px';
-                  picture.classList.remove('fa-toggle-left');
-                  picture.classList.add('fa-toggle-right');
                 }
                 vm.showNavigator = !vm.showNavigator;
               }
