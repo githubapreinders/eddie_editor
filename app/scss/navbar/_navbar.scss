@@ -1,112 +1,128 @@
 #mynavbar
 {
-	display:flex;
-	background:url($background0);
 	height : 8%;
-	img
-	{
-		width : 46px;
-		height : 46px;
-		margin-top :4px;
-		margin-right : 25px;
-	}
-	label
-	{
-		text-align:center;
-	}
-
-		.navBarLeft
+	.mybutton
 		{
-		position:relative;
+			opacity:0.3;
+			color:white;
+			padding-right:2%;
+			padding-left:2%;
+			transition: background 0.3s ease, opacity 0.3s ease;
+				
+
+		}
+		.mybutton:hover
+		{
+			color:white;
+			opacity:1.0;
+			background:$corkColor2;
+		}
+		.mybutton:active
+		{
+			color:green;
+			background:#FFFFFF!important;
+		}
+	.navbarupper
+	{
+		background:$corkColor3;
 		display:flex;
 		align-items:center;
-		width:39%;
+
+
+		height:70%;
 		.iplogo
 		{
-			position:absolute;
-			top : 10px;
+			margin-top:auto;
+			margin-bottom:auto;
 			margin-left:10px;
 			max-width : 30px;
 			max-height : 30px;
-			transition: top 0.4s;
 		}
-		.navItem
-			{
-				position:absolute;
-				cursor:pointer;
-				left : 90%;
-				top :75%;
-				display: flex;
-				flex-direction: column;
-				transition: left 0.4s;
-				span
-				{
-					width:38px;
-					padding:1px;
-					border-radius: 4px;
-					border-bottom:0px;
-					background:$guttercolor;
-				}
-					
-				i
-				{
-					margin-left:10px;
-					display:inline;
-					color:$gutterlinenumber;
-				}
+		.navHeading a 
+		{	       
+	        margin-left:10px;
+	        text-transform: uppercase;
+	        letter-spacing: 5px;
+	        color:$corkColor2;
+	        text-decoration:none
+      	}
+      	.loginpane
+      	{
+      		display:flex; 
+      		flex-direction: row;
+      		align-items: center;
+      	}
 
-				#filename
-				{
-					background:none;
-					font-family:$filenameheader;
-					color:$guttercolor;
-					position:relative;
-					#contents
-					{
-						position:absolute;
-						background:none;
-						left:55px;
-						#spinnersmall
-						{
-							position:absolute;
-							left:-25px;
-							z-index:10;
-							background:none;
-						}
-					}
-				}
-			}	
-		}
 
-		.navBarRight
+      	.loginIcons
 		{
-			display: flex;
-			align-items: center;
-			width:100%;
-			
-			span
-			{
-				cursor:pointer;
-			}
-
-			.mybutton
-			{
-  				display:block;
-  				color:$guttercolor;
-  				opacity:0.5;
-  				padding:3%;
-  				transition: background 0.3s ease;
-			}
-			.mybutton:hover
-			{
-				background:$guttercolorhover;
-			}
-			.mybutton:active
-			{
-				color:green;
-				background:#FFFFFF!important;
-			}
+		  font-size:20px; 
+		  padding: 5px;
+		  color: $corkColor2;
+		  margin-bottom: .4em;
+		  margin-left: .4em;
 		}
+
+      	.loginIcons:hover
+		{
+		  color: lighten($corkColor2,15%);
+		  transform: scale(1.07);
+		  cursor:default;
+		}
+
+		.loginIcons:active
+		{
+		  color: darken($corkColor2, 5%);
+		  transform: scale(1.07);
+		  cursor:default;
+		}
+
+		.loginText
+		{
+		  font-size:20px;
+		  padding:10px;
+		  color: darkgrey;
+		  font-family:cuprum;
+		}
+
+	}
+	.navbarlower
+	{
+		background:$corkColor4;
+		display:flex;
+		height:30%;
+		#filename
+		{
+			background:none;
+			font-family:$filenameheader;
+			color:lighten($guttercolor,50%);
+			position:relative;
+			opacity:0.3;
+			color:white;
+			padding-right:2%;
+			padding-left:2%;
+			transition: background 0.3s ease, opacity 0.3s ease;
+
+		}
+		#filename:hover
+		{
+			color:white;
+			opacity:1.0;
+			background:$corkColor2;
+		}
+
+		#spinnersmall
+		{
+			top :2px;
+			color:white;
+			position:absolute;
+			left:17px;
+			z-index:10;
+			background:none;
+		}
+
+	}
+	
 }
 
 /*displays a dot near the send to iaf button*/
@@ -114,7 +130,10 @@
 {	
 	width : 6px;
 	height: 6px;
+	margin-top:auto;
+	margin-bottom:auto;
 	border-radius:6px;
+	margin-right:5px;
 }
 
 /*rotates an icon in the navbar*/

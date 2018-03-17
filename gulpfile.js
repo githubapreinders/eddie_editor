@@ -52,7 +52,7 @@ gulp.task('minifyCss', function()
 
 gulp.task('uglifyJs', function()
 {
-    return gulp.src(['app/scripts/application.js','app/scripts/controllers.js','app/scripts/directives.js','app/scripts/moderatorcontroller.js','app/scripts/moderatorservices.js','app/scripts/services.js','app/scripts/treecontroller.js','app/scripts/xmlTag.js','app/scripts/userservice.js', 'app/scripts/zipservice.js'])
+    return gulp.src(['app/scripts/application.js','app/scripts/controllers.js','app/scripts/directives.js','app/scripts/moderatorcontroller.js','app/scripts/moderatorservices.js','app/scripts/services.js','app/scripts/treecontroller.js','app/scripts/xmlTag.js','app/scripts/userservice.js','app/scripts/usercontroller.js', 'app/scripts/zipservice.js'])
         .pipe(concat('scripts.min.js'))
         // .pipe(strip())
         // .pipe(stripDebug())

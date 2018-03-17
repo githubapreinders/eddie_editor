@@ -2,8 +2,39 @@
 <link href="css/mystyle_monokai.css" rel="stylesheet" ng-disabled = "vm.selectedTheme === 'twilight'"> -->
 <div style="height: 100%; width:100%;">       
         	<div  id="mynavbar">
-                <div class="navBarLeft">
-                        <img src="./media/ibis2a.svg" class="iplogo" id="iplogo"  />
+                <div class="navbarupper">
+                    <img src="./media/ibis2a.svg" class="iplogo" id="iplogo"  />
+                    <h5 id="mytitle" class="navHeading"><a href="https://www.synomus.nl">ibis editor</a></h5>
+                <div class="filler"></div>
+                <div ng-include="'./views/login.html'"></div>
+                </div>
+                <div class="navbarlower">
+                    
+                    <span id="filename" class="filename " ng-click="vm.showNav()" >
+                        <span id="contents"><span id="spinnersmall" ng-show = "vm.showSpinnerSmall" style="color:grey ; margin-top:auto; font-size:10px;">
+                            <i   class="fa fa-spinner fa-spin fa-fw "></i>
+                        </span >Configuration_CreateWebSite.xml</span>
+                       </span>
+                       <div class="filler"></div>
+                       <span class="mybutton">users</span>
+                       <span class="mybutton">tags</span>
+                       <span class="mybutton">insert tag</span>
+                       <span class="mybutton">validate</span>
+                       <span class="mybutton">format</span>
+                       <span class="mybutton">erase</span>
+                       <span class="mybutton">SEND</span>
+                       <div id="sendstatus"></div>
+
+
+
+                </div>
+            </div>
+
+
+
+
+                <!-- <div class="navBarLeft">
+                        
                         <div style="position:absolute;left:50px;top:0px;"ng-show="vm.user!==null">{{vm.user.firstname}}</div>
                     <div id = "navItem" class="navItem" >
                         <div></div>
@@ -13,8 +44,8 @@
                         <span id="contents"><span id="spinnersmall" ng-show = "vm.showSpinnerSmall" style="color:grey ; margin-top:auto; font-size:10px;">
                             <i   class="fa fa-spinner fa-spin fa-fw "></i>
                         </span>{{vm.currentKey.title | cropFilter}}</span>
+                       </span>
 
-                       </span>  
                         <span  id = "rightspan" ng-click="vm.showNav()" >
                         <i  id="picture" class="fa fa-toggle-left fa-toggle-right"></i>
                         </span>
@@ -75,14 +106,14 @@
                         <div id="sendstatus"></div>
                     </span>
                 </div>
-            </div>
+            </div> -->
 
 <div class="mainContainer">
     <div id="navigatorcontainer">
 
         
          <div class="dataSourceArea" ng-include="'./views/dataSourceArea.html'"></div>
-         <div class="classArea" style="direction:rtl;" ng-include="'./views/classArea.html'"></div>
+         <div class="classArea"  ng-include="'./views/classArea.html'"></div>
          <div class="descriptionArea" ng-include="'./views/descriptionArea.html'"></div>
          <div class="propertyArea" ng-include="'./views/propertyArea.html'"></div>
     </div>

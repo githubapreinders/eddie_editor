@@ -8,8 +8,31 @@
 		var vm6 = this;
 		vm6.setRole = setRole;
 		vm6.saveItem = saveItem;
+		vm6.deleteUser = deleteUser;
+		vm6.sendMail = sendMail;
 		vm6.logitem = logitem;
 		getAllUsers();
+
+
+
+		function sendMail(index)
+		{
+			
+		}
+
+		function deleteUser(index)
+		{
+			UserFactory.deleteUser(vm6.theusers[index].email).then(
+				function success(resp)
+				{
+					console.log("success deleting user ", resp.status);
+					getAllUsers();
+				},
+				function failure(resp)
+				{
+					console.log("fai  lure deleting user ", resp.status);
+				});
+		}
 
 		function getAllUsers()
 		{
@@ -25,9 +48,6 @@
 				console.log("no users returned " ,response);
 			});
 		}
-		
-
-		
 
 		function setRole(index, role)
 		{

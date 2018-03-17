@@ -44,7 +44,8 @@ appliccat.factory('UserFactory', function UserFactory($http,  AuthTokenFactory, 
 
         function deleteUser(useremail)
         {
-            var theurl = IAF_URL + '/api/deleteuser/' + useremail
+            var theurl = IAF_URL + '/api/deleteuser/' + useremail;
+            console.log("sending to ",theurl);
             return $http.get(theurl).then(function success(response)
             {
                 console.log("deleting user  ", response);
