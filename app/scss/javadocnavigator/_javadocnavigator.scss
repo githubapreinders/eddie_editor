@@ -4,20 +4,40 @@
 	font-family:$mainwindowfont;
 	width:25%;
 	height:100%;
-	background:$corkColor3;
+	background:$gradient1;
 	z-index: 4;
 	transition: left 0.4s;
 	.dataSourceArea
 	{
 		height:10%;
-		background:$corkColor4;
-		color:white;
+		background:$guttercolor;
+		color:grey;
 		padding:  0px 0px 0px 0px;
-		margin-bottom: 5px;
-		.btn-group
+		margin-bottom: 1px;
+		label
 		{
-			padding: 5px;
+			background:$corkColor2;
+			color:white;
+			margin-left:auto;
 		}
+		label.active
+		{
+			background:lighten($corkColor2,20%);
+		}
+		label:hover
+		{
+			background:lighten($corkColor2,5%);
+		}
+		.mybuttons
+		{
+			margin-top:10px;
+			text-align:center;
+		}
+		.mynavigator
+		{
+			text-align:center;
+		}
+
 	}
 	.classArea
 	{
@@ -25,18 +45,17 @@
 		direction:rtl;
 		flex-direction: column;
 		flex-grow:1;
-		background:$corkColor3;
+		background:$guttercolor;
 		cursor : pointer;
 		overflow-y:auto;
 		overflow-x:hidden;
 		text-indent:10px;
-		margin-bottom: 5px;
-		
+		margin-bottom: 1px;
 		height:25%;
 		
 		.classItem
 		{
-			color:black;
+			color:grey;
 		}
 		.selectedItem
 		{
@@ -45,6 +64,22 @@
 			background:$guttercolor;
 		}
 	}
+
+
+		.classArea::-webkit-scrollbar{
+		    width: 1.0em;
+		    background:$guttercolor;
+		}
+		 
+		 
+		.classArea::-webkit-scrollbar-thumb{
+		  background-color: $corkColor2;
+		  outline: 1px solid white;
+		}
+
+
+
+
 	.descriptionArea
 	{
 		display:flex;
@@ -56,13 +91,23 @@
 		overflow-x:hidden;
 		padding: 15px;
 		padding-right: 0px;
-		margin-bottom: 5px;
+		margin-bottom: 1px;
 		h4
 		{
 			font-family : $filenameheader;
 			text-align: center;
 		}
+		.descriptioncontainer
+		{
+			color:grey;
+			direction:ltr;
+		}
+
 	}
+
+
+
+
 	.propertyArea
 	{
 		flex-grow:1;
@@ -70,32 +115,51 @@
 		height:40%;
 		background:#222;
 		color:white;
-		overflow:scroll;
-		padding: 15px;
+		overflow-y:auto;
+		overflow-x:hidden;
+		padding-left: 15px;
 		input.form-control, div.checkbox
 		{
 			width:100%;
 		}
+		input
+		{
+			background:$corkColor3;
+			color:white;
+			border:1px solid $corkColor1;
+		}
 		
+		.propcontainer
+		{
+			direction:ltr;
+			width:95%;
+		}
+
 		.popovertemplate
 		{
 			min-width:200px;
 			overflow-y: auto;
 			overflow-x:hidden;
 		}
-
-		
-		
 		h5
 		{
 			text-align: center;
 		}
+		
 
 	}
+	.propertyArea::-webkit-scrollbar,.descriptionArea::-webkit-scrollbar 
+	{
+		width: 1.0em;
+		background: $guttercolor;
+	}
+
+	.propertyArea::-webkit-scrollbar-thumb,.descriptionArea::-webkit-scrollbar-thumb
+	{
+		background-color: $corkColor2;
+		outline: 1px solid white;
+	}
 }
-
-
-
 
 
 .divider

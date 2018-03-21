@@ -5,7 +5,7 @@
 var appliccat = angular.module('confab');
 appliccat.factory('UserFactory', function UserFactory($http,  AuthTokenFactory, StorageFactory, $q, $window, IAF_URL)
     {
-        
+        var currentUser = null;
     	
         return {
             login: login,
@@ -13,9 +13,24 @@ appliccat.factory('UserFactory', function UserFactory($http,  AuthTokenFactory, 
             getUser: getUser,
             getAllUsers: getAllUsers,
             saveUser: saveUser,
-            deleteUser: deleteUser
+            deleteUser: deleteUser,
+            setCurrentUser: setCurrentUser,
+            getCurrentUser: getCurrentUser
         };
 
+        function getCurrentUser()
+        {
+            return currentUser;
+        }
+
+        function setCurrentUser(theuser)
+        {
+            currentUser = theuser;
+            console.log("current user:", currentUser);
+        }
+
+
+        //saving or updating a user from userpage.html /usercontroller
         function saveUser(user)
         {
             var theurl = IAF_URL + '/api/users';
@@ -42,6 +57,7 @@ appliccat.factory('UserFactory', function UserFactory($http,  AuthTokenFactory, 
             });
         }
 
+        //from usercontroller
         function deleteUser(useremail)
         {
             var theurl = IAF_URL + '/api/deleteuser/' + useremail;
@@ -59,6 +75,7 @@ appliccat.factory('UserFactory', function UserFactory($http,  AuthTokenFactory, 
 
 
 
+        //from usercontroller
         function getAllUsers()
         {
             var theurl = IAF_URL + '/api/getusers';
@@ -73,6 +90,7 @@ appliccat.factory('UserFactory', function UserFactory($http,  AuthTokenFactory, 
             });
         }
 
+        //from mainpage, trying to login via the token
         function getUser()
         {
             if (AuthTokenFactory.getToken())
@@ -89,6 +107,10 @@ appliccat.factory('UserFactory', function UserFactory($http,  AuthTokenFactory, 
         {
            var theurl = IAF_URL + '/api/login';
         	console.log("url: ",theurl);
+            if(AuthTokenFactory.getToken())//remove old tokens , logging in without tokens
+            {
+                AuthTokenFactory.setToken();
+            }
             return $http.post(theurl,
                 {"logindetails":{
                     "email": useremail,
@@ -97,9 +119,10 @@ appliccat.factory('UserFactory', function UserFactory($http,  AuthTokenFactory, 
             {
                 AuthTokenFactory.setToken(response.data.logindetails.accesstoken);
                 return response;
-            },function failure(response)
+            },function failure(error)
             {
-                return response;
+                console.log("statuscode ", error.data.loginDetails.result);
+                return error;
             });
 
                

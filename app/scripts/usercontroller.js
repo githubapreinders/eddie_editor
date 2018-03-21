@@ -11,6 +11,7 @@
 		vm6.deleteUser = deleteUser;
 		vm6.sendMail = sendMail;
 		vm6.logitem = logitem;
+		vm6.user = UserFactory.getCurrentUser();
 		getAllUsers();
 
 

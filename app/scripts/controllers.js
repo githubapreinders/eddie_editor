@@ -20,7 +20,6 @@
             vm.storeData = storeData;
             vm.retrieveData = retrieveData;
             vm.toggleSlot = toggleSlot;
-            vm.modifyAlias = modifyAlias;
             vm.checkDefaults = checkDefaults;
             vm.changeTheme = changeTheme;
             vm.changeFontSize = changeFontSize;
@@ -67,7 +66,7 @@
             //tabs control
             vm.toggleTab = toggleTab;
             vm.thetabs=["tabauth", "tabedit"];
-            toggleTab('tabauth');//initializing
+            // toggleTab('tabauth');//initializing
 
 
             
@@ -76,6 +75,7 @@
             UserFactory.getUser().then(function success(response)
             {
                 vm.user = response.data.user;
+                UserFactory.setCurrentUser(vm.user);
                 console.log("user from me ",vm.user);
                 StaticDataFactory.setProjectName(vm.user.instancename);
                 getJson();
@@ -84,6 +84,7 @@
             }, function failure(response)
             {
                 vm.user = null;
+                UserFactory.setCurrentUser(null);
                 showCredentialsDialog();
                 console.log(JSON.stringify(response));
             });
@@ -104,15 +105,17 @@
                     UserFactory.login(useremail, password).then(function success(response)
                     {
                         console.log("returning from service;", JSON.stringify(response));
-                        if (response.status == 401)
+                        if (response.status !== 200)
                         {
-                            alert("Not Authorized.")
+                            alert(response.data.loginDetails.result);
                         }
                         else
                         {
                             vm.user = response.data.logindetails.user;
+                            UserFactory.setCurrentUser(vm.user);
                             StaticDataFactory.setProjectName(vm.user.instancename);
-                            console.log("vm.user : ", vm.user);
+                            console.log("vm.user : ", vm.user );
+                            saveInSlot();
                             getJson();
                         }
                     }, handleError);
@@ -127,8 +130,11 @@
                 {
                     console.info("user set to null", response);
                     vm.user = null;
+                    UserFactory.setCurrentUser(null);
                     vm.useremail = "";
                     vm.password = "";
+                    $interval.cancel();
+                    console.log("cancelling timer...");
                 },function failure(response)
                 {
                     console.log("failure logging out...");
@@ -142,18 +148,7 @@
 
             function setCredentials()
             {
-            //     console.log("credentials:", vm.iaf_url);
-            //     IafFactory.setCredentials(vm.iaf_url, vm.username, vm.password).then(
-            //     function succes(resp)
-            //     {
-            //         console.log("setting credentials and updating the scope");    
-            //         vm.navigatorModel = JSON.parse(resp.data.JSONMONSTER.MYMONSTER);
-            //         toggle_datasource('pipes');
-            //     },
-            //     function fail(err)
-            //     {
-
-            //     });
+            
             }
 
             function showCredentialsDialog()
@@ -252,27 +247,33 @@
                     $timeout(function()
                     {
                         vm.showSpinnerSmall = false;
+                        // console.log("spinner:",vm.showSpinnerSmall);
                     }, 1000);
                     var thekey = StorageFactory.getGetter(StorageFactory.getCurrentKey().title)();
-                    //console.log("saving : ", cropFilter(StorageFactory.getCurrentKey().title)," with id ",vm.timerId);
+                    console.log("saving : ", cropFilter(StorageFactory.getCurrentKey().title));
+
                     StorageFactory.getSetter(thekey)(thedocument.getValue());
                 }, 5000);
                 StaticDataFactory.setTimerId(vm.timerId);
             }
 
+            $scope.$on('Zipload', function()
+            {
+                console.log("cancelling timer from zipload...");
+                $interval.cancel();
+            });
 
 
             $scope.$on('$destroy', function()
             {
-                console.log("cancelling timer...", typeof(vm.timerId));
+                console.log("cancelling timer...");
                 $interval.cancel();
             });
 
             //setting the editor content after a new file has been chosen to edit
-            $scope.$on("Keychange", function()
+            $scope.$on("Keychange", function(event,value)
             {
                 vm.currentKey = StorageFactory.getCurrentKey();
-                console.log("keychange", vm.currentKey.title);
                 retrieveData(vm.currentKey);
                 toggleReadonly(vm.currentKey);
             });
@@ -281,17 +282,17 @@
             // after a switch in focus, saving the work that is just made
             $scope.$on('saveOldValues',function()
             {
-                    vm.showSpinnerSmall = true;
-                    $timeout(function()
-                    {
-                        vm.showSpinnerSmall = false;
-                    }, 1000);
-                    if(StorageFactory.getCurrentKey())
-                    {
-                        var thekey = StorageFactory.getGetter(StorageFactory.getCurrentKey().title)();
-                        console.log("saving : ", cropFilter(StorageFactory.getCurrentKey().title));
-                        StorageFactory.getSetter(thekey)(thedocument.getValue());
-                    }
+                vm.showSpinnerSmall = true;
+                $timeout(function()
+                {
+                    vm.showSpinnerSmall = false;
+                }, 1000);
+                if(StorageFactory.getCurrentKey())
+                {
+                    var thekey = StorageFactory.getGetter(StorageFactory.getCurrentKey().title)();
+                    console.log("saving after focus change : ", cropFilter(StorageFactory.getCurrentKey().title));
+                    StorageFactory.getSetter(thekey)(thedocument.getValue());
+                }
             });
 
             function cropFilter(item)
@@ -427,13 +428,7 @@
                 editor.setOption('theme', vm.selectedTheme);
             }
                 
-            //responds to change of the slotname : internally the slotnames are slot1, slot2...etc,
-            //externally a user can choose any alias he wants.
-            function modifyAlias(slotn, newname)
-            {
-                console.log("modify ",slotn, newname);
-                StorageFactory.getSetter(slotn)(newname);
-            }
+           
 
             //console.log("retrieved keys",StorageFactory.getKeys());
             
@@ -481,11 +476,12 @@
                     alias = StorageFactory.getCurrentKey();
                 }
                 console.log("alias", alias);
+
                 if(StorageFactory.getGetter(alias.title)() === undefined)
                 {
                     $timeout(function() 
                     {
-                        console.log("waiting for StorageFactory to settle...", Date.now());
+                       // console.log("waiting for StorageFactory to settle...", Date.now());
                         var thekey = StorageFactory.getGetter(alias.title)();
                         // console.log("retrieving data , setting the document value...", StorageFactory.getGetter(thekey)());
                         thedocument.setValue(StorageFactory.getGetter(thekey)());
@@ -494,7 +490,7 @@
                 else
                 {
                     var thekey = StorageFactory.getGetter(alias.title)();
-                    // console.log("retrieving data and setting the document value...", StorageFactory.getGetter(thekey)());
+                    //console.log("retrieving data and setting the document value...", StorageFactory.getGetter(thekey)());
                     thedocument.setValue(StorageFactory.getGetter(thekey)());
                 }
                 if(StaticDataFactory.getTimerId() === 0 )

@@ -5,20 +5,26 @@
          <li ng-repeat="node in vm2.list" ui-tree-node ng-include="'./views/node_template.html'" ng-animate="{enter:'animate-enter',leave:'animate-leave'}"></li>
       </ol>
     </div>
-<div class="filler"></div>
- <div class="treeview_buttonsbelow">
- 	<a uib-popover="Load a zip from your local system or the current configuration from the Ibis."  popover-trigger="'mouseenter'"
- 	popover-placement="top-left" href="#" ng-click = "vm2.showZipDialog()"><span class=" glyphicon glyphicon-refresh"></span></a>
- 	<div class="pad"></div>
- 	<a uib-popover="Download your current tree into a zip folder. This will be stored in your Downloads folder."  popover-trigger="'mouseenter'"
- 	popover-placement="top-left" href="#" ng-click = "vm2.saveToFile()"><span class="glyphicon glyphicon-save"></span></a>
- 	<div class="filler"></div>
- 	<a uib-popover="Create a new folder."  popover-trigger="'mouseenter'"
- 	popover-placement="top-right" href="#" ng-click = "vm2.addFileOrFolder('folder')"><span class="glyphicon glyphicon-folder-close"></span></a>
- 	<div class="pad"></div>
- 	<a uib-popover="Create a new blank file. This will get a default filename."  popover-trigger="'mouseenter'"
- 	popover-placement="top-right" href="#" ng-click = "vm2.addFileOrFolder('file')"><span class="glyphicon glyphicon-file"></span></a>
+    <div class="filler"></div>
+ 	 
+    <div class="treeview_buttonsbelow">
+        <div class="btn-group"  >
+            <label class="btn " ng-click = "vm2.showZipDialog()" >load zip</label>
+
+            <label class="btn " ng-click = "vm2.saveToFile()">save zip</label>
+
+            <label class="btn " ng-click = "vm2.addFileOrFolder('folder')" >folder</label>
+
+            <label class="btn " ng-click = "vm2.addFileOrFolder('file')" >file</label>
+        </div>
     </div>
+
+   <!--  <div class="treeview_buttonsbelow">
+  	 	<a  href="#" ng-click = "vm2.showZipDialog()"><span class=" mybutton">load zip</span></a>
+  	 	<a  href="#" ng-click = "vm2.saveToFile()"><span class="mybutton">save zip</span></a>
+  	 	<a  href="#" ng-click = "vm2.addFileOrFolder('folder')"><span class="mybutton">folder</span></a>
+  	 	<a  href="#" ng-click = "vm2.addFileOrFolder('file')"><span class="mybutton"> file</span></a>
+    </div> -->
 </div>
 
 

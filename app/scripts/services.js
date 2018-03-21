@@ -55,7 +55,6 @@
             stopTimer : stopTimer,
             setSelectedItem : setSelectedItem,
             getSelectedItem : getSelectedItem,
-            setIafUrl : setIafUrl,
             getProjectName :getProjectName,
             setProjectName : setProjectName
 
@@ -71,13 +70,6 @@
         {
           console.log("setting projectname: ", projectname);
           projectname = name;
-        }
-
-
-
-        function setIafUrl()
-        {
-          // IAF_URL = StorageFactory.getGetter("IAF_URL")();
         }
 
         function setSelectedItem(item)
@@ -172,8 +164,8 @@
       console.log("StorageFactory...");
       var api = {};
       var thekeys;
-      var thealiases = ["file1"];
-      var currentKey = "slot1";
+      var thealiases;
+      var currentKey;
       var myaliases;
       
       return {
@@ -192,7 +184,8 @@
         deleteAll : deleteAll,
         changeKeys : changeKeys,
         getListOfDirectories : getListOfDirectories,
-        getListOfFiles : getListOfFiles
+        getListOfFiles : getListOfFiles,
+        checkIfEmptyKey : checkIfEmptyKey
       };
 
       function initialise()
@@ -225,6 +218,8 @@
                             ]
                           }
                         ];
+          thealiases = ["file1"];
+          currentKey= "slot1"
           var myslots = { 2 : {"title":"file1",isLocked:false} };              
           getSetter("thejson")(thejson);//setting file structure in localstorage; w
           getSetter("myslots")(myslots);//setting the open files configuration
@@ -252,7 +247,24 @@
           console.log("created keys:", thekeys);
         }
         currentKey = thekeys[0];
+
       }
+
+      function checkIfEmptyKey()
+      {
+        var keys = storage.getKeys();
+        for(var i=0 ;i<keys.length; i++)
+        {
+          //console.log("values ",keys[i], localStorage.getItem(keys[i]));
+          if (localStorage.getItem(keys[i]).length === 2)
+          {
+            console.log("emtpy value! ");
+            return true;
+          }
+        }
+        return false;
+      }
+
 
 
       /*
@@ -276,6 +288,10 @@
       function getListOfFiles()
       {
         var files = [];
+        if(thekeys === undefined)
+        {
+          return files;
+        }
         thekeys.forEach(function(key)
         {
           console.log("key: " , key);

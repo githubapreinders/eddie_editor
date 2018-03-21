@@ -4,24 +4,14 @@
 	var app = angular.module('confab');	
 	app.
 
-  factory('ZipService', function (StorageFactory, StaticDataFactory, $http , UPLOAD_URL, $window)
+  factory('ZipService', function (StorageFactory, StaticDataFactory, $http , UPLOAD_URL, IAF_URL, $window)
      {
 
      	console.log("ZipService.js...");
 
         var PROJECTNAME; 
         var myslots;
-        var MYIAF_URL = $window.location.href;
-        if(MYIAF_URL.indexOf('/#/')> -1)
-            {
-              MYIAF_URL = MYIAF_URL.substring(0,MYIAF_URL.indexOf('/#/'));
-            }
-
-            if(MYIAF_URL.charAt(MYIAF_URL.length-1) === '/')
-            {
-              MYIAF_URL = MYIAF_URL.substring(0,MYIAF_URL.length-1);
-            }
-        console.log("myiafurl:", MYIAF_URL);
+       
         return {
             init : init,
             getSlots : getSlots,
@@ -29,14 +19,9 @@
             getZipFromFile : getZipFromFile,
             sendZip : sendZip,
             getMySlots : getMySlots,
-            setIafUrl : setIafUrl,
             mergeZipFromFile : mergeZipFromFile
         };
 
-        function setIafUrl()
-        {
-          MYIAF_URL = StorageFactory.getGetter('MYIAF_URL')();
-        }
 
         function init()
         {
@@ -165,13 +150,9 @@
           return new Promise(function(resolve, reject)
           {
             PROJECTNAME = StaticDataFactory.getProjectName();
-            if(MYIAF_URL === undefined || typeof MYIAF_URL !== 'string')
-            {
-              alert("please add a correct IAF url");
-              return 'error';
-            }
+           
 
-            var finalurl = MYIAF_URL + UPLOAD_URL;
+            var finalurl = IAF_URL + UPLOAD_URL;
             alert(finalurl);            
 
             zip.generateAsync({type:"blob"}).then(function(myzip)
@@ -257,6 +238,7 @@
                     myzipfiles[index].async("string").then(function resolve(data)
                     {
                         var newslotname = "slot" + Math.ceil(Math.random()*1000);
+                        console.log("data length",myzipfiles[index].name, data.toString().length);
                         StorageFactory.getSetter(myzipfiles[index].name)(newslotname);
                         StorageFactory.getSetter(newslotname)(data);
                         index++;
@@ -271,7 +253,7 @@
                 }
               }                              
 
-              console.log("zipfiles",myzipfiles);
+              console.log("loaded zipfiles",myzipfiles);
               var myjson=[];
               myslots = {};
 
@@ -517,6 +499,7 @@
 
               
               console.log("zipfiles",myzipfiles);
+              console.log("empty slot: ",StorageFactory.checkIfEmptyKey());
               var myjson = StorageFactory.getGetter('thejson')();
               myslots = StorageFactory.getGetter('myslots')();
 
@@ -650,7 +633,7 @@
         {
          
           var DOWNLOAD_URL = "/iaf/api/configurations/download/" + StaticDataFactory.getProjectName();
-          var finalUrl = MYIAF_URL + DOWNLOAD_URL;
+          var finalUrl = IAF_URL + DOWNLOAD_URL;
           PROJECTNAME = StaticDataFactory.getProjectName();
           console.log("Download url :",finalUrl);
 
@@ -852,24 +835,24 @@
 
      })//end of factory
 
-	.factory('IafFactory', function($http, ZipService, UPLOAD_URL, $window)
+	.factory('IafFactory', function($http, ZipService, UPLOAD_URL, $window,IAF_URL)
     {
       
     var uname = null;
     var pw = null;
-    var MYIAF_URL = $window.location.href;
+    // var MYIAF_URL = $window.location.href;
 
-    if(MYIAF_URL.indexOf('/#/')> -1)
-            {
-              MYIAF_URL = MYIAF_URL.substring(0,MYIAF_URL.indexOf('/#/'));
-            }
+    // if(MYIAF_URL.indexOf('/#/')> -1)
+    //         {
+    //           MYIAF_URL = MYIAF_URL.substring(0,MYIAF_URL.indexOf('/#/'));
+    //         }
 
-            if(MYIAF_URL.charAt(MYIAF_URL.length-1) === '/')
-            {
-              MYIAF_URL = MYIAF_URL.substring(0,MYIAF_URL.length-1);
-            }
+    //         if(MYIAF_URL.charAt(MYIAF_URL.length-1) === '/')
+    //         {
+    //           MYIAF_URL = MYIAF_URL.substring(0,MYIAF_URL.length-1);
+    //         }
 
-      console.log("IafFactory", MYIAF_URL);
+    //   console.log("IafFactory", MYIAF_URL);
 
       return{
         postConfig : postConfig
@@ -881,7 +864,7 @@
       {
         return new Promise(function(resolve, reject)
         {
-          var finalurl = MYIAF_URL + UPLOAD_URL;
+          var finalurl = IAF_URL + UPLOAD_URL;
           PROJECTNAME = StaticDataFactory.getProjectName();
           alert(finalurl);
         zip.generateAsync({type:"blob"}).then(function(myzip)
@@ -890,7 +873,6 @@
           var fd = new FormData();
           fd.append("realm", 'jdbc');
           fd.append("name", PROJECTNAME);
-          // fd.append("name", "Ibis4Student");
           fd.append("version", 1);
           fd.append("encoding", 'utf-8');
           fd.append("multiple_configs", false);

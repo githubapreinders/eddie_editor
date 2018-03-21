@@ -4,7 +4,7 @@
 	height: 800px;
 }
 
-#editorcontainer
+.editorcontainer
 {
   	left:25%;
   	width:75%;
@@ -13,6 +13,10 @@
   	position:absolute;
   	transition: width 0.4s, left 0.4s;
   	z-index:5;
+    overflow-y:hidden;
+    
+   
+
   	.lockicon
   	{
   		position:absolute;
@@ -25,3 +29,4 @@
   	}
 
 }
+

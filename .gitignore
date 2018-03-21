@@ -3,6 +3,7 @@ node_modules/
 webapp/
 build/
 app/bower_components
+app/bower_components_old
 app/js
 media/scratch.txt
 *.xml

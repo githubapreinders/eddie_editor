@@ -3,7 +3,7 @@
 	'use strict';
 	 var appl = angular.module('confab');
 	//TODO add a view and controller functionality to add items to the children array
-	appl.controller('ModeratorController', function($scope, StaticDataFactory, $uibModal, StorageFactory, ModeratorFactory)
+	appl.controller('ModeratorController', function($scope, StaticDataFactory, $uibModal, StorageFactory, ModeratorFactory, UserFactory)
 	{
 		var vm3 = this;
 		vm3.showModel = showModel;
@@ -16,37 +16,61 @@
 		vm3.checkForXml = checkForXml;
 		vm3.postJsonBulk = postJsonBulk;
 		vm3.confirmDelete = confirmDelete;
+		vm3.showfile = showfile;
 		
-		console.log("moderatorcontroller attached...");
 		StaticDataFactory.stopTimer();
-		
+		vm3.user = UserFactory.getCurrentUser();
+
 		vm3.dataModel = JSON.parse(StaticDataFactory.getStaticJson());
 		console.log(vm3.dataModel);
-		vm3.currentSlotNumber = StorageFactory.getCurrentKey().title;
+		vm3.currentSlotNumber = null //TODO extract slots from localstorage
 		vm3.showPropertyDescription= false;
 		vm3.selectedProperty = 0;
 		vm3.addingProperty = false;
 		vm3.newProperty = null;
 		vm3.addingItem = false;
+		vm3.slotlist=[];
+		var helper = StorageFactory.getListOfFiles();
+		helper.forEach(function(val)
+		{
+			vm3.slotlist.push({file:val});
+		});
+
+		vm3.file={};
+		
+
+
+   
+
+
+		// vm3.selectedFile=vm3.slotlist[0];
+		console.log("files", vm3.slotlist);
 		
 		if (vm3.dataModel === null)
 		{
-				console.log("resolving data from iaf data:" );
-				StaticDataFactory.getJson().then(function success(data)
-				{
-						vm3.dataModel = JSON.parse(data.data.JSONMONSTER.MYMONSTER);
-						vm3.selectedItem = vm3.dataModel[(Object.keys(vm3.dataModel)[0])];
-						console.log("selected itemm",vm3.selectedItem);
-				},
-				function error(err)
-				{
-					console.log("error");
-				});
+			console.log("resolving data from iaf data:" );
+			StaticDataFactory.getJson().then(function success(data)
+			{
+					vm3.dataModel = JSON.parse(data.data.JSONMONSTER.MYMONSTER);
+					vm3.selectedItem = vm3.dataModel[(Object.keys(vm3.dataModel)[0])];
+					console.log("selected itemm",vm3.selectedItem);
+			},
+			function error(err)
+			{
+				console.log("error");
+			});
 		}
 		else
 		{
 			vm3.selectedItem = StaticDataFactory.getSelectedItem();
 			console.log("data2", vm3.selectedItem);
+		}
+
+
+		function showfile()
+		{
+			console.log("chosen  file :", vm3.file.selected.file);
+			console.log("in fact: \n", StorageFactory.getGetter(vm3.file.selected.file)());
 		}
 
 
@@ -67,16 +91,16 @@
 		function deleteItem()
 		{
 			ModeratorFactory.deleteItem(vm3.selectedItem.classname).then(function succcess(res)
-				{
-					console.log(res);
-					var parking = vm3.selectedItem.classname;
-					delete vm3.dataModel[parking];
-					vm3.selectedItem = vm3.dataModel[Object.keys(vm3.dataModel)[0]];
-				},
-				function fail(err)
-				{
-					console.log(err);
-				});
+			{
+				console.log(res);
+				var parking = vm3.selectedItem.classname;
+				delete vm3.dataModel[parking];
+				vm3.selectedItem = vm3.dataModel[Object.keys(vm3.dataModel)[0]];
+			},
+			function fail(err)
+			{
+				console.log(err);
+			});
 		}
 
 		function postJsonMonster()

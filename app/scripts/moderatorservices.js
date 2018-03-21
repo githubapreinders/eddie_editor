@@ -3,36 +3,27 @@
 	'use strict';
 
 	var applicc = angular.module('confab');
-	applicc.factory('ModeratorFactory', function($http, StorageFactory)
+	applicc.factory('ModeratorFactory', function($http, StorageFactory, IAF_URL)
 	{
-	var IAF_URL = StorageFactory.getGetter('IAF_URL')();	
-	var availableLesson = null;	
-	var IAF_URL = StorageFactory.getGetter('IAF_URL')();
 		return{
 			postJsonBulk : postJsonBulk,
 			postDatamonster : postDatamonster,
 			postSchema : postSchema,
 			deleteItem : deleteItem,
-			setAvailableLesson : setAvailableLesson,
-			getAvailableLessons : getAvailableLessons
+			getListOfFiles : getListOfFiles
+			
 		};
 
-		function setAvailableLesson(which)
+		function getListOfFiles()
 		{
-			availableLesson = which;
-			console.log("availableLesson", availableLesson);
-		}
-
-		function getAvailableLessons()
-		{
-			return availableLesson;
+			return StorageFactory.getListOfFiles();
 		}
 
 		function postJsonBulk(json)
 		{
 			try
 			{
-				$http.post(API_URL + '/postJsonBulk', json).then(function success(resp)
+				$http.post(IAF_URL + '/api/postJsonBulk', json).then(function success(resp)
 					{
 						console.log("success",resp);
 					},
@@ -74,7 +65,7 @@
           console.log("posting a monster with length ", Object.keys(datamonster).length);
           
           	  //var helper = JSON.stringify(datamonster);
-          	  return  $http({method:"POST",url:IAF_URL +'/api/storejson',data:datamonster,headers:{'content-type':'application/json'}}).then(function success(resp)
+          	  return  $http({method:"POST",url:IAF_URL +'/api/storejson',data:datamonster}).then(function success(resp)
 	          {
 	            console.log("saving result", resp.status);
 	            postTag(thetag);
