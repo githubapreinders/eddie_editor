@@ -16,7 +16,6 @@
 		vm3.confirmDelete = confirmDelete;
 		vm3.newSnippet = newSnippet;
 		
-		StaticDataFactory.stopTimer();
 		vm3.user = UserFactory.getCurrentUser();
 		vm3.thexml = null;
 
@@ -44,9 +43,18 @@
 			console.log("resolving data from iaf data:" );
 			StaticDataFactory.getJson().then(function success(data)
 			{
-					vm3.dataModel = JSON.parse(data.data.JSONMONSTER.MYMONSTER);
-					vm3.selectedItem = vm3.dataModel[(Object.keys(vm3.dataModel)[0])];
-					console.log("selected itemm",vm3.selectedItem);
+					var helper = JSON.parse(data.data.JSONMONSTER.MYMONSTER);
+					vm3.dataModel = [];
+					Object.keys(helper).forEach(function(value)
+					{
+						vm3.dataModel.push(helper[value]);
+					});
+					vm3.selectedItem = vm3.dataModel[0];
+					console.log("datamodel: ",vm3.dataModel);
+					console.log("selected item",vm3.selectedItem);
+					//console.log("datamodel: ", helper);
+
+
 			},
 			function error(err)
 			{
@@ -245,7 +253,7 @@
 						var parking = vm3.selectedItem.classname;
 						delete vm3.dataModel[parking];
 						vm3.selectedItem = vm3.dataModel[Object.keys(vm3.dataModel)[0]];
-						postDatamonster();
+						saveItem();
 					},
 					function fail(err)
 					{

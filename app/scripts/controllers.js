@@ -229,7 +229,6 @@
                     console.log("no two timers...");
                  return;
                 }
-                
                 console.log("starting timer");
                 mytimer = $interval(function()
                 {
