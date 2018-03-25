@@ -4,8 +4,72 @@
 	<title>Moderator</title>
 </head>
 <body>
+<div style="width:100%;height:100%;">
+            <div  class="mynavbar">
+                <div class="navbarupper">
+                    <img src="./media/ibis3_black.svg" class="iplogo" id="iplogo"  />
+                    <h5  class="navHeading"><a ui-sref="app">tag management</a></h5>
 
-<div  id="mynavbar">
+                    <label>Selected Tag :&nbsp;&nbsp;&nbsp;    <select id = 'myselect' ng-model="vm3.selectedItem" ng-options="value.classname for (key,value) in vm3.dataModel" ng-change="vm3.thexml = null" ></select></label>
+
+                    <!-- <label>Files :&nbsp;&nbsp;&nbsp;    <select id = 'myfiles' ng-model="vm3.selectedFile" ng-options="item in vm3.slotlist "  ></select></label> -->
+
+                    
+                    <label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Selected File : &nbsp;&nbsp;&nbsp; </label>
+                    <ui-select class="uiselect" ng-model="vm3.file.selected" theme="bootstrap" ng-disabled="vm3.disabled" style="width: 200px;" title="Choose a file" append-to-body="true" ng-change="vm3.newSnippet()">
+      <ui-select-match placeholder="select file...">{{$select.selected.file |cropFilter}}</ui-select-match>
+      <ui-select-choices repeat="item in vm3.slotlist ">
+        <span ng-bind-html="item.file | cropFilter "></span>
+        
+      </ui-select-choices>
+    </ui-select>
+
+
+<!-- (key,value) in  filteredList = vm.navigatorModel | datasourceFilter ;" -->
+
+
+                    <span ng-show = "vm.showSpinner" style="color:grey;">
+                        <i   class="fa fa-spinner fa-spin fa-2x fa-fw "></i>
+                    </span>
+                <div class="filler"></div>
+                <span class="loginText" ng-show = "vm.user !== null ">{{vm3.user.firstname}}</span>
+                </div>
+
+                <div class="navbarlower">
+                    
+                    
+                       <div class="filler"></div>
+                       
+                    <span class="mybutton"  ui-sref="app.userpage">users</span>   
+
+                       <span ng-click="vm3.confirmDelete()" class="mybutton">
+                        delete
+                    </span>
+
+                    <span ng-click="vm3.postJsonBulk()" class="mybutton ">
+                        post bulk
+                    </span>
+
+                    <span ng-click="vm3.showModel()" class="mybutton ">
+                        show model
+                    </span>
+
+                    <span ng-click="vm3.saveItem()" class="mybutton ">
+                        save item
+                    </span>
+
+                    <span ng-click="vm3.addNewClass()" class="mybutton ">
+                        new item
+                    </span>
+                       
+                       <div id="sendstatus"></div>
+                </div>
+            </div>
+
+
+
+
+            <!-- <div  class="mynavbar">
                 <div class="navBarLeft" style="width:45%;">
                       <a ui-sref="app">  
                         <img src="./media/ibis2a.svg" class="iplogo" id="iplogo"  />
@@ -46,7 +110,7 @@
                     </span>
 
                 </div>
-            </div>
+            </div> -->
 
 <div class="mainmodcontainer">
     <div class="leftmodcontainer" ng-include="'./views/leftmodcontainer.html'"></div>
@@ -55,6 +119,6 @@
     </div>
 </div>
 
-
+</div>
 
 </html>

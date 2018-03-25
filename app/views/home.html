@@ -1,32 +1,32 @@
 <!-- <link href="css/mystyle.css" rel="stylesheet" ng-disabled = "vm.selectedTheme === 'monokai' ">
 <link href="css/mystyle_monokai.css" rel="stylesheet" ng-disabled = "vm.selectedTheme === 'twilight'"> -->
 <div style="height: 100%; width:100%;">       
-        	<div  id="mynavbar">
+        	<div  id="mynavbar" class="mynavbar">
                 <div class="navbarupper">
-                    <img src="./media/ibis2a.svg" class="iplogo" id="iplogo"  />
-                    <h5 id="mytitle" class="navHeading"><a href="https://www.synomus.nl">ibis editor</a></h5>
+                    <img src="./media/ibis3_black.svg" class="iplogo" id="iplogo"  />
+                    <h5 id="mytitle" class="navHeading"><a ui-sref="app">ibis editor</a></h5>
+                    <span ng-show = "vm.showSpinner" style="color:grey;">
+                        <i   class="fa fa-spinner fa-spin fa-2x fa-fw "></i>
+                    </span>
                 <div class="filler"></div>
                 <div ng-include="'./views/login.html'"></div>
                 </div>
                 <div class="navbarlower">
                     
                     <span id="filename" class="filename " ng-click="vm.showNav()" >
-                        <span id="contents"><span id="spinnersmall" ng-show = "vm.showSpinnerSmall" style="color:grey ; margin-top:auto; font-size:10px;">
+                        <span id="contents"><span id="spinnersmall" ng-show = "vm.showSpinnerSmall" >
                             <i   class="fa fa-spinner fa-spin fa-fw "></i>
-                        </span >Configuration_CreateWebSite.xml</span>
+                        </span >{{vm.currentKey.title | cropFilter}}</span>
                        </span>
                        <div class="filler"></div>
-                       <span class="mybutton">users</span>
-                       <span class="mybutton">tags</span>
-                       <span class="mybutton">insert tag</span>
-                       <span class="mybutton">validate</span>
-                       <span class="mybutton">format</span>
-                       <span class="mybutton">erase</span>
-                       <span class="mybutton">SEND</span>
+                       <span class="mybutton" ng-show="vm.user.role==='admin'"  ui-sref="app.userpage">users</span>
+                       <span class="mybutton" ng-show="vm.user.role==='admin'" ui-sref="app.moderator">tags</span>
+                       <span class="mybutton" id="submitform" ng-click="vm.submitForm()">insert tag</span>
+                      
+                       <span class="mybutton" ng-click="vm.styleEditorContent()">format</span>
+                       <span class="mybutton" ng-click="vm.clearEditor()">erase</span>
+                       <span class="mybutton" ng-click="vm.sendZip()">send</span>
                        <div id="sendstatus"></div>
-
-
-
                 </div>
             </div>
 
@@ -121,7 +121,7 @@
     <div id="configcontainer">
         <div  class="configArea" ng-include="'./views/configArea.html'"></div>
         <div  class="treeview" ng-include = "'./views/treeview.html'"></div>
-        <div class="tabArea" >
+        <!-- <div class="tabArea" >
                 <div class="tabheaders">
                     <a id="tabauth" ng-click=" vm.toggleTab('tabauth')">
                     <span><i class="fa fa-drivers-license-o"></i></span>
@@ -132,7 +132,7 @@
                 </div> 
                     <div ng-show="vm.showauth;" ng-include="'./views/authentication.html'"></div>
                     <div ng-show="vm.showeditor;" ng-include="'./views/themearea.html'"></div>
-            </div>
+            </div> -->
     </div>
 
 
@@ -144,7 +144,7 @@
         <div class ="authentication" ng-include="'./views/authentication.html'"></div> 
     </div> -->
 
-    <div id = "editorcontainer">
+    <div id = "editorcontainer" class="editorcontainer">
         <div class = "editorArea" ui-codemirror="{ onLoad : vm.codemirrorLoaded }"></div>
         <span class="lockicon" ng-click="vm.unlock()" ng-show = "vm.theslots[vm.currentSlotNumber-1].locked">
             <i class="fa fa-lock fa-4x"></i>

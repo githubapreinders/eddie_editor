@@ -12,6 +12,8 @@ In local storage. For this the old and the new name have to be in one place.*/
                 restrict:"A",
                 link : function(scope, el , attrs)
                 {
+                    
+
                     el.bind('blur' , function(event)
                     {
                         var digit = event.target.id.match(/\d+/g)[0];
@@ -188,12 +190,13 @@ In local storage. For this the old and the new name have to be in one place.*/
 	        if(newvalue !== oldvalue)
 	        {
 	        	Object.defineProperty(theattrs, newvalue,
-	        		Object.getOwnPropertyDescriptor(theattrs, oldvalue));
+	        	Object.getOwnPropertyDescriptor(theattrs, oldvalue));
 	        	delete theattrs[oldvalue];
 	        }
         }
         else if(el !== 'newclassname'){
-        	scope.$apply(read);
+            console.log("new  name for item: ", el);
+        	//scope.$apply(read);
         }
       });
       element.bind("blur", function(event) 

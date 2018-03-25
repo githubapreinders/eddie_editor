@@ -1,15 +1,12 @@
-<div class="navigatorTop">
-    <!-- <span ng-click="vm.toggleSlot()" class="rounded">
-                    <i class="fa fa-key  "></i>{{vm.currentSlot}}
-    </span> -->
-    <span ng-click="vm.showConf()" class="rounded2">
-                    <i class="fa fa-cogs  "></i>
-                </span>
-    <div></div><strong>Navigator</strong><div></div>    
+<div class="configTop">
+  
+    <div></div><strong   ng-click="vm.showConf()">Navigator</strong><div></div> 
+    <span ng-click="vm.showConf()"
+        ><i class="fa  fa-play rotated"></i></span>
  </div>           
 
 
-    <div class="btn-group" data-toggle="buttons">
+    <!-- <div class="btn-group" data-toggle="buttons">
         <label class="radio-inline">
             <input type="radio" name="myRadio1" id="myRadio1" ng-checked = "vm.datasource == 'pipes'" ng-click="vm.toggle_datasource('pipes')" value="pipes" >
         Pipes </label>
@@ -22,5 +19,18 @@
         <label class="radio-inline">
             <input type="radio" name="myRadio4" id="myRadio4" value="general" ng-checked = "vm.datasource == 'general'" ng-click="vm.toggle_datasource('general')">
         General </label>
+    </div> -->
+
+    <div class="mybuttons">
+        <div class="btn-group"  >
+            <label class="btn myradiobtn" name = "types" ng-model = "vm.selectedItem.type" ng-click="vm.toggle_datasource('pipes')" value="pipes"  uib-btn-radio="'pipes'" >pipes</label>
+
+            <label class="btn myradiobtn" name = "types" ng-model = "vm.selectedItem.type"  ng-click="vm.toggle_datasource('receivers')" value="receivers"  uib-btn-radio="'receivers'" >receivers</label>
+
+            <label class="btn myradiobtn" name = "types" ng-model = "vm.selectedItem.type" ng-click="vm.toggle_datasource('snippets')" value="snippets"  uib-btn-radio="'snippets'" >snippets</label>
+
+            <label class="btn myradiobtn" name = "types" ng-model = "vm.selectedItem.type" ng-click="vm.toggle_datasource('general')" value="general"  uib-btn-radio="'general'" >general</label>
+            
+        </div>
     </div>
     

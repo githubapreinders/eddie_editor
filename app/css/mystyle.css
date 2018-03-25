@@ -8,6 +8,15 @@ html, body {
   height: 100%;
   font-family: "muli"; }
 
+body {
+  overflow: hidden; }
+
+input:focus, select:focus, textarea:focus, form:focus, button:focus {
+  outline: 0; }
+
+input:active, select:active, textarea:active, form:active, button:active {
+  outline: 0; }
+
 .popover-content {
   background: url("../media/spirationdark.png");
   color: white;
@@ -39,37 +48,15 @@ html, body {
   display: flex;
   cursor: pointer; }
   .configTop span, .navigatorTop span {
-    padding: 4px;
-    padding-top: 4px;
-    padding-bottom: 4px;
-    border: 1px solid grey;
-    border-top: 0px;
-    border-radius: 0px 0px 0px 3px; }
-  .configTop .minusicon, .navigatorTop .minusicon {
-    padding-right: 5px;
-    border: 0px;
-    border-radius: 3px 0px 0px 3px;
-    background: #222;
-    color: #aaa; }
-  .configTop .indescriptionarea, .navigatorTop .indescriptionarea {
-    border: 1px solid grey;
-    border-right: 0px; }
-  .configTop .rounded, .navigatorTop .rounded {
-    border-radius: 0px 3px 3px 0px;
-    border-top: 1px solid grey;
-    border-right: 1px solid grey;
-    border-bottom: 1px solid grey;
-    border-left: 0px; }
-  .configTop .rounded2, .navigatorTop .rounded2 {
-    border-radius: 3px 0px 0px 3px;
-    border-top: 1px solid #222;
-    border-left: 1px solid #222;
-    border-bottom: 1px solid #222;
-    border-right: 0px;
-    background: #222;
-    color: #aaa; }
-  .configTop i, .navigatorTop i {
-    display: inline; }
+    padding-top: 5px; }
+    .configTop span .rotated, .navigatorTop span .rotated {
+      -webkit-transform: rotate(180deg);
+              transform: rotate(180deg); }
+    .configTop span .myplay, .navigatorTop span .myplay {
+      color: gray; }
+  .configTop span:hover, .navigatorTop span:hover {
+    -webkit-transform: scale(1.5);
+            transform: scale(1.5); }
   .configTop div, .navigatorTop div {
     -webkit-box-flex: 1;
     -webkit-flex-grow: 1;
@@ -78,7 +65,7 @@ html, body {
 
 .mainContainer {
   width: 100%;
-  height: 92%;
+  height: 91%;
   position: relative; }
   .mainContainer strong {
     font-family: "play"; }
@@ -128,7 +115,7 @@ html, body {
       -ms-flex-direction: column;
           flex-direction: column;
   z-index: 3;
-  background: url("../media/concrete_seamless.png"); }
+  background: #222; }
   #configcontainer .configArea {
     height: 5%;
     overflow: hidden; }
@@ -145,22 +132,22 @@ html, body {
             flex-direction: column;
     overflow: auto; }
   #configcontainer .treeview_buttonsbelow {
-    padding: 10px;
-    background: #e1e1e1;
-    display: -webkit-box;
-    display: -webkit-flex;
-    display: -ms-flexbox;
-    display: flex; }
-    #configcontainer .treeview_buttonsbelow div.pad {
-      -webkit-box-flex: 0.05;
-      -webkit-flex-grow: 0.05;
-          -ms-flex-positive: 0.05;
-              flex-grow: 0.05; }
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 10px; }
+    #configcontainer .treeview_buttonsbelow label {
+      background: #27364e;
+      color: white;
+      margin-left: auto; }
+    #configcontainer .treeview_buttonsbelow label.active {
+      background: #496592; }
+    #configcontainer .treeview_buttonsbelow label:hover {
+      background: #30425f; }
   #configcontainer .tabArea {
     border: 0px;
     margin-top: 3px;
     min-height: 30%;
-    background: #2962bf; }
+    background: #9f90b4; }
     #configcontainer .tabArea .tabheaders {
       background: url("../media/concrete_seamless.png");
       display: -webkit-box;
@@ -177,8 +164,8 @@ html, body {
       #configcontainer .tabArea .tabheaders a {
         text-decoration: none;
         margin-left: 10px;
-        background: #204d95;
-        border: 1px solid #204d95;
+        background: #84729f;
+        border: 1px solid #84729f;
         border-radius: 3px 3px 0px 0px;
         color: #484848;
         -webkit-transition: background 0.3s ease;
@@ -187,11 +174,11 @@ html, body {
           width: 30px;
           text-align: center; }
       #configcontainer .tabArea .tabheaders a:hover {
-        background: #2962bf;
-        border: 1px solid #2962bf; }
+        background: #9f90b4;
+        border: 1px solid #9f90b4; }
       #configcontainer .tabArea .tabheaders .active1 {
-        background: #2962bf;
-        border: 1px solid #2962bf; }
+        background: #9f90b4;
+        border: 1px solid #9f90b4; }
     #configcontainer .tabArea .slotContainer {
       display: -webkit-box;
       display: -webkit-flex;
@@ -248,7 +235,9 @@ tr.angular-ui-tree-empty {
 .tree-node-content {
   margin: 1px;
   font-size: 12px;
+  color: white;
   font-family: "muli";
+  background: #222;
   padding: 2px;
   display: -webkit-box;
   display: -webkit-flex;
@@ -264,7 +253,8 @@ tr.angular-ui-tree-empty {
     text-decoration: none;
     margin: 2px;
     color: #222;
-    cursor: move; }
+    cursor: move;
+    cursor: pointer; }
   .tree-node-content a:hover {
     text-decoration: none; }
   .tree-node-content i {
@@ -272,9 +262,21 @@ tr.angular-ui-tree-empty {
   .tree-node-content i:hover {
     color: #222;
     cursor: default; }
+  .tree-node-content span {
+    color: #cccccc; }
+    .tree-node-content span i.afolder {
+      color: #c19724; }
+    .tree-node-content span i.afile {
+      color: white; }
+    .tree-node-content span i.apencil {
+      color: #27364e; }
+    .tree-node-content span i.apencil:hover {
+      color: #496592;
+      -webkit-transform: scale(1.05);
+              transform: scale(1.05); }
   .tree-node-content .showwhenhover {
     display: block;
-    color: #eee;
+    color: #1d1d1d;
     cursor: default; }
   .tree-node-content .showwhenhover:hover {
     display: block;
@@ -282,8 +284,9 @@ tr.angular-ui-tree-empty {
     cursor: default; }
 
 .tree-node-content-selected {
-  background: #CCCCCC;
-  margin: 5px; }
+  background: #464547; }
+  .tree-node-content-selected span {
+    color: white; }
 
 ol {
   list-style: none; }
@@ -294,28 +297,17 @@ ol {
   color: #FFF;
   margin-right: 10px; }
 
+.angular-ui-tree-handle {
+  color: green; }
+
 .angular-ui-tree-placeholder {
-  background: #f0f9ff;
+  background: #464547;
   border: 2px dashed #bed2db;
   box-sizing: border-box; }
 
-#mynavbar {
-  height: 8%; }
-  #mynavbar .mybutton {
-    opacity: 0.3;
-    color: white;
-    padding-right: 2%;
-    padding-left: 2%;
-    -webkit-transition: background 0.3s ease, opacity 0.3s ease;
-    transition: background 0.3s ease, opacity 0.3s ease; }
-  #mynavbar .mybutton:hover {
-    color: white;
-    opacity: 1.0;
-    background: #6b5a84; }
-  #mynavbar .mybutton:active {
-    color: green;
-    background: #FFFFFF !important; }
-  #mynavbar .navbarupper {
+.mynavbar {
+  height: 9%; }
+  .mynavbar .navbarupper {
     background: #464547;
     display: -webkit-box;
     display: -webkit-flex;
@@ -326,19 +318,38 @@ ol {
         -ms-flex-align: center;
             align-items: center;
     height: 70%; }
-    #mynavbar .navbarupper .iplogo {
+    .mynavbar .navbarupper .iplogo {
+      -webkit-transition: -webkit-transform 0.9 ease;
+      transition: -webkit-transform 0.9 ease;
+      transition: transform 0.9 ease;
+      transition: transform 0.9 ease, -webkit-transform 0.9 ease;
       margin-top: auto;
       margin-bottom: auto;
       margin-left: 10px;
       max-width: 30px;
       max-height: 30px; }
-    #mynavbar .navbarupper .navHeading a {
+    .mynavbar .navbarupper .iplogo:hover {
+      -webkit-transform: rotate(20deg);
+              transform: rotate(20deg); }
+    .mynavbar .navbarupper .ui-select-bootstrap > .ui-select-match > .btn {
+      border: 1px solid #6b5a84;
+      background: #4b4a4c;
+      color: #e6e6e6;
+      font-size: 12px;
+      text-shadow: none; }
+    .mynavbar .navbarupper .navHeading a {
+      -webkit-transition: text-shadow 0.5s ease;
+      transition: text-shadow 0.5s ease;
       margin-left: 10px;
+      margin-right: 30px;
       text-transform: uppercase;
       letter-spacing: 5px;
-      color: #6b5a84;
-      text-decoration: none; }
-    #mynavbar .navbarupper .loginpane {
+      color: #496592;
+      text-decoration: none;
+      text-shadow: 0px 0px 0 #464547, 0px 0px 0 #464547, 0px 0px 0 #464547, 0px 0px 0 #464547; }
+    .mynavbar .navbarupper .navHeading a:hover {
+      text-shadow: -1px -1px 0 #AAA, 1px -1px 0 #AAA, -1px 1px 0 #AAA, 1px 1px 0 #AAA; }
+    .mynavbar .navbarupper .loginpane {
       display: -webkit-box;
       display: -webkit-flex;
       display: -ms-flexbox;
@@ -352,35 +363,44 @@ ol {
       -webkit-align-items: center;
           -ms-flex-align: center;
               align-items: center; }
-    #mynavbar .navbarupper .loginIcons {
+    .mynavbar .navbarupper input {
+      background: #4b4a4c;
+      color: #e6e6e6;
+      font-size: 16px;
+      border: 1px solid #6b5a84; }
+    .mynavbar .navbarupper .loginIcons {
       font-size: 20px;
       padding: 5px;
-      color: #6b5a84;
+      color: #415981;
       margin-bottom: .4em;
       margin-left: .4em; }
-    #mynavbar .navbarupper .loginIcons:hover {
-      color: #9181a9;
+    .mynavbar .navbarupper .loginIcons:hover {
+      color: #5271a3;
       -webkit-transform: scale(1.07);
               transform: scale(1.07);
       cursor: default; }
-    #mynavbar .navbarupper .loginIcons:active {
-      color: #5f5075;
+    .mynavbar .navbarupper .loginIcons:active {
+      color: #1f2a3d;
       -webkit-transform: scale(1.07);
               transform: scale(1.07);
       cursor: default; }
-    #mynavbar .navbarupper .loginText {
+    .mynavbar .navbarupper .loginText {
       font-size: 20px;
       padding: 10px;
       color: darkgrey;
       font-family: cuprum; }
-  #mynavbar .navbarlower {
+    .mynavbar .navbarupper label {
+      color: #605e61;
+      margin-bottom: auto;
+      margin-top: auto; }
+  .mynavbar .navbarlower {
     background: #4b4a4c;
     display: -webkit-box;
     display: -webkit-flex;
     display: -ms-flexbox;
     display: flex;
     height: 30%; }
-    #mynavbar .navbarlower #filename {
+    .mynavbar .navbarlower #filename {
       background: none;
       font-family: "cuprum";
       color: #a2a2a2;
@@ -390,18 +410,41 @@ ol {
       padding-right: 2%;
       padding-left: 2%;
       -webkit-transition: background 0.3s ease, opacity 0.3s ease;
-      transition: background 0.3s ease, opacity 0.3s ease; }
-    #mynavbar .navbarlower #filename:hover {
+      transition: background 0.3s ease, opacity 0.3s ease;
+      padding-top: 0.3%; }
+    .mynavbar .navbarlower #filename:hover {
       color: white;
       opacity: 1.0;
-      background: #6b5a84; }
-    #mynavbar .navbarlower #spinnersmall {
-      top: 2px;
+      background: #27364e; }
+    .mynavbar .navbarlower #spinnersmall {
+      margin-top: auto;
+      margin-bottom: auto;
       color: white;
+      font-size: 14px;
       position: absolute;
-      left: 17px;
-      z-index: 10;
-      background: none; }
+      left: 3px;
+      z-index: 10; }
+
+.mybutton {
+  opacity: 0.3;
+  color: white;
+  padding-right: 2%;
+  padding-left: 2%;
+  -webkit-transition: background 0.3s ease, opacity 0.3s ease;
+  transition: background 0.3s ease, opacity 0.3s ease;
+  cursor: default;
+  padding-top: 0.15%; }
+
+.mybutton:hover {
+  color: white;
+  -webkit-transform: scale(1.02);
+          transform: scale(1.02);
+  opacity: 1.0;
+  background: #27364e; }
+
+.mybutton:active {
+  color: green;
+  background: #FFFFFF !important; }
 
 /*displays a dot near the send to iaf button*/
 #sendstatus {
@@ -422,18 +465,30 @@ ol {
   font-family: "muli";
   width: 25%;
   height: 100%;
-  background: #464547;
+  background: -webkit-linear-gradient(left, #27364e 0%, #222222 100%);
+  background: linear-gradient(to right, #27364e 0%, #222222 100%);
   z-index: 4;
   -webkit-transition: left 0.4s;
   transition: left 0.4s; }
   #navigatorcontainer .dataSourceArea {
     height: 10%;
-    background: #4b4a4c;
-    color: white;
+    background: #222;
+    color: grey;
     padding: 0px 0px 0px 0px;
-    margin-bottom: 5px; }
-    #navigatorcontainer .dataSourceArea .btn-group {
-      padding: 5px; }
+    margin-bottom: 1px; }
+    #navigatorcontainer .dataSourceArea label {
+      background: #27364e;
+      color: white;
+      margin-left: auto; }
+    #navigatorcontainer .dataSourceArea label.active {
+      background: #496592; }
+    #navigatorcontainer .dataSourceArea label:hover {
+      background: #30425f; }
+    #navigatorcontainer .dataSourceArea .mybuttons {
+      margin-top: 10px;
+      text-align: center; }
+    #navigatorcontainer .dataSourceArea .mynavigator {
+      text-align: center; }
   #navigatorcontainer .classArea {
     display: -webkit-box;
     display: -webkit-flex;
@@ -449,19 +504,25 @@ ol {
     -webkit-flex-grow: 1;
         -ms-flex-positive: 1;
             flex-grow: 1;
-    background: #464547;
+    background: #222;
     cursor: pointer;
     overflow-y: auto;
     overflow-x: hidden;
     text-indent: 10px;
-    margin-bottom: 5px;
+    margin-bottom: 1px;
     height: 25%; }
     #navigatorcontainer .classArea .classItem {
-      color: black; }
+      color: grey; }
     #navigatorcontainer .classArea .selectedItem {
       display: block;
       color: white;
       background: #222; }
+  #navigatorcontainer .classArea::-webkit-scrollbar {
+    width: 1.0em;
+    background: #222; }
+  #navigatorcontainer .classArea::-webkit-scrollbar-thumb {
+    background-color: #27364e;
+    outline: 1px solid white; }
   #navigatorcontainer .descriptionArea {
     display: -webkit-box;
     display: -webkit-flex;
@@ -479,10 +540,13 @@ ol {
     overflow-x: hidden;
     padding: 15px;
     padding-right: 0px;
-    margin-bottom: 5px; }
+    margin-bottom: 1px; }
     #navigatorcontainer .descriptionArea h4 {
       font-family: "cuprum";
       text-align: center; }
+    #navigatorcontainer .descriptionArea .descriptioncontainer {
+      color: grey;
+      direction: ltr; }
   #navigatorcontainer .propertyArea {
     -webkit-box-flex: 1;
     -webkit-flex-grow: 1;
@@ -492,16 +556,30 @@ ol {
     height: 40%;
     background: #222;
     color: white;
-    overflow: scroll;
-    padding: 15px; }
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding-left: 15px; }
     #navigatorcontainer .propertyArea input.form-control, #navigatorcontainer .propertyArea div.checkbox {
       width: 100%; }
+    #navigatorcontainer .propertyArea input {
+      background: #464547;
+      color: white;
+      border: 1px solid #6b5a84; }
+    #navigatorcontainer .propertyArea .propcontainer {
+      direction: ltr;
+      width: 95%; }
     #navigatorcontainer .propertyArea .popovertemplate {
       min-width: 200px;
       overflow-y: auto;
       overflow-x: hidden; }
     #navigatorcontainer .propertyArea h5 {
       text-align: center; }
+  #navigatorcontainer .propertyArea::-webkit-scrollbar, #navigatorcontainer .descriptionArea::-webkit-scrollbar {
+    width: 1.0em;
+    background: #222; }
+  #navigatorcontainer .propertyArea::-webkit-scrollbar-thumb, #navigatorcontainer .descriptionArea::-webkit-scrollbar-thumb {
+    background-color: #27364e;
+    outline: 1px solid white; }
 
 .divider {
   height: 2px;
@@ -528,7 +606,7 @@ ol {
       -ms-flex-direction: column;
           flex-direction: column;
   z-index: 3;
-  background: url("../media/concrete_seamless.png"); }
+  background: #222; }
   #configcontainer .configArea {
     height: 5%;
     overflow: hidden; }
@@ -545,22 +623,22 @@ ol {
             flex-direction: column;
     overflow: auto; }
   #configcontainer .treeview_buttonsbelow {
-    padding: 10px;
-    background: #e1e1e1;
-    display: -webkit-box;
-    display: -webkit-flex;
-    display: -ms-flexbox;
-    display: flex; }
-    #configcontainer .treeview_buttonsbelow div.pad {
-      -webkit-box-flex: 0.05;
-      -webkit-flex-grow: 0.05;
-          -ms-flex-positive: 0.05;
-              flex-grow: 0.05; }
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 10px; }
+    #configcontainer .treeview_buttonsbelow label {
+      background: #27364e;
+      color: white;
+      margin-left: auto; }
+    #configcontainer .treeview_buttonsbelow label.active {
+      background: #496592; }
+    #configcontainer .treeview_buttonsbelow label:hover {
+      background: #30425f; }
   #configcontainer .tabArea {
     border: 0px;
     margin-top: 3px;
     min-height: 30%;
-    background: #2962bf; }
+    background: #9f90b4; }
     #configcontainer .tabArea .tabheaders {
       background: url("../media/concrete_seamless.png");
       display: -webkit-box;
@@ -577,8 +655,8 @@ ol {
       #configcontainer .tabArea .tabheaders a {
         text-decoration: none;
         margin-left: 10px;
-        background: #204d95;
-        border: 1px solid #204d95;
+        background: #84729f;
+        border: 1px solid #84729f;
         border-radius: 3px 3px 0px 0px;
         color: #484848;
         -webkit-transition: background 0.3s ease;
@@ -587,11 +665,11 @@ ol {
           width: 30px;
           text-align: center; }
       #configcontainer .tabArea .tabheaders a:hover {
-        background: #2962bf;
-        border: 1px solid #2962bf; }
+        background: #9f90b4;
+        border: 1px solid #9f90b4; }
       #configcontainer .tabArea .tabheaders .active1 {
-        background: #2962bf;
-        border: 1px solid #2962bf; }
+        background: #9f90b4;
+        border: 1px solid #9f90b4; }
     #configcontainer .tabArea .slotContainer {
       display: -webkit-box;
       display: -webkit-flex;
@@ -648,7 +726,9 @@ tr.angular-ui-tree-empty {
 .tree-node-content {
   margin: 1px;
   font-size: 12px;
+  color: white;
   font-family: "muli";
+  background: #222;
   padding: 2px;
   display: -webkit-box;
   display: -webkit-flex;
@@ -664,7 +744,8 @@ tr.angular-ui-tree-empty {
     text-decoration: none;
     margin: 2px;
     color: #222;
-    cursor: move; }
+    cursor: move;
+    cursor: pointer; }
   .tree-node-content a:hover {
     text-decoration: none; }
   .tree-node-content i {
@@ -672,9 +753,21 @@ tr.angular-ui-tree-empty {
   .tree-node-content i:hover {
     color: #222;
     cursor: default; }
+  .tree-node-content span {
+    color: #cccccc; }
+    .tree-node-content span i.afolder {
+      color: #c19724; }
+    .tree-node-content span i.afile {
+      color: white; }
+    .tree-node-content span i.apencil {
+      color: #27364e; }
+    .tree-node-content span i.apencil:hover {
+      color: #496592;
+      -webkit-transform: scale(1.05);
+              transform: scale(1.05); }
   .tree-node-content .showwhenhover {
     display: block;
-    color: #eee;
+    color: #1d1d1d;
     cursor: default; }
   .tree-node-content .showwhenhover:hover {
     display: block;
@@ -682,8 +775,9 @@ tr.angular-ui-tree-empty {
     cursor: default; }
 
 .tree-node-content-selected {
-  background: #CCCCCC;
-  margin: 5px; }
+  background: #464547; }
+  .tree-node-content-selected span {
+    color: white; }
 
 ol {
   list-style: none; }
@@ -694,8 +788,11 @@ ol {
   color: #FFF;
   margin-right: 10px; }
 
+.angular-ui-tree-handle {
+  color: green; }
+
 .angular-ui-tree-placeholder {
-  background: #f0f9ff;
+  background: #464547;
   border: 2px dashed #bed2db;
   box-sizing: border-box; }
 
@@ -703,7 +800,7 @@ ol {
   font-size: 14px;
   height: 800px; }
 
-#editorcontainer {
+.editorcontainer {
   left: 25%;
   width: 75%;
   height: 100%;
@@ -711,8 +808,9 @@ ol {
   position: absolute;
   -webkit-transition: width 0.4s, left 0.4s;
   transition: width 0.4s, left 0.4s;
-  z-index: 5; }
-  #editorcontainer .lockicon {
+  z-index: 5;
+  overflow-y: hidden; }
+  .editorcontainer .lockicon {
     position: absolute;
     cursor: pointer;
     left: 94%;
@@ -728,18 +826,100 @@ ol {
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  background: url("../media/concrete_seamless.png"); }
+  background: -webkit-linear-gradient(top, #27364e 0%, #222222 100%);
+  background: linear-gradient(to bottom, #27364e 0%, #222222 100%); }
   .mainmodcontainer .leftmodcontainer {
     width: 35%;
     height: 100%;
-    padding-left: 10px;
     padding-right: 10px;
-    overflow-x: scroll; }
+    background: #222; }
+    .mainmodcontainer .leftmodcontainer .splitter {
+      width: 100%;
+      height: 1px;
+      background: -webkit-linear-gradient(left, #27364e 0%, #222222 100%);
+      background: linear-gradient(to right, #27364e 0%, #222222 100%); }
+    .mainmodcontainer .leftmodcontainer .radiobuttonsmod {
+      height: 6%;
+      padding-left: 15px;
+      display: block;
+      margin-top: 5%;
+      text-align: center; }
+      .mainmodcontainer .leftmodcontainer .radiobuttonsmod label {
+        margin-left: auto;
+        background: #27364e;
+        color: white; }
+      .mainmodcontainer .leftmodcontainer .radiobuttonsmod label.active {
+        background: #496592; }
+    .mainmodcontainer .leftmodcontainer .propArea {
+      height: 75%;
+      direction: rtl;
+      overflow-y: scroll; }
+      .mainmodcontainer .leftmodcontainer .propArea .propertymodcontainer {
+        direction: ltr; }
+        .mainmodcontainer .leftmodcontainer .propArea .propertymodcontainer input {
+          margin-left: 10px;
+          background: #4b4a4c;
+          color: white;
+          border: 1px solid #6b5a84; }
+        .mainmodcontainer .leftmodcontainer .propArea .propertymodcontainer label {
+          margin-top: 15px;
+          color: white;
+          opacity: 0.6;
+          margin-left: 10px; }
+      .mainmodcontainer .leftmodcontainer .propArea .fa-plus-circle {
+        margin-top: auto;
+        margin-bottom: auto;
+        color: grey; }
+      .mainmodcontainer .leftmodcontainer .propArea .fa-plus-circle:hover {
+        color: red;
+        -webkit-transform: rotate(45deg);
+                transform: rotate(45deg); }
+    .mainmodcontainer .leftmodcontainer .propArea::-webkit-scrollbar {
+      width: 1.0em;
+      background: #222; }
+    .mainmodcontainer .leftmodcontainer .propArea::-webkit-scrollbar-thumb {
+      background-color: #27364e;
+      outline: 1px solid white; }
+    .mainmodcontainer .leftmodcontainer .addProperty {
+      height: 15%;
+      margin-right: 10px;
+      margin-left: 10px; }
+      .mainmodcontainer .leftmodcontainer .addProperty input {
+        margin-left: 10px;
+        background: #4b4a4c;
+        color: white;
+        border: 1px solid #6b5a84;
+        margin-bottom: 10px; }
+      .mainmodcontainer .leftmodcontainer .addProperty label {
+        color: white;
+        opacity: 0.6;
+        margin-left: 10px; }
+      .mainmodcontainer .leftmodcontainer .addProperty h6 {
+        text-align: center;
+        color: white;
+        opacity: 0.6; }
+      .mainmodcontainer .leftmodcontainer .addProperty .fa-check-circle {
+        color: green;
+        padding-bottom: 5px; }
+      .mainmodcontainer .leftmodcontainer .addProperty .fa-check-circle:hover {
+        color: #00b300;
+        -webkit-transform: scale(1.1);
+                transform: scale(1.1); }
+      .mainmodcontainer .leftmodcontainer .addProperty .fa-plus-circle {
+        color: #27364e; }
+      .mainmodcontainer .leftmodcontainer .addProperty .fa-plus-circle:hover {
+        color: #496592;
+        -webkit-transform: scale(1.1);
+                transform: scale(1.1); }
+      .mainmodcontainer .leftmodcontainer .addProperty .fa-minus-circle {
+        color: #6b5a84; }
+      .mainmodcontainer .leftmodcontainer .addProperty .fa-minus-circle:hover {
+        color: #84729f;
+        -webkit-transform: scale(1.1);
+                transform: scale(1.1); }
   .mainmodcontainer .rightmodcontainer {
-    background: url("../media/spirationdark.png");
-    border-left: 1px solid grey;
-    border-top: 1px solid grey;
-    border-radius: 10px 0px 0px 0px;
+    background: #222;
+    margin-left: 1px;
     padding: 5px;
     width: 65%;
     height: 100%; }
@@ -760,8 +940,61 @@ ol {
 body {
   background: purple; }
 
-.icons {
-  font-size: 0px; }
+.contentContainer {
+  height: 95%;
+  background: #222; }
+
+.mytable thead {
+  background: #464547; }
+  .mytable thead th {
+    color: white;
+    text-align: center;
+    margin-left: 24; }
+
+.mytable tbody {
+  color: #7e7c80;
+  background: #222; }
+  .mytable tbody input {
+    background: #464547;
+    color: white;
+    border: 1px solid #6b5a84; }
+  .mytable tbody #centerthiscolumn {
+    margin-left: auto;
+    margin-right: auto; }
+  .mytable tbody td.centeralso {
+    text-align: center; }
+  .mytable tbody .userbuttons {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-justify-content: space-around;
+        -ms-flex-pack: distribute;
+            justify-content: space-around; }
+
+.icons .fa-save {
+  color: #27364e; }
+
+.icons .fa-save:hover {
+  color: #496592;
+  -webkit-transform: scale(1.5);
+          transform: scale(1.5); }
+
+.icons .fa-remove {
+  color: #660000; }
+
+.icons .fa-remove:hover {
+  color: red;
+  -webkit-transform: scale(1.5);
+          transform: scale(1.5); }
+
+.icons .fa-envelope {
+  color: #6b5a84; }
+
+.icons .fa-envelope:hover {
+  color: #9f90b4;
+  -webkit-transform: scale(1.5);
+          transform: scale(1.5); }
 
 a {
   text-decoration: none;

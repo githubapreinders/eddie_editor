@@ -1,0 +1,23 @@
+
+
+<div class="propertymodcontainer">
+
+    <div ng-show="vm3.selectedItem.type !== 'snippets' && vm3.selectedItem.type !== 'lesson' ">
+        <div ng-repeat = "property in vm3.selectedItem.properties">
+                    <div>
+                        <label  contenteditable ng-model = "vm3.selectedItem.properties[$index][0]" ng-click= "vm3.selectedProperty === $index? vm3.showPropertyDescription = !vm3.showPropertyDescription:vm3.selectedProperty = $index" ng-change = "vm3.changeAttrName($index)">
+                            <span id = "property{{$index}}"   > {{property[0]}}
+                            </span>
+                        </label>
+                        </div> 
+                        <div style="display:flex;">
+                        <input class="form-control" style="width:75%" id= "propertyvalue{{$index}}" type="text" ng-value = "vm3.selectedItem.properties[$index][2]" ng-model = "vm3.selectedItem.properties[$index][2]" ng-change="vm3.changeAttr($index)"/>
+                        <div style="flex-grow:1"></div>
+                        <span ng-click="vm3.deleteProperty($index)" >
+                                <i class="fa fa-2x fa-plus-circle fa-rotate-45  "></i>
+                        </span>
+                    </div>
+        </div>
+    </div>
+    
+</div>    

@@ -13,7 +13,6 @@
             vm2.setSelectedSlot = setSelectedSlot;//is a number , the id of a node file object.
             vm2.changeName = changeName;
             vm2.newSubitem = newSubitem;
-            vm2.modifyAlias = modifyAlias;
             vm2.getZip = getZip;
             vm2.addFileOrFolder = addFileOrFolder;
             vm2.saveToFile= saveToFile;
@@ -49,6 +48,7 @@
                 var zipfromfile = document.getElementById('zipfromfile');
                 var mergefromfile = document.getElementById('mergefromfile');
                 console.log(zipfromfile, mergefromfile);
+                
                 zipfromfile.addEventListener('change', function(event)
                 {
                     console.log("file chosen !", event.target.files[0]);
@@ -96,8 +96,9 @@
                             StorageFactory.setCurrentKey(vm2.mySlots[keys[0]]);
                             setSelectedSlot({id:keys[0]});
                             }, 100);
-                        //$scope.$emit('Keychange');                         
 
+                        //$scope.$emit('Keychange');                         
+                        console.log("empty slot: ",StorageFactory.checkIfEmptyKey());
                     },function failure(err)
                     {
                         console.log("failure mergin files...", err);
@@ -169,6 +170,10 @@
             {
                 vm2.list = StorageFactory.getGetter("thejson")();
                 vm2.mySlots = StorageFactory.getGetter("myslots")();
+                var keys = Object.keys(vm2.mySlots);
+                setSelectedSlot({id:keys[0]}) ;
+                console.log("0 empty slot: ", StorageFactory.checkIfEmptyKey()); 
+                
             }
 
 
@@ -178,7 +183,6 @@
                 console.log("getzip...");
                 ZipService.getZip().then(function success(data)
                 {
-                    console.log("data back", data);
                     vm2.list = data;
                     vm2.mySlots = ZipService.getMySlots();
                     var keys = Object.keys(vm2.mySlots);
@@ -195,7 +199,6 @@
             $scope.$on('KeySwitch', function(event, key)
             {
                 var thekeys = Object.keys(vm2.mySlots);
-                console.log("treecontro", key, thekeys);
                 for(var i=0 ;i < thekeys.length; i++)
                 {
                     // console.log(i , " : ", vm2.mySlots[thekeys[i]]);
@@ -219,50 +222,50 @@
 
             });
 
-            $scope.$watch('vm2.selectedSlot', function()
-            {
-                console.log("selected slot changed: ", vm2.selectedSlot);
-            });
+            // $scope.$watch('vm2.selectedSlot', function()
+            // {
+            //     console.log("selected slot changed: ", vm2.selectedSlot);
+            // });
 
             //Any change in the file tree is saved in localstorage to reload later
             $scope.$watch('vm2.list', function()
             {
-                console.log("updating local storage;");
                 StorageFactory.getSetter("thejson")(vm2.list);
             }, true);
 
-            //responds to change of the slotname : internally the slotnames are slot1, slot2...etc,
-            //externally a user can choose any alias he wants.
-            function modifyAlias(slotn, newname)
+ 
+
+
+
+            function setSelectedSlot(object,fromclick)
             {
-                console.log("modify ",slotn, newname);
-                StorageFactory.getSetter(slotn)(newname);
-            }
-
-
-
-            function setSelectedSlot(object)
-            {
-                    console.log("changing selected slot...", object);
+                    console.log("changing selected slot...", object, fromclick);
                 if(object.hasOwnProperty('id'))
                 {
-                    $scope.$emit('saveOldValues');
+                    
+                    if(fromclick)
+                    {
+                        $scope.$emit('saveOldValues');
+                    }
                     vm2.selectedSlot = object.id;
                     StorageFactory.setCurrentKey(vm2.mySlots[vm2.selectedSlot]);
-                    $scope.$emit('Keychange');
+                    var myobj = vm2.mySlots[vm2.selectedSlot];
+                    $scope.$emit('Keychange',myobj);
                 }
                 else
                 {
                     if(!(object.isDirectory))
                     {
-                        $scope.$emit('saveOldValues');
-                        //vm2.selectedSlot = object.id;
+                        if(fromclick)
+                        {
+                            $scope.$emit('saveOldValues');
+                        }
                         vm2.selectedSlot = object.$modelValue.id;
                         StorageFactory.setCurrentKey(vm2.mySlots[vm2.selectedSlot]);
-                        $scope.$emit('Keychange');
+                        var myobj = vm2.mySlots[vm2.selectedSlot];
+                        $scope.$emit('Keychange',myobj);
                     }
                 }    
-                console.log("setting slot to ", vm2.selectedSlot);
             }
 
 
@@ -281,7 +284,6 @@
                 var sel = window.getSelection();
                 sel.removeAllRanges();
                 sel.addRange(range);
-                console.log("element: ",element);
                 element.focus();
             }
 
@@ -536,7 +538,7 @@
         {
             return function(item)
             {
-                if(item === undefined) return "";
+                if(item === undefined || item === null) return "";
                 var helper = item.substring(item.lastIndexOf('/') + 1 ,item.length);
                 if(helper.length > 0)
                 {
