@@ -11,9 +11,15 @@ body
 	overflow:hidden;
 }
 
+input:focus, select:focus, textarea:focus, form:focus, button:focus
+{
+	outline:0;
+}
 
-
-
+input:active, select:active, textarea:active, form:active, button:active
+{
+	outline:0;
+}
 
 .popover-content
 {
