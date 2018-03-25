@@ -18,7 +18,16 @@
 
 		function sendMail(index)
 		{
-			
+			UserFactory.sendMail(vm6.theusers[index].email).then(
+				function success(resp)
+				{
+					console.log("success giving new credentials, email is sent. ", resp.status);
+					getAllUsers();
+				},
+				function failure(resp)
+				{
+					console.log("failure giving new credentials.", resp.status);
+				});
 		}
 
 		function deleteUser(index)

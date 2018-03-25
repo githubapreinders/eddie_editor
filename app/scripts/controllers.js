@@ -46,14 +46,13 @@
             vm.showFullEditor = false;
             var editor = null;
             var thedocument = null;    
-            vm.timerId = null;
             vm.showValidationMessage = false;
             vm.validationMessage = null;
             vm.currentKey = StorageFactory.getCurrentKey();
             vm.iaf_url = StorageFactory.getGetter("IAF_URL")();
             var avalue = StorageFactory.initialise();
             vm.user = null;
-
+            var mytimer = 0;
 
             //Editor Styling
             vm.themes = StaticDataFactory.getThemes();
@@ -94,32 +93,23 @@
             //standard loging
             function login(useremail, password)
             {
-
-                if (AuthTokenFactory.getToken())
+                UserFactory.login(useremail, password).then(function success(response)
                 {
-
-                }
-                else
-                {
-                    console.log("no token");
-                    UserFactory.login(useremail, password).then(function success(response)
+                    console.log("returning from service;", JSON.stringify(response));
+                    if (response.status !== 200)
                     {
-                        console.log("returning from service;", JSON.stringify(response));
-                        if (response.status !== 200)
-                        {
-                            alert(response.data.loginDetails.result);
-                        }
-                        else
-                        {
-                            vm.user = response.data.logindetails.user;
-                            UserFactory.setCurrentUser(vm.user);
-                            StaticDataFactory.setProjectName(vm.user.instancename);
-                            console.log("vm.user : ", vm.user );
-                            saveInSlot();
-                            getJson();
-                        }
-                    }, handleError);
-                }
+                        alert(response.data.loginDetails.result);
+                    }
+                    else
+                    {
+                        vm.user = response.data.logindetails.user;
+                        UserFactory.setCurrentUser(vm.user);
+                        StaticDataFactory.setProjectName(vm.user.instancename);
+                        console.log("vm.user : ", vm.user );
+                        saveInSlot();
+                        getJson();
+                    }
+                }, handleError);
             }
 
 
@@ -234,14 +224,14 @@
             //saves editor content in the localstorage slot that is open every 5 seconds, spinner indicates that 
             function saveInSlot()
             {
-                if (StaticDataFactory.getTimerId() !== 0 )
+                if (mytimer !== 0 )
                 {
-                    console.log("cancelling a timer...");
+                    console.log("no two timers...");
                  return;
-                }//avoiding running two timers...
+                }
                 
                 console.log("starting timer");
-                vm.timerId = $interval(function()
+                mytimer = $interval(function()
                 {
                     vm.showSpinnerSmall = true;
                     $timeout(function()
@@ -251,23 +241,15 @@
                     }, 1000);
                     var thekey = StorageFactory.getGetter(StorageFactory.getCurrentKey().title)();
                     console.log("saving : ", cropFilter(StorageFactory.getCurrentKey().title));
-
                     StorageFactory.getSetter(thekey)(thedocument.getValue());
                 }, 5000);
-                StaticDataFactory.setTimerId(vm.timerId);
+                
             }
-
-            $scope.$on('Zipload', function()
-            {
-                console.log("cancelling timer from zipload...");
-                $interval.cancel();
-            });
-
 
             $scope.$on('$destroy', function()
             {
-                console.log("cancelling timer...");
-                $interval.cancel();
+                console.log("cancelling timer..." , mytimer);
+                $interval.cancel(mytimer);
             });
 
             //setting the editor content after a new file has been chosen to edit
@@ -493,7 +475,7 @@
                     //console.log("retrieving data and setting the document value...", StorageFactory.getGetter(thekey)());
                     thedocument.setValue(StorageFactory.getGetter(thekey)());
                 }
-                if(StaticDataFactory.getTimerId() === 0 )
+                if(mytimer === 0 )
                 {
                     saveInSlot();
                 }

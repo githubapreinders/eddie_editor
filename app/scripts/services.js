@@ -7,16 +7,15 @@
     app.constant('UPLOAD_URL',"/iaf/api/configurations");
     
     //CHANGE THIS WHEN DEPLOYING TO AWS !!!
-    //app.constant('IAF_URL','http://ibis4education-env.bz46fawhzf.eu-central-1.elasticbeanstalk.com');
+    app.constant('IAF_URL','http://ibis4education-env.bz46fawhzf.eu-central-1.elasticbeanstalk.com');
     
-    app.constant('IAF_URL', "http://localhost:8080/Ibis4Education");
+    // app.constant('IAF_URL', "http://localhost:8080/Ibis4Education");
     
     app.factory('StaticDataFactory', function(xmlTag, $http, StorageFactory, $interval, IAF_URL) 
     {
       console.log("StaticDatafactory...");
 
         var datasource = 'pipes';
-        var timerId = 0 ;
         var themes = ["twilight", "monokai", "neat"];
         var fontSizes = [12,13,14,15,16,17,18,19,20];
         var thejson = null;
@@ -50,9 +49,6 @@
             getFormattingSettings: getFormattingSettings,
             getThemes: getThemes,
             getFontSizes: getFontSizes,
-            setTimerId : setTimerId,
-            getTimerId : getTimerId,
-            stopTimer : stopTimer,
             setSelectedItem : setSelectedItem,
             getSelectedItem : getSelectedItem,
             getProjectName :getProjectName,
@@ -80,24 +76,6 @@
          function getSelectedItem()
         {
           return selectedItem;
-        }
-
-        function setTimerId(timerid)
-        {
-          timerId = timerid;
-        }
-
-        function getTimerId(timerid)
-        {
-          return timerId;
-        }
-
-
-        function stopTimer()
-        {
-          console.log("stopping timer...");
-          $interval.cancel(timerId);
-          timerId = 0 ; 
         }
 
         function getThemes()

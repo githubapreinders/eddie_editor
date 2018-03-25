@@ -15,8 +15,23 @@ appliccat.factory('UserFactory', function UserFactory($http,  AuthTokenFactory, 
             saveUser: saveUser,
             deleteUser: deleteUser,
             setCurrentUser: setCurrentUser,
-            getCurrentUser: getCurrentUser
+            getCurrentUser: getCurrentUser,
+            sendMail: sendMail
         };
+
+        //from usercontroller
+        function sendMail(useremail)
+        {
+            var theurl = IAF_URL + '/api/newcredentials/' + useremail;
+            console.log("sending to ",theurl);
+            return $http.get(theurl).then(function success(response)
+            {
+                return response;
+            },function failure(response)
+            {
+                return response;
+            });
+        }
 
         function getCurrentUser()
         {
@@ -109,6 +124,7 @@ appliccat.factory('UserFactory', function UserFactory($http,  AuthTokenFactory, 
         	console.log("url: ",theurl);
             if(AuthTokenFactory.getToken())//remove old tokens , logging in without tokens
             {
+                console.log("removing an existing token...");
                 AuthTokenFactory.setToken();
             }
             return $http.post(theurl,
