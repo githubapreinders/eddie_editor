@@ -1,5 +1,5 @@
 
-<div ng-show = "!vm3.showPropertyDescription" style="height:100%;"> 
+<div ng-show = "!vm3.showPropertyDescription" style="height:50%;"> 
 	<h2  id="newclassname" contenteditable ng-model = "vm3.selectedItem.classname">{{vm3.selectedItem.classname}}</h2>
 
 	<span  contenteditable spellcheck="false"   id = "newdescription" style="white-space: pre;"  ng-model = "vm3.selectedItem.description" class="moderatordescription">{{vm3.selectedItem.description }}</span>
@@ -13,10 +13,23 @@
 
 </div>
 
-<div ng-show = "vm3.showPropertyDescription && vm3.newProperty !== null" style="height:100%;">
+<div ng-show = "vm3.showPropertyDescription && vm3.newProperty !== null" style="height:50%;">
 	
 	<h2 id="newpropertyheader">{{vm3.newProperty.propname }}</h2>
 
 	<span  contenteditable spellcheck="false" ng-model = "vm3.newProperty.propdes " class="moderatordescription">{{vm3.newProperty.propdes }}</span  contenteditable spellcheck="false">
 
+</div>
+
+
+<div style="height: 50%;" ng-show = "vm3.thexml === null && vm3.selectedItem.type === 'snippets' " >
+        <div class="splitter"></div>  
+        
+        <pre style="height: 99%; overflow-x: hidden;">{{vm3.selectedItem.xml}}</pre>
+</div>
+
+<div style="height: 50%;" ng-show = "vm3.thexml !== null " >
+        <div class="splitter"></div>  
+        
+        <pre style="height: 99%; overflow-x: hidden;">{{vm3.thexml}}</pre>
 </div>

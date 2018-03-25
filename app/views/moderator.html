@@ -10,13 +10,13 @@
                     <img src="./media/ibis3_black.svg" class="iplogo" id="iplogo"  />
                     <h5  class="navHeading"><a ui-sref="app">tag management</a></h5>
 
-                    <label>Selected Tag :&nbsp;&nbsp;&nbsp;    <select id = 'myselect' ng-model="vm3.selectedItem" ng-options="value.classname for (key,value) in vm3.dataModel"  ></select></label>
+                    <label>Selected Tag :&nbsp;&nbsp;&nbsp;    <select id = 'myselect' ng-model="vm3.selectedItem" ng-options="value.classname for (key,value) in vm3.dataModel" ng-change="vm3.thexml = null" ></select></label>
 
                     <!-- <label>Files :&nbsp;&nbsp;&nbsp;    <select id = 'myfiles' ng-model="vm3.selectedFile" ng-options="item in vm3.slotlist "  ></select></label> -->
 
                     
                     <label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Selected File : &nbsp;&nbsp;&nbsp; </label>
-                    <ui-select class="uiselect" ng-model="vm3.file.selected" theme="bootstrap" ng-disabled="vm3.disabled" style="width: 200px;" title="Choose a file" append-to-body="true" ng-change="vm3.showfile()">
+                    <ui-select class="uiselect" ng-model="vm3.file.selected" theme="bootstrap" ng-disabled="vm3.disabled" style="width: 200px;" title="Choose a file" append-to-body="true" ng-change="vm3.newSnippet()">
       <ui-select-match placeholder="select file...">{{$select.selected.file |cropFilter}}</ui-select-match>
       <ui-select-choices repeat="item in vm3.slotlist ">
         <span ng-bind-html="item.file | cropFilter "></span>
@@ -54,7 +54,7 @@
                         show model
                     </span>
 
-                    <span ng-click="vm3.postDatamonster()" class="mybutton ">
+                    <span ng-click="vm3.saveItem()" class="mybutton ">
                         save item
                     </span>
 
