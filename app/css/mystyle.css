@@ -130,7 +130,9 @@ input:active, select:active, textarea:active, form:active, button:active {
     -webkit-flex-direction: column;
         -ms-flex-direction: column;
             flex-direction: column;
-    overflow: auto; }
+    overflow: auto;
+    width: 100%;
+    overflow-x: hidden; }
   #configcontainer .treeview_buttonsbelow {
     margin-left: auto;
     margin-right: auto;
@@ -631,7 +633,9 @@ ol {
     -webkit-flex-direction: column;
         -ms-flex-direction: column;
             flex-direction: column;
-    overflow: auto; }
+    overflow: auto;
+    width: 100%;
+    overflow-x: hidden; }
   #configcontainer .treeview_buttonsbelow {
     margin-left: auto;
     margin-right: auto;

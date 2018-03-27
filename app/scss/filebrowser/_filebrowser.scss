@@ -15,6 +15,8 @@
     display: flex;
     flex-direction: column;
     overflow: auto;
+    width: 100%;
+    overflow-x: hidden;
   }
   .treeview_buttonsbelow {
     margin-left: auto;
