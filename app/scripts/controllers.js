@@ -16,8 +16,8 @@
             vm.styleEditorContent = styleEditorContent;
             vm.clearEditor = clearEditor;
             vm.showNav = showNav;
-            vm.showConf = showConf;
             vm.storeData = storeData;
+            vm.showConf = showConf;
             vm.retrieveData = retrieveData;
             vm.toggleSlot = toggleSlot;
             vm.checkDefaults = checkDefaults;
@@ -481,17 +481,32 @@
             }
 
             //toggles the configuration menu in the left area;
+    //         angular.element('#loadingBarContainer1').css('width', 0 + '%');
+    //         angular.element('#loadingBarContainer1').removeClass('fadeout');
+    //         angular.element('#loadingBarContainer1').addClass('fadein');
+
+
             function showConf()
             {
                 var navigator = document.getElementById('navigatorcontainer');
+                var apa = document.getElementById("thefb1");
+                console.log("apeletp: ", apa);
                  
                 if(vm.showConfig)
                 {
-                  navigator.style.left = "0%";
+                      navigator.style.left = "0%";
+                      // document.getElementById('myfilebrowser').classList.add('itemactive');
+                      // document.getElementById('mytaglibrary').classList.add('itemnotactive');
+                  // angular.element('#myfilebrowser').removeClass('itemactive');
+                  // angular.element('#mytaglibrary').addClass('itemnotactive');
                 }
                 else
                 {
-                  navigator.style.left = '-25%';
+                    // angular.element('#mytaglibrary').removeClass('itemactive');
+                    // angular.element('#myfilebrowser').addClass('itemnotactive');
+                    // document.getElementById('mytaglibrary').classList.add('itemactive');
+                    // document.getElementById('myfilebrowser').classList.add('itemnotactive');
+                    navigator.style.left = '-25%';
                 }
                 vm.showConfig = !vm.showConfig;
             }

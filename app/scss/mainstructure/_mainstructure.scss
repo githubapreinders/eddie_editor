@@ -49,33 +49,55 @@ input:active, select:active, textarea:active, form:active, button:active
 .modal-content{border:0px;}
 .modal-body{overflow-x:scroll;}
 
+.itemactive
+	{
+		background:$corkColor2;
+		color:white;
+	}
+	.itemnotactive
+	{
+		background:darken($corkColor2, 5%);
+		color:darken(white,50%);
+	}
+
+
 .configTop, .navigatorTop
 {
 	display:flex;
 	cursor:pointer;
-	
-	span
-	{
-		padding-top:5px;
-		.rotated
-		{
-			transform:rotate(180deg);
-		}
-		.myplay
-		{
-			color:darken(white,50%);
-		}
-	}
-	span:hover
-	{
-		transform:scale(1.5);
-	}
-
+	width:100%;
+	justify-content:space-around;
 	div
 	{
-		flex-grow: 1;
+		width:50%;
+		text-align:center;
+		background:$corkColor2;
+	}
+	.itemactive
+	{
+		background:$corkColor2;
+		color:white;
+	}
+	.itemnotactive
+	{
+		background:darken($corkColor2, 5%);
+		color:darken(white,50%);
+	}
+	.taglibrary
+	{
+
+	}
+	.filebrowser
+	{
+
 	}
 	
+	.itemnotactive:hover
+	{
+		background: lighten($corkColor2, 15%);
+		color:darken(white,20%);
+		transform:scale(1.05);
+	}
 }
 
 .mainContainer

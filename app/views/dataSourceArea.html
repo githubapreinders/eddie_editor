@@ -1,8 +1,10 @@
-<div class="configTop">
+<div  class="configTop">
   
-    <div></div><strong   ng-click="vm.showConf()">Navigator</strong><div></div> 
+    <!-- <div></div><strong   ng-click="vm.showConf()">Navigator</strong><div></div> 
     <span ng-click="vm.showConf()"
-        ><i class="fa  fa-play rotated"></i></span>
+        ><i class="fa  fa-play rotated"></i></span> -->
+    <div   ng-click="vm.showConf();" id="thefb1" >File Browser</div>    <div id="thtaglb"  ng-click="vm.showConf();" >Tag Library</div>    
+
  </div>           
 
 
@@ -21,16 +23,5 @@
         General </label>
     </div> -->
 
-    <div class="mybuttons">
-        <div class="btn-group"  >
-            <label class="btn myradiobtn" name = "types" ng-model = "vm.selectedItem.type" ng-click="vm.toggle_datasource('pipes')" value="pipes"  uib-btn-radio="'pipes'" >pipes</label>
-
-            <label class="btn myradiobtn" name = "types" ng-model = "vm.selectedItem.type"  ng-click="vm.toggle_datasource('receivers')" value="receivers"  uib-btn-radio="'receivers'" >receivers</label>
-
-            <label class="btn myradiobtn" name = "types" ng-model = "vm.selectedItem.type" ng-click="vm.toggle_datasource('snippets')" value="snippets"  uib-btn-radio="'snippets'" >snippets</label>
-
-            <label class="btn myradiobtn" name = "types" ng-model = "vm.selectedItem.type" ng-click="vm.toggle_datasource('general')" value="general"  uib-btn-radio="'general'" >general</label>
-            
-        </div>
-    </div>
+    
     

@@ -109,17 +109,14 @@
             </div> -->
 
 <div class="mainContainer">
+         <div id="myfilebrowser" style="height:30px;width:25%;position:absolute;z-index:50;color:white;" ng-include="'./views/dataSourceArea.html'"></div>
     <div id="navigatorcontainer">
-
-        
-         <div class="dataSourceArea" ng-include="'./views/dataSourceArea.html'"></div>
+         <div class="dataSourceArea"  ng-include="'./views/libbuttons.html'"></div>
          <div class="classArea"  ng-include="'./views/classArea.html'"></div>
          <div class="descriptionArea" ng-include="'./views/descriptionArea.html'"></div>
          <div class="propertyArea" ng-include="'./views/propertyArea.html'"></div>
     </div>
-    
     <div id="configcontainer">
-        <div  class="configArea" ng-include="'./views/configArea.html'"></div>
         <div  class="treeview" ng-include = "'./views/treeview.html'"></div>
         <!-- <div class="tabArea" >
                 <div class="tabheaders">

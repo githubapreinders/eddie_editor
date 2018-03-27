@@ -41,27 +41,39 @@ input:active, select:active, textarea:active, form:active, button:active {
 .modal-body {
   overflow-x: scroll; }
 
+.itemactive {
+  background: #27364e;
+  color: white; }
+
+.itemnotactive {
+  background: #1f2a3d;
+  color: gray; }
+
 .configTop, .navigatorTop {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  cursor: pointer; }
-  .configTop span, .navigatorTop span {
-    padding-top: 5px; }
-    .configTop span .rotated, .navigatorTop span .rotated {
-      -webkit-transform: rotate(180deg);
-              transform: rotate(180deg); }
-    .configTop span .myplay, .navigatorTop span .myplay {
-      color: gray; }
-  .configTop span:hover, .navigatorTop span:hover {
-    -webkit-transform: scale(1.5);
-            transform: scale(1.5); }
+  cursor: pointer;
+  width: 100%;
+  -webkit-justify-content: space-around;
+      -ms-flex-pack: distribute;
+          justify-content: space-around; }
   .configTop div, .navigatorTop div {
-    -webkit-box-flex: 1;
-    -webkit-flex-grow: 1;
-        -ms-flex-positive: 1;
-            flex-grow: 1; }
+    width: 50%;
+    text-align: center;
+    background: #27364e; }
+  .configTop .itemactive, .navigatorTop .itemactive {
+    background: #27364e;
+    color: white; }
+  .configTop .itemnotactive, .navigatorTop .itemnotactive {
+    background: #1f2a3d;
+    color: gray; }
+  .configTop .itemnotactive:hover, .navigatorTop .itemnotactive:hover {
+    background: #415981;
+    color: #cccccc;
+    -webkit-transform: scale(1.05);
+            transform: scale(1.05); }
 
 .mainContainer {
   width: 100%;
@@ -348,7 +360,7 @@ ol {
       text-decoration: none;
       text-shadow: 0px 0px 0 #464547, 0px 0px 0 #464547, 0px 0px 0 #464547, 0px 0px 0 #464547; }
     .mynavbar .navbarupper .navHeading a:hover {
-      text-shadow: -1px -1px 0 #AAA, 1px -1px 0 #AAA, -1px 1px 0 #AAA, 1px 1px 0 #AAA; }
+      text-shadow: -1px -1px 0 #AAA, 1px -1px 0 #AAA, -1px 1px 0 #AAA, 1px 1px 0 #AAA; }
     .mynavbar .navbarupper .loginpane {
       display: -webkit-box;
       display: -webkit-flex;

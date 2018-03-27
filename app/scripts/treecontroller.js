@@ -53,7 +53,7 @@
                 {
                     console.log("file chosen !", event.target.files[0]);
                     modalInstance.close({returntype:"viafile"});
-                    StaticDataFactory.stopTimer();
+                    // StaticDataFactory.stopTimer();
                     ZipService.getZipFromFile(event.target.files[0]).then(function success(resp)
                     {
                         $timeout(function() //TODO StorageFactory is sometimes too late to deliver the actual keys that are in the local storage...improve by adding promises.
