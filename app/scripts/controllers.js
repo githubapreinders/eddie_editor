@@ -514,9 +514,6 @@
                 vm.showNavigator = !vm.showNavigator;
               }
 
-           
-
-
             //responds to the selection of an item in the class Area;
             function setSelectedClass(item)
             {
@@ -525,20 +522,16 @@
                 vm.selectedProperties = {};
                 
                 //checking a default classname property
-                for(var i=0 ; i<item.properties.length; i++)
-                {
-                    if(item.properties[i][0]=='classname' || item.properties[i][0]=='className')
-                    {
+                for(var i=0 ; i<item.properties.length; i++) {
+                    if(item.properties[i][0]=='classname' || item.properties[i][0]=='className') {
                         var checkbox = document.getElementById('checkbox' + i);
-                        if(checkbox === null)
-                        {
+                        if(checkbox === null) {
                             break;
                         }
                         checkbox.click();
                         break;
                     }
                 }
-
             }
 
 
