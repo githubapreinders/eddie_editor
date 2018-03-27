@@ -197,7 +197,7 @@
                           }
                         ];
           thealiases = ["file1"];
-          currentKey= "slot1"
+          currentKey= "slot1";
           var myslots = { 2 : {"title":"file1",isLocked:false} };              
           getSetter("thejson")(thejson);//setting file structure in localstorage; w
           getSetter("myslots")(myslots);//setting the open files configuration

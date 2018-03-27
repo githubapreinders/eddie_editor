@@ -21,7 +21,7 @@
 
 		vm3.dataModel = JSON.parse(StaticDataFactory.getStaticJson());
 		console.log(vm3.dataModel);
-		vm3.currentSlotNumber = null //TODO extract slots from localstorage
+		vm3.currentSlotNumber = null; //TODO extract slots from localstorage
 		vm3.showPropertyDescription= false;
 		vm3.selectedProperty = 0;
 		vm3.addingProperty = false;
@@ -136,7 +136,7 @@
 			vm3.newProperty = null;
 			vm3.addingProperty = false;
 			vm3.addingItem = true;
-			vm3.dataModel['NEWITEM'] = {classname:"NEWITEM",description:"enter your description here", type:"general",xml:"", attrs:{},properties:[]};
+			vm3.dataModel['NEWITEM'] = {classname:"NEWITEM", description:"enter your description here", type:"general",xml:"", attrs:{},properties:[]};
 			vm3.selectedItem = vm3.dataModel['NEWITEM'];
 		}
 

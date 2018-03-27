@@ -133,8 +133,8 @@
 
             function handleError(response)
             {
-             alert("error logging from service.")
-            }    
+                alert("error logging from service.");
+            }
 
             function setCredentials()
             {
@@ -155,14 +155,11 @@
                         }}
                 });
                 modalInstance.result.then(
-                function success(resp)
-                {
+                function success(resp) {
                     console.log("response: " , resp);
                     vm.iaf_url = resp.iaf_url;
                     login(resp.username, resp.password);
-                }
-                ,function failure(err)
-                {
+                }, function failure(err) {
                     console.log("no result from modal...");
                 });
             }
@@ -517,7 +514,7 @@
               {
                 var editor = document.getElementById('editorcontainer');
                 
-                console.log("items: ",editor)
+                console.log("items: ",editor);
 
                 if(vm.showNavigator)
                 {
