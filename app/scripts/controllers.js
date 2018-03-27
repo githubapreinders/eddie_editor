@@ -477,33 +477,32 @@
                 }
             }
 
-            //toggles the configuration menu in the left area;
-    //         angular.element('#loadingBarContainer1').css('width', 0 + '%');
-    //         angular.element('#loadingBarContainer1').removeClass('fadeout');
-    //         angular.element('#loadingBarContainer1').addClass('fadein');
-
+            //toggles the tabs in the left area;
 
             function showConf()
             {
-                var navigator = document.getElementById('navigatorcontainer');
-                var apa = document.getElementById("thefb1");
-                console.log("apeletp: ", apa);
+                var navigat = document.getElementById('navigatorcontainer');
+                
+                var fb = document.getElementById('myfilebrowser');
+                var tl = document.getElementById('mytaglibrary');
+                
+                console.log("apeletp: ", fb,tl);
                  
                 if(vm.showConfig)
                 {
-                      navigator.style.left = "0%";
-                      // document.getElementById('myfilebrowser').classList.add('itemactive');
-                      // document.getElementById('mytaglibrary').classList.add('itemnotactive');
-                  // angular.element('#myfilebrowser').removeClass('itemactive');
-                  // angular.element('#mytaglibrary').addClass('itemnotactive');
+                    tl.classList.add('itemactive');
+                    fb.classList.add('itemnotactive');
+                    tl.classList.remove('itemnotactive');
+                    fb.classList.remove('itemactive');
+                    navigat.style.left = "0%";
                 }
                 else
                 {
-                    // angular.element('#mytaglibrary').removeClass('itemactive');
-                    // angular.element('#myfilebrowser').addClass('itemnotactive');
-                    // document.getElementById('mytaglibrary').classList.add('itemactive');
-                    // document.getElementById('myfilebrowser').classList.add('itemnotactive');
-                    navigator.style.left = '-25%';
+                    tl.classList.add('itemnotactive');
+                    fb.classList.add('itemactive');
+                    tl.classList.remove('itemactive');
+                    fb.classList.remove('itemnotactive');
+                    navigat.style.left = '-25%';
                 }
                 vm.showConfig = !vm.showConfig;
             }

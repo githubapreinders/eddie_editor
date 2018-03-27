@@ -1,5 +1,6 @@
 #configcontainer
 {
+
   position:absolute;
   width:25%;
   height:100%;
@@ -8,6 +9,13 @@
   z-index: 3;
   background : $guttercolor;
   
+  .spaceabove
+  {
+    height:30px;
+    widht:100%;
+    background:$corkColor4;
+  }
+
   .configArea
   {
     height:5%;

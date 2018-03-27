@@ -49,56 +49,65 @@ input:active, select:active, textarea:active, form:active, button:active
 .modal-content{border:0px;}
 .modal-body{overflow-x:scroll;}
 
+
 .itemactive
-	{
-		background:$corkColor2;
-		color:white;
-	}
-	.itemnotactive
-	{
-		background:darken($corkColor2, 5%);
-		color:darken(white,50%);
-	}
-
-
-.configTop, .navigatorTop
 {
-	display:flex;
+	background:$guttercolor;
+	color:white;
+	z-index:20;
+}
+.itemnotactive
+{
+	background:darken($corkColor4, 10%);
+	color:darken(white,70%);
+	z-index:19;
+}
+.itemnotactive:hover
+{
+	background: darken($corkColor4, 5%);
+	color:darken(white,20%);
+	transform:scale(1.05);
+}
+
+
+
+.configTop
+{
 	cursor:pointer;
 	width:100%;
+	height:100%;
 	justify-content:space-around;
+	align-items:center;
 	div
 	{
-		width:50%;
+		display:inline;
+		line-height:30px;
+		height:100%;
 		text-align:center;
-		background:$corkColor2;
 	}
-	.itemactive
+
+	#myfilebrowser
 	{
-		background:$corkColor2;
-		color:white;
-	}
-	.itemnotactive
-	{
-		background:darken($corkColor2, 5%);
-		color:darken(white,50%);
-	}
-	.taglibrary
-	{
+		position:absolute;
+		width:45%;
+		clip-path: polygon(9% 0, 91% 0, 100% 90%, 100% 100%, 1% 100%, 0 90%);
+
 
 	}
-	.filebrowser
+	#mytaglibrary
 	{
+		position:absolute;
+		width:45%;
+		left:40%;
+		clip-path: polygon(9% 0, 91% 0, 100% 90%, 100% 100%, 1% 100%, 0 90%);
+
 
 	}
-	
-	.itemnotactive:hover
-	{
-		background: lighten($corkColor2, 15%);
-		color:darken(white,20%);
-		transform:scale(1.05);
-	}
+
 }
+
+
+
 
 .mainContainer
 {
