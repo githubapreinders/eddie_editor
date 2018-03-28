@@ -26,12 +26,13 @@
             vm.validateXml = validateXml;
             vm.sendZip = sendZip;
             vm.toggleSpinner = toggleSpinner;
-            vm.setCredentials = setCredentials;
+            vm.showTagInTooltip = showTagInTooltip;
            // vm.setAvailableLesson = setAvailableLesson;
             vm.toggleReadonly = toggleReadonly;
             vm.unlock = unlock;
             vm.login = login;
             vm.logout = logout;
+            vm.proposedtag = null;
 
             //Static values
             vm.message = "Angular Controller is working allright...";
@@ -136,10 +137,7 @@
                 alert("error logging from service.");
             }
 
-            function setCredentials()
-            {
             
-            }
 
             function showCredentialsDialog()
             {
@@ -484,24 +482,32 @@
                 var navigat = document.getElementById('navigatorcontainer');
                 
                 var fb = document.getElementById('myfilebrowser');
+                var fbsh = document.getElementById('myfilebrowsershadow');
                 var tl = document.getElementById('mytaglibrary');
+                var tlsh = document.getElementById('mytaglibraryshadow');
                 
-                console.log("apeletp: ", fb,tl);
-                 
                 if(vm.showConfig)
                 {
                     tl.classList.add('itemactive');
+                    tlsh.classList.add('itemshadowactive');
                     fb.classList.add('itemnotactive');
+                    fbsh.classList.add('itemshadownotactive');
                     tl.classList.remove('itemnotactive');
+                    tlsh.classList.remove('itemshadownotactive');
                     fb.classList.remove('itemactive');
+                    fbsh.classList.remove('itemshadowactive');
                     navigat.style.left = "0%";
                 }
                 else
                 {
                     tl.classList.add('itemnotactive');
+                    tlsh.classList.add('itemshadownotactive');
                     fb.classList.add('itemactive');
+                    fbsh.classList.add('itemshadowactive');
                     tl.classList.remove('itemactive');
+                    tlsh.classList.remove('itemshadowactive');
                     fb.classList.remove('itemnotactive');
+                    fbsh.classList.remove('itemshadownotactive');
                     navigat.style.left = '-25%';
                 }
                 vm.showConfig = !vm.showConfig;
@@ -552,7 +558,7 @@
                         break;
                     }
                 }
-
+                showTagInTooltip();
             }
 
 
@@ -680,19 +686,18 @@
                 if(property[0] === 'classname' || property[0] === 'className')
                 {
                     vm.selectedProperties[property[0]] = new attributeObject('className', new Array(property[2]));
+                    showTagInTooltip();
                     return true;
                 }
                 return false;
             }
 
 
-/*Responds to the arrow button in the navBar. The current selected item and the current selected properties are converted
+/*Responds to the insert ... button in the navBar. The current selected item and the current selected properties are converted
 to a string and inserted in the editor;*/
 
             function submitForm()
-
             {
-
                 if (vm.selectedItem === null || editor.getOption('readOnly') === true)
                 {
                     return;
@@ -706,7 +711,7 @@ to a string and inserted in the editor;*/
                 else
                 {
                     var theproperties = [];    
-                    console.log("props:", vm.selectedProperties);
+                    // console.log("props:", vm.selectedProperties);
                     if (Object.keys(vm.selectedProperties).length > 0 )
                     {
                         Object.keys(vm.selectedProperties).forEach(function(thekey)
@@ -716,10 +721,42 @@ to a string and inserted in the editor;*/
                         }); 
                     }
                    var newtag = new xmlTag(vm.selectedItem.classname, theproperties);
+                   // console.log("the newtag:", newtag.toCompleteTag());
                     thedocument.replaceSelection(newtag.toCompleteTag());
                     editor.focus();
                 }
             }
+
+            function showTagInTooltip()
+            {
+                if (vm.selectedItem === null || editor.getOption('readOnly') === true)
+                {
+                    return;
+                }
+                if(vm.selectedItem.type === 'snippets')
+                {
+                    vm.proposedtag = vm.selectedItem.xml;
+                }
+                else
+                {
+                    var theproperties = [];    
+                    // console.log("props:", vm.selectedProperties);
+                    if (Object.keys(vm.selectedProperties).length > 0 )
+                    {
+                        Object.keys(vm.selectedProperties).forEach(function(thekey)
+                        {
+                            theproperties.push(vm.selectedProperties[thekey]);
+                        }); 
+                    }
+                   var newtag = new xmlTag(vm.selectedItem.classname, theproperties);
+                   // console.log("newtag:", newtag.toString());
+                   vm.proposedtag = newtag.toCompleteTag();
+                }
+            }
+
+
+
+
         })
 
     .controller('LoadCredentialsController', function($uibModalInstance, items)
@@ -770,6 +807,28 @@ to a string and inserted in the editor;*/
             return filtered;
         };
     })
+
+    //replaces escaped tag signs with the proper symbols, used in the description area where sometimes strange symbols appear.
+    .filter('typeFilter', function()
+    {
+        return function(item)
+        {
+
+            if(item !== undefined)
+            {
+               switch (item)
+               {
+                case 'pipes':{return 'pipe'}
+                case 'receivers':{return 'receiver'}
+                case 'snippets':{return 'snippet'}
+                case 'general':{return 'tag'}
+                default:return '';
+               }
+            }
+        };
+    })
+
+
 
 
     //replaces escaped tag signs with the proper symbols, used in the description area where sometimes strange symbols appear.

@@ -22,7 +22,8 @@
                        <div class="filler"></div>
                        <span class="mybutton" ng-show="vm.user.role==='admin'"  ui-sref="app.userpage">users</span>
                        <span class="mybutton" ng-show="vm.user.role==='admin'" ui-sref="app.moderator">tags</span>
-                       <span class="mybutton" id="submitform" ng-click="vm.submitForm()">insert tag</span>
+                       
+                       <span uib-popover-template="'./views/popovertemplate2.html'" popover-placement="bottom" popover-trigger="'mouseenter'" class="mybutton" id="submitform" ng-click="vm.submitForm()">insert {{vm.selectedItem.type | typeFilter}}</span>
                       
                        <span class="mybutton" ng-click="vm.styleEditorContent()">format</span>
                        <span class="mybutton" ng-click="vm.clearEditor()">erase</span>
@@ -35,25 +36,24 @@
          
     <div  style="height:30px;width:25%;position:absolute;color:white;" >
         <div  class="configTop" >
-  
-    <div   ng-click="vm.showConf();" id='myfilebrowser' >File Browser</div>    <div id='mytaglibrary'  ng-click="vm.showConf();" >Tag Library</div>    
-
- </div>           
+            <div id="myfilebrowsershadow"></div>
+            <div id="mytaglibraryshadow"></div>
+            <div id="therest">thedummytext</div>    
+            <div   ng-click="vm.showConf();" id='myfilebrowser' >File Browser</div>    
+            <div id='mytaglibrary'  ng-click="vm.showConf();" >Tag Library</div>
+         </div>           
     </div>
+
     <div id="navigatorcontainer">
          <div class="dataSourceArea"  ng-include="'./views/libbuttons.html'"></div>
          <div class="classArea"  ng-include="'./views/classArea.html'"></div>
          <div class="descriptionArea" ng-include="'./views/descriptionArea.html'"></div>
-         <div class="propertyArea" ng-include="'./views/propertyArea.html'"></div>
+         <div  class="propertyArea" ng-include="'./views/propertyArea.html'"></div>
     </div>
+
     <div id="configcontainer">
         <div  class="treeview" ng-include = "'./views/treeview.html'"></div>
-       
     </div>
-
-
-
-   
 
     <div id = "editorcontainer" class="editorcontainer">
         <div class = "editorArea" ui-codemirror="{ onLoad : vm.codemirrorLoaded }"></div>

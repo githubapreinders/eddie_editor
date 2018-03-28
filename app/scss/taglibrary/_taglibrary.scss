@@ -123,8 +123,8 @@
 		height:40%;
 		background:#222;
 		color:white;
-		overflow-y:auto;
-		overflow-x:hidden;
+		overflow-y:scroll;
+		// overflow-x:hidden;
 		padding-left: 15px;
 		input.form-control, div.checkbox
 		{

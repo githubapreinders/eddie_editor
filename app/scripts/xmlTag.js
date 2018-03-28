@@ -49,7 +49,6 @@ angular.module('confab')
                 var returnstring = "";  
                 var itsproperties = ""; 
                 this.convertToPipe();
-                
                 angular.forEach(this.tagProperties, function(value, key)
                 {
                     if (value == "")
@@ -105,7 +104,6 @@ angular.module('confab')
                 }
 
                 var regex = "/^.*Pipe$/";
-                console.log("elementname",this.elementName, this.elementName.search(regex));
 
             }
 

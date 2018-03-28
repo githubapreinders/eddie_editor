@@ -151,12 +151,89 @@ In local storage. For this the old and the new name have to be in one place.*/
 						}
 					}
 				console.info("selected properties",scope.vm.selectedProperties);
-
+                scope.vm.showTagInTooltip();
 			});
 		}
 
 	};
 })
+
+
+/*event: set up a function that starts in 1000ms; in this function the position of the
+popup is calculated; starttime is noted */
+
+.directive('popupPlacement',function($timeout)
+{
+    return{
+        restrict:"A",
+        link: function (scope, element, attrs)
+        {
+         var mytimer;
+         var oldtime = Date.now();   
+           element.bind('scroll',function(event)
+           {
+                var starttime = Date.now();
+                if(starttime - oldtime > 1000)
+                {
+                    startCalc();
+                    oldtime = starttime;
+                }
+                else
+                {
+                    try {
+                        mytimer.cancel();
+                    } catch(e) {
+                        console.log(e);
+                    }
+                    oldtime = starttime;
+                }
+               });
+
+                function startCalc()
+                {
+                    
+                    mytimer = $timeout(function()
+                    {
+                        var containerbottom = document.getElementsByClassName('descriptionArea')[0].getBoundingClientRect().bottom;
+                        console.log("starting function...");
+                        var hasprop = true;
+                        var index = 0;
+                        var element;
+                        while(hasprop)
+                        {
+                            var propname = "popover" + index;
+                            element = document.getElementById(propname);
+                            if(element)
+                            {
+                                var theelementtop =  element.getBoundingClientRect().top;
+                                var difference = theelementtop - containerbottom;
+                                console.log("difference", propname," ", difference);
+                                if(difference > 0 && difference < 300 )
+                                {
+                                    console.log("bottom");
+                                    element.setAttribute('popover-placement','bottom-left');
+                                }
+                                else
+                                {
+                                    console.log("top");
+                                    element.setAttribute('popover-placement','top-left');
+                                }
+                                index++;
+                            }
+                            else
+                            {
+                                console.log("no element...");
+                                hasprop = false;
+                            }
+                        }
+                    },1000);
+
+
+                }
+        }
+    };
+})
+
 	/* 
 	 when the change on the contenteditable happens the model binding has to
      be invoked; also the property is a key in the attrs object ; so the old key name
