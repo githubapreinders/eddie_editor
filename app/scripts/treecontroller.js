@@ -195,6 +195,21 @@
                 });
             }
 
+             //responding to a button click from controller.js
+            $scope.$on("LoadZipEvent", function(event,value)
+            {
+                showZipDialog();
+            });
+
+             //responding to a button click from controller.js
+            $scope.$on("SaveZipEvent", function(event,value)
+            {
+                saveToFile();
+            });
+
+
+
+
             //listens to a button press on the key icon in the main controller and updates the model
             $scope.$on('KeySwitch', function(event, key)
             {
@@ -275,6 +290,7 @@
             function changeName(item)
             {
                 var element = document.getElementById('treeitem' + item.$modelValue.id);
+                console.log("editing ",element.id);
                 element.setAttribute('contentEditable', true);
                 var textnode = element.firstChild;
                 var caret = textnode.length;

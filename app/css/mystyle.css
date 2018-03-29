@@ -155,6 +155,14 @@ input:active, select:active, textarea:active, form:active, button:active {
   font-size: 17px;
   color: #555555; }
 
+.myicon {
+  width: 20px;
+  height: 20px; }
+
+.myicon:hover {
+  -webkit-transform: scale(1.2);
+          transform: scale(1.2); }
+
 #configcontainer {
   position: absolute;
   width: 25%;
@@ -188,7 +196,7 @@ input:active, select:active, textarea:active, form:active, button:active {
     -webkit-flex-direction: column;
         -ms-flex-direction: column;
             flex-direction: column;
-    overflow: auto; }
+    overflow-y: auto; }
   #configcontainer .treeview_buttonsbelow {
     margin-left: auto;
     margin-right: auto;
@@ -366,7 +374,7 @@ ol {
 .mynavbar {
   height: 9%; }
   .mynavbar .navbarupper {
-    background: #464547;
+    background: #4b4a4c;
     display: -webkit-box;
     display: -webkit-flex;
     display: -ms-flexbox;
@@ -484,7 +492,7 @@ ol {
       z-index: 10; }
 
 .mybutton {
-  opacity: 0.3;
+  opacity: 0.5;
   color: white;
   padding-right: 2%;
   padding-left: 2%;
@@ -556,7 +564,6 @@ ol {
     display: -webkit-flex;
     display: -ms-flexbox;
     display: flex;
-    direction: rtl;
     -webkit-box-orient: vertical;
     -webkit-box-direction: normal;
     -webkit-flex-direction: column;
@@ -570,7 +577,7 @@ ol {
     cursor: pointer;
     overflow-y: auto;
     overflow-x: hidden;
-    text-indent: 10px;
+    text-indent: 15px;
     margin-bottom: 1px;
     height: 25%; }
     #navigatorcontainer .classArea .classItem {
@@ -579,18 +586,11 @@ ol {
       display: block;
       color: white;
       background: #222; }
-  #navigatorcontainer .classArea::-webkit-scrollbar {
-    width: 1.0em;
-    background: #222; }
-  #navigatorcontainer .classArea::-webkit-scrollbar-thumb {
-    background-color: #27364e;
-    outline: 1px solid white; }
   #navigatorcontainer .descriptionArea {
     display: -webkit-box;
     display: -webkit-flex;
     display: -ms-flexbox;
     display: flex;
-    direction: rtl;
     -webkit-box-orient: vertical;
     -webkit-box-direction: normal;
     -webkit-flex-direction: column;
@@ -601,33 +601,28 @@ ol {
     overflow-y: auto;
     overflow-x: hidden;
     padding: 15px;
-    padding-right: 0px;
+    padding-right: 10px;
     margin-bottom: 1px; }
     #navigatorcontainer .descriptionArea h4 {
       font-family: "cuprum";
       text-align: center; }
     #navigatorcontainer .descriptionArea .descriptioncontainer {
-      color: grey;
-      direction: ltr; }
+      color: grey; }
   #navigatorcontainer .propertyArea {
     -webkit-box-flex: 1;
     -webkit-flex-grow: 1;
         -ms-flex-positive: 1;
             flex-grow: 1;
-    direction: rtl;
     height: 40%;
     background: #222;
-    color: white;
-    overflow-y: scroll;
-    padding-left: 15px; }
+    color: white; }
     #navigatorcontainer .propertyArea input.form-control, #navigatorcontainer .propertyArea div.checkbox {
-      width: 100%; }
+      width: 98%; }
     #navigatorcontainer .propertyArea input {
       background: #464547;
       color: white;
       border: 1px solid #6b5a84; }
     #navigatorcontainer .propertyArea .propcontainer {
-      direction: ltr;
       width: 95%; }
     #navigatorcontainer .propertyArea .popovertemplate {
       min-width: 200px;
@@ -635,12 +630,6 @@ ol {
       overflow-x: hidden; }
     #navigatorcontainer .propertyArea h5 {
       text-align: center; }
-  #navigatorcontainer .propertyArea::-webkit-scrollbar, #navigatorcontainer .descriptionArea::-webkit-scrollbar {
-    width: 1.0em;
-    background: #222; }
-  #navigatorcontainer .propertyArea::-webkit-scrollbar-thumb, #navigatorcontainer .descriptionArea::-webkit-scrollbar-thumb {
-    background-color: #27364e;
-    outline: 1px solid white; }
 
 .divider {
   height: 2px;
@@ -686,7 +675,7 @@ ol {
     -webkit-flex-direction: column;
         -ms-flex-direction: column;
             flex-direction: column;
-    overflow: auto; }
+    overflow-y: auto; }
   #configcontainer .treeview_buttonsbelow {
     margin-left: auto;
     margin-right: auto;

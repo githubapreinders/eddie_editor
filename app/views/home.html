@@ -20,14 +20,46 @@
                         </span >{{vm.currentKey.title | cropFilter}}</span>
                        </span>
                        <div class="filler"></div>
-                       <span class="mybutton" ng-show="vm.user.role==='admin'"  ui-sref="app.userpage">users</span>
-                       <span class="mybutton" ng-show="vm.user.role==='admin'" ui-sref="app.moderator">tags</span>
                        
-                       <span uib-popover-template="'./views/popovertemplate2.html'" popover-placement="bottom" popover-trigger="'mouseenter'" class="mybutton" id="submitform" ng-click="vm.submitForm()">insert {{vm.selectedItem.type | typeFilter}}</span>
+
+                       <div ng-show="vm.user.role==='admin'"  ui-sref="app.userpage" class="mybutton">
+                       <img src="./media/icons/users.svg" class="myicon" />
+                       <span  >users</span>
+                       </div>
+                       
+                        <div ng-show="vm.user.role==='admin'"  ui-sref="app.moderator" class="mybutton">
+                       <img src="./media/icons/tags.svg" class="myicon" />
+                       <span  >tags</span>
+                       </div>
+
+
+                       <div uib-popover-template="'./views/popovertemplate2.html'" popover-placement="bottom" popover-trigger="'mouseenter'" class="mybutton" id="submitform" ng-click="vm.submitForm()">
+                       <img src="./media/icons/tag_add.svg" class="myicon" />
+                       <span  >insert {{vm.selectedItem.type | typeFilter}}</span>
+                       </div>
+                       
+                       
+
+                        <div  class="mybutton" id="submitform" ng-click="vm.styleEditorContent()">
+                       <img src="./media/icons/format.svg" class="myicon" />
+                       <span  >format</span>
+                       </div>
+
+
+                         <div  class="mybutton" id="submitform" ng-click="vm.clearEditor()">
+                       <img src="./media/icons/erase.svg" class="myicon" />
+                       <span  >erase</span>
+                       </div>
+
+                       <div  class="mybutton" id="submitform" ng-click="vm.sendZip()">
+                       <img src="./media/icons/send.svg" class="myicon" />
+                       <span  >send</span>
+                       </div>
                       
-                       <span class="mybutton" ng-click="vm.styleEditorContent()">format</span>
-                       <span class="mybutton" ng-click="vm.clearEditor()">erase</span>
-                       <span class="mybutton" ng-click="vm.sendZip()">send</span>
+
+
+
+                       
                        <div id="sendstatus"></div>
                 </div>
             </div>
@@ -39,20 +71,23 @@
             <div id="myfilebrowsershadow"></div>
             <div id="mytaglibraryshadow"></div>
             <div id="therest">thedummytext</div>    
-            <div   ng-click="vm.showConf();" id='myfilebrowser' >File Browser</div>    
-            <div id='mytaglibrary'  ng-click="vm.showConf();" >Tag Library</div>
+            <div   ng-click="vm.showConf();" id='myfilebrowser' > <img src="./media/icons/structure.svg" class="myicon"><span>&nbsp;&nbsp;File Browser</span></div>    
+            <div id='mytaglibrary'  ng-click="vm.showConf();" ><img src="./media/icons/library.svg" class="myicon" /><span>&nbsp;Tag Library</span></div>
          </div>           
     </div>
 
+<!--  <img src="./media/icons/structure.svg" class="myicon">-->
+<!-- <img src="./media/icons/library.svg" class="myicon" /> -->
+
     <div id="navigatorcontainer">
          <div class="dataSourceArea"  ng-include="'./views/libbuttons.html'"></div>
-         <div class="classArea"  ng-include="'./views/classArea.html'"></div>
-         <div class="descriptionArea" ng-include="'./views/descriptionArea.html'"></div>
-         <div  class="propertyArea" ng-include="'./views/propertyArea.html'"></div>
+         <div class="classArea" id="classArea" ng-include="'./views/classArea.html'"></div>
+         <div class="descriptionArea" id="descriptionArea" ng-include="'./views/descriptionArea.html'"></div>
+         <div  class="propertyArea" id="propertyArea" ng-include="'./views/propertyArea.html'"></div>
     </div>
 
     <div id="configcontainer">
-        <div  class="treeview" ng-include = "'./views/treeview.html'"></div>
+        <div  class="treeview"  ng-include = "'./views/treeview.html'"></div>
     </div>
 
     <div id = "editorcontainer" class="editorcontainer">

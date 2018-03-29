@@ -68,14 +68,15 @@
                      <td>
                         <div class="userbuttons" >
                             <a   ng-click="showIcon=false;vm6.saveItem($index)">
-                                <span class=" icons"><i class="fa fa-save"></i></span>
+                                <img src="./media/icons/save.svg" class="myicon" />
                             </a>
                             <span id="exclamationMark{{$index}}" ng-model="item.showIcon" class="fa fa-exclamation" ng-show="item.showIcon"></span>
                             <a  ng-click="vm6.deleteUser($index)">
-                                <span class="icons"><i class="fa fa-remove"></i></span>
+                                <img src="./media/icons/delete.svg" class="myicon" />
                             </a>
                             <a  ng-click="vm6.sendMail($index)">
-                                <span class="icons" ><i class="fa fa-envelope"></i></span>
+                                <img src="./media/icons/envelope.svg" class="myicon" />
+                                
                             </a>
                         </div>
                     </td>

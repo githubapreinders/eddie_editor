@@ -65,7 +65,7 @@ gulp.task('uglifyJs', function()
 
 gulp.task('handleAngular', function()
 {
-    return gulp.src(["app/bower_components/angular/angular.min.js","app/bower_components/angular-ui-router/release/angular-ui-router.min.js","app/bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js","app/bower_components/angular-cookies/angular-cookies.min.js","app/bower_components/angularLocalStorage/dist/angularLocalStorage.min.js","app/bower_components/angular-ui-tree/dist/angular-ui-tree.min.js","app/bower_components/jszip/dist/jszip.min.js","app/bower_components/underscore/underscore-min.js","app/bower_components/angular-animate/angular-animate.min.js","app/bower_components/file-saver/FileSaver.min.js","app/bower_components/angular-sanitize/angular-sanitize.min.js","app/bower_components/angular-ui-select/dist/select.min.js"])
+    return gulp.src(["app/bower_components/jquery/dist/jquery.min.js","app/bower_components/angular/angular.min.js","app/bower_components/angular-ui-router/release/angular-ui-router.min.js","app/bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js","app/bower_components/angular-cookies/angular-cookies.min.js","app/bower_components/angularLocalStorage/dist/angularLocalStorage.min.js","app/bower_components/angular-ui-tree/dist/angular-ui-tree.min.js","app/bower_components/jszip/dist/jszip.min.js","app/bower_components/underscore/underscore-min.js","app/bower_components/angular-animate/angular-animate.min.js","app/bower_components/file-saver/FileSaver.js","app/bower_components/angular-sanitize/angular-sanitize.min.js","app/bower_components/angular-ui-select/dist/select.min.js"])
     .pipe(gulp.dest('webapp/scripts'));
 });
 

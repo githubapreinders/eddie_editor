@@ -50,14 +50,13 @@
 	.classArea
 	{
 		display:flex;
-		direction:rtl;
 		flex-direction: column;
 		flex-grow:1;
 		background:$guttercolor;
 		cursor : pointer;
 		overflow-y:auto;
 		overflow-x:hidden;
-		text-indent:10px;
+		text-indent:15px;
 		margin-bottom: 1px;
 		height:25%;
 		
@@ -74,31 +73,18 @@
 	}
 
 
-		.classArea::-webkit-scrollbar{
-		    width: 1.0em;
-		    background:$guttercolor;
-		}
-		 
-		 
-		.classArea::-webkit-scrollbar-thumb{
-		  background-color: $corkColor2;
-		  outline: 1px solid white;
-		}
-
-
 
 
 	.descriptionArea
 	{
 		display:flex;
-		direction:rtl;
 		flex-direction: column;
 		height:25%;
 		background:#222;
 		overflow-y:auto;
 		overflow-x:hidden;
 		padding: 15px;
-		padding-right: 0px;
+		padding-right: 10px;
 		margin-bottom: 1px;
 		h4
 		{
@@ -108,7 +94,6 @@
 		.descriptioncontainer
 		{
 			color:grey;
-			direction:ltr;
 		}
 
 	}
@@ -119,27 +104,25 @@
 	.propertyArea
 	{
 		flex-grow:1;
-		direction:rtl;
 		height:40%;
 		background:#222;
 		color:white;
-		overflow-y:scroll;
-		// overflow-x:hidden;
-		padding-left: 15px;
+
+		
 		input.form-control, div.checkbox
 		{
-			width:100%;
+			width:98%;
 		}
 		input
 		{
 			background:$corkColor3;
 			color:white;
 			border:1px solid $corkColor1;
+
 		}
 		
 		.propcontainer
 		{
-			direction:ltr;
 			width:95%;
 		}
 
@@ -153,19 +136,6 @@
 		{
 			text-align: center;
 		}
-		
-
-	}
-	.propertyArea::-webkit-scrollbar,.descriptionArea::-webkit-scrollbar 
-	{
-		width: 1.0em;
-		background: $guttercolor;
-	}
-
-	.propertyArea::-webkit-scrollbar-thumb,.descriptionArea::-webkit-scrollbar-thumb
-	{
-		background-color: $corkColor2;
-		outline: 1px solid white;
 	}
 }
 

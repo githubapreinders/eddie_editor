@@ -205,3 +205,16 @@ input:active, select:active, textarea:active, form:active, button:active
     font-size:17px;
     color:#555555;
 }
+
+.myicon
+{
+	width:20px;
+	height:20px;
+}
+
+.myicon:hover
+{
+	transform:scale(1.2);
+}
+
+

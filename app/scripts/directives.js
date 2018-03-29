@@ -37,7 +37,7 @@ In local storage. For this the old and the new name have to be in one place.*/
                                     /*check if there's no sibling node with the same title, otherwise
                                     we will get name collisions and data loss in the local storage*/
                                     var theobject = angular.element(element).scope();
-                                    console.log("siblings: ", theobject.$parentNodesScope.$modelValue);
+                                    // console.log("siblings: ", theobject.$parentNodesScope.$modelValue);
                                     var siblings = theobject.$parentNodesScope.$modelValue;
                                     for(var s = 0 ; s < siblings.length; s++)
                                     {
@@ -50,7 +50,7 @@ In local storage. For this the old and the new name have to be in one place.*/
                                     }
 
                                     sublist[i].title = text;
-                                    console.log("match", sublist[i], text, scope.vm2.mySlots);
+                                    // console.log("match", sublist[i], text, scope.vm2.mySlots);
                                     if(!(sublist[i].isDirectory))
                                     {
                                         //changing a filename changes the alias of a storageslot;
@@ -93,10 +93,9 @@ In local storage. For this the old and the new name have to be in one place.*/
 
 
                     });
-                    el.bind(['keydown'],function(event)
+                    el.bind('keydown',function(event)
                     {
                         var code = event.which || event.keyCode || eventt.charCode ;
-                        console.log("code", code);
                         if (code === 13)// enter key
                         {
                             event.preventDefault();
