@@ -85,7 +85,8 @@ input:active, select:active, textarea:active, form:active, button:active {
     text-align: center; }
   .configTop #therest {
     position: absolute;
-    widht: 160px;
+    width: 160px;
+    background: #4b4a4c;
     color: #4b4a4c;
     left: 85%;
     border-bottom: 1px solid #999999;
@@ -882,7 +883,8 @@ ol {
   left: 25%;
   width: 75%;
   height: 100%;
-  border-top: 1px solid #999999;
+  border: 1px solid #999999;
+  border-radius: 7px 0px 0px 3px;
   background: #222;
   position: absolute;
   -webkit-transition: width 0.4s, left 0.4s;

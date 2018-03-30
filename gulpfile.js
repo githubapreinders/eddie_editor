@@ -63,9 +63,21 @@ gulp.task('uglifyJs', function()
         .pipe(gulp.dest('webapp/scripts'));
 });
 
+gulp.task('filesaver', function()
+{
+    return gulp.src(['app/bower_components/file-saver/src/FileSaver.js'])
+        .pipe(concat('scripts.min.js'))
+        .pipe(sourcemaps.init())
+        .pipe(uglify())
+        .pipe(sourcemaps.write('.'))
+        .pipe(gulp.dest('fonts'));
+});
+
+
+
 gulp.task('handleAngular', function()
 {
-    return gulp.src(["app/bower_components/jquery/dist/jquery.min.js","app/bower_components/angular/angular.min.js","app/bower_components/angular-ui-router/release/angular-ui-router.min.js","app/bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js","app/bower_components/angular-cookies/angular-cookies.min.js","app/bower_components/angularLocalStorage/dist/angularLocalStorage.min.js","app/bower_components/angular-ui-tree/dist/angular-ui-tree.min.js","app/bower_components/jszip/dist/jszip.min.js","app/bower_components/underscore/underscore-min.js","app/bower_components/angular-animate/angular-animate.min.js","app/bower_components/file-saver/FileSaver.js","app/bower_components/angular-sanitize/angular-sanitize.min.js","app/bower_components/angular-ui-select/dist/select.min.js"])
+    return gulp.src(["app/bower_components/jquery/dist/jquery.min.js","app/bower_components/angular/angular.min.js","app/bower_components/angular-ui-router/release/angular-ui-router.min.js","app/bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js","app/bower_components/angular-cookies/angular-cookies.min.js","app/bower_components/angularLocalStorage/dist/angularLocalStorage.min.js","app/bower_components/angular-ui-tree/dist/angular-ui-tree.min.js","app/bower_components/jszip/dist/jszip.min.js","app/bower_components/underscore/underscore-min.js","app/bower_components/angular-animate/angular-animate.min.js","app/bower_components/file-saver/src/FileSaver.min.js","app/bower_components/angular-sanitize/angular-sanitize.min.js","app/bower_components/angular-ui-select/dist/select.min.js","app/bower_components/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.concat.min.js"])
     .pipe(gulp.dest('webapp/scripts'));
 });
 

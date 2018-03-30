@@ -9,7 +9,8 @@
   	left:25%;
   	width:75%;
   	height:100%;
-    border-top:1px solid darken(white,40%);
+    border:1px solid darken(white,40%);
+    border-radius:7px 0px 0px 3px;
   	background:$guttercolor;
   	position:absolute;
   	transition: width 0.4s, left 0.4s;

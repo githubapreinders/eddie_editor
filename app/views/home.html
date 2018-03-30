@@ -32,6 +32,16 @@
                        <span  >tags</span>
                        </div>
 
+                       <div  class="mybutton" id="submitform" ng-click="vm.triggerSaveZipEvent()">
+                       <img src="./media/icons/save.svg" class="myicon" />
+                       <span  >save</span>
+                       </div>
+
+                       <div  class="mybutton" id="submitform" ng-click="vm.triggerLoadZipEvent()">
+                       <img src="./media/icons/open_folder.svg" class="myicon"  />
+                       <span  >load</span>
+                       </div>
+
 
                        <div uib-popover-template="'./views/popovertemplate2.html'" popover-placement="bottom" popover-trigger="'mouseenter'" class="mybutton" id="submitform" ng-click="vm.submitForm()">
                        <img src="./media/icons/tag_add.svg" class="myicon" />
