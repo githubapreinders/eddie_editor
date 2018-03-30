@@ -65,7 +65,15 @@
             vm.availableLessons = [];
 
             
+
             //startup function 
+            function initScrollbar()
+            {
+                $('#classArea').mCustomScrollbar({theme:"minimal"});
+                $('#descriptionArea').mCustomScrollbar({theme:"minimal"});
+                $('#propertyArea').mCustomScrollbar({theme:"minimal"});
+            }
+
 
             UserFactory.getUser().then(function success(response)
             {
@@ -74,10 +82,9 @@
                 console.log("user from me ",vm.user);
                 StaticDataFactory.setProjectName(vm.user.instancename);
                 getJson();
-                console.log("Getting user from api/me ", JSON.stringify(vm.user));   
-                $('#classArea').mCustomScrollbar({theme:"minimal"});
-                $('#descriptionArea').mCustomScrollbar({theme:"minimal"});
-                $('#propertyArea').mCustomScrollbar({theme:"minimal"});
+                console.log("Getting user from api/me ", JSON.stringify(vm.user));
+                initScrollbar();   
+                
                 
             }, function failure(response)
             {
@@ -86,6 +93,9 @@
                 showCredentialsDialog();
                 console.log(JSON.stringify(response));
             });
+
+
+
 
 
 
@@ -110,6 +120,7 @@
                         console.log("vm.user : ", vm.user );
                         saveInSlot();
                         getJson();
+                        initScrollbar();  
                     }
                 }, handleError);
             }
