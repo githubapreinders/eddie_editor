@@ -180,7 +180,7 @@ input:active, select:active, textarea:active, form:active, button:active {
   background: #222; }
   #configcontainer .spaceabove {
     height: 30px;
-    widht: 100%;
+    width: 100%;
     background: #4b4a4c; }
   #configcontainer .configArea {
     height: 5%;
@@ -196,11 +196,9 @@ input:active, select:active, textarea:active, form:active, button:active {
     -webkit-flex-direction: column;
         -ms-flex-direction: column;
             flex-direction: column;
-
     overflow: auto;
     width: 100%;
     overflow-x: hidden; }
-
   #configcontainer .treeview_buttonsbelow {
     margin-left: auto;
     margin-right: auto;
@@ -428,10 +426,7 @@ ol {
       text-decoration: none;
       text-shadow: 0px 0px 0 #464547, 0px 0px 0 #464547, 0px 0px 0 #464547, 0px 0px 0 #464547; }
     .mynavbar .navbarupper .navHeading a:hover {
-      text-shadow: -1px -1px 0 #AAA,
- 1px -1px 0 #AAA,
- -1px 1px 0 #AAA,
- 1px 1px 0 #AAA; }
+      text-shadow: -1px -1px 0 #AAA, 1px -1px 0 #AAA, -1px 1px 0 #AAA, 1px 1px 0 #AAA; }
     .mynavbar .navbarupper .loginpane {
       display: -webkit-box;
       display: -webkit-flex;
@@ -676,7 +671,7 @@ ol {
   background: #222; }
   #configcontainer .spaceabove {
     height: 30px;
-    widht: 100%;
+    width: 100%;
     background: #4b4a4c; }
   #configcontainer .configArea {
     height: 5%;
@@ -692,13 +687,9 @@ ol {
     -webkit-flex-direction: column;
         -ms-flex-direction: column;
             flex-direction: column;
-<<<<<<< HEAD
-    overflow-y: auto; }
-=======
     overflow: auto;
     width: 100%;
     overflow-x: hidden; }
->>>>>>> 76e46921af6fae0a5ec1cb3b2c98d576d197f3c4
   #configcontainer .treeview_buttonsbelow {
     margin-left: auto;
     margin-right: auto;
