@@ -64,7 +64,7 @@
 		else
 		{
 			vm3.selectedItem = StaticDataFactory.getSelectedItem();
-			console.log("data2", vm3.selectedItem);
+			console.log("data2", vm3.selectedItem, vm3.dataModel);
 		}
 
 

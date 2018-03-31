@@ -16,8 +16,8 @@
                      <label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Selected Tag : &nbsp;&nbsp;&nbsp; </label>
                     <ui-select class="uiselect" ng-model="$parent.vm3.selectedItem" theme="bootstrap" ng-disabled="vm3.disabled" style="width: 200px;" title="choose a tag" append-to-body="true" ng-change="vm3.thexml = null">
       <ui-select-match >{{$select.selected.classname}}</ui-select-match>
-      <ui-select-choices repeat="value in vm3.dataModel" group-by = "'type'">
-        <div ng-bind-html="value.classname  "></div>
+      <ui-select-choices repeat="value in vm3.dataModel" group-by="'type'">
+        <div ng-bind-html="value.classname"></div>
         
       </ui-select-choices>
     </ui-select>
@@ -54,26 +54,47 @@
                     
                        <div class="filler"></div>
                        
-                    <span class="mybutton"  ui-sref="app.userpage">users</span>   
 
-                       <span ng-click="vm3.confirmDelete()" class="mybutton">
-                        delete
-                    </span>
+                    <div  ui-sref="app.userpage" class="mybutton"  >
+                       <img src="./media/icons/users.svg" class="myicon" />
+                       <span  >users</span>
+                    </div>
 
-                    <span ng-click="vm3.postJsonBulk()" class="mybutton ">
+
+                     
+
+                    <div  class="mybutton" ng-click="vm3.confirmDelete()" >
+                       <img src="./media/icons/delete.svg" class="myicon" />
+                       <span  >delete</span>
+                    </div>
+
+
+                   <!--  <span ng-click="vm3.postJsonBulk()" class="mybutton ">
                         post bulk
-                    </span>
+                    </span> -->
 
-                    <span ng-click="vm3.showModel()" class="mybutton ">
-                        show model
-                    </span>
+                    
 
-                    <span ng-click="vm3.saveItem()" class="mybutton ">
-                        save item
-                    </span>
+                    <div  class="mybutton" ng-click="vm3.showModel()" >
+                       <img src="./media/icons/curlybraces.svg" class="myicon" style="width:17px;height:17px;" />
+                       <span  >show model</span>
+                       </div>
 
-                    <span ng-click="vm3.addNewClass()" class="mybutton ">
-                        new item
+
+                    
+                    <div  class="mybutton" ng-click="vm3.saveItem()" >
+                       <img src="./media/icons/save.svg" class="myicon" />
+                       <span  >save item</span>
+                       </div>
+
+
+
+                     <div  class="mybutton" ng-click="vm3.addNewClass()" >
+                       <img src="./media/icons/tag_add.svg" class="myicon" />
+                       <span  >new item</span>
+                       </div>
+
+                        
                     </span>
                        
                        <div id="sendstatus"></div>
@@ -83,48 +104,7 @@
 
 
 
-            <!-- <div  class="mynavbar">
-                <div class="navBarLeft" style="width:45%;">
-                      <a ui-sref="app">  
-                        <img src="./media/ibis2a.svg" class="iplogo" id="iplogo"  />
-                      </a>
-                    <label>Selected Item : <select id = 'myselect' ng-model="vm3.selectedItem" ng-options="value.classname for (key,value) in vm3.dataModel"  ></select></label>
-                </div>
-
-                <div class = "navBarRight" >
-                    
-
-                    <div class="filler"></div>
-
-                    <span ng-show = "vm3.showSpinner" style="color:grey;">
-                        <i   class="fa fa-spinner fa-spin fa-2x fa-fw "></i>
-                    </span>
-
-                    <div class="filler"></div>
-
-
-                    <span ng-click="vm3.confirmDelete()" class="mybutton">
-                        <i class="fa  fa-plus fa-rotate-45  fa-2x" style="color:red;"></i>
-                    </span>
-
-                    <span ng-click="vm3.postJsonBulk()" class="mybutton ">
-                        <i class="fa   fa-2x" style="font-size: 14px;">BULK</i>
-                    </span>
-
-                    <span ng-click="vm3.showModel()" class="mybutton ">
-                        <i class="fa fa-search-plus fa-2x" ></i>
-                    </span>
-
-                    <span ng-click="vm3.postDatamonster()" class="mybutton ">
-                        <i class="fa fa-save fa-2x"></i>
-                    </span>
-
-                    <span ng-click="vm3.addNewClass()" class="mybutton ">
-                        <i class="fa fa-plus  fa-2x"></i>
-                    </span>
-
-                </div>
-            </div> -->
+            
 
 <div class="mainmodcontainer">
     <div class="leftmodcontainer" ng-include="'./views/leftmodcontainer.html'"></div>

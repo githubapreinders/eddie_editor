@@ -7,7 +7,7 @@
     app.constant('UPLOAD_URL',"/iaf/api/configurations");
     
     //CHANGE THIS WHEN DEPLOYING TO AWS !!!
-    // app.constant('IAF_URL','http://ibis4education-env.bz46fawhzf.eu-central-1.elasticbeanstalk.com');
+    //app.constant('IAF_URL','http://ibis4education-env.bz46fawhzf.eu-central-1.elasticbeanstalk.com');
     
     app.constant('IAF_URL', "http://localhost:8080/Ibis4Education");
     

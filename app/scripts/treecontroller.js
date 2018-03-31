@@ -3,9 +3,8 @@
     'use strict';
     /*TODO's : adding new directory / new file button*/
     angular.module('confab')
-        .controller('ApsTreeController', function ($scope,$uibModal, ZipService, StorageFactory,StaticDataFactory, IafFactory,$timeout)
+        .controller('ApsTreeController', function ($scope, $uibModal, ZipService, StorageFactory, StaticDataFactory, IafFactory, $timeout)
         {
-
             console.log('TreeController...');
             var vm2 = this;
             vm2.remove = remove;
@@ -21,7 +20,7 @@
             //is called in home.html
             vm2.treeOptions =
             {
-                   
+                
             };
 
             init();
@@ -252,14 +251,10 @@
 
 
 
-            function setSelectedSlot(object,fromclick)
-            {
-                    console.log("changing selected slot...", object, fromclick);
-                if(object.hasOwnProperty('id'))
-                {
-                    
-                    if(fromclick)
-                    {
+            function setSelectedSlot(object,fromclick) {
+                console.log("changing selected slot...", object, fromclick);
+                if(object.hasOwnProperty('id')) {
+                    if(fromclick) {
                         $scope.$emit('saveOldValues');
                     }
                     vm2.selectedSlot = object.id;
@@ -267,12 +262,9 @@
                     var myobj = vm2.mySlots[vm2.selectedSlot];
                     $scope.$emit('Keychange',myobj);
                 }
-                else
-                {
-                    if(!(object.isDirectory))
-                    {
-                        if(fromclick)
-                        {
+                else {
+                    if(!(object.isDirectory)) {
+                        if(fromclick) {
                             $scope.$emit('saveOldValues');
                         }
                         vm2.selectedSlot = object.$modelValue.id;
@@ -280,11 +272,12 @@
                         var myobj = vm2.mySlots[vm2.selectedSlot];
                         $scope.$emit('Keychange',myobj);
                     }
-                }    
+                }
             }
 
 
-            /* Sets the name of the tree item contenteditable and places the caret; 
+            /*
+            Sets the name of the tree item contenteditable and places the caret; 
             On enter or on blur the nameGiver directive updates the model with the current viewvalue.
             */
             function changeName(item)
@@ -447,9 +440,7 @@
                             return true;
                         }
                     }
-                }                 
-
-                
+                }
             }
 
             function toggle(item)
