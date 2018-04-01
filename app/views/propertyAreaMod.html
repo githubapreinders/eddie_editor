@@ -1,8 +1,7 @@
 
 
-<div class="propertymodcontainer">
 
-    <div ng-show="vm3.selectedItem.type !== 'snippets' && vm3.selectedItem.type !== 'lesson' ">
+    <div   ng-show="vm3.selectedItem.type !== 'snippets' && vm3.selectedItem.type !== 'lesson' ">
         <div ng-repeat = "property in vm3.selectedItem.properties">
                     <div>
                         <label  contenteditable ng-model = "vm3.selectedItem.properties[$index][0]" ng-click= "vm3.selectedProperty === $index? vm3.showPropertyDescription = !vm3.showPropertyDescription:vm3.selectedProperty = $index" ng-change = "vm3.changeAttrName($index)">
@@ -20,4 +19,3 @@
         </div>
     </div>
     
-</div>    

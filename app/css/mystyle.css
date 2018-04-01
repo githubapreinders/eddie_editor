@@ -427,7 +427,7 @@ ol {
       text-decoration: none;
       text-shadow: 0px 0px 0 #464547, 0px 0px 0 #464547, 0px 0px 0 #464547, 0px 0px 0 #464547; }
     .mynavbar .navbarupper .navHeading a:hover {
-      text-shadow: -1px -1px 0 #AAA, 1px -1px 0 #AAA, -1px 1px 0 #AAA, 1px 1px 0 #AAA; }
+      text-shadow: -1px -1px 0 #AAA, 1px -1px 0 #AAA, -1px 1px 0 #AAA, 1px 1px 0 #AAA; }
     .mynavbar .navbarupper .loginpane {
       display: -webkit-box;
       display: -webkit-flex;
@@ -481,7 +481,7 @@ ol {
     height: 30%; }
     .mynavbar .navbarlower #filename {
       background: none;
-      font-family: "cuprum";
+      font-family: "play";
       color: #a2a2a2;
       position: relative;
       opacity: 0.3;
@@ -617,7 +617,7 @@ ol {
     padding-right: 10px;
     margin-bottom: 1px; }
     #navigatorcontainer .descriptionArea h4 {
-      font-family: "cuprum";
+      font-family: "play";
       text-align: center; }
     #navigatorcontainer .descriptionArea .descriptioncontainer {
       color: grey; }
@@ -933,34 +933,27 @@ ol {
         background: #496592; }
     .mainmodcontainer .leftmodcontainer .propArea {
       height: 75%;
-      direction: rtl;
-      overflow-y: scroll; }
-      .mainmodcontainer .leftmodcontainer .propArea .propertymodcontainer {
-        direction: ltr; }
-        .mainmodcontainer .leftmodcontainer .propArea .propertymodcontainer input {
-          margin-left: 10px;
-          background: #4b4a4c;
-          color: white;
-          border: 1px solid #6b5a84; }
-        .mainmodcontainer .leftmodcontainer .propArea .propertymodcontainer label {
-          margin-top: 15px;
-          color: white;
-          opacity: 0.6;
-          margin-left: 10px; }
+      overflow-y: auto;
+      overflow-x: hidden; }
+      .mainmodcontainer .leftmodcontainer .propArea input {
+        margin-left: 10px;
+        background: #4b4a4c;
+        color: white;
+        border: 1px solid #6b5a84; }
+      .mainmodcontainer .leftmodcontainer .propArea label {
+        margin-top: 15px;
+        color: white;
+        opacity: 0.6;
+        margin-left: 10px; }
       .mainmodcontainer .leftmodcontainer .propArea .fa-plus-circle {
         margin-top: auto;
         margin-bottom: auto;
+        margin-right: 13px;
         color: grey; }
       .mainmodcontainer .leftmodcontainer .propArea .fa-plus-circle:hover {
         color: red;
         -webkit-transform: rotate(45deg);
                 transform: rotate(45deg); }
-    .mainmodcontainer .leftmodcontainer .propArea::-webkit-scrollbar {
-      width: 1.0em;
-      background: #222; }
-    .mainmodcontainer .leftmodcontainer .propArea::-webkit-scrollbar-thumb {
-      background-color: #27364e;
-      outline: 1px solid white; }
     .mainmodcontainer .leftmodcontainer .addProperty {
       height: 15%;
       margin-right: 10px;
@@ -981,39 +974,48 @@ ol {
         opacity: 0.6; }
       .mainmodcontainer .leftmodcontainer .addProperty .fa-check-circle {
         color: green;
+        margin-right: 13px;
         padding-bottom: 5px; }
       .mainmodcontainer .leftmodcontainer .addProperty .fa-check-circle:hover {
         color: #00b300;
         -webkit-transform: scale(1.1);
                 transform: scale(1.1); }
       .mainmodcontainer .leftmodcontainer .addProperty .fa-plus-circle {
-        color: #27364e; }
+        color: #27364e;
+        margin-right: 13px; }
       .mainmodcontainer .leftmodcontainer .addProperty .fa-plus-circle:hover {
         color: #496592;
         -webkit-transform: scale(1.1);
                 transform: scale(1.1); }
       .mainmodcontainer .leftmodcontainer .addProperty .fa-minus-circle {
-        color: #6b5a84; }
+        color: #6b5a84;
+        margin-right: 13px; }
       .mainmodcontainer .leftmodcontainer .addProperty .fa-minus-circle:hover {
         color: #84729f;
         -webkit-transform: scale(1.1);
                 transform: scale(1.1); }
   .mainmodcontainer .rightmodcontainer {
     background: #222;
+    font-family: "muli";
+    font-size: 18px;
     margin-left: 1px;
     padding: 5px;
     width: 65%;
     height: 100%; }
     .mainmodcontainer .rightmodcontainer textarea {
-      color: white;
+      background: #2f2f2f;
+      color: #cccccc;
+      overflow-x: hidden;
+      margin: 5px;
+      border-radius: 3px;
+      border: 1px solid #6b5a84;
       width: 100%;
-      height: 100%; }
+      height: 88%; }
     .mainmodcontainer .rightmodcontainer h1, .mainmodcontainer .rightmodcontainer h2, .mainmodcontainer .rightmodcontainer h3, .mainmodcontainer .rightmodcontainer h4 {
       text-align: center;
       color: #EEEEEE; }
     .mainmodcontainer .rightmodcontainer span[contenteditable] {
-      color: #EEEEEE;
-      font-size: 20px;
+      color: #cccccc;
       outline: none;
       height: 94%;
       padding: 5px; }

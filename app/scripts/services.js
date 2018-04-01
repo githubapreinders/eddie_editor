@@ -272,7 +272,6 @@
         }
         thekeys.forEach(function(key)
         {
-          console.log("key: " , key);
           files.push(key.title);
         });
         return files;

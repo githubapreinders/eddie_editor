@@ -63,9 +63,18 @@
 		function postDatamonster(datamonster, thetag)
         {
           console.log("posting a monster with length ", Object.keys(datamonster).length);
+          console.log("TAG", thetag);
           
           	  //var helper = JSON.stringify(datamonster);
-          	  return  $http({method:"POST",url:IAF_URL +'/api/storejson',data:datamonster}).then(function success(resp)
+          	  //converting array to an object :
+          	  var obj = {};
+          	  datamonster.forEach(function(item)
+          	  {
+          	  	obj[item.classname] = item;
+          	  });
+          	  console.log("object:", obj);
+
+          	  return  $http({method:"POST",url:IAF_URL +'/api/storejson',data:obj, headers:{'responseType':'Json'}}).then(function success(resp)
 	          {
 	            console.log("saving result", resp.status);
 	            postTag(thetag);
@@ -76,8 +85,10 @@
 	          });
         }
 
-        function postTag(tag)
+        function postTag(object)
         {
+        	var tag = {'classname':object.classname,'thetag':object, 'thedate':Date.now()};
+        	console.log("tag: ", tag);
         	return  $http.post(IAF_URL +'/api/postiaftag', tag).then(function success(resp)
 	          {
 	            console.log("saving a tag", resp.status);

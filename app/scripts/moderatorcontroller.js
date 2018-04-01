@@ -36,36 +36,38 @@
 
 		vm3.file={};
 		// vm3.selectedFile=vm3.slotlist[0];
-		console.log("files", vm3.slotlist);
+		// console.log("files", vm3.slotlist);
 
-		if (vm3.dataModel === null)
+		// if (vm3.dataModel === null)
+		// {
+		console.log("resolving data from iaf data:" );
+
+		StaticDataFactory.getJson().then(function success(response)
 		{
-			console.log("resolving data from iaf data:" );
-			StaticDataFactory.getJson().then(function success(data)
+			$('#theprops').mCustomScrollbar({theme:"minimal"});
+			$('#xmlwrapper1').mCustomScrollbar({theme:"minimal"});
+			$('#xmlwrapper2').mCustomScrollbar({theme:"minimal"});
+			console.log("response",response);
+			var helper = JSON.parse(response.data.JSONMONSTER.MYMONSTER);
+			vm3.dataModel = [];
+			Object.keys(helper).forEach(function(value)
 			{
-					var helper = JSON.parse(data.data.JSONMONSTER.MYMONSTER);
-					vm3.dataModel = [];
-					Object.keys(helper).forEach(function(value)
-					{
-						vm3.dataModel.push(helper[value]);
-					});
-					vm3.selectedItem = vm3.dataModel[0];
-					console.log("datamodel: ",vm3.dataModel);
-					console.log("selected item",vm3.selectedItem);
-					//console.log("datamodel: ", helper);
-
-
-			},
-			function error(err)
-			{
-				console.log("error");
+				vm3.dataModel.push(helper[value]);
 			});
-		}
-		else
+			vm3.selectedItem = vm3.dataModel[0];
+			// console.log("data", vm3.selectedItem, vm3.dataModel);
+		},
+		function error(err)
 		{
-			vm3.selectedItem = StaticDataFactory.getSelectedItem();
-			console.log("data2", vm3.selectedItem, vm3.dataModel);
-		}
+			console.log("error");
+		});
+		// }
+		// else
+		// {
+		// 	$('propArea').mCustomScrollbar({theme:"minimal"});
+		// 	vm3.selectedItem = StaticDataFactory.getSelectedItem();
+		// 	console.log("data", vm3.selectedItem, vm3.dataModel);
+		// }
 
 
 		function newSnippet()
@@ -78,13 +80,13 @@
 			{
 				thename = slot;
 			}
-			console.log("thename: ", thename);
 			vm3.thexml = StorageFactory.getGetter(slot)();
 			vm3.newProperty = null;
 			vm3.addingProperty = false;
 			vm3.addingItem = true;
-			vm3.dataModel[thename] = {classname:thename,description:"enter your description here", type:"snippets",xml:vm3.thexml, attrs:{},properties:[]};
-			vm3.selectedItem = vm3.dataModel[thename];
+			vm3.dataModel.push({classname:thename,description:"enter your description here", type:"snippets",xml:vm3.thexml, attrs:{},properties:[]});
+			vm3.selectedItem = vm3.dataModel[vm3.dataModel.length-1];
+			console.log("thename: ", vm3.dataModel);
 		}
 
 		function cropFilter(item)
@@ -209,9 +211,8 @@
 
 		function saveItem()
 		{
-			console.log(vm3.selectedItem);
 			toggleSpinner();
-			ModeratorFactory.postDatamonster(vm3.dataModel).then(function success(res)
+			ModeratorFactory.postDatamonster(vm3.dataModel,vm3.selectedItem).then(function success(res)
 			{
 				toggleSpinner();
 				console.log("success",res);
@@ -249,9 +250,24 @@
 					ModeratorFactory.deleteItem(vm3.selectedItem.classname).then(function succcess(res)
 					{
 						toggleSpinner();
-						console.log("response from service: ", res);
 						var parking = vm3.selectedItem.classname;
-						delete vm3.dataModel[parking];
+						console.log("response from service: ", res, parking);
+						var index = -1;
+						for(var i=0 ; i<vm3.dataModel.length; i++)
+						{
+							console.log("iterating",vm3.dataModel[i].classname);
+							if(vm3.dataModel[i].classname === parking)
+							{
+								index = i;
+								console.log("deleted index...", index);
+								break;
+							}
+						}
+						
+						if(index !== -1)
+						{
+							delete vm3.dataModel[index];
+						}
 						vm3.selectedItem = vm3.dataModel[Object.keys(vm3.dataModel)[0]];
 						saveItem();
 					},
