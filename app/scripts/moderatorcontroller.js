@@ -3,7 +3,7 @@
 	'use strict';
 	 var appl = angular.module('confab');
 	//TODO add a view and controller functionality to add items to the children array
-	appl.controller('ModeratorController', function($scope, StaticDataFactory, $uibModal, StorageFactory, ModeratorFactory, UserFactory)
+	appl.controller('ModeratorController', function($scope, StaticDataFactory, $uibModal, $timeout, StorageFactory, ModeratorFactory, UserFactory)
 	{
 		var vm3 = this;
 		vm3.showModel = showModel;
@@ -113,9 +113,18 @@
 
 		function deleteItem()
 		{
+			toggleSpinner();
 			ModeratorFactory.deleteItem(vm3.selectedItem.classname).then(function succcess(res)
 			{
 				console.log(res);
+				toggleSpinner();
+				var el = document.getElementById('sendstatususers');
+                el.style.background = 'green';
+                $timeout(function()
+                {
+                    el.style.background = 'none';
+                }, 5000);
+				console.log("success",res);
 				var parking = vm3.selectedItem.classname;
 				delete vm3.dataModel[parking];
 				vm3.selectedItem = vm3.dataModel[Object.keys(vm3.dataModel)[0]];
@@ -123,6 +132,13 @@
 			function fail(err)
 			{
 				console.log(err);
+                toggleSpinner();
+				var el = document.getElementById('sendstatusmod');
+                el.style.background = 'red';
+                $timeout(function()
+                {
+                    el.style.background = 'none';
+                }, 5000);
 			});
 		}
 
@@ -215,14 +231,28 @@
 			ModeratorFactory.postDatamonster(vm3.dataModel,vm3.selectedItem).then(function success(res)
 			{
 				toggleSpinner();
+				var el = document.getElementById('sendstatusmod');
+                el.style.background = 'green';
+                $timeout(function()
+                {
+                    el.style.background = 'none';
+                }, 5000);
 				console.log("success",res);
 			}, 
 			function fail(err)
 			{
 				toggleSpinner();
+				var el = document.getElementById('sendstatusmod');
+                el.style.background = 'red';
+                toggleSpinner();
+                $timeout(function()
+                {
+                    el.style.background = 'none';
+                }, 5000);
 				console.log("fail",err);
 			});
 		}
+
 
 		function confirmDelete()
 		{

@@ -2,7 +2,7 @@
 
 	'use strict';
 	var applic = angular.module('confab');
-	applic.controller('MyUserController',function(UserFactory)
+	applic.controller('MyUserController',function(UserFactory, $timeout)
 	{
 		console.log("my usercontroller...");
 		var vm6 = this;
@@ -80,7 +80,7 @@
 			UserFactory.getAllUsers().then(
 			function success(response)
 			{
-				vm6.theusers = response;
+        vm6.theusers = response;
 				vm6.theusers.unshift({email:"",role:"user",name:"",lastname:"",instancename:""});
 				vm6.buttonsenabled = true;
 				console.log("returned users:", vm6.theusers);
@@ -88,7 +88,13 @@
 			function failure(response)
 			{
 				vm6.buttonsenabled = true;
-				console.log("no users returned " ,response);
+				var el = document.getElementById('sendstatususers');
+        el.style.background = 'red';
+        $timeout(function()
+        {
+            el.style.background = 'none';
+        }, 5000);
+        console.log("no users returned " ,response);
 			});
 		}
 
@@ -112,11 +118,35 @@
 	        	UserFactory.saveUser(vm6.theusers[index]).then(
 	        	function success(response)
 	        	{
-	        		console.log("saved successfully ", response.status);
-	        		getAllUsers();
+              if(response.status === 500)
+              {
+                var el = document.getElementById('sendstatususers');
+                el.style.background = 'red';
+                $timeout(function()
+                {
+                    el.style.background = 'none';
+                }, 5000);
+              }
+              else
+              {
+                console.log("saved successfully ", response.status);
+                var el = document.getElementById('sendstatususers');
+                el.style.background = 'green';
+                $timeout(function()
+                {
+                    el.style.background = 'none';
+                }, 5000);  
+              }
+              getAllUsers();
 	        	},function failure(response)
 	        	{
 	        		console.log("no success saving ", response.status);
+              var el = document.getElementById('sendstatususers');
+              el.style.background = 'red';
+              $timeout(function()
+              {
+                  el.style.background = 'none';
+              }, 5000);
 	        	});
         	}
         }
