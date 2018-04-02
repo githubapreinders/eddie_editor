@@ -19,7 +19,7 @@
 		vm3.user = UserFactory.getCurrentUser();
 		vm3.thexml = null;
 
-		vm3.dataModel = JSON.parse(StaticDataFactory.getStaticJson());
+		//vm3.dataModel = JSON.parse(StaticDataFactory.getStaticJson());
 		console.log(vm3.dataModel);
 		vm3.currentSlotNumber = null; //TODO extract slots from localstorage
 		vm3.showPropertyDescription= false;

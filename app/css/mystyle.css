@@ -1033,6 +1033,10 @@ body {
     color: white;
     text-align: center;
     margin-left: 24; }
+  .mytable thead .highlightheader {
+    cursor: default; }
+  .mytable thead .highlightheader:hover {
+    color: #a3b5d1; }
 
 .mytable tbody {
   color: #7e7c80;
@@ -1046,6 +1050,10 @@ body {
     margin-right: auto; }
   .mytable tbody td.centeralso {
     text-align: center; }
+    .mytable tbody td.centeralso span {
+      cursor: pointer; }
+    .mytable tbody td.centeralso .highlighted {
+      color: #EA394C; }
   .mytable tbody .userbuttons {
     display: -webkit-box;
     display: -webkit-flex;

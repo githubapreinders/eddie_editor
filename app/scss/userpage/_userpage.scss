@@ -11,18 +11,25 @@ body
 
 
 
+
 .mytable
 {
 	thead
 	{
-		
 		background:$corkColor3;
-		
 		th
 		{
 			color:white;
 			text-align:center;
 			margin-left:24;
+		}
+		.highlightheader
+		{
+			cursor:default;
+		}
+		.highlightheader:hover
+		{
+			color : lighten($corkColor2,50%);
 		}
 
 	}
@@ -44,6 +51,14 @@ body
 		td.centeralso
 		{
 				text-align:center;
+				span
+				{
+					cursor:pointer;
+				}
+				.highlighted
+				{
+					color:#EA394C;
+				}
 		}
 		.userbuttons
 		{

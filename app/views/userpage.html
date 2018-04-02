@@ -1,5 +1,4 @@
-<!-- <link href="css/mystyle.css" rel="stylesheet" ng-disabled = "vm.selectedTheme === 'monokai' ">
-<link href="css/mystyle_monokai.css" rel="stylesheet" ng-disabled = "vm.selectedTheme === 'twilight'"> -->
+
 <div style="height: 100%; width:100%;">       
             <div  class="mynavbar">
                 <div class="navbarupper">
@@ -38,11 +37,11 @@
         <table class="table  mytable">
             <thead>
                 <tr>
-                    <th class="col-xs-2">Email</th>
+                    <th class="col-xs-2 highlightheader" ng-click="vm6.sortOnHeaderName('email')">Email</th>
                     <th class="col-xs-2">Role</th>
-                    <th class="col-xs-2">First Name</th>
-                    <th class="col-xs-2">Last Name</th>
-                    <th class="col-xs-2">Instance</th>
+                    <th class="col-xs-2 highlightheader" ng-click="vm6.sortOnHeaderName('firstname')">First Name</th>
+                    <th class="col-xs-2 highlightheader" ng-click="vm6.sortOnHeaderName('lastname')">Last Name</th>
+                    <th class="col-xs-2 highlightheader" ng-click="vm6.sortOnHeaderName('instance')">Instance</th>
                     <th class="col-xs-1">Operation</th>
                 </tr>
             </thead>
@@ -70,7 +69,7 @@
                     <td><input class="form-control " type="text" value="{{item.lastname}}" ng-model="item.lastname"
                      ng-change="item.showIcon=true;"></td>
                     
-                    <td class="centeralso"><span>{{item.instancename}}</span></td>
+                    <td class="centeralso"><span  ng-class="{'highlighted':item.highlight===true}"ng-click="vm6.toggleInstance($index);item.highlight=!item.highlight;item.showIcon=true" >{{item.instancename | xFilter}}</span></td>
 
 
 

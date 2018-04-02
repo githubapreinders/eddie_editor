@@ -48,28 +48,46 @@ appliccat.factory('UserFactory', function UserFactory($http,  AuthTokenFactory, 
         //saving or updating a user from userpage.html /usercontroller
         function saveUser(user)
         {
-            var theurl = IAF_URL + '/api/users';
-            var theuser = 
+            console.log("instancename: ",user.instancename, typeof(user.instancename));
+            if(undefined !== user.instancename.length && user.instancename.charAt(0)=='x')
             {
-                "user":
+                console.log("deleting instance...");
+                var theurl1 = IAF_URL + '/api/removeinstance/' + user.email;
+                return $http.get(theurl1).then(
+                    function success(res)
+                    {
+                        return res;
+                    },
+                    function fail(err)
+                    {
+                        return err;
+                    });
+            }
+            else
+            {
+                var theurl = IAF_URL + '/api/users';
+                var theuser = 
                 {
-                    "name":user.name,
-                    "lastname":user.lastname,
-                    "role":user.role,
-                    "email":user.email
-                }
-            };
-            console.log("url: ",theurl, JSON.stringify(theuser));
-            return $http({method:"POST",url:theurl,data:JSON.stringify(theuser),headers:{'content-type':'application/json'}}).then(
-            function success(response)
-            {
-                console.log("response", response);
-                return response;
-            },function failure(response)
-            {
-                console.log("response");
-                return response;
-            });
+                    "user":
+                    {
+                        "name":user.name,
+                        "lastname":user.lastname,
+                        "role":user.role,
+                        "email":user.email
+                    }
+                };
+                console.log("url: ",theurl, JSON.stringify(theuser));
+                return $http({method:"POST",url:theurl,data:JSON.stringify(theuser),headers:{'content-type':'application/json'}}).then(
+                function success(response)
+                {
+                    console.log("response", response);
+                    return response;
+                },function failure(response)
+                {
+                    console.log("response");
+                    return response;
+                });
+            }
         }
 
         //from usercontroller
