@@ -16,12 +16,12 @@
                        <div class="filler"></div>
 
 
-                       <div  class="mybutton" ui-sref="app.moderator" >
+                       <div uib-popover="Return to the tags page." popover-placement="bottom" popover-trigger="'mouseenter'"  class="mybutton" ui-sref="app.moderator" >
                        <img src="./media/icons/tags.svg" class="myicon" />
                        <span  >tags</span>
                        </div>
 
-                       <div  class="mybutton" ui-sref="app.moderator" >
+                       <div  uib-popover="Save all users that wear an exclamation mark." popover-placement="bottom" popover-trigger="'mouseenter'" class="mybutton"  >
                        <img src="./media/icons/save.svg" class="myicon" />
                        <span  >save all</span>
                        </div>
@@ -41,8 +41,8 @@
                     <th class="col-xs-2">Role</th>
                     <th class="col-xs-2 highlightheader" ng-click="vm6.sortOnHeaderName('firstname')">First Name</th>
                     <th class="col-xs-2 highlightheader" ng-click="vm6.sortOnHeaderName('lastname')">Last Name</th>
-                    <th class="col-xs-2 highlightheader" ng-click="vm6.sortOnHeaderName('instance')">Instance</th>
-                    <th class="col-xs-1">Operation</th>
+                    <th  class="col-xs-2 highlightheader" ng-click="vm6.sortOnHeaderName('instance')"><span uib-popover="Push the instance of a user to toggle ownership. Red means that the instance will be removed from this user." popover-placement="bottom-right" popover-trigger="'mouseenter'" popover-append-to-body>Instance</span></th>
+                    <th class="col-xs-1" ><span uib-popover="Push the save button to apply any change you have made to a user. Also a user with no instance will get one if there is one available. For new users the system will also to attempt to grant an instance. " popover-placement="bottom-right" popover-trigger="'mouseenter'" popover-append-to-body>Operation</span></th>
                 </tr>
             </thead>
             <tbody>
@@ -76,10 +76,10 @@
      
                      <td>
                         <div class="userbuttons" >
+                            <span  ng-model="item.showIcon" class="fa fa-exclamation" ng-show="item.showIcon"></span>
                             <a   ng-click="showIcon=false;vm6.saveItem($index)">
                                 <img src="./media/icons/save.svg" class="myicon" />
                             </a>
-                            <span id="exclamationMark{{$index}}" ng-model="item.showIcon" class="fa fa-exclamation" ng-show="item.showIcon"></span>
                             <a  ng-click="vm6.deleteUser($index)">
                                 <img src="./media/icons/delete.svg" class="myicon" />
                             </a>

@@ -1079,6 +1079,11 @@ body {
     -webkit-justify-content: space-around;
         -ms-flex-pack: distribute;
             justify-content: space-around; }
+    .mytable tbody .userbuttons .fa-exclamation {
+      position: absolute;
+      margin-top: 5px;
+      right: 7px;
+      color: #EA394C; }
 
 .icons .fa-save {
   color: #27364e; }
