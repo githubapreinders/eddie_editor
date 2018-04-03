@@ -32,36 +32,36 @@
                        <span  >tags</span>
                        </div>
 
-                       <div  class="mybutton" id="submitform" ng-click="vm.triggerSaveZipEvent()">
+                       <div uib-popover="Save your current file tree. These files will be stored as a Configuration.zip file in your Downloads folder. " popover-placement="bottom-right" popover-trigger="'mouseenter'" popover-popup-delay="700" class="mybutton" id="submitform" ng-click="vm.triggerSaveZipEvent()">
                        <img src="./media/icons/save.svg" class="myicon" />
                        <span  >save</span>
                        </div>
 
-                       <div  class="mybutton" id="submitform" ng-click="vm.triggerLoadZipEvent()">
+                       <div uib-popover="Load a file tree from your local disk or the contents from your Ibis. You have to choose a .zip file. When you want to keep your current files you can merge the new files in (conflicting names will be renamed), or you can choose to save your file tree first. The latter option is safer, since you can always revert to the older version." popover-placement="bottom-right" popover-trigger="'mouseenter'" popover-popup-delay="700" class="mybutton" id="submitform" ng-click="vm.triggerLoadZipEvent()">
                        <img src="./media/icons/open_folder.svg" class="myicon"  />
                        <span  >load</span>
                        </div>
 
 
-                       <div uib-popover-template="'./views/popovertemplate2.html'" popover-placement="bottom" popover-trigger="'mouseenter'" class="mybutton" id="submitform" ng-click="vm.submitForm()">
+                       <div uib-popover-template="'./views/popovertemplate2.html'" popover-placement="bottom-right" popover-trigger="'mouseenter'" popover-popup-delay="700" class="mybutton" id="submitform" ng-click="vm.submitForm()">
                        <img src="./media/icons/tag_add.svg" class="myicon" />
                        <span  >insert {{vm.selectedItem.type | typeFilter}}</span>
                        </div>
                        
                        
 
-                        <div  class="mybutton" id="submitform" ng-click="vm.styleEditorContent()">
+                        <div uib-popover="Beautify your code! " popover-placement="bottom-right" popover-trigger="'mouseenter'" popover-popup-delay="700" class="mybutton" id="submitform" ng-click="vm.styleEditorContent()">
                        <img src="./media/icons/format.svg" class="myicon" />
                        <span  >format</span>
                        </div>
 
 
-                         <div  class="mybutton" id="submitform" ng-click="vm.clearEditor()">
+                         <div uib-popover="Start with a blank sheet!" popover-placement="bottom-right" popover-trigger="'mouseenter'" popover-popup-delay="700" class="mybutton" id="submitform" ng-click="vm.clearEditor()">
                        <img src="./media/icons/erase.svg" class="myicon" />
                        <span  >erase</span>
                        </div>
 
-                       <div  class="mybutton" id="submitform" ng-click="vm.sendZip()">
+                       <div uib-popover="Send your current file tree to the Ibis. Your code will be executed, and the framework will give you feedback from the console application." popover-trigger="'mouseenter'" popover-placement="bottom-right" popover-popup-delay="700" class="mybutton" id="submitform" ng-click="vm.sendZip()">
                        <img src="./media/icons/send.svg" class="myicon" />
                        <span  >send</span>
                        </div>
