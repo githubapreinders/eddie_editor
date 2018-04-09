@@ -70,7 +70,7 @@ appliccat.factory('UserFactory', function UserFactory($http,  AuthTokenFactory, 
                 {
                     "user":
                     {
-                        "name":user.name,
+                        "firstname":user.firstname,
                         "lastname":user.lastname,
                         "role":user.role,
                         "email":user.email

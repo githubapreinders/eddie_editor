@@ -81,8 +81,9 @@
 			function success(response)
 			{
         vm6.theusers = response;
-				vm6.theusers.unshift({email:"",role:"user",name:"",lastname:"",instancename:""});
+				vm6.theusers.unshift({email:"",role:"user",firstname:"",lastname:"",instancename:""});
 				vm6.buttonsenabled = true;
+        $('#contentContainer').mCustomScrollbar({theme:"minimal"});
 				console.log("returned users:", vm6.theusers);
 			},
 			function failure(response)
