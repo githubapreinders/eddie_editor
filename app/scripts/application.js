@@ -36,6 +36,15 @@
                         controller  : 'MyUserController as vm6'
                     }
                 }
+            })
+            .state('app.landingpage', {
+                url:'landingpage',
+                views: {
+                    'content@': {
+                        templateUrl : 'views/landingpage.html',
+                        controller  : 'LandingPageController as vm7'
+                    }
+                }
             });
         $urlRouterProvider.otherwise('/');
     });

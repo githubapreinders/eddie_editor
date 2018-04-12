@@ -1046,6 +1046,10 @@ body {
   height: 95%;
   overflow-x: auto;
   background: #222; }
+  .contentContainer #tryagainbutton {
+    display: block;
+    margin: auto;
+    margin-top: 15%; }
 
 #sendstatususers {
   width: 6px;

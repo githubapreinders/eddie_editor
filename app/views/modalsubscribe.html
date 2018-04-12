@@ -1,0 +1,39 @@
+<div class="modal-header">
+    <h3 style="text-align: center;" class="modal-title" id="modal-title">Please Enter Some Details</h3>
+</div>
+<div class="modal-body" id="modal-body">
+    
+    <div class="navigatorTop">
+    
+    <div></div><strong>Subscription </strong><div></div>    
+    
+ </div>  
+<br>
+
+<div class="slotContainer">
+	<span>First name</span>
+	<div></div>	
+	<input type="text" class="form-control" ng-model="vm8.firstname">
+</div>
+
+<div class="slotContainer">
+	<span>Last name</span>
+	<div></div>	
+	<input type="text" class="form-control" ng-model="vm8.lastname" >
+</div>
+
+<div class="slotContainer">
+	<span>email address</span>
+	<div></div>	
+	<input type="text" class="form-control" ng-model="vm8.email" >
+</div>
+
+</div>
+<div class="modal-footer">
+    <div style="display:flex">
+    <button class="btn btn-default" type="button" ng-click="vm8.closeModal()">Cancel</button>
+    <div class="filler"></div>
+	<button class="btn btn-success" type="button" ng-click="vm8.submitSubscription()">Submit </button>   
+	
+	</div>
+</div>
