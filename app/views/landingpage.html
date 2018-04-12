@@ -1,0 +1,30 @@
+
+<div   style="height: 100%; width:100%;">       
+            <div  class="mynavbar">
+                <div class="navbarupper">
+                    <img src="./media/ibis3_black.svg" class="iplogo" id="iplogo"  />
+                    <h5 id="mytitle" class="navHeading"><a ui-sref="app">subscribe</a></h5>
+                    <span ng-show = "vm.showSpinner" style="color:grey;">
+                        <i   class="fa fa-spinner fa-spin fa-2x fa-fw "></i>
+                    </span>
+                <div class="filler"></div>
+               
+                </div>
+                <div class="navbarlower">
+                    
+                    
+                       <div class="filler"></div>
+                       
+                       <div id="sendstatususers"></div>
+                </div>
+            </div>
+
+            <div id='contentContainer' class="contentContainer">
+               
+
+               <button id="tryagainbutton" ng-show="vm7.tryagain === true;" class="btn btn-lg btn-danger" ng-click="vm7.showSubscriptionDialog();">Try Again </button>
+
+       
+            </div>
+
+</div>

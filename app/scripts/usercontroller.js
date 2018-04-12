@@ -81,8 +81,9 @@
 			function success(response)
 			{
         vm6.theusers = response;
-				vm6.theusers.unshift({email:"",role:"user",name:"",lastname:"",instancename:""});
+				vm6.theusers.unshift({email:"",role:"user",firstname:"",lastname:"",instancename:""});
 				vm6.buttonsenabled = true;
+        $('#contentContainer').mCustomScrollbar({theme:"minimal"});
 				console.log("returned users:", vm6.theusers);
 			},
 			function failure(response)
@@ -256,6 +257,84 @@
 
 
 	})
+
+  .controller('LandingPageController', function(UserFactory, $uibModal)
+  {
+    var vm7 = this;
+    vm7.askSubscription = askSubscription;
+    vm7.showSubscriptionDialog = showSubscriptionDialog;
+    console.log("LandingPageController...");
+    vm7.tryagain = false;
+    showSubscriptionDialog();
+    
+    
+    function askSubscription(userobject)
+    {
+      //var userobject = {firstname:"ap",lastname:"re",email:"ap@p",role:"user"};
+      UserFactory.askSubscription(userobject).then(function success(resp)
+      {
+        console.log(resp);
+        if(resp.status !== 200)
+        {
+          vm7.tryagain = true;
+        }
+        else
+        {
+          vm7.tryagain = false;
+        }
+      },function failure(err)
+      {
+        console.log(err);
+        vm7.tryagain = true;
+      });
+    }
+
+    function showSubscriptionDialog()
+            {
+              vm7.tryagain = false;
+                var modalInstance = $uibModal.open(
+                {
+                    templateUrl : "./views/modalsubscribe.html",
+                    controller : "SubscribeController as vm8",
+                    size : "md",
+                    resolve : {items : function ()
+                        {
+                            return "something";
+                        }}
+                });
+                modalInstance.result.then(
+                function success(resp) {
+                    console.log("response: " , resp);
+                    askSubscription(resp);
+                }, function failure(err) {
+                    console.log("no result from modal...");
+                    vm7.tryagain = true;
+                });
+            }
+
+  })
+
+  .controller('SubscribeController', function($uibModalInstance, items)
+    {
+        console.log("loading subscribe controller...");
+        var vm8 = this;
+        vm8.firstname = null;
+        vm8.lastname = null;
+        vm8.email = null;
+        vm8.submitSubscription = submitSubscription;
+        vm8.closeModal = closeModal;
+
+        function submitSubscription()
+        {
+            console.log("returning with details...");
+            $uibModalInstance.close({firstname:vm8.firstname, lastname: vm8.lastname, email: vm8.email});
+        }
+
+        function closeModal()
+        {
+           $uibModalInstance.dismiss();
+        }
+    })
 
 	 .filter('xFilter', function()
     {

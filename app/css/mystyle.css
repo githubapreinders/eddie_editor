@@ -164,6 +164,11 @@ input:active, select:active, textarea:active, form:active, button:active {
   -webkit-transform: scale(1.2);
           transform: scale(1.2); }
 
+.custom-button {
+  border: 1px solid red;
+  display: inline-block;
+  padding: 6px 12px; }
+
 #configcontainer {
   position: absolute;
   width: 25%;
@@ -655,6 +660,11 @@ ol {
   background: linear-gradient(135deg, white 0%, #b0a6b0 50%, white 100%);
   filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#ffffff', GradientType=1 ); }
 
+.custom-button {
+  border: 1px solid red;
+  display: inline-block;
+  padding: 6px 12px; }
+
 #configcontainer {
   position: absolute;
   width: 25%;
@@ -1034,7 +1044,12 @@ body {
 
 .contentContainer {
   height: 95%;
+  overflow-x: auto;
   background: #222; }
+  .contentContainer #tryagainbutton {
+    display: block;
+    margin: auto;
+    margin-top: 15%; }
 
 #sendstatususers {
   width: 6px;
@@ -1078,7 +1093,8 @@ body {
     display: flex;
     -webkit-justify-content: space-around;
         -ms-flex-pack: distribute;
-            justify-content: space-around; }
+            justify-content: space-around;
+    margin-right: 20px; }
     .mytable tbody .userbuttons .fa-exclamation {
       position: absolute;
       margin-top: 5px;

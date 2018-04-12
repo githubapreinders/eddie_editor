@@ -5,17 +5,32 @@
     
     <p>Warning : loading from zip can delete your current working tree; use the save button to store it as a zip in your downloads folder.</p>
     
-
 </div>
+
 <div class="modal-footer">
     <div style="display:flex">
-    <button class="btn btn-default" type="button" ng-click="vm3.closeModal()">Cancel</button>
-    <div class="filler"></div>
-    <button uib-popover="Mix a local zip file with your existing tree."  popover-trigger="'mouseenter'"
-    popover-placement="bottom" class="btn btn-danger" type="button" ><input  id = "mergefromfile"   type="file" accept="zip"  ><label for="mergefromfile">Merge</label></button> 
-	<button uib-popover="Load the dynamic contents of the Ibis into the File Browser."  popover-trigger="'mouseenter'"
-    popover-placement="bottom" class="btn btn-warning" type="button" ng-click="vm3.getZipOverHttp()"><label for="zipfromibis">Zip from Ibis</label></button>   
-	<button uib-popover="Load a local zip file and replace the current contents."  popover-trigger="'mouseenter'"
-    popover-placement="bottom" class="btn btn-primary" style="display:inline;"  ><input  id = "zipfromfile"   type="file" accept="zip"  ><label for="zipfromfile">Replace</label></button>
-	</div>
+    
+        <button class="btn btn-default" type="button" ng-click="vm3.closeModal()">Cancel</button>
+        
+        <div class="filler"></div>
+
+        <div>
+            <label for="mergefromfile" class="btn btn-danger">Merge</label>
+            <input uib-popover="Mix a local zip file with your existing tree."  popover-trigger="'mouseenter'"
+            popover-placement="bottom"  id = "mergefromfile"   type="file" accept="zip" />
+        </div>
+
+
+        <div>
+            <label id="zipfromibis" uib-popover="Load the dynamic contents of the Ibis into the File Browser."  popover-trigger="'mouseenter'"
+            popover-placement="bottom"    ng-click="vm3.getZipOverHttp()" class="btn btn-primary">Zip from Ibis</label>
+        	
+        </div>
+
+        <div>
+            <label for="zipfromfile" class="btn btn-warning">Replace</label>
+        	<input id="zipfromfile" uib-popover="Load a local zip file and replace the current contents."  popover-trigger="'mouseenter'" popover-placement="bottom"  type="file" accept="zip"/>          
+        </div>
+
+    </div>
 </div>

@@ -16,8 +16,40 @@ appliccat.factory('UserFactory', function UserFactory($http,  AuthTokenFactory, 
             deleteUser: deleteUser,
             setCurrentUser: setCurrentUser,
             getCurrentUser: getCurrentUser,
-            sendMail: sendMail
+            sendMail: sendMail,
+            askSubscription : askSubscription
         };
+
+        
+        function askSubscription(user)
+        {
+
+
+             var theurl = IAF_URL + '/api/subscribe'
+                var theuser = 
+                {
+                    "user":
+                    {
+                        "firstname":user.firstname,
+                        "lastname":user.lastname,
+                        "role":"user",
+                        "email":user.email
+                    }
+                };
+                console.log("url: ",theurl, JSON.stringify(theuser));
+                return $http({method:"POST",url:theurl,data:JSON.stringify(theuser),headers:{'content-type':'application/json'}}).then(
+                function success(response)
+                {
+                    console.log("response", response);
+                    return response;
+                },function failure(response)
+                {
+                    console.log("response");
+                    return response;
+                });
+            }
+
+
 
         //from usercontroller
         function sendMail(useremail)
@@ -70,7 +102,7 @@ appliccat.factory('UserFactory', function UserFactory($http,  AuthTokenFactory, 
                 {
                     "user":
                     {
-                        "name":user.name,
+                        "firstname":user.firstname,
                         "lastname":user.lastname,
                         "role":user.role,
                         "email":user.email
@@ -161,7 +193,6 @@ appliccat.factory('UserFactory', function UserFactory($http,  AuthTokenFactory, 
 
                
         }
-		/* TODO change method to GET */
         function logout()
         {
             return $http.get(IAF_URL + '/api/logout').then(
@@ -229,6 +260,8 @@ appliccat.factory('UserFactory', function UserFactory($http,  AuthTokenFactory, 
             return config;
         }
     });
+
+    
 
 
 

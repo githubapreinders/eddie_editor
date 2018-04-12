@@ -154,8 +154,8 @@
 			vm3.newProperty = null;
 			vm3.addingProperty = false;
 			vm3.addingItem = true;
-			vm3.dataModel['NEWITEM'] = {classname:"NEWITEM", description:"enter your description here", type:"general",xml:"", attrs:{},properties:[]};
-			vm3.selectedItem = vm3.dataModel['NEWITEM'];
+			vm3.dataModel.push({classname:"NEWITEM", description:"enter your description here", type:"general",xml:"", attrs:{},properties:[]})
+			vm3.selectedItem = vm3.dataModel[vm3.dataModel.length-1];
 		}
 
 

@@ -75,9 +75,7 @@
                     {
                         console.log("failure...", err);
                     });
-
                 });    
-
                 mergefromfile.addEventListener('change', function(event)
                 {
                     console.log("file chosen to merge!", event.target.files[0]);
@@ -96,7 +94,6 @@
                             setSelectedSlot({id:keys[0]});
                             }, 100);
 
-                        //$scope.$emit('Keychange');                         
                         console.log("empty slot: ",StorageFactory.checkIfEmptyKey());
                     },function failure(err)
                     {

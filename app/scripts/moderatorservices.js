@@ -87,7 +87,7 @@
 
         function postTag(object)
         {
-        	var tag = {'classname':object.classname,'thetag':object, 'thedate':Date.now()};
+        	var tag = {'classname':object.classname,'thetag':object, 'modificationdate':Date.now()};
         	console.log("tag: ", tag);
         	return  $http.post(IAF_URL +'/api/postiaftag', tag).then(function success(resp)
 	          {

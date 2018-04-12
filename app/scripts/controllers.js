@@ -82,7 +82,6 @@
                 console.log("user from me ",vm.user);
                 StaticDataFactory.setProjectName(vm.user.instancename);
                 getJson();
-                console.log("Getting user from api/me ", JSON.stringify(vm.user));
                 initScrollbar();   
                 
                 

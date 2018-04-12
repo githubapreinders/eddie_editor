@@ -6,7 +6,16 @@ body
 .contentContainer
 {
 	height:95%;
+	overflow-x:auto;
 	background:$guttercolor;
+	#tryagainbutton
+	{
+		
+		display:block;
+		margin:auto;
+		margin-top:15%;
+
+	}
 }
 
 #sendstatususers
@@ -31,6 +40,10 @@ body
 			color:white;
 			text-align:center;
 			margin-left:24;
+		}
+		.lastcolumn
+		{
+
 		}
 		.highlightheader
 		{
@@ -73,6 +86,7 @@ body
 		{
 			display:flex;
 			justify-content:space-around;
+			margin-right:20px;
 			.fa-exclamation
 			{
 				position:absolute;

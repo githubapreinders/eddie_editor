@@ -1,5 +1,5 @@
 
-<div style="height: 100%; width:100%;">       
+<div   style="height: 100%; width:100%;">       
             <div  class="mynavbar">
                 <div class="navbarupper">
                     <img src="./media/ibis3_black.svg" class="iplogo" id="iplogo"  />
@@ -31,18 +31,19 @@
                 </div>
             </div>
 
-<div class="contentContainer">
+<div id='contentContainer' class="contentContainer">
 
 
         <table class="table  mytable">
             <thead>
                 <tr>
                     <th class="col-xs-2 highlightheader" ng-click="vm6.sortOnHeaderName('email')">Email</th>
-                    <th class="col-xs-2">Role</th>
+                    <th class="col-xs-1">Role</th>
                     <th class="col-xs-2 highlightheader" ng-click="vm6.sortOnHeaderName('firstname')">First Name</th>
                     <th class="col-xs-2 highlightheader" ng-click="vm6.sortOnHeaderName('lastname')">Last Name</th>
-                    <th  class="col-xs-2 highlightheader" ng-click="vm6.sortOnHeaderName('instance')"><span uib-popover="Push the instance of a user to toggle ownership. Red means that the instance will be removed from this user." popover-placement="bottom-right" popover-trigger="'mouseenter'" popover-popup-delay="700" popover-append-to-body>Instance</span></th>
-                    <th class="col-xs-1" ><span uib-popover="Push the save button to apply any change you have made to a user. Also a user with no instance will get one if there is one available. For new users the system will also to attempt to grant an instance. " popover-placement="bottom-right" popover-trigger="'mouseenter'" popover-popup-delay="700" popover-append-to-body>Operation</span></th>
+                    <th  class="col-xs-1 highlightheader" ng-click="vm6.sortOnHeaderName('instance')"><span uib-popover="Push the instance of a user to toggle ownership. Red means that the instance will be removed from this user." popover-placement="bottom-right" popover-trigger="'mouseenter'" popover-popup-delay="700" popover-append-to-body>Instance</span></th>
+                    <th class="col-xs-1 " ><span uib-popover="Push the save button to apply any change you have made to a user. Also a user with no instance will get one if there is one available. For new users the system will also to attempt to grant an instance. " popover-placement="bottom-right" popover-trigger="'mouseenter'" popover-popup-delay="700" popover-append-to-body>Operation</span></th>
+
                 </tr>
             </thead>
             <tbody>
@@ -64,7 +65,7 @@
                         </div>
                     </td>
                     
-                    <td><input class="form-control " type="text" value="{{item.name}}" ng-model="item.name"
+                    <td><input class="form-control " type="text" value="{{item.firstname}}" ng-model="item.firstname"
                      ng-change="item.showIcon=true;"></td>
                     <td><input class="form-control " type="text" value="{{item.lastname}}" ng-model="item.lastname"
                      ng-change="item.showIcon=true;"></td>
