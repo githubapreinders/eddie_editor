@@ -24,6 +24,26 @@
 
                <button id="tryagainbutton" ng-show="vm7.tryagain === true;" class="btn btn-lg btn-danger" ng-click="vm7.showSubscriptionDialog();">Try Again </button>
 
+               <div id="landingpagespinner" ng-show = "vm7.showSpinner">
+               <span  >
+                        <i   class="fa fa-spinner fa-spin  fa-fw "></i>
+                </span>
+                </div>
+
+               <div ng-show="vm7.successfulsubscription" id = "successfulsubscription">
+
+               <p>You successfully acquired an instance of Ibis4Education. The following resources are at your disposal now :
+               </p>
+               <ul>
+                   <li> the <a ui-sref="app">editor</a></li>
+                   <li> the <a href="http://ibis4education-env.bz46fawhzf.eu-central-1.elasticbeanstalk.com/iaf/gui">console</a></li>
+                   <li>the <a href="https://ibissource.org/">course</a></li>
+               </ul>
+               <p>Check your mail to receive a password. User name will be your e-mail address. Open these sites in separate tabs for a smooth user experience. Have Fun !</p>
+                </div> 
+
+
+
        
             </div>
 
