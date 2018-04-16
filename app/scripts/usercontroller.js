@@ -265,26 +265,32 @@
     vm7.showSubscriptionDialog = showSubscriptionDialog;
     console.log("LandingPageController...");
     vm7.tryagain = false;
+    vm7.successfulsubscription = false;
+    vm7.showSpinner = false;
     showSubscriptionDialog();
     
     
     function askSubscription(userobject)
     {
       //var userobject = {firstname:"ap",lastname:"re",email:"ap@p",role:"user"};
+      vm7.showSpinner = true;
       UserFactory.askSubscription(userobject).then(function success(resp)
       {
         console.log(resp);
+        vm7.showSpinner = false;
         if(resp.status !== 200)
         {
           vm7.tryagain = true;
         }
         else
         {
+          vm7.successfulsubscription = true;
           vm7.tryagain = false;
         }
       },function failure(err)
       {
         console.log(err);
+        vm7.showSpinner = false;
         vm7.tryagain = true;
       });
     }

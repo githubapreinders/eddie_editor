@@ -1050,6 +1050,15 @@ body {
     display: block;
     margin: auto;
     margin-top: 15%; }
+  .contentContainer #successfulsubscription {
+    font-size: 40px;
+    color: #b3b3b3;
+    margin: 100px; }
+  .contentContainer #landingpagespinner {
+    color: orange;
+    margin-left: 35%;
+    margin-right: 35%;
+    font-size: 250px; }
 
 #sendstatususers {
   width: 6px;
