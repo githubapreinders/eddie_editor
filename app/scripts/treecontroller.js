@@ -51,6 +51,7 @@
                 zipfromfile.addEventListener('change', function(event)
                 {
                     console.log("file chosen !", event.target.files[0]);
+                    $scope.$emit('fileload');//stopping the timer that saves the current window
                     modalInstance.close({returntype:"viafile"});
                     // StaticDataFactory.stopTimer();
                     ZipService.getZipFromFile(event.target.files[0]).then(function success(resp)
@@ -66,9 +67,6 @@
                             StorageFactory.setCurrentKey(vm2.mySlots[keys[0]]);
                             setSelectedSlot({id:keys[0]});
                         }, 100);
-
-                        
-
                         //$scope.$emit('Keychange');                         
 
                     },function failure(err)
@@ -79,6 +77,7 @@
                 mergefromfile.addEventListener('change', function(event)
                 {
                     console.log("file chosen to merge!", event.target.files[0]);
+                    $scope.$emit('fileload');//stopping the timer that saves the current window
                     modalInstance.close({returntype:"mergefile"});
                     ZipService.mergeZipFromFile(event.target.files[0]).then(function success(resp)
                     {
@@ -516,6 +515,7 @@
                 function getZipOverHttp()
                 {
                     console.log("getzip over http...");
+                    $scope.$emit('fileload');//stopping the timer that saves the current window
                     ZipService.getZip().then(function success(data)
                     {
                         console.log("data back", data);

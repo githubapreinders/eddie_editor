@@ -30,19 +30,23 @@
                 </span>
                 </div>
 
-               <div ng-show="vm7.successfulsubscription" id = "successfulsubscription">
-
-               <p>You successfully acquired an instance of Ibis4Education. The following resources are at your disposal now :
-               </p>
-               <ul>
-                   <li> the <a ui-sref="app">editor</a></li>
-                   <li> the <a href="http://ibis4education-env.bz46fawhzf.eu-central-1.elasticbeanstalk.com/iaf/gui">console</a></li>
-                   <li>the <a href="https://ibissource.org/">course</a></li>
-               </ul>
-               <p>Check your mail to receive a password. User name will be your e-mail address. Open these sites in separate tabs for a smooth user experience. Have Fun !</p>
+               <div ng-show="vm7.successfulsubscription" class = "successfulsubscription">
+                 <p>You successfully acquired an instance of Ibis4Education. The following resources are at your disposal now :
+                 </p>
+                 <ul>
+                     <li> the <a ui-sref="app">editor</a></li>
+                     <li> the <a href="http://ibis4education-env.bz46fawhzf.eu-central-1.elasticbeanstalk.com/iaf/gui">console</a></li>
+                     <li>the <a href="https://ibissource.org/">course</a></li>
+                 </ul>
+                 <p>Check your mail to receive a password. User name will be your e-mail address. Open these sites in separate tabs for a smooth user experience. Have Fun !</p>
                 </div> 
 
+                <div ng-show="vm7.trytomorrow" class = "successfulsubscription">
+                  
+                  <p>The Ibis instance you wanted to acquire is occupied at the moment. Please try again tomorrow.
+                 </p>
 
+                </div>
 
        
             </div>

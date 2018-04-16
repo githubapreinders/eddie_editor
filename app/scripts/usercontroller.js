@@ -267,6 +267,7 @@
     vm7.tryagain = false;
     vm7.successfulsubscription = false;
     vm7.showSpinner = false;
+    vm7.trytomorrow = false;
     showSubscriptionDialog();
     
     
@@ -278,12 +279,22 @@
       {
         console.log(resp);
         vm7.showSpinner = false;
-        if(resp.status !== 200)
+        if(resp.status === 501)
         {
+          console.log("no space available");
+          vm7.trytomorrow = true;
+          return;
+        }
+
+        if(resp.status !== 200 )
+        {
+          console.log("wrong input");
           vm7.tryagain = true;
+          return;
         }
         else
         {
+          console.log("succesful subscription");
           vm7.successfulsubscription = true;
           vm7.tryagain = false;
         }

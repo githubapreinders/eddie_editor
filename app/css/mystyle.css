@@ -1050,7 +1050,7 @@ body {
     display: block;
     margin: auto;
     margin-top: 15%; }
-  .contentContainer #successfulsubscription {
+  .contentContainer .successfulsubscription {
     font-size: 40px;
     color: #b3b3b3;
     margin: 100px; }

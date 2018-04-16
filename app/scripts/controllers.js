@@ -244,9 +244,19 @@
                     console.log("saving : ", cropFilter(StorageFactory.getCurrentKey().title));
                     StorageFactory.getSetter(thekey)(thedocument.getValue());
                 }, 5000);
-                
+             
             }
 
+           // temporary stopping the timer to prevent file overwrite when loading a new file tree
+           $scope.$on('fileload', function()
+            {
+                console.log("loading file: cancelling timer..." , mytimer);
+                $interval.cancel(mytimer);
+                mytimer = 0 ; 
+            });
+           
+
+            //cancelling timer after switch to other page.
             $scope.$on('$destroy', function()
             {
                 console.log("cancelling timer..." , mytimer);
@@ -454,6 +464,7 @@
             // key is an object
             function retrieveData(alias)
             {
+                console.log("Retrieve data, MYTIMER: ", mytimer );   
                 if(alias === undefined)
                 {
                     alias = StorageFactory.getCurrentKey();
@@ -478,6 +489,7 @@
                 }
                 if(mytimer === 0 )
                 {
+                    console.log("restarting timer...");
                     saveInSlot();
                 }
             }
