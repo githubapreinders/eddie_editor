@@ -17,8 +17,33 @@ appliccat.factory('UserFactory', function UserFactory($http,  AuthTokenFactory, 
             setCurrentUser: setCurrentUser,
             getCurrentUser: getCurrentUser,
             sendMail: sendMail,
-            askSubscription : askSubscription
+            askSubscription : askSubscription,
+            checkIfInstanceAvailable : checkIfInstanceAvailable
         };
+
+        function checkIfInstanceAvailable()
+        {
+            var theurl = IAF_URL + '/api/subscribe'
+            var theuser = 
+            {
+                "user":
+                {
+                    "firstname":"dummy",
+                    "lastname":"dummy",
+                    "role":"user",
+                    "email":"dummymessage"
+                }
+            };
+            console.log("url: ",theurl, JSON.stringify(theuser));
+            return $http({method:"POST",url:theurl,data:JSON.stringify(theuser),headers:{'content-type':'application/json'}}).then(
+                function success(response)
+                {
+                    return response;
+                },function failure(err)
+                {
+                    return err;
+                });   
+        }
 
         
         function askSubscription(user)

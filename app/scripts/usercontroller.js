@@ -268,7 +268,33 @@
     vm7.successfulsubscription = false;
     vm7.showSpinner = false;
     vm7.trytomorrow = false;
-    showSubscriptionDialog();
+    
+    checkIfInstanceAvailable();
+
+    function checkIfInstanceAvailable()
+    {
+      UserFactory.checkIfInstanceAvailable().then(function success(resp)
+      {
+        console.log("thestatus :",resp.status);
+        if(resp.status !== 501)
+        {
+          console.log("no instance available");
+          showSubscriptionDialog();
+        }
+        else
+        {
+          vm7.trytomorrow = true;
+          return;
+        }
+      },function failure(err)
+      {
+        console.log("failure thestatus :",err.status);
+      })
+    }
+
+
+
+    
     
     
     function askSubscription(userobject)
@@ -279,13 +305,7 @@
       {
         console.log(resp);
         vm7.showSpinner = false;
-        if(resp.status === 501)
-        {
-          console.log("no space available");
-          vm7.trytomorrow = true;
-          return;
-        }
-
+        
         if(resp.status !== 200 )
         {
           console.log("wrong input");

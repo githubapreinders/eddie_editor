@@ -506,7 +506,7 @@
         })
 
         //controls the modal that appears when you're loading a zip
-        .controller('LoadZipController', function($uibModalInstance, ZipService, items)
+        .controller('LoadZipController', function($uibModalInstance, $scope, ZipService, items)
             {
                 var vm3 = this;
                 vm3.closeModal = closeModal;
