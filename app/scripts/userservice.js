@@ -20,6 +20,9 @@ appliccat.factory('UserFactory', function UserFactory($http,  AuthTokenFactory, 
             askSubscription : askSubscription,
             checkIfInstanceAvailable : checkIfInstanceAvailable
         };
+     
+        
+
 
         function checkIfInstanceAvailable()
         {

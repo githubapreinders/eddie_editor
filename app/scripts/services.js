@@ -3,14 +3,40 @@
 'use strict';
     var app = angular.module('confab');
     
-    //app.constant('DOWNLOAD_URL',"/iaf/api/configurations/download/Ibis4Student");
     app.constant('UPLOAD_URL',"/iaf/api/configurations");
     
-    //CHANGE THIS WHEN DEPLOYING TO AWS !!!
-    app.constant('IAF_URL','http://ibis4education-env.bz46fawhzf.eu-central-1.elasticbeanstalk.com');
-    
-    // app.constant('IAF_URL', "http://localhost:8080/Ibis4Education");
-    
+    //Setting the IAF_URL constant depending on the stage we're in.
+    getIAFConstant();
+    function getIAFConstant()
+    {
+      var theurl = window.location.hostname;
+      console.log("making constants....", theurl);
+      switch(theurl)
+      {
+        case "localhost" :
+        {
+          app.constant('IAF_URL', "http://localhost:8080/Ibis4Education");
+          break;
+        }
+        case "ibis4education-env.bz46fawhzf.eu-central-1.elasticbeanstalk.com":
+        {
+          app.constant('IAF_URL', "http://ibis4education-env.bz46fawhzf.eu-central-1.elasticbeanstalk.com"); 
+          break;
+        }
+        case "ibis4edproduction-env.c4weisckkn.eu-central-1.elasticbeanstalk.com":
+        {
+          app.constant('IAF_URL', "http://ibis4edproduction-env.c4weisckkn.eu-central-1.elasticbeanstalk.com"); 
+          break;
+        }
+        default :
+        {
+          app.constant('IAF_URL', "http://localhost:8080/Ibis4Education");
+          break;
+        }
+      }
+    }
+
+
     app.factory('StaticDataFactory', function(xmlTag, $http, StorageFactory, $interval, IAF_URL) 
     {
       console.log("StaticDatafactory...");
