@@ -10,7 +10,7 @@
     function getIAFConstant()
     {
       var theurl = window.location.hostname;
-      console.log("making constants....", theurl);
+      //console.log("making constants....", theurl);
       switch(theurl)
       {
         case "localhost" :
@@ -47,6 +47,7 @@
         var thejson = null;
         var selectedItem = null;
         var projectname = null;
+        var reqparams = null;
         var formattingSettings = {
                 "indent_size": 4,
                 "xml": {
@@ -69,7 +70,6 @@
         return{
             getJson : getJson,
             getStaticJson : getStaticJson,
-            // loadXml : loadXml,
             setDataSource: setDataSource,
             getDataSource: getDataSource,
             getFormattingSettings: getFormattingSettings,
@@ -78,19 +78,34 @@
             setSelectedItem : setSelectedItem,
             getSelectedItem : getSelectedItem,
             getProjectName :getProjectName,
-            setProjectName : setProjectName
+            setProjectName : setProjectName,
+            setReqParams : setReqParams ,
+            getReqParams : getReqParams
 
         };
-
+        
+        function setReqParams(instance, vers)
+        {
+        	reqparams = {"instancename":instance,"version":vers}
+        	console.log("iaf url: ", IAF_URL, this.reqparams);
+        }
+        
+        function getReqParams()
+        {
+        	console.log("returning params: ");
+        	return(reqparams);
+        }
+        
+        
         function getProjectName()
         {
-          console.log("returning projectname: ", projectname);
+          //console.log("returning projectname: ", projectname);
           return projectname;
         }
 
         function setProjectName(name)
         {
-          console.log("setting projectname: ", projectname);
+          //console.log("setting projectname: ", projectname);
           projectname = name;
         }
 
@@ -140,13 +155,13 @@
           return $http.get(IAF_URL + '/api/getjson').then(
           function success(data)
           {
-              console.info("returning json from server with status ",data.status);
+              //console.info("returning json from server with status ",data.status);
               thejson = data.data.JSONMONSTER.MYMONSTER;
               return data;
           },
           function fail(err)
           {
-            console.log("server error :", err );
+            //console.log("server error :", err );
           });
 
         }  
@@ -203,7 +218,7 @@
 
         if(storage.getKeys().length === 0 || storage.getKeys().length === 1 && getGetter('auth-token')() !== null)
         {
-          console.log("adding files...");
+          //console.log("adding files...");
           getSetter("slot1")(" start here...");
           getSetter("file1")("slot1");
           var thejson = [
@@ -232,7 +247,7 @@
         else
         {
           var helper = storage.getKeys();
-          console.log("adding from local storage contents.", helper);
+          //console.log("adding from local storage contents.", helper);
 
           if(helper.indexOf("thejson") > -1)
           {
@@ -248,7 +263,7 @@
           }
 
           thekeys = createKeys(helper); 
-          console.log("created keys:", thekeys);
+          //console.log("created keys:", thekeys);
         }
         currentKey = thekeys[0];
 
@@ -259,10 +274,10 @@
         var keys = storage.getKeys();
         for(var i=0 ;i<keys.length; i++)
         {
-          //console.log("values ",keys[i], localStorage.getItem(keys[i]));
+          ////console.log("values ",keys[i], localStorage.getItem(keys[i]));
           if (localStorage.getItem(keys[i]).length === 2)
           {
-            console.log("emtpy value! ");
+            //console.log("emtpy value! ");
             return true;
           }
         }
@@ -284,7 +299,7 @@
           {
             dirs[i] = dirs[i].replace('\"','/'); //replacing the last quote with a slash
           }
-          console.log("directories: ", dirs);
+          //console.log("directories: ", dirs);
           return dirs;
       }
 
@@ -305,7 +320,7 @@
 
       function changeKeys(oldname, newname)
       {
-        console.log(oldname , newname,"\n", thekeys, currentKey, "\n");
+        //console.log(oldname , newname,"\n", thekeys, currentKey, "\n");
         var index = -1;
         var islocked = "";
         for(var i= 0 ; i< thekeys.length ; i++)
@@ -324,7 +339,7 @@
           }
           thekeys[index].title = newname;
         }
-        console.log("after change: ", thekeys,"\n", currentKey, "\n");
+        //console.log("after change: ", thekeys,"\n", currentKey, "\n");
       }
 
       function deleteAll()
@@ -369,7 +384,7 @@
       //responding to the add new file button in the file browser;we just add the xml-declaration as its contents
       function getNewSlotname(createdAlias, theid)
       {
-        console.log("id ", theid);
+        //console.log("id ", theid);
         var newslotname = "slot" + Math.ceil(Math.random()*1000);
         var theobject = { "title" : createdAlias, "isLocked" : false };
         thekeys.push(theobject);
@@ -396,13 +411,13 @@
       //current key is an object { title:"", isLocked: bool }
       function setCurrentKey(key)
       {
-       console.log("set currentkey::", key); 
+       //console.log("set currentkey::", key); 
         currentKey = key;
       }
 
       function getCurrentKey()
       {
-        //console.log("currentkey::", currentKey);
+        ////console.log("currentkey::", currentKey);
         return currentKey;
       }      
 
@@ -495,7 +510,7 @@
     }]);
     app.factory('EditorFactory', function()
     {
-      console.log("Editorfactory...");
+    console.log("Editorfactory...");
     var editor = null;  
       
       return {
@@ -523,13 +538,13 @@
                                 };
                 _editor.setOption('extraKeys', extraKeys);
 
-                console.log("editor loaded;",_editor.options);
+                //console.log("editor loaded;",_editor.options);
 
                 var windowheight = window.innerHeight;
                 var navbarheight = document.getElementById('mynavbar').offsetHeight;
                 var ed = document.querySelector('.CodeMirror');
                 ed.style.height = (windowheight - navbarheight) + 'px'; 
-                console.log("window, navbar, editor:", windowheight, navbarheight, ed.style.height);
+                //console.log("window, navbar, editor:", windowheight, navbarheight, ed.style.height);
 
                 function completeAfter(cm, pred) 
                 {

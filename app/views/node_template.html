@@ -1,4 +1,4 @@
-<div ui-tree-handle class="tree-node tree-node-content" ng-click="node.isDirectory ? toggle() : vm2.setSelectedSlot(this,true)" ng-class="{'tree-node-content-selected':node.id === vm2.selectedSlot}">
+<div ui-tree-handle class="tree-node tree-node-content" ng-click="node.isDirectory ? vm2.toggle(this) : vm2.setSelectedSlot(this,true)" ng-class="{'tree-node-content-selected':node.id === vm2.selectedSlot}">
     
     <a class="btn" ng-if="node.isDirectory">
         <span class="fa">

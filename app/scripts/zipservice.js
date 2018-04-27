@@ -11,6 +11,8 @@
 
         var PROJECTNAME; 
         var myslots;
+        var instancename = null;
+        var version = null;
        
         return {
             init : init,
@@ -20,8 +22,10 @@
             sendZip : sendZip,
             getMySlots : getMySlots,
             mergeZipFromFile : mergeZipFromFile
+            
         };
 
+        
 
         function init()
         {
@@ -40,15 +44,15 @@
 
         function sendZip(saveas)
         {
+ 
                 return new Promise(function(resolve, reject)
                 {
-                PROJECTNAME = StaticDataFactory.getProjectName();
-                console.log("projectname....", PROJECTNAME);
-                var zip = new JSZip();
-                var elements = document.querySelectorAll('[ui-tree-node]');
-                //each tree element gets a filename and we grab the content from storage
-
-
+                	PROJECTNAME = StaticDataFactory.getProjectName();
+                	console.log("projectname....", PROJECTNAME);
+                	var zip = new JSZip();
+                	var elements = document.querySelectorAll('[ui-tree-node]');
+                
+               	//each tree element gets a filename and we grab the content from storage
                 elements.forEach(function(item)
                 {
                     var object = angular.element(item).scope();
@@ -149,12 +153,20 @@
         {
           return new Promise(function(resolve, reject)
           {
-            PROJECTNAME = StaticDataFactory.getProjectName();
-           
 
+        	PROJECTNAME = StaticDataFactory.getProjectName();
             var finalurl = IAF_URL + UPLOAD_URL;
+            
+           
+            if( null !== StaticDataFactory.getReqParams())            
+            {   
+            	var params = StaticDataFactory.getReqParams();
+            	PROJECTNAME = params.instancename;
+            	timestamp = params.version;
+            	console.log("modifying version and projectname: " , finalurl, PROJECTNAME, timestamp );
+            }
+            
             alert(finalurl);            
-
             zip.generateAsync({type:"blob"}).then(function(myzip)
             {
               var fileName = 'configuration.zip';
@@ -634,8 +646,18 @@
          
           var DOWNLOAD_URL = "/iaf/api/configurations/download/" + StaticDataFactory.getProjectName();
           var finalUrl = IAF_URL + DOWNLOAD_URL;
-          PROJECTNAME = StaticDataFactory.getProjectName();
+          // PROJECTNAME = StaticDataFactory.getProjectName();
+
+          if(null !== StaticDataFactory.getReqParams())
+          {
+            var params = StaticDataFactory.getReqParams();
+            // PROJECTNAME = params.instancename;
+            DOWNLOAD_URL = "/iaf/api/configurations/download/" + params.instancename + '?version=' + params.version;
+            finalUrl = IAF_URL + DOWNLOAD_URL ;
+          }
           console.log("Download url :",finalUrl);
+          
+          
 
           return $http({method:"GET", url: finalUrl, responseType:'arraybuffer'}).then(function success(resp)
           {

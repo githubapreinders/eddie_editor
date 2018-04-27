@@ -1,4 +1,4 @@
-var browserSync = require('browser-sync').create(),
+var browserSync = require('browser-sync').create({proxy:"http://localhost:3000?instancename=Ibis4Teacher&version=12345"}),
     concat = require('gulp-concat'),
     cssnano = require('gulp-cssnano'),
     del = require('del'),

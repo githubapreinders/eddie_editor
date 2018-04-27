@@ -163,15 +163,20 @@
 
             function init()
             {
-                vm2.list = StorageFactory.getGetter("thejson")();
-                vm2.mySlots = StorageFactory.getGetter("myslots")();
-                var keys = Object.keys(vm2.mySlots);
-                setSelectedSlot({id:keys[0]}) ;
-                console.log("0 empty slot: ", StorageFactory.checkIfEmptyKey()); 
-                
+                if(null !== StaticDataFactory.getReqParams())
+                {
+                    console.log("req params present downloading zip...") ;
+                    getZip();
+                }
+                else
+                {
+                    vm2.list = StorageFactory.getGetter("thejson")();
+                    vm2.mySlots = StorageFactory.getGetter("myslots")();
+                    var keys = Object.keys(vm2.mySlots);
+                    setSelectedSlot({id:keys[0]}) ;
+                }
+                // console.log("0 empty slot: ", StorageFactory.checkIfEmptyKey()); 
             }
-
-
 
             function getZip()
             {
@@ -249,6 +254,7 @@
 
             function setSelectedSlot(object,fromclick) {
                 console.log("changing selected slot...", object, fromclick);
+                
                 if(object.hasOwnProperty('id')) {
                     if(fromclick) {
                         $scope.$emit('saveOldValues');
@@ -259,6 +265,11 @@
                     $scope.$emit('Keychange',myobj);
                 }
                 else {
+                    if(object.$modelValue.isDirectory)
+                    {
+                        console.log("draining click"); 
+                        return;
+                    }
                     if(!(object.isDirectory)) {
                         if(fromclick) {
                             $scope.$emit('saveOldValues');
@@ -441,6 +452,7 @@
 
             function toggle(item)
             {
+                console.log("toggling directory"); 
                item.toggle();
             }
 

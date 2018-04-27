@@ -79,7 +79,7 @@
             {
                 vm.user = response.data.user;
                 UserFactory.setCurrentUser(vm.user);
-                console.log("user from me ",vm.user);
+                //console.log("user from me ",vm.user);
                 StaticDataFactory.setProjectName(vm.user.instancename);
                 getJson();
                 initScrollbar();   
@@ -90,8 +90,24 @@
                 vm.user = null;
                 UserFactory.setCurrentUser(null);
                 showCredentialsDialog();
-                console.log(JSON.stringify(response));
+                //console.log(JSON.stringify(response));
             });
+
+            getRequestParams();
+            function getRequestParams()
+            {
+                var urlstring = location.search.substring(1);
+                var pairs = urlstring.split('&');
+                console.log("checking: ", pairs, urlstring); 
+                if (pairs.length === 2)
+                {
+                    console.log("setting request params"); 
+                    var instancename = pairs[0].split('=')[1];
+                    var version = pairs[1].split('=')[1];
+                    StaticDataFactory.setReqParams(instancename, version);
+                }
+                console.log("results: ",instancename, version); 
+            }
 
 
             
@@ -108,7 +124,7 @@
             {
                 UserFactory.login(useremail, password).then(function success(response)
                 {
-                    console.log("returning from service;", JSON.stringify(response));
+                    //console.log("returning from service;", JSON.stringify(response));
                     if (response.status !== 200)
                     {
                         alert(response.data.loginDetails.result);
@@ -118,7 +134,7 @@
                         vm.user = response.data.logindetails.user;
                         UserFactory.setCurrentUser(vm.user);
                         StaticDataFactory.setProjectName(vm.user.instancename);
-                        console.log("vm.user : ", vm.user );
+                        //console.log("vm.user : ", vm.user );
                         saveInSlot();
                         getJson();
                         initScrollbar();  
@@ -132,13 +148,13 @@
                 console.log('logging out');
                 UserFactory.logout().then(function succes(response)
                 {
-                    console.info("user set to null", response);
+                    // console.info("user set to null", response);
                     vm.user = null;
                     UserFactory.setCurrentUser(null);
                     vm.useremail = "";
                     vm.password = "";
                     $interval.cancel();
-                    console.log("cancelling timer...");
+                    // console.log("cancelling timer...");
                 },function failure(response)
                 {
                     console.log("failure logging out...");
@@ -167,11 +183,11 @@
                 });
                 modalInstance.result.then(
                 function success(resp) {
-                    console.log("response: " , resp);
+                    // console.log("response: " , resp);
                     vm.iaf_url = resp.iaf_url;
                     login(resp.username, resp.password);
                 }, function failure(err) {
-                    console.log("no result from modal...");
+                    // console.log("no result from modal...");
                 });
             }
 
@@ -185,14 +201,14 @@
                 function success(response)
                 {
                     vm.navigatorModel = JSON.parse(response.data.JSONMONSTER.MYMONSTER);
-                    console.log("returned datamodel : \n", vm.navigatorModel);
+                    // console.log("returned datamodel : \n", vm.navigatorModel);
                     toggle_datasource('pipes');
                     retrieveData();
                     saveInSlot();
                 },
                 function error(response)
                 {
-                    console.log("error initialising:", response.data);
+                    // console.log("error initialising:", response.data);
                 });
 
            }
@@ -230,10 +246,10 @@
             {
                 if (mytimer !== 0 )
                 {
-                    console.log("no two timers...");
+                    // console.log("no two timers...");
                  return;
                 }
-                console.log("starting timer");
+                // console.log("starting timer");
                 mytimer = $interval(function()
                 {
                     vm.showSpinnerSmall = true;
@@ -243,7 +259,7 @@
                         // console.log("spinner:",vm.showSpinnerSmall);
                     }, 1000);
                     var thekey = StorageFactory.getGetter(StorageFactory.getCurrentKey().title)();
-                    console.log("saving : ", cropFilter(StorageFactory.getCurrentKey().title));
+                    // console.log("saving : ", cropFilter(StorageFactory.getCurrentKey().title));
                     StorageFactory.getSetter(thekey)(thedocument.getValue());
                 }, 5000);
              
@@ -252,7 +268,7 @@
            // temporary stopping the timer to prevent file overwrite when loading a new file tree
            $scope.$on('fileload', function()
             {
-                console.log("loading file: cancelling timer..." , mytimer);
+                // console.log("loading file: cancelling timer..." , mytimer);
                 $interval.cancel(mytimer);
                 mytimer = 0 ; 
             });
@@ -261,7 +277,7 @@
             //cancelling timer after switch to other page.
             $scope.$on('$destroy', function()
             {
-                console.log("cancelling timer..." , mytimer);
+                // console.log("cancelling timer..." , mytimer);
                 $interval.cancel(mytimer);
             });
 
@@ -285,7 +301,7 @@
                 if(StorageFactory.getCurrentKey())
                 {
                     var thekey = StorageFactory.getGetter(StorageFactory.getCurrentKey().title)();
-                    console.log("saving after focus change : ", cropFilter(StorageFactory.getCurrentKey().title));
+                    // console.log("saving after focus change : ", cropFilter(StorageFactory.getCurrentKey().title));
                     StorageFactory.getSetter(thekey)(thedocument.getValue());
                 }
             });
@@ -317,7 +333,7 @@
                 toggleSpinner();
                 //saving the current file before uploading it...
                 var thekey = StorageFactory.getGetter(StorageFactory.getCurrentKey().title)();
-                console.log("saving : ", cropFilter(StorageFactory.getCurrentKey().title));
+                // console.log("saving : ", cropFilter(StorageFactory.getCurrentKey().title));
                 StorageFactory.getSetter(thekey)(thedocument.getValue());
                 ZipService.sendZip().then(function succes(res)
                 {
@@ -328,7 +344,7 @@
                         {
                             el.style.background = 'none';
                         }, 5000);
-                    console.log("successful response",res);
+                    // console.log("successful response",res);
                 },function failure(err)
                 {
                     var el = document.getElementById('sendstatus');
@@ -338,7 +354,7 @@
                    {
                             el.style.background = 'none';
                         }, 5000);
-                    console.log("error from zipservice sending zip",err);
+                    // console.log("error from zipservice sending zip",err);
                 });
             }
 
@@ -404,7 +420,7 @@
             //receiving object
             function toggleReadonly(akey)
             {
-                console.log("toggling lock", akey.title, akey.isLocked);
+                // console.log("toggling lock", akey.title, akey.isLocked);
                 setReadonly(akey.isLocked);
             }
 
@@ -445,9 +461,9 @@
 
 
 
-                console.log("getting next document:");
+                // console.log("getting next document:");
                 var key = StorageFactory.switchKey();
-                console.log("returned key", key);
+                // console.log("returned key", key);
                 $scope.$broadcast('KeySwitch',key);
                 retrieveData(key);
                 //setReadonly(vm.theslots[vm.currentSlotNumber-1].locked);
@@ -459,19 +475,19 @@
                 var myalias = StorageFactory.getCurrentKey().title;
                 var myvalue = thedocument.getValue();
                 var mykey = StorageFactory.getGetter(myalias)();
-                console.log("storing data", myalias, mykey, myvalue);
+                // console.log("storing data", myalias, mykey, myvalue);
                 StorageFactory.getSetter(mykey)(myvalue);
             }
 
             // key is an object
             function retrieveData(alias)
             {
-                console.log("Retrieve data, MYTIMER: ", mytimer );   
+                // console.log("Retrieve data, MYTIMER: ", mytimer );   
                 if(alias === undefined)
                 {
                     alias = StorageFactory.getCurrentKey();
                 }
-                console.log("alias", alias);
+                // console.log("alias", alias);
 
                 if(StorageFactory.getGetter(alias.title)() === undefined)
                 {
@@ -491,7 +507,7 @@
                 }
                 if(mytimer === 0 )
                 {
-                    console.log("restarting timer...");
+                    // console.log("restarting timer...");
                     saveInSlot();
                 }
             }
@@ -540,7 +556,7 @@
               {
                 var editor = document.getElementById('editorcontainer');
                 
-                console.log("items: ",editor);
+                //console.log("items: ",editor);
 
                 if(vm.showNavigator)
                 {
@@ -719,7 +735,7 @@ to a string and inserted in the editor;*/
                 }
                 if(vm.selectedItem.type === 'snippets')
                 {
-                    console.log("selectedItem:",vm.selectedItem);
+                    //console.log("selectedItem:",vm.selectedItem);
                     //loadXml(vm.selectedItem.file);
                     thedocument.replaceSelection(vm.selectedItem.xml);
                 }
@@ -786,7 +802,7 @@ to a string and inserted in the editor;*/
 
         function submitCredentials()
         {
-            console.log("returning with credentials...");
+            //console.log("returning with credentials...");
             $uibModalInstance.close({iaf_url:vm4.iaf_url, username: vm4.username, password: vm4.password});
         }
 
