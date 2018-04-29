@@ -1,0 +1,107 @@
+#navigatorcontainer
+{
+	position:absolute;
+	font-family:$mainwindowfont;
+	width:25%;
+	height:100%;
+	background:url($background0);
+	z-index: 4;
+	transition: left 0.4s;
+	.dataSourceArea
+	{
+		height:10%;
+		background:url($background0);
+		padding:  0px 0px 0px 0px;
+		margin-bottom: 5px;
+		box-shadow : 0px 3px 2px #888888;
+		.btn-group
+		{
+			padding: 5px;
+		}
+	}
+	.classArea
+	{
+		display:flex;
+		flex-direction: column;
+		flex-grow:1;
+		background:url($background0);
+		cursor : pointer;
+		overflow-y:auto;
+		overflow-x:hidden;
+		text-indent:10px;
+		margin-bottom: 5px;
+		box-shadow : 0px 3px 2px #888888;
+		height:25%;
+		
+		.classItem
+		{
+			color:black;
+		}
+		.selectedItem
+		{
+			display:block;
+			color:white;
+			background:$guttercolor;
+		}
+	}
+	.descriptionArea
+	{
+		display:flex;
+		flex-direction: column;
+		height:25%;
+		background:url($background0);
+		overflow-y:auto;
+		overflow-x:hidden;
+		padding: 15px;
+		padding-right: 0px;
+		margin-bottom: 5px;
+		box-shadow : 0px 3px 2px #888888;
+		h4
+		{
+			font-family : $filenameheader;
+		}
+	}
+	.propertyArea
+	{
+		flex-grow:1;
+		height:40%;
+		background:url($background0);
+		overflow:scroll;
+		padding: 15px;
+		input.form-control, div.checkbox
+		{
+			width:100%;
+		}
+		
+		.popovertemplate
+		{
+			min-width:200px;
+			overflow-y: auto;
+			overflow-x:hidden;
+		}
+
+		
+		
+		h5
+		{
+			text-align: center;
+		}
+
+	}
+}
+
+
+
+
+
+.divider
+{
+	height:2px;
+	width:80%;
+	margin-top:15px;
+	margin-bottom:15px;
+	padding-left:14px;
+	padding-right:14px;
+	background: linear-gradient(135deg, rgba(255,255,255,1) 0%, rgba(176,166,176,1) 50%, rgba(255,255,255,1) 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#ffffff', GradientType=1 );
+}

@@ -10,7 +10,7 @@
         
             //Functions
             vm.submitForm = submitForm;
-            vm.codemirrorLoaded = getEditor;
+            vm.codemirrorLoaded = getTheEditor;
             vm.setSelectedClass = setSelectedClass;
             vm.toggle_datasource = toggle_datasource;
             vm.styleEditorContent = styleEditorContent;
@@ -202,6 +202,50 @@
                 {
                     vm.navigatorModel = JSON.parse(response.data.JSONMONSTER.MYMONSTER);
                     // console.log("returned datamodel : \n", vm.navigatorModel);
+                    editor.setOption('hintOptions', {schemaInfo: vm.navigatorModel});
+                    var extraKeys =  {
+                          "'<'": completeAfter,
+                          "'/'": completeIfAfterLt,
+                          "' '": completeIfInTag,
+                          "'='": completeIfInTag,
+                          "Ctrl-Space": "autocomplete"
+                                };
+                editor.setOption('extraKeys', extraKeys);
+                
+                function completeAfter(cm, pred) 
+                {
+                    var cur = cm.getCursor();
+                    if (!pred || pred()) setTimeout(function() 
+                    {
+                        if (!cm.state.completionActive)
+                        cm.showHint({completeSingle: false});
+                    }, 100);
+                    return CodeMirror.Pass;
+                }
+
+                function completeIfAfterLt(cm) 
+                {
+                    return completeAfter(cm, function() 
+                    {
+                        var cur = cm.getCursor();
+                        return cm.getRange(CodeMirror.Pos(cur.line, cur.ch - 1), cur) == "<";
+                    });
+                }
+
+                function completeIfInTag(cm) 
+                {
+                return completeAfter(cm, function() 
+                {
+                    var tok = cm.getTokenAt(cm.getCursor());
+                    if (tok.type == "string" && (!/['"]/.test(tok.string.charAt(tok.string.length - 1)) || tok.string.length == 1)) return false;
+                    var inner = CodeMirror.innerMode(cm.getMode(), tok.state).state;
+                    return inner.tagName;
+                });
+
+                }
+
+
+                    console.log("editor: ", editor); 
                     toggle_datasource('pipes');
                     retrieveData();
                     saveInSlot();
@@ -405,7 +449,7 @@
 
             //
             //initialisation of editor(triggered by attribute in home.html), datamodel, and cache
-            function getEditor(_editor)
+            function getTheEditor(_editor)
             {
                 editor = EditorFactory.editorLoaded(_editor);
                 thedocument = editor.getDoc();
