@@ -105,6 +105,5 @@
       to: replaceToken ? Pos(cur.line, token.end) : cur
     };
   }
-
   CodeMirror.registerHelper("hint", "xml", getHints);
 });

@@ -910,6 +910,35 @@ ol {
     opacity: 0.4;
     z-index: 6; }
 
+.CodeMirror-hints {
+  position: absolute;
+  z-index: 100;
+  overflow: hidden;
+  list-style: none;
+  margin: 0;
+  padding: 2px;
+  box-shadow: 2px 3px 5px rgba(0, 0, 0, 0.2);
+  border-radius: 3px;
+  border: 1px solid #6b5a84;
+  background: #4b4a4c;
+  color: white;
+  font-size: 90%;
+  font-family: monospace;
+  max-height: 20em;
+  overflow-y: auto; }
+
+.CodeMirror-hint {
+  margin: 0;
+  padding: 0 4px;
+  border-radius: 2px;
+  white-space: pre;
+  color: #b3b3b3;
+  cursor: pointer; }
+
+li.CodeMirror-hint-active {
+  background: #27364e;
+  color: white; }
+
 /*displays a dot near the send to iaf button*/
 #sendstatusmod {
   width: 6px;

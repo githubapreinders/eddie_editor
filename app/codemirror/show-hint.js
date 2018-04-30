@@ -54,7 +54,6 @@
     this.tick = 0;
     this.startPos = this.cm.getCursor("start");
     this.startLen = this.cm.getLine(this.startPos.line).length - this.cm.getSelection().length;
-
     var self = this;
     cm.on("cursorActivity", this.activityFunc = function() { self.cursorActivity(); });
   }
@@ -153,7 +152,8 @@
   }
 
   function getText(completion) {
-    if (typeof completion == "string") return completion;
+    
+    if (typeof completion == "string") {console.log("trigger ??" ,completion);return completion;}
     else return completion.text;
   }
 
