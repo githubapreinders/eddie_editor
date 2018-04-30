@@ -1,13 +1,13 @@
 (function()
 {
-	'use strict';
-	var app = angular.module('confab');	
-	app.
+  'use strict';
+  var app = angular.module('confab'); 
+  app.
 
   factory('ZipService', function (StorageFactory, StaticDataFactory, $http , UPLOAD_URL, IAF_URL, $window)
      {
 
-     	console.log("ZipService.js...");
+      console.log("ZipService.js...");
 
         var PROJECTNAME; 
         var myslots;
@@ -47,12 +47,12 @@
  
                 return new Promise(function(resolve, reject)
                 {
-                	PROJECTNAME = StaticDataFactory.getProjectName();
-                	console.log("projectname....", PROJECTNAME);
-                	var zip = new JSZip();
-                	var elements = document.querySelectorAll('[ui-tree-node]');
+                  PROJECTNAME = StaticDataFactory.getProjectName();
+                  console.log("projectname....", PROJECTNAME);
+                  var zip = new JSZip();
+                  var elements = document.querySelectorAll('[ui-tree-node]');
                 
-               	//each tree element gets a filename and we grab the content from storage
+                //each tree element gets a filename and we grab the content from storage
                 elements.forEach(function(item)
                 {
                     var object = angular.element(item).scope();
@@ -154,16 +154,16 @@
           return new Promise(function(resolve, reject)
           {
 
-        	PROJECTNAME = StaticDataFactory.getProjectName();
+          PROJECTNAME = StaticDataFactory.getProjectName();
             var finalurl = IAF_URL + UPLOAD_URL;
             
            
             if( null !== StaticDataFactory.getReqParams())            
             {   
-            	var params = StaticDataFactory.getReqParams();
-            	PROJECTNAME = params.instancename;
-            	timestamp = params.version;
-            	console.log("modifying version and projectname: " , finalurl, PROJECTNAME, timestamp );
+              var params = StaticDataFactory.getReqParams();
+              PROJECTNAME = params.instancename;
+              timestamp = params.version;
+              console.log("modifying version and projectname: " , finalurl, PROJECTNAME, timestamp );
             }
             
             alert(finalurl);            
@@ -188,6 +188,15 @@
               .then(function succes(response)
               {
                   console.info("returning from backend",response);
+                  if( null !== StaticDataFactory.getReqParams())            
+                  {  
+                  var firstpart = window.location.href.split('editor')[0];
+                  var secondpart = "gui/#/configurations/manage/";
+                  var thirdpart = StaticDataFactory.getReqParams().instancename;
+                  var theurl = firstpart + secondpart + thirdpart;
+                  console.log("switching back to console view: ", theurl);  
+                    window.location.assign(theurl);
+                  }
                   resolve (response);
               }, function failure(err)
               {
@@ -202,7 +211,7 @@
         }
 
         /*
-			Replaces the current File Browser contents with a zip from the local drive.
+      Replaces the current File Browser contents with a zip from the local drive.
         */
         function getZipFromFile(file)
         {
@@ -377,9 +386,9 @@
 
 
         /*
-			Adds a zip file to the current tree.
+      Adds a zip file to the current tree.
         */
-  		function mergeZipFromFile(file)
+      function mergeZipFromFile(file)
         {
           return JSZip.loadAsync(file).then(function(zip)
             {
@@ -411,70 +420,70 @@
 
 
               /*
-				  Searching for  possible duplicate directory names
+          Searching for  possible duplicate directory names
               */
               var dirs = StorageFactory.getListOfDirectories();
               var duplicates = [];
               for ( i = 0 ; i < myzipfiles.length; i++)
               {
-              		if(dirs.includes(myzipfiles[i].name))
-              		{
-              			duplicates.push(myzipfiles[i].name);
-              		}
+                  if(dirs.includes(myzipfiles[i].name))
+                  {
+                    duplicates.push(myzipfiles[i].name);
+                  }
               }
 
               duplicates.sort(function compare (dup1, dup2)
               {
-              	if(dup1.split('/').length > dup2.split('/').length)
-              	{
-              		return 1;
-              	}
+                if(dup1.split('/').length > dup2.split('/').length)
+                {
+                  return 1;
+                }
 
-              	else if(dup1.split('/').length === dup2.split('/').length)
-              	{
-              		return 0;
-              	}
+                else if(dup1.split('/').length === dup2.split('/').length)
+                {
+                  return 0;
+                }
 
-              	else 
-              	{
-              		return -1;
-              	}
+                else 
+                {
+                  return -1;
+                }
 
               });
 
               //changing duplicate names in the zipfile
               duplicates.forEach(function(duplicate)
               {
-              	var suffix = '(1)';
-              	myzipfiles.forEach(function(zipfile)
-              	{
-              		if(zipfile.name.includes(duplicate))
-              		{
-              			zipfile.name = zipfile.name.replace(duplicate, duplicate.substring(0,duplicate.length -1) + suffix + '/');
-              		}
-              	});
+                var suffix = '(1)';
+                myzipfiles.forEach(function(zipfile)
+                {
+                  if(zipfile.name.includes(duplicate))
+                  {
+                    zipfile.name = zipfile.name.replace(duplicate, duplicate.substring(0,duplicate.length -1) + suffix + '/');
+                  }
+                });
 
               });
 
               var files = StorageFactory.getListOfFiles();
               files.forEach(function(filename)
               {
-              	var suffix = '(1).';
-              	for(i=0 ; i < myzipfiles.length; i++)
-              	{
-              		if(myzipfiles[i].name === filename)
-              		{
-          				console.log("bingo");
-              			if(myzipfiles[i].name.split('.').length > 0)
-          				{
-          					myzipfiles[i].name = myzipfiles[i].name.split('.')[0] + suffix + myzipfiles[i].name.split('.')[1];
-          				}
-          				else
-          				{
-          					myzipfiles[i].name = myzipfiles[i].name + createRandomSuffix();
-          				}
-              		}
-              	}
+                var suffix = '(1).';
+                for(i=0 ; i < myzipfiles.length; i++)
+                {
+                  if(myzipfiles[i].name === filename)
+                  {
+                  console.log("bingo");
+                    if(myzipfiles[i].name.split('.').length > 0)
+                  {
+                    myzipfiles[i].name = myzipfiles[i].name.split('.')[0] + suffix + myzipfiles[i].name.split('.')[1];
+                  }
+                  else
+                  {
+                    myzipfiles[i].name = myzipfiles[i].name + createRandomSuffix();
+                  }
+                  }
+                }
               });
 
 
@@ -857,7 +866,7 @@
 
      })//end of factory
 
-	.factory('IafFactory', function($http, ZipService, UPLOAD_URL, $window,IAF_URL)
+  .factory('IafFactory', function($http, ZipService, UPLOAD_URL, $window,IAF_URL)
     {
       
     var uname = null;

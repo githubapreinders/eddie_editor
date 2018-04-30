@@ -253,7 +253,7 @@
 
 
             function setSelectedSlot(object,fromclick) {
-                console.log("changing selected slot...", object, fromclick);
+                // console.log("changing selected slot...", object, fromclick);
                 
                 if(object.hasOwnProperty('id')) {
                     if(fromclick) {
@@ -267,7 +267,7 @@
                 else {
                     if(object.$modelValue.isDirectory)
                     {
-                        console.log("draining click"); 
+                        // console.log("draining click"); 
                         return;
                     }
                     if(!(object.isDirectory)) {
@@ -452,7 +452,6 @@
 
             function toggle(item)
             {
-                console.log("toggling directory"); 
                item.toggle();
             }
 
