@@ -12,7 +12,8 @@
   height: 100%;
   display: flex;
   flex-direction: column;
-  z-index: 3;
+  z-index: 13;
+  transition: left 0.4s;
   background: $guttercolor;
 
   .spaceabove

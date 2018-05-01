@@ -18,10 +18,10 @@
             vm2.showZipDialog = showZipDialog;
 
             //is called in home.html
-            vm2.treeOptions =
-            {
+            // vm2.treeOptions =
+            // {
                 
-            };
+            // };
 
             init();
 
@@ -253,7 +253,7 @@
 
 
             function setSelectedSlot(object,fromclick) {
-                // console.log("changing selected slot...", object, fromclick);
+                console.log("changing selected slot...", object, fromclick);
                 
                 if(object.hasOwnProperty('id')) {
                     if(fromclick) {
@@ -321,10 +321,10 @@
                 {
                     var currentLayer = object;
 
-                    while(currentLayer !== null && counter < 10)
-                    {
-                          if(lookForDirectory(currentLayer.$parentNodesScope.$modelValue, object.$modelValue.id))
-                            {
+                    // while(currentLayer !== null && counter < 10)
+                    // {
+                          // if(lookForDirectory(currentLayer.$parentNodesScope.$modelValue, object.$modelValue.id))
+                            // {
                                 console.log("removable: ", object.$modelValue.title);
                                 var results = deleteContainingFiles(object);
                                 console.log("results: ",results );
@@ -340,15 +340,15 @@
                                     });
                                     object.remove();
                                 }
-                                break;
-                            }
-                          else
-                          {
-                            currentLayer = currentLayer.$parentNodeScope;
-                            console.log("watching layer above" ,currentLayer );
-                          }    
-                          counter++;
-                    }
+                                // break;
+                            // }
+                          // else
+                          // {
+                          //   currentLayer = currentLayer.$parentNodeScope;
+                          //   console.log("watching layer above" ,currentLayer );
+                          // }    
+                          // counter++;
+                    // }
                 }
                 else//if it is a file we want to remove
                 {
@@ -399,7 +399,36 @@
                             }
                         }
                     }
-                     return results;  
+
+                    console.log("id of selected slot :", vm2.selectedSlot); 
+
+                    checkingloop : for (var j=0 ; j<results.length ; j++)
+                    {
+
+                        if(vm2.selectedSlot === results[j])
+                        {
+                            console.log("selected file inside directory", vm2.selectedSlot); 
+                            //finding an id that is outside this directory make that the selected slot:
+                            var keys = Object.keys(vm2.mySlots);
+                            var found = false;
+                            for(var l=0 ; l<keys.length; l++)
+                            {
+                                if(!_.contains(results, keys[l]))
+                                {
+                                    setSelectedSlot({id:keys[l]});
+                                    found = true;
+                                    break checkingloop;
+                                }
+                            }
+                            if (!found)
+                            {
+                                console.log("no files left to assign current file...") 
+                            }    
+                        }
+                    }
+
+
+                    return results;  
                 }
 
                 function getRoot(obj)
@@ -436,7 +465,7 @@
                     }
                     return ok;
                 } 
-
+                // Looking for a directory that is still present
                 function lookForDirectory(sublist, callerid)
                 {
                     for (var i = 0 ; i < sublist.length ; i ++)

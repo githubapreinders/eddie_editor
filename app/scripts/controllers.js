@@ -560,13 +560,21 @@
 
             function showConf()
             {
-                var navigat = document.getElementById('navigatorcontainer');
+                // var navigat = document.getElementById('navigatorcontainer');
                 
-                var fb = document.getElementById('myfilebrowser');
-                var fbsh = document.getElementById('myfilebrowsershadow');
-                var tl = document.getElementById('mytaglibrary');
-                var tlsh = document.getElementById('mytaglibraryshadow');
+                // var fb = document.getElementById('myfilebrowser');
+                // var fbsh = document.getElementById('myfilebrowsershadow');
+                // var tl = document.getElementById('mytaglibrary');
+                // var tlsh = document.getElementById('mytaglibraryshadow');
                 
+                var navigat = document.getElementById('configcontainer');
+                
+                var fb = document.getElementById('mytaglibrary');
+                var fbsh = document.getElementById('mytaglibraryshadow');
+                var tl = document.getElementById('myfilebrowser');
+                var tlsh = document.getElementById('myfilebrowsershadow');
+                
+
                 if(vm.showConfig)
                 {
                     tl.classList.add('itemactive');

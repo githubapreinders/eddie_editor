@@ -182,7 +182,9 @@ input:active, select:active, textarea:active, form:active, button:active {
   -webkit-flex-direction: column;
       -ms-flex-direction: column;
           flex-direction: column;
-  z-index: 3;
+  z-index: 13;
+  -webkit-transition: left 0.4s;
+  transition: left 0.4s;
   background: #222; }
   #configcontainer .spaceabove {
     height: 30px;
@@ -678,7 +680,9 @@ ol {
   -webkit-flex-direction: column;
       -ms-flex-direction: column;
           flex-direction: column;
-  z-index: 3;
+  z-index: 13;
+  -webkit-transition: left 0.4s;
+  transition: left 0.4s;
   background: #222; }
   #configcontainer .spaceabove {
     height: 30px;

@@ -22,10 +22,7 @@
             sendZip : sendZip,
             getMySlots : getMySlots,
             mergeZipFromFile : mergeZipFromFile
-            
         };
-
-        
 
         function init()
         {
@@ -44,7 +41,6 @@
 
         function sendZip(saveas)
         {
- 
                 return new Promise(function(resolve, reject)
                 {
                   PROJECTNAME = StaticDataFactory.getProjectName();
@@ -655,12 +651,12 @@
          
           var DOWNLOAD_URL = "/iaf/api/configurations/download/" + StaticDataFactory.getProjectName();
           var finalUrl = IAF_URL + DOWNLOAD_URL;
-          // PROJECTNAME = StaticDataFactory.getProjectName();
+          PROJECTNAME = StaticDataFactory.getProjectName();
 
           if(null !== StaticDataFactory.getReqParams())
           {
             var params = StaticDataFactory.getReqParams();
-            // PROJECTNAME = params.instancename;
+            PROJECTNAME = params.instancename;
             DOWNLOAD_URL = "/iaf/api/configurations/download/" + params.instancename + '?version=' + params.version;
             finalUrl = IAF_URL + DOWNLOAD_URL ;
           }
@@ -687,7 +683,9 @@
                 }
               });
 
-              //removing an unwanted wrapper directory ('Ibis4Student/Configuration.xml becomes 'Configuration.xml')
+              /*removing an unwanted wrapper directory (fe. 'Ibis4Student/Configuration.xml becomes 'Configuration.xml')
+              when this wrapper directory has another name then the projectname we will leave it to warn the user to
+              change the configuration name*/
               for(var i=0 ; i< myzipfiles.length; i++)
               {
                 if(myzipfiles[i].name.indexOf(PROJECTNAME) > -1)
