@@ -162,7 +162,6 @@
               console.log("modifying version and projectname: " , finalurl, PROJECTNAME, timestamp );
             }
             
-            alert(finalurl);            
             zip.generateAsync({type:"blob"}).then(function(myzip)
             {
               var fileName = 'configuration.zip';

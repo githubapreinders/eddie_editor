@@ -16,7 +16,10 @@
         case "localhost" :
         {
           // app.constant('IAF_URL', "http://localhost:8080/Ibis4Education");
-          app.constant('IAF_URL', "http://localhost:8080/ibis4integration");
+          app.constant('IAF_URL', "http://localhost:8080/Ibis4Education");
+          // var completeurl = window.location.href;
+          // app.constant('IAF_URL', completeurl.split('/iaf/')[0]);
+
           break;
         }
         case "ibis4education-env.bz46fawhzf.eu-central-1.elasticbeanstalk.com":
@@ -31,8 +34,7 @@
         }
         default :
         {
-          app.constant('IAF_URL', "http://localhost:8080/ibis4integration");
-          // app.constant('IAF_URL', "http://localhost:8080/Ibis4Education");
+          app.constant('IAF_URL', "http://localhost:8080/Ibis4Education");
           break;
         }
       }
@@ -148,11 +150,11 @@
         }
 
 
+
                 /* data is available directly in the response
           */
         function getJson()
         { 
-
 
           return $http.get(IAF_URL + '/api/getjson').then(
           function success(data)
