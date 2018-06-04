@@ -192,15 +192,13 @@
             }
 
 
-
-
-
            function getJson()
            {
                 StaticDataFactory.getJson().then(
                 function success(response)
                 {
-                    vm.navigatorModel = JSON.parse(response.data.JSONMONSTER.MYMONSTER);
+                   // vm.navigatorModel = JSON.parse(response.data.JSONMONSTER.MYMONSTER);
+                   vm.navigatorModel = response.data;
                     // console.log("returned datamodel : \n", vm.navigatorModel);
                     editor.setOption('hintOptions', {schemaInfo: vm.navigatorModel});
                     var extraKeys =  {
@@ -681,7 +679,7 @@
                 {
                     return;
                 }
-                thedocument.setValue("<?xml version='1.0' encoding='UTF-8'?>\n");
+                thedocument.setValue("");
                 thedocument.setCursor({line:thedocument.lastLine(),ch:0});
                 editor.focus();
             }

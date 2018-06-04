@@ -156,11 +156,18 @@
         function getJson()
         { 
 
-          return $http.get(IAF_URL + '/api/getjson').then(
+          // return $http.get(IAF_URL + '/api/getjson').then(
+          
+
+          return $http.get('https://ibissource.org/eddie/jsonmonster.json').then(
+          // return $http({method:'GET',url:'https://ibissource.org/eddie/jsonmonster.json',
+          //   headers:{'content-type':"application/json", 'Authorization':''}}).then(
           function success(data)
           {
               //console.info("returning json from server with status ",data.status);
-              thejson = data.data.JSONMONSTER.MYMONSTER;
+
+              // thejson = data.data.JSONMONSTER.MYMONSTER;
+              thejson = data.data;
               return data;
           },
           function fail(err)
@@ -596,21 +603,145 @@
       function validateXml()
       {
 
-          // return $http.get(API_URL + '/validate').then(function succes(res)
-          // {
-          //   var thexml = StorageFactory.getGetter(StorageFactory.getCurrentKey())();
-          //   console.log("xsd:\n",  res);
-          //   console.log("xml:\n", typeof thexml);
-          //   var message = validateXML(thexml, res.data);
-          //   return message;
-          // },
-          // function fail(err)
-          // {
-          //   console.log("failure....", err);
-          //   return err;
-          // });  
       }
+    })
+
+     /*
+     The Map function registers the keys pushed at the moment and stores them into a map; from the
+     directive this map is consulted to see which navigational action has to be taken. The amount of
+     words in a text and the total length are being kept track of.
+     */
+    app.factory("KeystrokeService", function ()
+    {
+        var map = {};
+        var thewords = 0;
+        var currentword = "";
+        var amountOfWords = 0;
+        var closed = true;
+        var selectionCoords = {};
+
+        return {
+            currentword: currentword,
+            getMap: getMap,//helpers to register current key combinations (arrows, alt keys etc)
+            setMap: setMap,
+            clearMap: clearMap,
+            setWords: setWords,
+            changeLength: changeLength,
+            setCurrentWord: setCurrentWord,
+            getTextLength: getTextLength,
+            getCurrentWord: getCurrentWord,
+            getWords: getWords,
+            setAmountOfWords: setAmountOfWords,
+            getAmountOfWords: getAmountOfWords,
+            getClosed: getClosed,//helpers to fixate the cursor at the end or beginning of a word to prevent 'cursor jumping'
+            setClosed: setClosed,
+            getSelectionCoords: getSelectionCoords, //helper to keep track of drag start
+            setSelectionX: setSelectionX,
+            setSelectionY: setSelectionY,
+            clearSelectionCoords:clearSelectionCoords
+        };
+
+        function getSelectionCoords()
+        {
+            return selectionCoords;
+        }
+
+        function setSelectionY(yCoord)
+        {
+            selectionCoords = { y:yCoord};
+        }
+
+        function setSelectionX(xCoord)
+        {
+            selectionCoords = { x:xCoord};
+        }
+
+        function clearSelectionCoords()
+        {
+            selectionCoords = {};
+        }
+
+
+        function getClosed()
+        {
+            return closed;
+        }
+
+        function setClosed(status)
+        {
+            closed = status;
+        }
+
+
+        function setAmountOfWords(digit)
+        {
+            amountOfWords = digit;
+        }
+
+        function getAmountOfWords()
+        {
+            return amountOfWords;
+        }
+
+
+        function changeLength(word)
+        {
+            //if we see a split in the current word or a split word being restored we adapt the amount of words. The
+            // 'lengthChange' listener in the controller will update the view.
+            amountOfWords += (word.split(/\s+/).length - currentword.split(/\s+/).length);
+
+            //amount of characters is measured here.
+            var difference = (word.length - currentword.length);
+            thewords += difference;
+            // console.log("change length, total words length " + thewords);
+            currentword = word;
+        }
+
+        function setCurrentWord(word)
+        {
+            currentword = word;
+        }
+
+        function getCurrentWord()
+        {
+            return currentword;
+        }
+
+        function getTextLength()
+        {
+            return thewords;
+        }
+
+
+        function setWords(textlength)
+        {
+            // console.log("updating model...");
+            thewords = textlength;
+        }
+
+
+        function getWords()
+        {
+            return thewords;
+        }
+
+        function clearMap()
+        {
+            map = {};
+        }
+
+        function setMap(key, value)
+        {
+            map[key] = value;
+        }
+
+        function getMap()
+        {
+            return map;
+        }
     });
+
+
     
 
 })();   

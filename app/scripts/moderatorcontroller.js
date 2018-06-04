@@ -48,8 +48,9 @@
 			$('#xmlwrapper1').mCustomScrollbar({theme:"minimal"});
 			$('#xmlwrapper2').mCustomScrollbar({theme:"minimal"});
 			console.log("response",response);
-			var helper = JSON.parse(response.data.JSONMONSTER.MYMONSTER);
+			//var helper = JSON.parse(response.data.JSONMONSTER.MYMONSTER);
 			vm3.dataModel = [];
+			var helper = response.data;
 			Object.keys(helper).forEach(function(value)
 			{
 				vm3.dataModel.push(helper[value]);

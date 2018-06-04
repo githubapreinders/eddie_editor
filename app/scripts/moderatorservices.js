@@ -91,11 +91,11 @@
         	console.log("tag: ", tag);
         	return  $http.post(IAF_URL +'/api/postiaftag', tag).then(function success(resp)
 	          {
-	            console.log("saving a tag", resp.status);
+	            console.log("saved a tag", resp.status);
 	          },
 	          function failure(err)
 	          {
-	            console.log("failed result posting tag", err.status);
+	            console.log("failed posting tag", err.status);
 	          });
         }
 
@@ -103,14 +103,14 @@
 		function deleteItem(classname)
 		{
 			return $http({method:"GET", url: IAF_URL + '/api/deleteiaftag/' + classname }).then(
-				function success(res)
-				{
-					return res;
-				}, 
-				function failure(err)
-				{
-					return err;
-				});
+			function success(res)
+			{
+				return res;
+			}, 
+			function failure(err)
+			{
+				return err;
+			});
 		}
 
 	});

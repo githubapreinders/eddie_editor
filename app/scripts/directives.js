@@ -158,7 +158,93 @@ In local storage. For this the old and the new name have to be in one place.*/
 })
 
 
-/*event: set up a function that starts in 1000ms; in this function the position of the
+.directive('fullScreenToggle', function()
+{
+
+    return{
+
+        restrict : "A",
+        link : function (scope, element, attrs)
+        {
+            element.bind('keydown',function(event)
+            {
+                var map = KeystrokeService.getMap();
+                var code = event.which || event.keyCode || eventt.charCode ;
+                if (code === 13)// enter key
+                {
+                    event.preventDefault();
+                    var element = document.getElementById('treeitem'+event.target.id.match(/\d+/g));
+                    element.blur();
+                } 
+            });   
+        }
+
+    };
+
+
+})
+
+/*
+     This map remembers which keys are pressed at a certain moment; this map is used in the 'navigate' directive
+ */
+.directive('registerKeystrokes', function (KeystrokeService)
+{
+    return {
+        restrict: "A",
+        link: function (scope, element, attrs, ctrl)
+        {
+            $('body').on('keyup  keydown', function (event)
+            {
+                var code = event.which || event.keyCode || eventt.charCode ;
+                KeystrokeService.setMap(code , event.type === 'keydown');
+                var map = KeystrokeService.getMap();
+
+                //if ctrl key is pressed in combination with T -tabs toggle
+                if (map[17] && map[84])
+                {
+                    var el = document.getElementById('myfilebrowser');
+                    el.click();
+                }
+
+                //if ctrl key is pressed in combination with F - fullscreen 
+                if (map[17] && map[70])
+                {
+                    var el = document.getElementById('filename');
+                    el.click();
+                }
+
+                //if ctrl key is pressed in combination with S - save 
+               
+                if (map[17] && map[83])
+                {
+                    var el = document.getElementById('saveconfig');
+                    el.click();
+                    KeystrokeService.clearMap();
+                }
+
+                //if ctrl key is pressed in combination with L - load
+                if (map[17] && map[76])
+                {
+                    var el = document.getElementById('loadconfig');
+                    el.click();
+                    KeystrokeService.clearMap();
+                }
+
+                //if ctrl key is pressed in combination with E - erase
+                if (map[17] && map[69])
+                {
+                    var el = document.getElementById('erasefile');
+                    el.click();
+                    KeystrokeService.clearMap();
+                }
+
+            });
+        }
+    };
+})
+
+
+/*event: set up a function that has a delay of 1000ms; in this function the position of the
 popup is calculated; starttime is noted */
 
 .directive('popupPlacement',function($timeout)

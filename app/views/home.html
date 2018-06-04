@@ -14,11 +14,16 @@
                 </div>
                 <div class="navbarlower">
                     
-                    <span id="filename" class="filename " ng-click="vm.showNav()" >
+                      <div uib-popover="Toggle editor area to full width. Shortcut Key : ctrl + f " popover-placement="right" popover-trigger="'mouseenter'" popover-popup-delay="700" class="mybutton" id="submitform" >
+                      <span id="filename" class="filename " ng-click="vm.showNav()" >
                         <span id="contents"><span id="spinnersmall" ng-show = "vm.showSpinnerSmall" >
                             <i   class="fa fa-spinner fa-spin fa-fw "></i>
                         </span >{{vm.currentKey.title | cropFilter}}</span>
                        </span>
+                      </div>
+                       
+
+
                        <div class="filler"></div>
                        
 
@@ -32,16 +37,15 @@
                        <span  >tags</span>
                        </div>
 
-                       <div uib-popover="Save your current file tree. These files will be stored as a Configuration.zip file in your Downloads folder. " popover-placement="bottom-right" popover-trigger="'mouseenter'" popover-popup-delay="700" class="mybutton" id="submitform" ng-click="vm.triggerSaveZipEvent()">
+                       <div uib-popover="Save your current file tree. These files will be stored as a Configuration.zip file in your Downloads folder. Shortcut: ctrl + S " popover-placement="bottom-right" popover-trigger="'mouseenter'" popover-popup-delay="700" class="mybutton" id="saveconfig" ng-click="vm.triggerSaveZipEvent()">
                        <img src="./media/icons/save.svg" class="myicon" />
                        <span  >save</span>
                        </div>
 
-                       <div uib-popover="Load a file tree from your local disk or the contents from your Ibis. You have to choose a .zip file. When you want to keep your current files you can merge the new files in (conflicting names will be renamed), or you can choose to save your file tree first. The latter option is safer, since you can always revert to the older version." popover-placement="bottom-right" popover-trigger="'mouseenter'" popover-popup-delay="700" class="mybutton" id="submitform" ng-click="vm.triggerLoadZipEvent()">
+                       <div uib-popover="Load a file tree from your local disk or the contents from your Ibis. You have to choose a .zip file. When you want to keep your current files you can merge the new files in (conflicting names will be renamed), or you can choose to save your file tree first. The latter option is safer, since you can always revert to the older version. Shortcut : ctrl + L" popover-placement="bottom-right" popover-trigger="'mouseenter'" popover-popup-delay="700" class="mybutton" id="loadconfig" ng-click="vm.triggerLoadZipEvent()">
                        <img src="./media/icons/open_folder.svg" class="myicon"  />
                        <span  >load</span>
                        </div>
-
 
                        <div uib-popover-template="'./views/popovertemplate2.html'" popover-placement="bottom-right" popover-trigger="'mouseenter'" popover-popup-delay="700" class="mybutton" id="submitform" ng-click="vm.submitForm()">
                        <img src="./media/icons/tag_add.svg" class="myicon" />
@@ -56,7 +60,7 @@
                        </div>
 
 
-                         <div uib-popover="Start with a blank sheet!" popover-placement="bottom-right" popover-trigger="'mouseenter'" popover-popup-delay="700" class="mybutton" id="submitform" ng-click="vm.clearEditor()">
+                         <div uib-popover="Start with a blank sheet! Shortcut :ctrl + E" popover-placement="bottom-right" popover-trigger="'mouseenter'" popover-popup-delay="700" class="mybutton" id="erasefile" ng-click="vm.clearEditor()">
                        <img src="./media/icons/erase.svg" class="myicon" />
                        <span  >erase</span>
                        </div>
@@ -77,8 +81,8 @@
 <div class="mainContainer">
          
     <div  style="height:30px;width:25%;position:absolute;color:white;" >
-        <div  class="configTop" >
-            <div id="myfilebrowsershadow"></div>
+        <div  class="configTop" uib-popover="Toggle tabs. Shortcut Key : ctrl + t " popover-placement="top" popover-trigger="'mouseenter'" popover-popup-delay="700" class="mybutton" id="submitform">
+            <div id="myfilebrowsershadow" ></div>
             <div id="mytaglibraryshadow"></div>
             <div id="therest">thedummytext</div>    
             <div   ng-click="vm.showConf();" id='myfilebrowser' > <img src="./media/icons/structure.svg" class="myicon"><span>&nbsp;&nbsp;File Browser</span></div>    
