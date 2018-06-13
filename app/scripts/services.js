@@ -302,15 +302,18 @@
       */
       function getListOfDirectories()
       {
+          var dirs;
           var thejson = getGetter('thejson')();
           var regex = new RegExp('(?<="isDirectory":true,"title":").*?"','g'); 
-          var dirs = JSON.stringify(thejson).match(regex);
-          // var dirs = JSON.stringify(thejson).match(/(?<="isDirectory":true,"title":").*?"/g);
+          dirs = JSON.stringify(thejson).match(regex);
+          if (dirs === null)
+          {
+            dirs = [];
+          }
           for(var i=0 ; i< dirs.length; i++)
           {
             dirs[i] = dirs[i].replace('\"','/'); //replacing the last quote with a slash
           }
-          //console.log("directories: ", dirs);
           return dirs;
       }
 

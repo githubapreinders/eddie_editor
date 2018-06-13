@@ -144,8 +144,8 @@
 
                var newobject = {
                             id: Math.floor(Math.random()*10000) ,
-                            title: item + createRandomSuffix(),
                             isDirectory : thetype,
+                            title: item + createRandomSuffix(),
                             isLocked : false,
                             nodes: []
                             };

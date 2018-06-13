@@ -158,32 +158,6 @@ In local storage. For this the old and the new name have to be in one place.*/
 })
 
 
-.directive('fullScreenToggle', function()
-{
-
-    return{
-
-        restrict : "A",
-        link : function (scope, element, attrs)
-        {
-            element.bind('keydown',function(event)
-            {
-                var map = KeystrokeService.getMap();
-                var code = event.which || event.keyCode || eventt.charCode ;
-                if (code === 13)// enter key
-                {
-                    event.preventDefault();
-                    var element = document.getElementById('treeitem'+event.target.id.match(/\d+/g));
-                    element.blur();
-                } 
-            });   
-        }
-
-    };
-
-
-})
-
 /*
      This map remembers which keys are pressed at a certain moment; this map is used in the 'navigate' directive
  */
@@ -206,8 +180,8 @@ In local storage. For this the old and the new name have to be in one place.*/
                     el.click();
                 }
 
-                //if ctrl key is pressed in combination with F - fullscreen 
-                if (map[17] && map[70])
+                //if ctrl key is pressed in combination with shift and F - fullscreen 
+                if (map[16] && map[17] && map[70])
                 {
                     var el = document.getElementById('filename');
                     el.click();
@@ -215,7 +189,7 @@ In local storage. For this the old and the new name have to be in one place.*/
 
                 //if ctrl key is pressed in combination with S - save 
                
-                if (map[17] && map[83])
+                if ( map[17] && map[83])
                 {
                     var el = document.getElementById('saveconfig');
                     el.click();

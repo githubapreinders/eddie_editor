@@ -83,7 +83,7 @@ gulp.task('handleAngular', function()
 
 gulp.task('uglifyCodemirror', function()
 {
-    return gulp.src(["app/bower_components/codemirror/lib/codemirror.js","app/codemirror/searchcursor.js","app/codemirror/search.js","app/codemirror/foldgutter.js","app/codemirror/xml-fold.js","app/codemirror/foldcode.js","app/codemirror/matchtags.js","app/codemirror/xml-hint.js","app/codemirror/show-hint.js","app/codemirror/xml.js","app/bower_components/js-beautify/js/lib/beautify-html.js","app/bower_components/js-beautify/js/lib/beautify-css.js","app/bower_components/js-beautify/js/lib/beautify.js","app/bower_components/angular-ui-codemirror/ui-codemirror.js" ])
+    return gulp.src(["app/codemirror/ui-codemirror.js","app/codemirror/codemirror.js","app/codemirror/searchcursor.js","app/codemirror/search.js","app/codemirror/foldgutter.js","app/codemirror/xml-fold.js","app/codemirror/foldcode.js","app/codemirror/matchtags.js","app/codemirror/xml-hint.js","app/codemirror/show-hint.js","app/codemirror/xml.js","app/codemirror/beautify-html.js","app/codemirror/beautify-css.js","app/codemirror/beautify.js","app/codemirror/dialog.js" ])
         .pipe(concat('codemirror.min.js'))
         .pipe(strip())
         .pipe(sourcemaps.init())
