@@ -180,8 +180,8 @@ In local storage. For this the old and the new name have to be in one place.*/
                     el.click();
                 }
 
-                //if ctrl key is pressed in combination with shift and F - fullscreen 
-                if (map[16] && map[17] && map[70])
+                //if ctrl key is pressed in combination with  W - fullscreen 
+                if ( map[17] && map[87])
                 {
                     var el = document.getElementById('filename');
                     el.click();
